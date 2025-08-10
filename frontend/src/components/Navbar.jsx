@@ -1,0 +1,160 @@
+// src/components/Navbar.jsx (Your global header component)
+import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// --- Important: We assume you have a src/components/Button.jsx file for your <Button> component
+// If not, these won't work and you'd have to use simple <button> or <a> tags with App.css classes.
+import Button from './Button'; // Assuming src/components/Button.jsx
+
+
+import './Navbar.css'; // Global CSS for the Navbar, as per your structure
+
+
+// Re-using GrowAthleteLogo definition. This should ideally be a separate reusable SVG component in `src/assets/icons/`
+const GrowAthleteLogo = () => (
+  <svg className="navbar-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <defs>
+      <linearGradient id="navLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%"> {/* Changed ID to prevent conflict */}
+        <stop offset="0%" stopColor="#6c5ce7" />
+        <stop offset="100%" stopColor="#ff6b81" />
+      </linearGradient>
+    </defs>
+    <circle cx="50" cy="50" r="40" fill="url(#navLogoGradient)" />
+    <path d="M 30 50 L 45 65 L 70 35" stroke="white" strokeWidth="8" fill="none" strokeLinecap="round" />
+  </svg>
+);
+
+
+const navLinks = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Athletes', path: '/athletes' },
+  { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
+  { name: 'Community', path: '/community' },
+  { name: 'More', subLinks: [
+    { name: 'Events', path: '/events-all' },
+    { name: 'Sponsorships', path: '/sponsorships' },
+    { name: 'Resources', path: '/resources' },
+  ]},
+];
+
+const mobileMenuVariants = {
+  hidden: { x: "100%" },
+  visible: {
+    x: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.15,
+      duration: 0.6
+    }
+  },
+  exit: {
+    x: "100%",
+    transition: {
+      ease: "easeOut",
+      duration: 0.3
+    }
+  }
+};
+
+const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-logo">
+        <Link to="/" onClick={closeMobileMenu}>
+          <GrowAthleteLogo />
+          GrowAthlete India
+        </Link>
+      </div>
+
+      {/* Hamburger menu for mobile, controlled by class states */}
+      <div className={`hamburger-menu ${isMobileMenuOpen ? 'open' : ''}`} onClick={toggleMobileMenu}>
+        <div className="hamburger-bar"></div>
+        <div className="hamburger-bar"></div>
+        <div className="hamburger-bar"></div>
+      </div>
+
+      {/* Mobile Navigation Links - animated with Framer Motion */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            className={`navbar-links mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            {navLinks.map((link, index) => (
+              link.subLinks ? (
+                <div className="dropdown" key={index}>
+                  <a href="#" className="dropdown-toggle" onClick={(e) => e.preventDefault()}>
+                    {link.name} <span style={{fontSize: '0.6em'}}>&#9660;</span>
+                  </a>
+                  <div className="dropdown-menu">
+                    {link.subLinks.map((subLink) => (
+                      <NavLink key={subLink.name} to={subLink.path} onClick={closeMobileMenu}>
+                        {subLink.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <NavLink key={link.name} to={link.path} onClick={closeMobileMenu}>
+                  {link.name}
+                </NavLink>
+              )
+            ))}
+            <div className="navbar-auth mobile-only">
+                {/* Use the common Button component with specific variant */}
+                <Button variant="header-signin" link="/login">Sign In</Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Navigation Links */}
+      <div className="navbar-links desktop-nav">
+        {navLinks.map((link, index) => (
+              link.subLinks ? (
+                <div className="dropdown" key={index}>
+                  <a href="#" className="dropdown-toggle" onClick={(e) => e.preventDefault()}>
+                    {link.name} <span style={{fontSize: '0.6em'}}>&#9660;</span>
+                  </a>
+                  <div className="dropdown-menu">
+                    {link.subLinks.map((subLink) => (
+                      <NavLink key={subLink.name} to={subLink.path}>
+                        {subLink.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <NavLink key={link.name} to={link.path}>
+                  {link.name}
+                </NavLink>
+              )
+            ))}
+      </div>
+
+
+      {/* Desktop Auth Button */}
+      <div className="navbar-auth desktop-only">
+        {/* Use the common Button component with specific variant */}
+        <Button variant="header-signin" link="/login">Sign In</Button>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

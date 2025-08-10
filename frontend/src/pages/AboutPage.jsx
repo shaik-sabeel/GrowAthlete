@@ -27,7 +27,7 @@ const AboutPage = () => {
   return (
     <div className="about-container">
       {/* Header Navigation */}
-      <header className="about-header">
+      {/* <header className="about-header">
         <div className="logo">GrowAthlete <span>India</span></div>
         <nav className="about-nav">
           <a href="#">Home</a>
@@ -37,7 +37,7 @@ const AboutPage = () => {
           <a href="#">Community</a>
         </nav>
         <button className="sign-in-btn">Sign In</button>
-      </header>
+      </header> */}
             {/* Replace with your desired video URL */}
 
       {/* Hero Section */}

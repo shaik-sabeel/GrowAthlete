@@ -1,0 +1,19 @@
+/* src/pages_css/variables.css - Central CSS Variables */
+
+:root {
+  --primary-color: #6c5ce7; /* A deep violet */
+  --secondary-color: #ff6b81; /* A bright coral */
+  --tertiary-color: #00cec9; /* A vivid teal */
+  --background-dark: #1e272e; /* Deep dark blue-gray */
+  --background-light: #f7f9fc; /* Light background for sections */
+  --text-dark: #333;
+  --text-light: #f4f4f4;
+  --border-color: #e0e0e0;
+  --gradient-1: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  --gradient-2: linear-gradient(135deg, var(--tertiary-color), var(--primary-color));
+  --gradient-footer: linear-gradient(135deg, #1A1E2B, #283042); /* Example for footer */
+
+  --font-family-sans: 'Roboto', sans-serif;
+  --border-radius-card: 15px;
+  --box-shadow-card: 0 5px 20px rgba(0, 0, 0, 0.08);
+}

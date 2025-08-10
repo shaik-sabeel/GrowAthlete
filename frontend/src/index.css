@@ -1,11 +1,15 @@
+/* src/index.css */
+/* Minimal initial project-wide styles for html, body, and basic type setup */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Using imports in App.css for var(--primary-color) etc. */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* Fallback for Roboto */
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #242424; /* Adjusted from rgba(255, 255, 255, 0.87) for clarity against light background */
+  background-color: #ffffff; /* Explicitly white for body background */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,26 +17,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Only body properties, removed root-level properties here because they are moved to :root{} in App.css for better organization */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex; */ /* Removed from body to allow for full-width content layouts */
+  /* place-items: center; */ /* Removed from body */
   min-width: 320px;
   min-height: 100vh;
+  /* background-color and color also removed to be controlled by :root and component styles */
 }
 
+/* These h1 and button styles were from Vite template and are conflicting,
+   they should be managed by App.css global headings or individual components
+   Let's keep them here as bare minimum overrides */
 h1 {
-  font-size: 3.2em;
+  font-size: 3.2em; /* Keep for general h1, specific ones overridden by App.css headings */
   line-height: 1.1;
+  color: #333; /* Default dark text color */
 }
 
 button {
@@ -43,6 +44,7 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: #ffffff; /* Default button text color */
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,15 +56,21 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* This is the logo spin animation, from Vite template. Not used if using custom Navbar logo */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  to {
+    transform: rotate(360deg);
   }
 }
+/* If using custom Navbar logo, delete the animation rules */
+
+/* Other specific vite template remnants that can be removed if not used */
+/* .logo { ... }
+.logo:hover { ... }
+.logo.react:hover { ... }
+@media (prefers-reduced-motion: no-preference) { ... }
+.card { ... }
+.read-the-docs { ... } */

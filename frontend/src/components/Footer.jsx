@@ -1,21 +1,26 @@
 import React from 'react';
-// import './Footer.css'; 
-import { 
-  FaHome, FaInfoCircle, FaEnvelope, FaSignInAlt, FaUserFriends, FaPhoneAlt, 
-  FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaHeart 
-} from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Make sure Link is imported for button/link in content
+import { motion } from 'framer-motion'; // Make sure motion is imported
 
-// Import the stylesheet
-import './Footer.css';
+import {
+  FaHome, FaInfoCircle, FaEnvelope, FaSignInAlt, FaUserFriends, FaPhoneAlt,
+  FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaHeart
+} from 'react-icons/fa'; // All react-icons must be installed: npm install react-icons
+
+// Import the stylesheet directly as per your structure
+import './Footer.css'; // <-- Footer.css at src/components/Footer.css
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <motion.footer className="footer"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}>
       <div className="footer-container">
-        
+
         {/* Main grid for footer content */}
         <div className="footer-grid">
-          
+
           {/* About Us Section */}
           <div className="footer-section">
             <h3>About Us</h3>
@@ -31,11 +36,11 @@ const Footer = () => {
           <div className="footer-section">
             <h3>Quick Links</h3>
             <ul className="footer-links">
-              <li><a href="#" className="footer-link"><FaHome /><span>Home</span></a></li>
-              <li><a href="#" className="footer-link"><FaInfoCircle /><span>About Us</span></a></li>
-              <li><a href="#" className="footer-link"><FaEnvelope /><span>Contact</span></a></li>
-              <li><a href="#" className="footer-link"><FaSignInAlt /><span>Sign In</span></a></li>
-              <li><a href="#" className="footer-link"><FaUserFriends /><span>Athletes</span></a></li>
+              <li><Link to="/" className="footer-link"><FaHome /><span>Home</span></Link></li>
+              <li><Link to="/about" className="footer-link"><FaInfoCircle /><span>About Us</span></Link></li>
+              <li><Link to="/contact" className="footer-link"><FaEnvelope /><span>Contact</span></Link></li>
+              <li><Link to="/login" className="footer-link"><FaSignInAlt /><span>Sign In</span></Link></li>
+              <li><Link to="/athletes" className="footer-link"><FaUserFriends /><span>Athletes</span></Link></li>
             </ul>
           </div>
 
@@ -61,9 +66,9 @@ const Footer = () => {
           <div className="footer-section brand-section">
             <h2 className="brand-title">Grow<span>Athlete</span> India</h2>
             <div className="brand-underline"></div>
-            <p className="brand-designed-by">
+            {/* <p className="brand-designed-by">
               Designed with <FaHeart className="heart-icon" /> for young athletes
-            </p>
+            </p> */}
           </div>
 
         </div>
@@ -79,7 +84,7 @@ const Footer = () => {
         </div>
 
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 
