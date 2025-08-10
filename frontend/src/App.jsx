@@ -40,6 +40,7 @@
 
 // export default App;
 
+<<<<<<< HEAD
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Login from "./pages/Login";
 // import AdminDashboard from "./pages/AdminDashboard";
@@ -117,6 +118,17 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar'; // Just in case, as some swiper modules use it
+=======
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserDashboard from "./pages/UserDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import AboutPage from "./pages/AboutPage"; // 1. IMPORT YOUR NEW PAGE HERE
+>>>>>>> 0d51cce0642db21a8759d2612e4f3cd1b9eaed60
 
 function App() {
   // A very basic authentication simulation for ProtectedRoute
@@ -136,6 +148,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
+<<<<<<< HEAD
           {/* --- PROTECTED ROUTES --- */}
           <Route
             path="/admin-dashboard"
@@ -153,6 +166,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+=======
+        {/* 👇 2. ADD THE ROUTE FOR YOUR ABOUT PAGE HERE 👇 */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/athlete-profile" element={<Profile />} />
+
+>>>>>>> 0d51cce0642db21a8759d2612e4f3cd1b9eaed60
 
           {/* Fallback for undefined routes */}
           <Route path="*" element={

@@ -1,0 +1,197 @@
+/* --- AESTHETIC & BRIGHT STYLING --- */
+
+/* General container for the entire page */
+.profile-form-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 3rem 1rem; /* Added more vertical padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* The main form element */
+.profile-form {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    padding: 3rem;
+    border-radius: 20px; /* Softer, more modern border radius */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 900px;
+    width: 100%;
+}
+
+.profile-header {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e0e6ed;
+    background: linear-gradient(90deg, #07e8f8 0%, #2e83fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Styling for each major section */
+.form-section {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 1.5rem; /* Larger title font */
+    font-weight: 700; /* Bolder font */
+    color: #2c3e50; /* Dark blue-gray for contrast */
+    margin-bottom: 2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e0e6ed; /* A subtle but clear separator */
+    position: relative;
+}
+
+/* Adds a small decorative element to the title */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #89f7fe 0%, #66a6ff 100%);
+}
+
+
+/* Flexbox row for side-by-side fields */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Styling for each field group */
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+}
+
+.form-group label {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #34495e; /* Softer dark color */
+}
+
+/* Styling for all input, select, and textarea fields */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px; /* Slightly more rounded corners */
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #66a6ff;
+    box-shadow: 0 0 0 3px rgba(102, 166, 255, 0.15);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.field-description {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 0.5rem;
+}
+
+/* Specific styles for the profile photo section */
+.profile-photo-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.photo-placeholder {
+    width: 80px; /* Larger placeholder */
+    height: 80px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    border: 2px dashed #bdc3c7; /* Dashed border for visual interest */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #7f8c8d;
+    font-size: 2.5rem;
+}
+
+/* General button styles */
+.btn {
+    padding: 0.8rem 1.75rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px rgba(0,0,0,0.07);
+}
+
+.change-btn {
+    background-color: #fff;
+    border: 1px solid #dcdfe6;
+    color: #34495e;
+}
+
+/* Action buttons at the bottom */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e6ed;
+}
+
+.cancel-btn {
+    background-color: transparent;
+    border: 1px solid #dcdfe6;
+    color: #34495e;
+}
+
+.cancel-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #c8ced3;
+}
+
+.create-profile-btn {
+    background: linear-gradient(90deg, #2ce5f3 0%, #1975f7 100%);
+    color: white;
+}
+
+.create-profile-btn:hover {
+    box-shadow: 0 7px 14px rgba(102, 166, 255, 0.4);
+}
