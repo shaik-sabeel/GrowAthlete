@@ -1,0 +1,222 @@
+/* --- Global Variables for Easy Customization --- */
+:root {
+    --footer-bg-gradient: linear-gradient(to right, #1f2937, #4b0082, #3b009c);
+    --primary-text-color: #d1d5db; /* gray-300 */
+    --secondary-text-color: #9ca3af; /* gray-400 */
+    --highlight-color: #3b82f6; /* blue-500 */
+    --border-color: #374151; /* gray-700 */
+    --card-bg-color: rgba(55, 65, 81, 0.6);
+    --card-border-color: #4b5563; /* gray-600 */
+  }
+  
+  /* --- Main Footer Container --- */
+  .footer {
+    background: var(--footer-bg-gradient);
+    color: var(--primary-text-color);
+    font-family: sans-serif;
+    padding: 3rem 1rem;
+  }
+  
+  .footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  
+  /* --- Responsive Grid Layout --- */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  
+  /* --- Section Styling --- */
+  .footer-section h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--highlight-color);
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-section p, .footer-section li {
+    color: var(--secondary-text-color);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  
+  /* --- About Section & Sport Tags --- */
+  .sport-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  
+  .sport-tag {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--card-border-color);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .sport-tag:hover {
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-color);
+    color: #ffffff;
+  }
+  
+  /* --- Links (Quick Links & Connect) --- */
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .footer-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    transition: color 0.3s;
+  }
+  
+  .footer-link:hover {
+    color: #ffffff;
+  }
+  
+  .footer-link svg {
+    color: var(--highlight-color);
+  }
+  
+  /* --- Social Media Icons --- */
+  .socials-container {
+    padding-top: 0.5rem;
+  }
+  
+  .socials-container h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    margin-bottom: 0.75rem;
+  }
+  
+  .socials-list {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #111827; /* gray-900 */
+    border-radius: 50%;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.3s;
+  }
+  .social-icon:hover.facebook { background-color: #1877f2; }
+  .social-icon:hover.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .social-icon:hover.twitter { background-color: #1da1f2; }
+  .social-icon:hover.youtube { background-color: #ff0000; }
+  
+  
+  /* --- Brand Section --- */
+  .brand-section {
+    text-align: center;
+  }
+  
+  .brand-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+  
+  .brand-title span {
+    color: var(--highlight-color);
+  }
+  
+  .brand-underline {
+    width: 6rem;
+    height: 4px;
+    background-color: var(--highlight-color);
+    border-radius: 9999px;
+    margin: 0.5rem auto 0;
+  }
+  
+  .brand-designed-by {
+    font-size: 0.875rem;
+    color: var(--secondary-text-color);
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+  
+  .brand-designed-by .heart-icon {
+    color: #ef4444; /* red-500 */
+  }
+  
+  /* --- Bottom Bar --- */
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--secondary-text-color);
+    font-size: 0.875rem;
+  }
+  
+  .footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .footer-bottom-links a {
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    transition: color 0.3s;
+  }
+  
+  .footer-bottom-links a:hover {
+    color: #ffffff;
+  }
+  
+  /* --- Media Queries for Responsiveness --- */
+  @media (min-width: 640px) { /* Corresponds to Tailwind's 'sm' breakpoint */
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  
+  @media (min-width: 1024px) { /* Corresponds to Tailwind's 'lg' breakpoint */
+    .footer-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  
+    .brand-section {
+      text-align: left;
+    }
+    .brand-underline, .brand-designed-by {
+      margin-left: 0;
+      justify-content: flex-start;
+    }
+  }
