@@ -1,65 +1,81 @@
-// src/utils/constants.js
-import soham from '../assets/soham.jpg'; // Example athlete image, replace with actual data
-import anika from '../assets/anika.jpg'; // Example athlete image, replace with actual data
-import vikram from '../assets/vikram.jpg'; // Example athlete image, replace with actual data
+// frontend/src/utils/constants.js
+
+// --- 1. ALL IMAGE IMPORTS ARE GROUPED HERE ---
+// For Athlete Cards & Testimonials
+// The path for these is '../assets/' because they are directly in that folder.
+import soham from '../assets/soham.jpg';
+import anika from '../assets/anika.jpg';
+import vikram from '../assets/vikram.jpg';
+
+// For Sports Categories
+// The path for these IS correct as '../assets/images/'
+import cricketImg from '../assets/images/cricket.193Z.png';
+import footballImg from '../assets/images/football.873Z.png';
+import basketballImg from '../assets/images/basketball.731Z.png';
+import swimmingImg from '../assets/images/swimming.943Z.png';
+import badmintonImg from '../assets/images/badminton.669Z.png';
+import athleticsImg from '../assets/images/athletics.139Z.png';
+
+// --- 2. EXPORTING THE DATA ARRAYS USING THE IMPORTED IMAGES ---
 
 export const SPORTS_CATEGORIES = [
   {
     name: "Cricket",
     description: "From IPL to international matches, follow the rising cricket stars of India.",
-    imageUrl: "/assets/images/cricket.jpg" // Placeholder image
+    imageUrl: cricketImg
   },
   {
     name: "Football",
     description: "Discover the future football talents representing India on the global stage.",
-    imageUrl: "/assets/images/football.jpg"
+    imageUrl: footballImg
   },
   {
     name: "Basketball",
     description: "The growing basketball community in India and its promising young players.",
-    imageUrl: "/assets/images/basketball.jpg"
+    imageUrl: basketballImg
   },
   {
     name: "Swimming",
     description: "India's swimming champions breaking records and making waves.",
-    imageUrl: "/assets/images/swimming.jpg"
+    imageUrl: swimmingImg
   },
   {
     name: "Badminton",
     description: "Following the footsteps of champions, young badminton players are making their mark.",
-    imageUrl: "/assets/images/badminton.jpg"
+    imageUrl: badmintonImg
   },
   {
     name: "Athletics",
     description: "Track and field stars representing India at national and international events.",
-    imageUrl: "/assets/images/athletics.jpg"
-  }
+    imageUrl: athleticsImg
+  },
 ];
+
 
 export const TESTIMONIALS = [
   {
     id: 1,
     quote: "GrowAthlete India transformed my career as a young athlete. The exposure and connections I gained through the platform helped me secure my first major sponsorship.",
-    author: "Priya Singh",
+    author: "Anika Sharma",
     role: "National Level Badminton Player",
     sport: "Badminton",
-    avatar: "/assets/images/priya_avatar.jpg" // Placeholder
+    avatar: anika // Use the corrected import variable
   },
   {
     id: 2,
     quote: "As a talent scout, I've discovered incredible young athletes through this platform. It streamlines the process of finding promising talents across different regions of India.",
-    author: "Rajesh Kumar",
+    author: "Vikram Yadav",
     role: "Sports Talent Scout",
     sport: "Talent Scouting",
-    avatar: "/assets/images/rajesh_avatar.jpg"
+    avatar: vikram // Use the corrected import variable
   },
   {
     id: 3,
-    quote: "The platform's analytics helped me understand where I needed to improve. The support from coaches and mentors I met through GrowAthlete India has been invaluable for my growth.",
-    author: "Arjun Patel",
+    quote: "The platform's analytics helped me understand where I needed to improve. The support from coaches and mentors I met through GrowAthlete India has been invaluable.",
+    author: "Soham Deshmukh",
     role: "Track & Field Athlete",
     sport: "Track & Field",
-    avatar: "/assets/images/arjun_avatar.jpg"
+    avatar: soham // Use the corrected import variable
   }
 ];
 
@@ -68,20 +84,10 @@ export const PLATFORM_FEATURES_DETAILS = [
   { icon: '🚀', title: 'Comprehensive Profiles', description: 'Create rich profiles showcasing your achievements, skills, and aspirations with multimedia content.' },
   { icon: '🔎', title: 'Advanced Talent Search', description: 'A powerful search engine for coaches, scouts, and sponsors to discover promising talents easily.' },
   { icon: '📈', title: 'Guided Career Growth', description: 'Access guidance and resources to enhance your skills and connect with professional networks for career progression exclusives.' },
-  { icon: '🤝', title: 'Direct Sponsorship Links', description: 'Connect with sponsors, secure funding, and build partnerships for your athletic journey effortlessly.' },
-  { icon: '💬', title: 'Dynamic Community Hub', description: 'Join a dynamic platform fostering collaboration, mentorship, and knowledge-sharing among athletes.' },
-  { icon: '📊', title: 'Performance Analytics', description: 'Track your progress and performance with detailed analytics and insights to inform your training decisions.' },
-  { icon: '📆', title: 'Integrated Event Calendar', description: 'Stay updated and participate in the latest tournaments, championships, and competitions across India.' },
-  { icon: '📚', title: 'Curated Sports News', description: 'Read the latest news and insights from the sports community, expert interviews, and industry trends.' },
-  { icon: '🎓', title: 'Expert Coaching Access', description: 'Connect with experienced coaches and mentors to get personalized training plans and guidance.' },
-  // Add more as needed
 ];
 
-// Dummy data for Athlete Cards on Athletes Page
 export const ATHLETE_CARDS_DATA = [
   { id: 1, name: 'Soham Deshmukh', sport: 'Football', achievements: 'National U17 Champion', imageUrl: soham },
   { id: 2, name: 'Anika Sharma', sport: 'Badminton', achievements: 'State Level Winner', imageUrl: anika },
   { id: 3, name: 'Vikram Yadav', sport: 'Cricket', achievements: 'IPL Junior Team Select', imageUrl: vikram },
-
-  // Add more as needed for a larger directory
 ];
