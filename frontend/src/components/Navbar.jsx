@@ -1,6 +1,7 @@
 // src/components/Navbar.jsx (Your global header component)
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import api from '../utils/api';
+import { useNavigate,Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Important: We assume you have a src/components/Button.jsx file for your <Button> component
@@ -59,6 +60,44 @@ const mobileMenuVariants = {
 };
 
 const Navbar = () => {
+
+const navigate = useNavigate();
+const [isAuthenticated, setIsAuthenticated] = useState(false);
+const [data, setData] = useState(null);
+
+  // useEffect(() => {
+  //   // Whenever isAuthenticated changes, notify parent
+  //   sendAuthState(isAuthenticated);
+  // }, [isAuthenticated, sendAuthState]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get("/auth/profile");
+        setData(res.data.user);
+        setIsAuthenticated(true); // Set authenticated state based on profile data
+      } catch (err) {
+        setIsAuthenticated(false); // If fetching fails, user is not authenticated
+        console.error("Error fetching profile data:", err);
+      }
+    };
+    fetchData();
+  }, [isAuthenticated]);
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+      setData(null); // Clear user data on logout
+      setIsAuthenticated(false); // Update authentication state
+      alert("Logged out successfully!");
+      // Redirect to home page after logout
+      navigate('/') // Redirect to home after logout
+    } catch (err) {
+      console.error("Logout failed:", err);
+      alert("Logout failed");
+    }
+  };
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -151,7 +190,8 @@ const Navbar = () => {
       {/* Desktop Auth Button */}
       <div className="navbar-auth desktop-only">
         {/* Use the common Button component with specific variant */}
-        <Button variant="header-signin" link="/login">Sign In</Button>
+        {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
+        
       </div>
     </nav>
   );

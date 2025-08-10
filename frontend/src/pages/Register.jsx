@@ -22,7 +22,7 @@ const Register = () => {
     try {
       await api.post("/auth/register", formData);
       alert("Registered successfully!");
-      navigate(`/athlete/dashboard`);
+      navigate(`/`);
     } catch (err) {
       console.error(err);
       alert("Registration failed");

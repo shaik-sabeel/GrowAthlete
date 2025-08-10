@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await api.post("/auth/login", formData);
-      navigate(`/athlete/dashboard`);
+      navigate(`/`);
     } catch (err) {
       console.error(err);
       alert("Login failed");
@@ -54,7 +54,7 @@ const Login = () => {
         </div>
 
         <p className="register-link">
-          Don’t have an account? <Link to="/">Sign Up</Link>
+          Don’t have an account? <Link to="/register">Sign Up</Link>
         </p>
 
         <button type="submit" className="login-btn">

@@ -1,6 +1,8 @@
 // src/pages/Home.jsx (The fully featured Homepage component)
 import React, { useState, useEffect, useRef } from 'react';
+import api from '../utils/api';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar'; // Importing the global Navbar component
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap'; // Assuming GSAP is installed: npm install gsap
@@ -42,6 +44,12 @@ import '../pages_css/HomePage.css'
 
 
 const Home = () => {
+
+const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false);
+
+
+
+
     // --- Hero Section Data and Animations ---
     const heroTitleRef = useRef(null);
     const heroSloganRef = useRef(null);
@@ -170,6 +178,7 @@ const Home = () => {
 
   return (
     <>
+      <Navbar/>
       {/* 1. Hero Section (Home Page) */}
       <section className="hp-hero-section">
         <video className="hp-hero-video-bg" autoPlay loop muted playsInline>
@@ -181,9 +190,11 @@ const Home = () => {
           <h1 ref={heroTitleRef}>GrowAthlete India</h1>
           <p ref={heroSloganRef}>Empowering Young Sports Talents Across India</p>
 
+           
           <div className="hp-hero-buttons" ref={heroButtonContainerRef}>
-            <Button variant="primary" link="/join-athlete">Join as Athlete &rarr;</Button>
-            <Button variant="secondary" link="/join-sponsor">Join as Sponsor &rarr;</Button>
+           
+            <Button variant="primary" link="/register">Join as Athlete &rarr;</Button>
+            <Button variant="secondary" link="/register">Join as Sponsor &rarr;</Button>
           </div>
 
           <div className="hp-hero-features">
