@@ -47,6 +47,7 @@ import UserDashboard from "./pages/UserDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import AboutPage from "./pages/AboutPage"; // 1. IMPORT YOUR NEW PAGE HERE
 
 function App() {
@@ -60,6 +61,8 @@ function App() {
 
         {/* 👇 2. ADD THE ROUTE FOR YOUR ABOUT PAGE HERE 👇 */}
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/athlete-profile" element={<Profile />} />
+
 
         {/* Your Protected Routes */}
         {/* 
