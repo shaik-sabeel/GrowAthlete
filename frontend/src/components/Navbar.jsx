@@ -10,6 +10,7 @@ import Button from './Button'; // Assuming src/components/Button.jsx
 
 
 import './Navbar.css'; // Global CSS for the Navbar, as per your structure
+// import ThemeChange from './ThemeChange';
 
 
 // Re-using GrowAthleteLogo definition. This should ideally be a separate reusable SVG component in `src/assets/icons/`
@@ -185,7 +186,7 @@ const [data, setData] = useState(null);
               )
             ))}
       </div>
-
+            {/* <ThemeChange /> */}
 
       {/* Desktop Auth Button */}
       <div className="navbar-auth desktop-only">
