@@ -16,6 +16,7 @@ import { FaMapMarkerAlt, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa'; // 
 // Using Button.jsx component that reads global classes from App.css
 import Button from '../components/Button';
 
+
 // Using a functional SectionHeader (relying on `section-heading` from App.css)
 const SectionHeader = ({ title, description }) => (
     <div className="section-header-common"> {/* Utility class for general spacing */}
@@ -41,6 +42,12 @@ import '../pages_css/HomePage.css'
 // import '../pages_css/Categories.css';
 // import '../pages_css/Events.css';
 // import '../pages_css/Testimonials.css';
+import footballComp from '../assets/images/all-india-football.146Z.png';
+import swimmingComp from '../assets/images/junior-swimming.033Z.png';
+import volleyball from '../assets/images/volleyball.026Z.png';
+import badminton2 from '../assets/images/badminton2.182Z.png';
+import cricket2 from '../assets/images/cricket2.475Z.png';
+import HomePageVid from "../assets/HomePage.mp4";
 
 
 const Home = () => {
@@ -137,19 +144,19 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
         const dummyFeaturedEvents = [
             {
                 id: 1, title: 'Junior National Swimming Championship 2024', sport: 'Swimming', location: 'Mumbai, Maharashtra',
-                date: 'May 15-20, 2024', description: 'Young swimmers from across the country competed for national titles, with several new records set during the championship. The event saw participation from over 500 athletes representing 28 states.',
-                imageUrl: '/assets/images/swimming-event.jpg'
+                date: 'May 15-20, 2024', description: 'The Junior National Swimming Championship 2024 celebrated the speed, skill, and dedication of India’s brightest young swimmers. Hosted at a world-class aquatic facility, the championship saw participants from every corner of the country compete in various categories and strokes. The event not only pushed athletes to break personal and national records but also provided them with invaluable exposure to competitive swimming at the highest junior level. With electrifying performances and promising new talent emerging, the championship solidified its place as a cornerstone event in India’s sporting calendar.',
+                imageUrl: swimmingComp
             },
             {
                 id: 2, title: 'All India Football Tournament 2024', sport: 'Football', location: 'Delhi',
-                date: 'June 1-10, 2024', description: 'The tournament showcased remarkable talent from schools and clubs across India, with scouts from professional clubs in attendance. Over 32 teams competed in this prestigious event.',
-                imageUrl: '/assets/images/football-event.jpg'
+                date: 'June 1-10, 2024', description: 'The All India Football Tournament 2024 was a spectacular display of talent, teamwork, and passion for the beautiful game. Bringing together top teams from across the nation, the tournament served as a platform for seasoned players and emerging stars to showcase their skills on a national stage. With high-intensity matches, tactical brilliance, and nail-biting finishes, the event drew massive crowds and created unforgettable moments for football fans. Beyond the competition, it fostered sportsmanship and unity, inspiring the next generation of footballers to dream big and aim for excellence.',
+                imageUrl: footballComp
             }
         ];
         const dummyUpcomingEvents = [
-            { id: 3, title: 'National Volleyball Championship', sport: 'Volleyball', location: 'Chennai', date: 'May 25-30', imageUrl: '/assets/images/volleyball.jpg' },
-            { id: 4, title: 'Badminton Under-15 State Championship', sport: 'Badminton', location: 'Hyderabad', date: 'June 5-8', imageUrl: '/assets/images/badminton-event-upcoming.jpg' },
-            { id: 5, title: 'Cricket Academy Selection Trials', sport: 'Cricket', location: 'Bengaluru', date: 'June 12-14', imageUrl: '/assets/images/cricket-event-upcoming.jpg' },
+            { id: 3, title: 'National Volleyball Championship', sport: 'Volleyball', location: 'Chennai', date: 'May 25-30', imageUrl: volleyball },
+            { id: 4, title: 'Badminton Under-15 State Championship', sport: 'Badminton', location: 'Hyderabad', date: 'June 5-8', imageUrl: badminton2 },
+            { id: 5, title: 'Cricket Academy Selection Trials', sport: 'Cricket', location: 'Bengaluru', date: 'June 12-14', imageUrl: cricket2 },
         ];
         setFeaturedEvents(dummyFeaturedEvents);
         setUpcomingEvents(dummyUpcomingEvents);
@@ -182,7 +189,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
       {/* 1. Hero Section (Home Page) */}
       <section className="hp-hero-section">
         <video className="hp-hero-video-bg" autoPlay loop muted playsInline>
-          <source src="/assets/videos/growathlete_bg.mp4" type="video/mp4" />
+          <source src={HomePageVid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="hp-video-overlay"></div>
@@ -244,7 +251,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
         <SectionHeader
           title="Platform Impact"
           description="Trusted by thousands of athletes, coaches, and sponsors across India."
-        />
+        /> 
         <div className="hp-impact-stats">
           {impactStats.map((stat, index) => (
             <motion.div
@@ -339,7 +346,6 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
                       <img src={event.imageUrl} alt={event.title} />
                     </div>
                     <div className="hp-event-card-content">
-                      <span className="hp-featured-tag">FEATURED</span>
                       <h3>{event.title}</h3>
                       <div className="hp-event-meta">
                         <span><FaMapMarkerAlt /> {event.location}</span>
@@ -372,7 +378,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
               transition={{ delay: index * 0.15 + 0.5, ...upcomingEventCardVariants.visible.transition }}
               whileHover={{ translateY: -8, boxShadow: '0 8px 20px rgba(0,0,0,0.1)' }}
             >
-              <img src={event.imageUrl} alt={event.name} />
+              <img src={event.imageUrl} />
               <div className="hp-upcoming-event-card-content">
                 <h4>{event.title}</h4>
                 <p><FaMapMarkerAlt /> {event.location}</p>
@@ -433,7 +439,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           >
               <div className="container hp-call-to-action-content">
                   <div className="hp-cta-text">
-                      <h2 className="section-heading">Ready to boost your sports career?</h2> {/* Uses section-heading */}
+                      <h2 className="">Ready to boost your sports career?</h2> {/* Uses section-heading */}
                       <p>Join GrowAthlete India today. Connect with coaches, scouts, and sponsors. Showcase your talent and take your athletic journey to the next level.</p>
                       <ul className="hp-cta-list">
                         <li><FaQuoteLeft/> Create your sports profile <br/><small>Showcase your achievements, skills, and career goals</small></li>
@@ -441,7 +447,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
                         <li><FaQuoteLeft/> Get discovered by talent scouts <br/><small>Increase your visibility to professional teams and organizations</small></li>
                       </ul>
                       <div className="hp-cta-buttons">
-                          <Button variant="outline-light" link="/get-started">Get started &rarr;</Button>
+                          <Button link="/get-started">Get started &rarr;</Button>
                           <Button variant="solid-light" link="/learn-more">Learn more</Button>
                       </div>
                   </div>

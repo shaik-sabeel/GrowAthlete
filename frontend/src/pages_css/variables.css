@@ -1,19 +1,49 @@
-/* src/pages_css/variables.css - Central CSS Variables */
+/* --- src/pages_css/variables.css --- */
+/*
+  This file acts as the central design system for your application.
+  Define all your colors, fonts, shadows, and other reusable properties here.
+*/
 
 :root {
-  --primary-color: #6c5ce7; /* A deep violet */
-  --secondary-color: #ff6b81; /* A bright coral */
-  --tertiary-color: #00cec9; /* A vivid teal */
-  --background-dark: #1e272e; /* Deep dark blue-gray */
-  --background-light: #f7f9fc; /* Light background for sections */
-  --text-dark: #333;
-  --text-light: #f4f4f4;
-  --border-color: #e0e0e0;
-  --gradient-1: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-  --gradient-2: linear-gradient(135deg, var(--tertiary-color), var(--primary-color));
-  --gradient-footer: linear-gradient(135deg, #1A1E2B, #283042); /* Example for footer */
+  /* FONT FAMILY */
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Poppins', sans-serif;
+  
+  /* CORE COLORS */
+  --primary-color: #6366F1;   /* A pleasing, modern Indigo */
+  --secondary-color: #EC4899;  /* A vibrant Pink */
+  --tertiary-color: #22D3EE;  /* A bright Cyan for accents */
+  --success-color: #10B981;    /* Green */
+  --warning-color: #F59E0B;    /* Amber */
 
-  --font-family-sans: 'Roboto', sans-serif;
-  --border-radius-card: 15px;
-  --box-shadow-card: 0 5px 20px rgba(0, 0, 0, 0.08);
+  /* TEXT COLORS */
+  --text-dark: #1F2937;        /* For headings and primary text */
+  --text-medium: #4B5563;      /* For body copy and secondary text */
+  --text-light: #6B7280;       /* For muted text and descriptions */
+  --text-on-dark: #FFFFFF;     /* For text on dark or colored backgrounds */
+
+  /* BACKGROUND & SURFACE COLORS */
+  --background-main: #F9FAFB;  /* Very light gray for the main page background */
+  --background-light: #FFFFFF;  /* For cards and surfaces */
+  --background-dark: #111827;   /* For dark mode or dark sections */
+
+  /* BORDER COLORS */
+  --border-color: #E5E7EB;     /* A light, non-distracting border color */
+
+  /* GRADIENTS - For that aesthetic pop */
+  --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  --gradient-2: linear-gradient(135deg, #A5B4FC 0%, #F9A8D4 100%); /* Lighter variant */
+  --gradient-3: linear-gradient(135deg, #67E8F9 0%, #22D3EE 100%); /* Cyan accent gradient */
+
+  /* SHADOWS - Creates depth */
+  --box-shadow-card: 0 4px 15px rgba(0, 0, 0, 0.06);
+  --box-shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+  --box-shadow-button: 0 4px 10px rgba(99, 102, 241, 0.3);
+
+  /* BORDER RADIUS */
+  --border-radius-card: 16px;  /* For main cards and containers */
+  --border-radius-button: 8px; /* For buttons and smaller elements */
+
+  /* TRANSITIONS */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

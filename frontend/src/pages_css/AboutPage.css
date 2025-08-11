@@ -266,12 +266,13 @@ section h2::after {
 .values-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+    gap: 1rem;
     text-align: left;
 }
 .value-item {
     background: #ffffff;
     padding: 2rem;
+    padding-right: 1rem;
     border-left: 5px solid #42a5f5;
     border-radius: 0 8px 8px 0;
     transition: all 0.3s;
