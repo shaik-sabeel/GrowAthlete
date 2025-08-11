@@ -1,6 +1,38 @@
 /* src/App.css */
 
 /* General Layout & Base styles, common across pages */
+
+/* In your global CSS file (e.g., src/App.css or src/index.css) */
+
+/* Add these variables inside :root {...} for the light theme */
+:root {
+  /* ... existing variables ... */
+
+  /* New Blog Specific Colors (Light Theme) */
+  --color-blog-card-background: #ffffff;
+  --color-blog-card-border: #f0f0f0;
+  --color-blog-card-shadow: rgba(0, 0, 0, 0.08);
+  --color-blog-card-text: #555;
+  --color-blog-card-title: #333;
+  --color-blog-card-date: #888;
+  --color-blog-button-bg: #f5f5f5; /* Light button background */
+  --color-blog-button-text: #333;
+}
+
+/* Add these variables inside body.dark-theme {...} for the dark theme */
+body.dark-theme {
+  /* ... existing variables ... */
+
+  /* New Blog Specific Colors (Dark Theme) */
+  --color-blog-card-background: #3c5673; /* A medium dark background for cards */
+  --color-blog-card-border: #4d688c;
+  --color-blog-card-shadow: rgba(0, 0, 0, 0.4);
+  --color-blog-card-text: #c0c0c0;
+  --color-blog-card-title: #f8f9fa;
+  --color-blog-card-date: #999;
+  --color-blog-button-bg: #555; /* Dark button background */
+  --color-blog-button-text: #fff;
+}
 #root {
   display: flex;
   flex-direction: column;

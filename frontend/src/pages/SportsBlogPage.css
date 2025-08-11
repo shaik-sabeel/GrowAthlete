@@ -1,0 +1,151 @@
+/* src/pages/SportsBlogPage.css */
+
+.sports-blog-page {
+  padding: 80px 40px; /* Adjust top padding to clear fixed navbar */
+  min-height: 100vh;
+  background-color: var(--color-page-background); /* Inherits from global theme */
+  color: var(--color-page-text); /* Inherits from global theme */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for page itself */
+}
+
+/* Hero Section */
+.blog-hero {
+  text-align: center;
+  padding: 60px 0 80px; /* Increased bottom padding */
+  max-width: 100%; /* Ensure hero expands */
+  margin: 0 auto;
+  position: relative; /* Essential for positioning video and overlay */
+  overflow: hidden; /* Hide overflowing video parts if cropped by object-fit */
+  min-height: 400px; /* Give the hero section a minimum height to contain video */
+  display: flex; /* Use flexbox to center content vertically/horizontally */
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  z-index: 1; /* Ensure hero has a z-index for children to reference */
+}
+
+/* Video Styling */
+.blog-hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1; /* Place video behind content */
+  transform: translate(-50%, -50%); /* Center the video using transform */
+  object-fit: cover; /* Ensures video covers the entire area without distortion */
+  filter: brightness(60%); /* Make video darker for better text contrast */
+}
+
+/* Optional Overlay (alternative/addition to filter) */
+.blog-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark overlay */
+  z-index: -1; /* Ensure overlay is between video and text */
+}
+
+/* Content Container for text, positioned over the video/overlay */
+.blog-hero-content {
+  position: relative; /* Make content relative to .blog-hero */
+  z-index: 2; /* Ensure content is above video and overlay */
+  color: white; /* Ensure text is visible over dark video */
+  max-width: 900px; /* Constrain text width as before */
+  margin: 0 auto; /* Center text within content div */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Add text shadow for better readability */
+}
+
+.blog-hero-title {
+  font-size: 3.5em; /* Larger title */
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: inherit; /* Inherit color from blog-hero-content (white) */
+  /* Remove highlight rule if you want plain white, or redefine it for a white glow */
+}
+
+.blog-hero-title .highlight {
+  /* You can still apply a gradient here if it works well over white text */
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+
+.blog-hero-subtitle {
+  font-size: 1.3em;
+  color: inherit; /* Inherit color from blog-hero-content (white) */
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.9; /* Make subtitle slightly more opaque */
+}
+
+/* Blog Posts Grid */
+.blog-posts-grid-section {
+  max-width: 1200px; /* Max width for content, similar to Skipper UI */
+  margin: 0 auto;
+  padding-top: 50px; /* Add padding between hero and grid section */
+}
+
+.blog-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 30px; /* Spacing between cards */
+}
+
+.loading-message,
+.error-message,
+.no-posts-message {
+  text-align: center;
+  font-size: 1.5em;
+  padding: 100px 0;
+  color: var(--color-page-text);
+}
+
+/* Responsive adjustments for page layout */
+@media (max-width: 1024px) {
+  .blog-hero {
+    min-height: 350px;
+  }
+  .blog-hero-title {
+    font-size: 3em;
+  }
+}
+
+@media (max-width: 768px) {
+  .sports-blog-page {
+    padding: 70px 20px;
+  }
+  .blog-hero {
+    min-height: 300px;
+    padding: 40px 0 60px; /* Adjust padding for mobile hero */
+  }
+  .blog-hero-title {
+    font-size: 2.5em;
+  }
+  .blog-hero-subtitle {
+    font-size: 1em;
+  }
+  .blog-posts-grid {
+    grid-template-columns: 1fr; /* Stack cards on very small screens */
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sports-blog-page {
+    padding: 60px 15px;
+  }
+  .blog-hero {
+    min-height: 250px;
+  }
+  .blog-hero-title {
+    font-size: 2em;
+  }
+}

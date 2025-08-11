@@ -119,6 +119,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar'; // Just in case, as some swiper modules use it
 
+import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
+import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
 function App() {
   // A very basic authentication simulation for ProtectedRoute
   const isAuthenticated = () => {
@@ -137,6 +139,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/update" element={<Profile/>} />
+          <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
+            <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
 
           {/* --- PROTECTED ROUTES --- */}
           <Route
