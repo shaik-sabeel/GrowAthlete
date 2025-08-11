@@ -32,7 +32,7 @@ const navLinks = [
   { name: 'About', path: '/about' },
   { name: 'Athletes', path: '/athletes' },
   { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
-  { name: 'Community', path: '/community' },
+  { name: 'My Profile', path: '/profile' },
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events-all' },
     { name: 'Sponsorships', path: '/sponsorships' },
