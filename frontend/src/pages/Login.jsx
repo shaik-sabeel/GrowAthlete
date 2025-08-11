@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 import "../pages_css/Login.css"; // <-- Import CSS
-
+// import backgroundImage from "../assets/images/auditorium.383Z.png";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -28,9 +28,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      {/* <img src={backgroundImage} className="background-image" alt="" /> */}
+
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Welcome Back</h2>
-
+        <hr />
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input

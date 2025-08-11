@@ -1,115 +1,147 @@
-/* Background */
+/* LoginPage.css */
+
+/* Import a clean, modern font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- Apply background to the entire page --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    /* --- THIS IS THE KEY --- */
+    background-image: url('../assets/images/auditorium.383Z.png'); /* Use the uploaded image */
+    background-size: cover;       /* Cover the entire viewport */
+    background-position: center;  /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}
+
+/* -- CONTAINER to center the form on the page -- */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4f46e5, #9333ea);
   padding: 20px;
 }
 
-/* Form Card */
+/* -- LOGIN FORM with the glass effect -- */
 .login-form {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 400px;
+  /* --- TRANSPARENT BACKGROUND --- */
+  background: none;
+  opacity: 0.9; /* Black with 50% opacity */
+  backdrop-filter: blur(10px);       /* Optional: blurs the image behind the form */
+  -webkit-backdrop-filter: blur(8px);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 420px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.4s ease-in-out;
+  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.5s ease-out;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.38);
 }
 
-/* Title */
+/* -- GRADIENT TEXT (No change needed) -- */
+.gradient-text {
+  background: linear-gradient(90deg, #8A65F5, #E940A8); /* Slightly adjusted for better visibility */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .login-form h2 {
-  text-align: center;
-  color: #4f46e5;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: rgb(44, 44, 44);
 }
 
-/* Input Groups */
+.title-underline {
+  width: 50px;
+  height: 4px;
+  margin: 0 auto 30px auto;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #A777F8, #E940A8);
+}
+
+/* -- INPUT FIELDS -- */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-label {
+.form-group label {
+  display: block;
   font-size: 0.9rem;
-  margin-bottom: 5px;
-  color: #4b5563;
+  font-weight: 600;
+  /* CHANGE: Light color for readability */
+  color: #E0E0E0;
+  margin-bottom: 8px;
 }
 
-/* Inputs */
-input {
-  padding: 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+  /* CHANGE: Styling for a dark, transparent background */
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
 }
 
-input:focus {
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-group input:focus {
   outline: none;
-  border-color: #9333ea;
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+  border-color: #A777F8;
+  box-shadow: 0 0 0 4px rgba(167, 119, 248, 0.2);
 }
 
-/* Register Link */
+/* -- SIGN UP LINK -- */
 .register-link {
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+  margin-top: 25px;
+  font-size: 0.95rem;
+  /* CHANGE: Light color for readability */
+  color: #000000;
 }
 
 .register-link a {
-  color: #4f46e5;
+  background: linear-gradient(90deg, #2900a5, #a30065);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  
 }
 
-.register-link a:hover {
-  text-decoration: underline;
-}
-
-/* Button */
+/* -- MODERN LOGIN BUTTON (No change needed) -- */
 .login-btn {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(90deg, #4f46e5, #9333ea);
+  padding: 15px;
+  background: linear-gradient(90deg, #6B46E4, #E940A8);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
   font-weight: 600;
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .login-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(107, 70, 228, 0.3);
 }
 
-/* Fade Animation */
+/* -- FADE-IN ANIMATION -- */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Mobile Friendly */
-@media (max-width: 500px) {
-  .login-form {
-    padding: 20px;
-  }
-
-  .login-form h2 {
-    font-size: 1.5rem;
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
