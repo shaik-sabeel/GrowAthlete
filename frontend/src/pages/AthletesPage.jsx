@@ -1,5 +1,7 @@
 // src/pages/AthletesPage.jsx
 import React, { useState, useEffect } from 'react';
+import api from '../utils/api';
+import Navbar from '../components/Navbar'; // Assuming you have a Navbar component
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaSearch, FaAngleDown, FaSyncAlt } from 'react-icons/fa'; // Icons for search/filters
@@ -27,6 +29,7 @@ import '../pages_css/AthletesPage.css'; // Page-specific styles for AthletesPage
 const AthletesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredAthletes, setFilteredAthletes] = useState([]); // Or integrate API call here
+  const [data, setData] = useState([]);
 
   const { ref: filterRef, inView: filterInView } = useInView({
     triggerOnce: true,
@@ -37,6 +40,21 @@ const AthletesPage = () => {
     triggerOnce: true,
     threshold: 0.1,
   });
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await api.get("/auth/all-users");
+        setData(res.data);
+      } catch (err) {
+        console.error("Error fetching profile data:", err);
+        alert("Failed to fetch athletes data", err);
+      }
+    };
+    fetchData();
+  }, []);
 
 
   useEffect(() => {
@@ -63,6 +81,7 @@ const AthletesPage = () => {
 
   return (
     <>
+    <Navbar/>
       {/* Featured Athletes Hero Section with Video */}
       <section className="ap-hero-section">
         <video className="ap-hero-video-bg" autoPlay loop muted playsInline>
@@ -129,7 +148,7 @@ const AthletesPage = () => {
           </motion.p>
         )}
 
-        {filteredAthletes.length > 0 && (
+        {/* {filteredAthletes.length > 0 && (
           <div className="ap-athlete-grid">
             {filteredAthletes.map((athlete, index) => (
               <motion.div
@@ -151,7 +170,37 @@ const AthletesPage = () => {
               </motion.div>
             ))}
           </div>
+        )} */}
+
+
+        {data.length > 0 && (
+          <div className="ap-athlete-grid">
+            {data && data.map((athlete, index) => (
+              <motion.div
+                key={athlete._id}
+                className="ap-athlete-card"
+                variants={athleteCardVariants}
+                initial="hidden"
+                animate={filterInView ? "visible" : "hidden"} // Animate when filter section is in view
+                transition={{ delay: index * 0.1, ...athleteCardVariants.visible.transition }}
+                whileHover={{ y: -5, boxShadow: '0 8px 25px rgba(0,0,0,0.1)' }}
+              >
+                <img src={athlete.profilePicture} alt={athlete.username} className="ap-athlete-image" />
+                <div className="ap-athlete-info">
+                  <h3>{athlete.username}</h3>
+                  <p>{athlete.sport}</p>
+                  <small>{athlete.bio}</small>
+                  <small>{athlete.location}</small>
+                  <small>{athlete.age}</small>
+                  <small>{athlete.achievements}</small>
+                  <Button variant="link" link={`/athletes/${athlete.id}`}>View Profile &rarr;</Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         )}
+
+
       </section>
 
 

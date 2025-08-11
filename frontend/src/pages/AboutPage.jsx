@@ -8,6 +8,7 @@ import swimming from '../assets/swimming.png';
 
 import '../pages_css/AboutPage.css'; // Correct path to the CSS file
 import Footer from '../components/Footer'; // Import the new Footer
+import Navbar from '../components/Navbar'; // Import the Navbar component
 
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { GiBullseye, GiPodium, GiTeamIdea } from 'react-icons/gi';
@@ -25,6 +26,8 @@ const AboutPage = () => {
   ];
 
   return (
+    <>
+    <Navbar/>
     <div className="about-container">
       {/* Header Navigation */}
       {/* <header className="about-header">
@@ -138,7 +141,9 @@ const AboutPage = () => {
         </div>
       </footer> */}
     </div>
+    </>
   );
+  
 };
 
 export default AboutPage;

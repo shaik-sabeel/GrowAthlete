@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  phone: Number,
+  phone: String,
+  profilePicture: String,
   role: {
     type: String,
     enum: ["athlete", "coach", "scout","sponsor", "admin"],
@@ -17,12 +18,9 @@ const userSchema = new mongoose.Schema({
   },
   sport: {
     type: String,
-    enum: ["cricket","badminton","football", "basketball", "tennis", "swimming", "athletics","hockey", "other"],
+    enum: ["cricket","badminton","football", "basketball", "tennis", "swimming","volleyball", "athletics","hockey", "other"],
   },
-  age: {
-    type: Number,
-    min: 0,
-  },
+  age: String,
   location: {
     type: String,
   },

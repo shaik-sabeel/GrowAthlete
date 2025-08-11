@@ -106,6 +106,7 @@ import Login from './pages/Login'; // Your Login Page
 import Register from './pages/Register'; // Your Register Page
 import AdminDashboard from './pages/AdminDashboard'; // Placeholder
 import UserDashboard from './pages/UserDashboard'; // Placeholder
+import Profile from './pages/Profile'; // Placeholder for user profile page
 
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
@@ -127,14 +128,15 @@ function App() {
 
   return (
     <Router>
-      <Navbar /> {/* This is your global site header */}
+      <Navbar /> This is your global site header
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/athletes" element={<AthletesPage />} />
+          {/* <Route path="/athletes" element={<AthletesPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/update" element={<Profile/>} />
 
           {/* --- PROTECTED ROUTES --- */}
           <Route
@@ -150,6 +152,15 @@ function App() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/athletes"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <AthletesPage />
               </ProtectedRoute>
             }
           />

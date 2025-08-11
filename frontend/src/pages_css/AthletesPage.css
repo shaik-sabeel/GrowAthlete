@@ -196,7 +196,7 @@
 .ap-athlete-image {
   width: 100%;
   height: 200px; /* Fixed height for consistent cards */
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

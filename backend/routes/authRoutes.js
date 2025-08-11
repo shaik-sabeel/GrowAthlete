@@ -72,9 +72,42 @@ router.post("/logout", (req, res) => {
   res.clearCookie("token").json("Logged out");
 });
 
+
+router.post("/update", verifyToken, async (req, res) => {
+  const {profilePicture, username,age,gender,location,sport,level,bio,achievements, email, phone} = req.body;
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json("User not found");
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { profilePicture,username,age,gender,location,sport,level,bio,achievements, email, phone},
+      { new: true }
+    );
+    console.log("Updated User:", updatedUser);
+    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (err) {
+    console.error("Error updating profile:", err);
+    res.status(500).json("Server error");
+  }
+});
+
 // Profile
-router.get("/profile", verifyToken, (req, res) => {
-  res.json({ user: req.user });
+router.get("/all-users", verifyToken, async (req, res) => {
+  try {
+    const users = await User.find({}, '-password'); // Exclude password field
+    console.log("Fetched Users:", users);
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json("Server error");
+  }
+});
+
+router.get("/profile", verifyToken, async(req, res) => {
+  // res.json({ user: req.user });
+  const user = await User.findById(req.user.id, '-password')
+  if (!user) return res.status(404).json("User not found");
+  res.status(200).json({ user });
 });
 
 module.exports = router;

@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
+import api from '../utils/api';
+import { useNavigate } from 'react-router-dom';
 import '../pages_css/Profile.css'; // Corrected path for your folder structure
 
 const Profile = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        fullName: '',
-        dateOfBirth: '',
+        profilePicture: '',
+        username: '',
+        age: '',
         gender: '',
         location: '',
-        primarySport: '',
-        currentLevel: 'Beginner',
+        sport: '',
+        level: 'Beginner',
         bio: '',
         achievements: '',
-        emailAddress: '',
-        phoneNumber: ''
+        email: '',
+        phone: ''
     });
 
     const handleChange = (e) => {
@@ -23,12 +27,22 @@ const Profile = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // This is where you would handle form submission,
         // for example, sending data to your backend API.
         console.log('Form data submitted:', formData);
-        alert('Profile Created! (Check console for data)');
+        // alert('Profile Created! (Check console for data)');
+        // alert(formData.username + " Profile Created Successfully!"); // Alert with username
+
+        try {
+            await api.post("/auth/update", formData);
+            alert("Profile Updated successfully!");
+            navigate(`/`);
+        } catch (err) {
+            console.error(err);
+            alert("Registration failed",err);
+        }
     };
 
     return (
@@ -41,19 +55,21 @@ const Profile = () => {
                 <div className="form-section">
                     <h2 className="section-title">Personal Information</h2>
                     <div className="form-group profile-photo-group">
-                        <div className="photo-placeholder">
-                            {/* You can add an img tag here for a default avatar */}
-                        </div>
-                        <button type="button" className="btn change-btn">Change</button>
+                        {/* <div className="photo-placeholder">
+                            
+                        </div> */}
+                        {/* <button type="button" className="btn change-btn">Change</button> */}
+                        <label htmlFor="profilePicture">Profile link</label>
+                        <input type="text" id="fullName" name="profilePicture" value={formData.profilePicture} onChange={handleChange} />
                     </div>
                     <div className="form-row">
                         <div className="form-group">
-                            <label htmlFor="fullName">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} />
+                            <label htmlFor="username">Full Name</label>
+                            <input type="text" id="fullName" name="username" value={formData.username} onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="dateOfBirth">Date of Birth</label>
-                            <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="dd-mm-yyyy" value={formData.dateOfBirth} onChange={handleChange} />
+                            <label htmlFor="dateOfBirth">Age</label>
+                            <input type="text" id="dateOfBirth" name="age" placeholder="Enter your Age" value={formData.age} onChange={handleChange} />
                         </div>
                     </div>
                     <div className="form-row">
@@ -78,22 +94,26 @@ const Profile = () => {
                     <h2 className="section-title">Athletic Information</h2>
                     <div className="form-row">
                         <div className="form-group">
-                            <label htmlFor="primarySport">Primary Sport</label>
-                            <select id="primarySport" name="primarySport" value={formData.primarySport} onChange={handleChange}>
+                            <label htmlFor="sport">Primary Sport</label>
+                            <select id="sport" name="sport" value={formData.sport} onChange={handleChange}>
                                 <option value="">Select Sport</option>
+                                <option value="cricket">Cricket</option>
+                                <option value="badminton">Badminton</option>
+                                <option value="football">Football</option>
                                 <option value="basketball">Basketball</option>
-                                <option value="soccer">Soccer</option>
+                                <option value="hockey">Hockey</option>
+                                <option value="athletics">Athletics</option>
+                                <option value="volleyball">Volleyball</option>
                                 <option value="tennis">Tennis</option>
                                 <option value="swimming">Swimming</option>
                             </select>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="currentLevel">Current Level</label>
-                            <select id="currentLevel" name="currentLevel" value={formData.currentLevel} onChange={handleChange}>
+                            <label htmlFor="level">Current Level</label>
+                            <select id="currentLevel" name="level" value={formData.level} onChange={handleChange}>
                                 <option value="Beginner">Beginner</option>
                                 <option value="Intermediate">Intermediate</option>
                                 <option value="Advanced">Advanced</option>
-                                <option value="Professional">Professional</option>
                             </select>
                         </div>
                     </div>
@@ -113,19 +133,19 @@ const Profile = () => {
                     <h2 className="section-title">Contact Information</h2>
                     <div className="form-row">
                         <div className="form-group">
-                            <label htmlFor="emailAddress">Email Address</label>
-                            <input type="email" id="emailAddress" name="emailAddress" value={formData.emailAddress} onChange={handleChange} />
+                            <label htmlFor="email">Email Address</label>
+                            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="phoneNumber">Phone Number</label>
-                            <input type="tel" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                            <label htmlFor="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} />
                         </div>
                     </div>
                 </div>
 
                 {/* Form Buttons */}
                 <div className="form-buttons">
-                    <button type="button" className="btn cancel-btn">Cancel</button>
+                    {/* <button type="button" className="btn cancel-btn">Cancel</button> */}
                     <button type="submit" className="btn create-profile-btn">Create Profile</button>
                 </div>
             </form>
