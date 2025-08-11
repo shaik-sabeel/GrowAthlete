@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 import "../pages_css/Login.css"; // <-- Import CSS
+import video from '../assets/growathlete_bg.mp4';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +29,10 @@ const Login = () => {
 
   return (
     <div className="login-container">
+        <video autoplay muted loop playsinline  id="background-video">
+    <source src={video} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Welcome Back</h2>
 
