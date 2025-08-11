@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import BlogPostCard from '../components/BlogPostCard';
 import mockBlogPosts from '../data/mockBlogPosts';
 import './SportsBlogPage.css';
-// import BlogVideoBg from '../assets/images/background.mp4'; // <--- IMPORT YOUR VIDEO
+import BlogVideoBg from '../assets/growathlete_bg.mp4'; // <--- IMPORT YOUR VIDEO
 
 const SportsBlogPage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
