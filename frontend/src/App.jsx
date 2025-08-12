@@ -97,6 +97,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar'; // Assuming this is your global header
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import Splash from "./components/Splash";
 
 // --- PAGE COMPONENTS (from src/pages/ as per your structure) ---
 import Home from './pages/Home'; // Your main homepage
@@ -141,6 +142,10 @@ function App() {
           <Route path="/update" element={<Profile/>} />
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+            
+
+<Route path="/splash" element={<Splash nextPath="/" />} />
+
 
           {/* --- PROTECTED ROUTES --- */}
           <Route

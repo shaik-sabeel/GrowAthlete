@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
-import "../pages_css/Login.css"; // <-- Import CSS
+import "../pages_css/Login.css"; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,8 +17,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/auth/login", formData);
-      navigate(`/`);
+      await api.post("/auth/login", formData);
+      // Redirect to splash page after successful login
+      navigate("/splash");
     } catch (err) {
       console.error(err);
       alert("Login failed");
@@ -30,7 +30,7 @@ const Login = () => {
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Welcome Back</h2>
-
+        <hr />
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input

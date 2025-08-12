@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
-import "../pages_css/Register.css"; // <-- Import CSS
+import "../pages_css/Register.css"; 
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +21,8 @@ const Register = () => {
     try {
       await api.post("/auth/register", formData);
       alert("Registered successfully!");
-      navigate(`/update`);
+      // Redirect to splash page after signup
+      navigate("/splash");
     } catch (err) {
       console.error(err);
       alert("Registration failed");
