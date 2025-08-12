@@ -22,7 +22,8 @@ const Register = () => {
       await api.post("/auth/register", formData);
       alert("Registered successfully!");
       // Redirect to splash page after signup
-      navigate("/splash");
+      // navigate("/splash");
+      navigate("/update");
     } catch (err) {
       console.error(err);
       alert("Registration failed");

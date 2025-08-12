@@ -38,7 +38,8 @@ const Profile = () => {
         try {
             await api.post("/auth/update", formData);
             alert("Profile Updated successfully!");
-            navigate(`/`);
+            // navigate(`/`);
+            navigate("/splash");
         } catch (err) {
             console.error(err);
             alert("Registration failed",err);
@@ -146,7 +147,7 @@ const Profile = () => {
                 {/* Form Buttons */}
                 <div className="form-buttons">
                     {/* <button type="button" className="btn cancel-btn">Cancel</button> */}
-                    <button type="submit" className="btn create-profile-btn">Create Profile</button>
+                    <button type="submit" className="btn create-profile-btn">Update Profile</button>
                 </div>
             </form>
         </div>
