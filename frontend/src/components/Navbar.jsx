@@ -110,7 +110,7 @@ const [data, setData] = useState(null);
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar w-full">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <GrowAthleteLogo />
