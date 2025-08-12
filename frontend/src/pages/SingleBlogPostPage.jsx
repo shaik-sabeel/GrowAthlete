@@ -1,8 +1,9 @@
 // src/pages/SingleBlogPostPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import mockBlogPosts from '../data/mockBlogPosts'; // Path to your mock data
-import './SingleBlogPostPage.css'; // New CSS file for the single post page
+import '../pages_css/SingleBlogPostPage.css'; // New CSS file for the single post page
 
 const SingleBlogPostPage = () => {
   const { slug } = useParams();
@@ -43,6 +44,8 @@ const SingleBlogPostPage = () => {
   if (!post) return <div className="error-message">Post data is missing.</div>; // Should ideally not happen with previous checks
 
   return (
+    <>
+      <Navbar />
     <div className="single-blog-post-page">
       <div className="post-header-image">
         <img src={post.image} alt={post.title} />
@@ -59,6 +62,7 @@ const SingleBlogPostPage = () => {
         <div className="post-body" dangerouslySetInnerHTML={{ __html: post.content }}></div>
       </div>
     </div>
+    </>
   );
 };
 

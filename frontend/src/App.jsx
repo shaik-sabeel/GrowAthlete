@@ -107,7 +107,7 @@ import Login from './pages/Login'; // Your Login Page
 import Register from './pages/Register'; // Your Register Page
 import AdminDashboard from './pages/AdminDashboard'; // Placeholder
 import UserDashboard from './pages/UserDashboard'; // Placeholder
-import Profile from './pages/Profile'; // Placeholder for user profile page
+import MyProfile from './pages/MyProfile'; // Placeholder for user profile page
 
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
@@ -119,6 +119,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar'; // Just in case, as some swiper modules use it
+import Profile from './pages/Profile';
 
 import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
@@ -148,6 +149,17 @@ function App() {
 
 
           {/* --- PROTECTED ROUTES --- */}
+
+
+        <Route
+            path="/profile"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <MyProfile />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/admin-dashboard"
             element={

@@ -1,9 +1,10 @@
 // src/pages/SportsBlogPage.jsx
 import React, { useState, useEffect } from 'react';
 import BlogPostCard from '../components/BlogPostCard';
+import Navbar from '../components/Navbar';
 import mockBlogPosts from '../data/mockBlogPosts';
-import './SportsBlogPage.css';
-// import BlogVideoBg from '../assets/images/background.mp4'; // <--- IMPORT YOUR VIDEO
+import '../pages_css/SportsBlogPage.css';
+import BlogVideoBg from '../assets/growathlete_bg.mp4'; // <--- IMPORT YOUR VIDEO
 
 const SportsBlogPage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -24,6 +25,8 @@ const SportsBlogPage = () => {
   if (blogPosts.length === 0) return <div className="no-posts-message">No blog posts found.</div>;
 
   return (
+    <>
+    <Navbar />
     <div className="sports-blog-page">
       <div className="blog-hero">
         {/* ADD VIDEO BACKGROUND HERE */}
@@ -46,6 +49,7 @@ const SportsBlogPage = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

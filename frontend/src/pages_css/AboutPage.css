@@ -123,6 +123,10 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  color: #ffffff;
+  opacity: 0.8;
+  border-bottom: 2px solid #8bb6f3;
+  padding: 1rem;
 }
 
 .hero-content p {
@@ -214,6 +218,7 @@ section h2::after {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
+  color: #fff;
 }
 
 .sport-card {
@@ -255,6 +260,7 @@ section h2::after {
   transform: translateY(20px);
   opacity: 0;
   transition: transform 0.4s, opacity 0.4s;
+  color: rgb(188, 188, 188);
 }
 
 .sport-card:hover h3 {

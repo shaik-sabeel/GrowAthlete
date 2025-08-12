@@ -116,7 +116,7 @@ section {
 ============================ */
 .hp-platform-features-section {
     /* New light gradient background with a subtle gray/blue hue */
-    background: linear-gradient(145deg, #f9fafb 0%, #f0f2f5 100%);
+    background: linear-gradient(145deg, #f8f8f8 0%, #d6d7d7 100%);
     position: relative;
     overflow: hidden; /* Contains the animated pattern */
 }
@@ -155,7 +155,7 @@ section {
 
 /* Update feature boxes with a "glassmorphism" effect to complement the new bg */
 .hp-feature-box {
-    background-color: rgba(255, 255, 255, 0.65); /* Semi-transparent white */
+    background-color: rgba(255, 255, 255, 0.16); /* Semi-transparent white */
     backdrop-filter: blur(10px); /* Frosted glass effect */
     border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 2.5rem;
