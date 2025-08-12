@@ -1,30 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- Apply background to the entire page --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    /* --- THIS IS THE KEY --- */
+    /* background-image: url('../assets/images/auditorium.383Z.png'); Use the uploaded image */
+    background-size: cover;       /* Cover the entire viewport */
+    background-position: center;  /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+}
+
 /* Background */
 .register-container {
+  background-image: url('../assets/images/login.png');
+  background-size: cover;
+  background-position: center;  /* Center the image */
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4f46e5, #9333ea);
   padding: 20px;
 }
 
 /* Form Card */
 .register-form {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 400px;
+  background: rgb(255, 255, 255);
+  opacity: 0.9; /* Black with 50% opacity */
+  backdrop-filter: blur(7px);       /* Optional: blurs the image behind the form */
+  -webkit-backdrop-filter: blur(8px);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 420px;
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.4s ease-in-out;
+  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.5s ease-out;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 /* Title */
 .register-form h2 {
-  text-align: center;
-  color: #4f46e5;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: rgb(44, 44, 44);
 }
 
 /* Input Groups */
@@ -35,19 +56,28 @@
 }
 
 label {
+  display: block;
   font-size: 0.9rem;
-  margin-bottom: 5px;
-  color: #4b5563;
+  font-weight: 600;
+  /* CHANGE: Light color for readability */
+  color: #E0E0E0;
+  margin-bottom: 8px;
 }
 
 /* Inputs & Selects */
 input,
 select {
-  padding: 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
+  width: 100%;
+  padding: 14px;
+  box-sizing: border-box;
+  /* CHANGE: Styling for a dark, transparent background */
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  border-radius: 10px;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
 }
 
 input:focus,
@@ -59,15 +89,19 @@ select:focus {
 
 /* Login Link */
 .login-link {
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+  margin-top: 25px;
+  font-size: 0.95rem;
+  /* CHANGE: Light color for readability */
+  color: #000000;
 }
 
 .login-link a {
-  color: #4f46e5;
+  background: linear-gradient(90deg, #2900a5, #a30065);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .login-link a:hover {
@@ -77,15 +111,16 @@ select:focus {
 /* Button */
 .register-btn {
   width: 100%;
-  padding: 12px;
-  background: linear-gradient(90deg, #4f46e5, #9333ea);
+  padding: 15px;
+  background: linear-gradient(90deg, #6B46E4, #E940A8);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
   font-weight: 600;
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .register-btn:hover {
