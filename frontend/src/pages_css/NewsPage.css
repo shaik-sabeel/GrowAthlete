@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- CSS Variables for Easy Theming --- */
+:root {
+  --primary-color: #6B46C1;
+  --secondary-color: #D946EF;
+  --text-color: #333;
+  --text-color-light: #555;
+  --background-color: #f8f7ff;
+  --card-background: #ffffff;
+  --border-color: #ebe5ff;
+  --shadow-color: rgba(107, 70, 193, 0.1);
+  --gradient-main: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+}
+
+.news-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* --- 1. Featured Article Section --- */
+.featured-article-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-bottom: 80px;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .featured-article-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Container for the featured image */
+.featured-image-container {
+    height: 600px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    overflow: hidden; 
+    margin-top: 50px;
+    /* Add a background color to fill the "letterbox" space gracefully */
+    background-color: #2d3748; /* A dark gray matching the image's background */
+
+    /* Center the contained image perfectly */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The featured image itself */
+.featured-image {
+    /* Set max dimensions to prevent it from growing larger than its container */
+    width: 100%;
+    height: 100%;
+    
+    /* THIS IS THE KEY CHANGE: 'contain' ensures the entire image is visible */
+    object-fit: contain; 
+}
+
+.featured-content {
+  text-align: left;
+}
+
+.featured-tag {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 20px;
+  background: var(--gradient-main);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.featured-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.featured-excerpt {
+  font-size: 1.1rem;
+  color: var(--text-color-light);
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+.read-more-button {
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 8px;
+  background: var(--gradient-main);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.read-more-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(107, 70, 193, 0.3);
+}
+
+
+/* --- 2. Category Filter Section --- */
+.category-filters {
+  text-align: center;
+  margin-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.category-button {
+  padding: 10px 20px;
+  border: 2px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-color-light);
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: var(--border-color);
+  color: var(--primary-color);
+}
+
+.category-button.active {
+  background: var(--gradient-main);
+  color: white;
+  border-color: transparent;
+}
+
+
+/* --- 3. News Grid Section --- */
+.latest-news-section {
+  text-align: center;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  text-align: left;
+}
+
+.news-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  overflow: hidden; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.5s ease forwards;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(107, 70, 193, 0.15);
+}
+
+.news-image {
+  height: 200px;
+  width: 100%;
+  /* Using 'cover' for cards usually looks best, as they are smaller */
+  object-fit: cover;
+}
+
+
+.news-content {
+  padding: 25px;
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.news-category-tag {
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.news-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: var(--text-color);
+}
+
+.news-excerpt {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color-light);
+  margin-bottom: 20px;
+  flex-grow: 1; 
+}
+
+.read-more-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  margin-top: auto;
+}
+
+.read-more-link:hover {
+  color: var(--secondary-color);
+}
+
+
+/* --- 4. Load More Button Section --- */
+.load-more-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.load-more-button {
+  padding: 12px 30px;
+  border: 2px solid var(--primary-color);
+  background-color: transparent;
+  color: var(--primary-color);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.load-more-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}

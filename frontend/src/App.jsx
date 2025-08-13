@@ -108,7 +108,7 @@ import Register from './pages/Register'; // Your Register Page
 import AdminDashboard from './pages/AdminDashboard'; // Placeholder
 import UserDashboard from './pages/UserDashboard'; // Placeholder
 import MyProfile from './pages/MyProfile'; // Placeholder for user profile page
-
+import NewsPage from './pages/NewsPage.jsx';
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
@@ -182,6 +182,15 @@ function App() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <AthletesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/sports-news"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <NewsPage />
               </ProtectedRoute>
             }
           />
