@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import { FaSearch, FaAngleDown, FaSyncAlt } from 'react-icons/fa'; // Icons for search/filters
 import { Link } from 'react-router-dom';
 import { ATHLETE_CARDS_DATA } from '../utils/constants'; // Your dummy athlete data
-import athlete from '../assets/athletes-bg.mp4';
+import athlete from '../assets/images/athletes-bg.mp4';
 import soham from '../assets/soham.jpg'; // Example athlete image, replace with actual data
 
 // Assuming you have a reusable Button component here:
