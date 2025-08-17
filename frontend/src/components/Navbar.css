@@ -10,7 +10,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* This will make the navbar span the full width */
+   /* This will make the navbar span the full width */
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   box-sizing: border-box; /* Recommended: ensures padding is included in the width */
