@@ -2,11 +2,28 @@ const mongoose = require("mongoose");
 
 // mongoose.connect(`mongodb://127.0.0.1:27017/PhotographyProject`);
 const userSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-  phone: String,
-  profilePicture: String,
+  username:{
+        type : String,
+        required : true
+    },
+     email:{
+        type : String,
+        required : true,
+        lowercase:true,
+        unique : true
+    },
+    password:{
+        type:String,
+        required: true
+    },
+  phone: {
+    type: String,
+    required: true
+  },
+  profilePicture: {
+    type: String,
+    required: true
+  },
   role: {
     type: String,
     enum: ["athlete", "coach", "scout","sponsor", "admin"],
