@@ -57,7 +57,7 @@ const AboutPage = () => {
         <div className="hero-content">
           <h1>About Us</h1>
           {/* <p>Empowering the next generation of sports talent across India.</p> */}
-          <p>GrowAthlete is a sports community and athlete discovery platform designed to help athletes of all levels showcase their talent, connect with coaches, scouts, and sponsors, and access valuable growth opportunities. Athletes can create detailed profiles with their performance stats, achievements, and media, join sports-specific communities, explore training resources, and participate in events such as tryouts and tournaments. By bridging the gap between aspiring talent and professional opportunities, GrowAthlete empowers athletes to take control of their careers and build a strong personal brand in the sports world.</p>
+          <p>GrowAthlete is a sports community and athlete discovery platform designed to help athletes of all levels showcase their talent, connect with coaches, scouts, and sponsors, and access valuable growth opportunities. Athletes can create detailed profiles with their performance stats, achievements, and media, join sports-specific communities, explore training resources, and participate in events such as tryouts and tournaments. By bridging the gap between aspiring talent and professional opportunities, GrowAthlete empowers athletes to take control of their careers and build a strong personal brand in the sports world....</p>
         </div>
       </section>
 
