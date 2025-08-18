@@ -261,7 +261,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";  // 👈 import axios
-import BgImg from "../assets/contus_bg2.jpg";
+import BgImg from "../assets/contus_bg.jpg";
 import api from "../utils/api";
 import '../pages_css/contact.css'
 import Navbar from "../components/Navbar"; 
@@ -309,7 +309,7 @@ const ContactPage = () => {
     <Navbar />
     <div
       className="min-h-screen flex items-center justify-center p-6 bg-cover bg-center"
-      // style={{ backgroundImage: `url(${BgImg})` }}
+      style={{ backgroundImage: `url(${BgImg})` }}
     >
       <div className="relative z-10 p-10 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-10 max-w-6xl w-full bg-white/5 backdrop-blur-md border border-white/20 animate-fade-in-up ">
         {/* Left Section: Fill the form */}
