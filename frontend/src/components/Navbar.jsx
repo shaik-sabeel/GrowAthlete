@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { useNavigate,Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 // --- Important: We assume you have a src/components/Button.jsx file for your <Button> component
 // If not, these won't work and you'd have to use simple <button> or <a> tags with App.css classes.
 import Button from './Button'; // Assuming src/components/Button.jsx
@@ -35,6 +36,7 @@ const navLinks = [
   { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
   { name: 'My Profile', path: '/profile' },
   { name: 'Contact Us', path: '/contact' },
+  { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events-all' },
     { name: 'Sponsorships', path: '/sponsorships' },
