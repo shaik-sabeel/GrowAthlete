@@ -28,8 +28,9 @@
 
 .navbar-logo-icon {
   height: 40px; /* Adjust as needed */
+  width: auto; /* Maintain aspect ratio */
   margin-right: 10px;
-  animation: rotateLogo 8s linear infinite; /* Example animation */
+  object-fit: contain; /* Ensure the image fits properly */
 }
 
 @keyframes rotateLogo {
