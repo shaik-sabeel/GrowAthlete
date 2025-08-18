@@ -35,8 +35,9 @@ const navLinks = [
   { name: 'Athletes', path: '/athletes' },
   { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
   { name: 'My Profile', path: '/profile' },
-  { name: 'Contact Us', path: '/contact' },
   { name: 'Sports Resume', path: '/sports-resume' },
+  { name: 'Contact Us', path: '/contact' },
+
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events-all' },
     { name: 'Sponsorships', path: '/sponsorships' },

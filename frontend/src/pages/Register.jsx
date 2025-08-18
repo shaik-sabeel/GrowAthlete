@@ -130,16 +130,16 @@ const Register = () => {
       className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 md:p-8"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <div className="flex flex-col lg:flex-row w-full  max-w-4xl bg-black bg-opacity-30 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl animate-fade-in-up" style={{opacity:"0.8"}}>
+      <div className="flex flex-col lg:flex-row w-full   max-w-4xl bg-black bg-opacity-30 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl animate-fade-in-up" style={{opacity:"0.8"}}>
         {/* Left 'Welcome!' Section - Reused for consistency */}
-        <div className="flex-1 p-8 md:p-12 text-white flex flex-col justify-center items-center lg:items-start text-center lg:text-left animate-slide-in-left">
+        <div className="flex-1 p-8 md:p-12 text-white flex flex-col justify-center items-center lg:items-start text-center lg:text-left animate-slide-in-left" >
           {/* Logo placeholder - replace with an actual SVG/image if desired */}
-          <div className="flex mb-6 text-white text-3xl font-bold">
+          {/* <div className="flex mb-6 text-white text-3xl font-bold">
             <span className="bg-white h-5 w-5 block mr-1"></span>
             <span className="bg-white h-5 w-5 block"></span>
-          </div>
+          </div> */}
 
-          <h1 className="text-5xl lg:text-6xl font-extrabold mb-4">
+          <h1 className="text-5xl lg:text-6xl font-extrabold mb-4 text-white" style={{color:"white"}}>
             Join Us! {/* Changed for signup context */}
           </h1>
           <div className="w-20 h-1 bg-white mb-6 rounded"></div>{" "}
@@ -148,16 +148,16 @@ const Register = () => {
             Create your account and start your fitness journey with us today!
           </p>
           <Link
-            to="/learn-more" // Adjust this path as needed
-            className="px-8 py-3 rounded-full text-white font-semibold bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-md"
+            to="/login" // Adjust this path as needed
+            className="px-8 py-3 rounded-full text-white font-semibold bg-red-600 hover:bg-red-700 transition-colors duration-200 shadow-md" style={{color:"white"}}
           >
-            Explore Benefits
+            Have an account? Login
           </Link>
         </div>
 
         {/* Right 'Create your Account' Form Section */}
-        <div className="flex-1 p-8 md:p-12 bg-black bg-opacity-20 flex flex-col justify-center items-center rounded-xl lg:rounded-l-none animate-slide-in-right">
-          <h2 className="text-4xl lg:text-5xl font-semibold mb-8 text-white text-center">
+        <div className="flex-1 p-8 md:p-12 bg-black bg-opacity-50 flex flex-col justify-center items-center rounded-xl lg:rounded-l-none animate-slide-in-right">
+          <h2 className="text-4xl lg:text-5xl font-semibold mb-8 text-white text-center" style={{color:"white"}}>
             Create Account
           </h2>
 
@@ -176,7 +176,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Your full name"
                 required
-                className="w-full p-4 rounded-md bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
+                className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
               />
             </div>
 
@@ -194,7 +194,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Your email"
                 required
-                className="w-full p-4 rounded-md bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
+                className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
               />
             </div>
 
@@ -212,7 +212,7 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Create a password"
                 required
-                className="w-full p-4 rounded-md bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
+                className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
               />
             </div>
 
@@ -227,7 +227,7 @@ const Register = () => {
                 id="role"
                 name="role"
                 onChange={handleChange}
-                className="w-full p-4 rounded-md bg-white/5 border border-white/20 text-white focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200 appearance-none bg-no-repeat bg-right-center pr-10" // added appearance-none and pr for custom arrow
+                className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200 appearance-none bg-no-repeat bg-right-center pr-10" // added appearance-none and pr for custom arrow
                 style={{
                   backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3e%3cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3e%3c/path%3e%3c/svg%3e")`,
                   backgroundSize: '1.25rem', // Match common tailwind sizes for spacing
@@ -262,7 +262,7 @@ const Register = () => {
             </a>
           </div>
 
-          <p className="text-center text-white/70 text-sm mt-8">
+          {/* <p className="text-center text-white/70 text-sm mt-8">
             Already have an account?{" "}
             <Link
               to="/login"
@@ -270,7 +270,7 @@ const Register = () => {
             >
               Login
             </Link>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
