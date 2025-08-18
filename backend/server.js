@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
+const contactRoutes = require("./routes/contactRoute");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 require("./db");
 
 app.use("/api/auth", authRoutes);
+app.use("/api/contact",contactRoutes );
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

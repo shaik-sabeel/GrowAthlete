@@ -144,7 +144,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/update" element={<Profile/>} />
-          <Route path="/contact" element={<ContactPage />} />
+          {/* <Route path="/contact" element={<ContactPage />} /> */}
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
             
@@ -164,14 +164,14 @@ function App() {
             }
           />
 
-          <Route
+          {/* <Route
             path="/admin-dashboard"
             element={
               <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route
             path="/athlete/dashboard"
             element={
@@ -195,6 +195,15 @@ function App() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <NewsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <ContactPage />
               </ProtectedRoute>
             }
           />
