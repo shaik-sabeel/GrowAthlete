@@ -161,7 +161,8 @@ const [data, setData] = useState(null);
             ))}
             <div className="navbar-auth mobile-only">
                 {/* Use the common Button component with specific variant */}
-                <Button variant="header-signin" link="/login">Sign In</Button>
+                {/* <Button variant="header-signin" link="/login">Sign In</Button> */}
+                {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
             </div>
           </motion.div>
         )}

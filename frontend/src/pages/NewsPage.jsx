@@ -5,6 +5,7 @@ import AI_News from '../assets/images/AI_News.png';
 import Doc from '../assets/images/Doc.png';
 import Brands from '../assets/images/Brands.png';
 import FC from '../assets/images/FC.png';
+import Navbar from '../components/Navbar';
 
 
 // --- Mock Data: In a real app, you would fetch this from an API ---
@@ -49,6 +50,8 @@ const NewsPage = () => {
   const hasMoreArticles = activeCategory === 'All' && next < regularArticles.length;
 
   return (
+    <>
+    <Navbar />
     <div className="news-page-container">
       
       {/* --- 1. Featured Article Section --- */}
@@ -105,6 +108,7 @@ const NewsPage = () => {
 
       </main>
     </div>
+    </>
   );
 };
 

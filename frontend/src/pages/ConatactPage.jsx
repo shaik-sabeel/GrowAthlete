@@ -2,9 +2,12 @@
 import React from "react";
 import BgImg from "../assets/contus_bg.jpg";
 import '../pages_css/contact.css'
+import Navbar from "../components/Navbar"; // Assuming you have a Navbar component
 
 const ContactPage = () => {
   return (
+    <>
+    <Navbar />
     <div
       className="min-h-screen flex items-center justify-center p-6 bg-cover bg-center"
       style={{
@@ -152,6 +155,7 @@ const ContactPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

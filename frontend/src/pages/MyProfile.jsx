@@ -3,6 +3,7 @@
 import React,{useState,useEffect} from 'react';
 import api from '../utils/api'; // Adjust the import path as necessary
 import '../pages_css/MyProfile.css'; // Importing the updated styles
+import Navbar from '../components/Navbar';
 
 // Sample user data remains the same
 const sampleUser = {
@@ -43,6 +44,8 @@ const MyProfile = () => {
 //   const user = sampleUser;
 
   return (
+    <>
+    <Navbar />
     <div className="profile-page-container">
       {/* The header is now separate from the main card */}
       <header className="profile-header">
@@ -113,6 +116,7 @@ const MyProfile = () => {
         </section>
       </div>
     </div>
+    </>
   );
 };
 

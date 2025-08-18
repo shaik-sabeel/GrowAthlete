@@ -1,8 +1,11 @@
 import React from "react";
 import "../pages_css/SportsResume.css";
+import Navbar from "../components/Navbar"; // Assuming you have a Navbar component
 
 const SportsResume = () => {
   return (
+    <>
+    <Navbar />
     <div className="max-w-5xl mx-auto p-10 bg-black-50 min-h-screen">
       <h1 className="py-10 text-3xl font-bold text-center text-indigo-600 mb-8" style={{color:"white"}}>
         Sports Resume
@@ -129,6 +132,7 @@ const SportsResume = () => {
         </button>
       </div>
     </div>
+    </>
   );
 }
 
