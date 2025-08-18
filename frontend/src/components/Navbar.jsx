@@ -14,19 +14,8 @@ import './Navbar.css'; // Global CSS for the Navbar, as per your structure
 // import ThemeChange from './ThemeChange';
 
 
-// Re-using GrowAthleteLogo definition. This should ideally be a separate reusable SVG component in `src/assets/icons/`
-const GrowAthleteLogo = () => (
-  <svg className="navbar-logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <defs>
-      <linearGradient id="navLogoGradient" x1="0%" y1="0%" x2="100%" y2="0%"> {/* Changed ID to prevent conflict */}
-        <stop offset="0%" stopColor="#6c5ce7" />
-        <stop offset="100%" stopColor="#ff6b81" />
-      </linearGradient>
-    </defs>
-    <circle cx="50" cy="50" r="40" fill="url(#navLogoGradient)" />
-    <path d="M 30 50 L 45 65 L 70 35" stroke="white" strokeWidth="8" fill="none" strokeLinecap="round" />
-  </svg>
-);
+// Import the logo image
+import gaLogo from '../assets/galogo.png';
 
 
 const navLinks = [
@@ -117,7 +106,7 @@ const [data, setData] = useState(null);
     <nav className="navbar">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
-          <GrowAthleteLogo />
+          <img src={gaLogo} alt="GrowAthlete Logo" className="navbar-logo-icon" />
           GrowAthlete India
         </Link>
       </div>
