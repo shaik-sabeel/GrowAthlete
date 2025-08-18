@@ -309,7 +309,7 @@ const ContactPage = () => {
     <Navbar />
     <div
       className="min-h-screen flex items-center justify-center p-6 bg-cover bg-center"
-      style={{ backgroundImage: `url(${BgImg})` }}
+      // style={{ backgroundImage: `url(${BgImg})` }}
     >
       <div className="relative z-10 p-10 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-10 max-w-6xl w-full bg-white/5 backdrop-blur-md border border-white/20 animate-fade-in-up ">
         {/* Left Section: Fill the form */}
@@ -405,7 +405,54 @@ const ContactPage = () => {
             </button>
           </form>
         </div>
+         {/* Right Section: Get in Touch */}
+        <div className="flex-1 p-6 text-white flex flex-col justify-center animate-slide-in-right">
+          <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-yellow-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            Get in Touch.
+          </h2>
+          <p className="text-purple-300 text-lg mb-8">
+            Whether you have questions about our services, need support, or want to share your feedback, our dedicated
+            team is here to assist you every step of the way.
+          </p>
 
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <span className="text-purple-400 text-3xl">✉</span>
+              <div>
+                <p className="font-semibold text-lg text-purple-200">Email</p>
+                <a href="mailto:hello@reallygreatsite.com" className="text-purple-300 hover:text-purple-100 transition-colors">
+                  hello@reallygreatsite.com
+                </a>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="text-purple-400 text-3xl">🌐</span>
+              <div>
+                <p className="font-semibold text-lg text-purple-200">Website</p>
+                <a href="http://reallygreatsite.com" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-purple-100 transition-colors">
+                  reallygreatsite.com
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <span className="text-purple-400 text-3xl">📞</span>
+              <div>
+                <p className="font-semibold text-lg text-purple-200">Phone</p>
+                <p className="text-purple-300">+123-456-7890</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <span className="text-purple-400 text-3xl">📍</span>
+              <div>
+                <p className="font-semibold text-lg text-purple-200">Location</p>
+                <p className="text-purple-300">123 Anywhere St., Any City</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         {/* Right Section... (unchanged) */}
       </div>
     </div>
