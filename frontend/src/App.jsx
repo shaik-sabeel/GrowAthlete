@@ -136,7 +136,7 @@ function App() {
     // <Router>
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
-      <Navbar /> This is your global site header
+      <Navbar /> 
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

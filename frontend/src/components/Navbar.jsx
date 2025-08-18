@@ -114,7 +114,7 @@ const [data, setData] = useState(null);
   };
 
   return (
-    <nav className="navbar w-full">
+    <nav className="navbar">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <GrowAthleteLogo />

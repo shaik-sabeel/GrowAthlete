@@ -1,9 +1,10 @@
 import React from "react";
+import "../pages_css/SportsResume.css";
 
 const SportsResume = () => {
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-gray-50 min-h-screen">
-      <h1 className="py-10 text-3xl font-bold text-center text-indigo-600 mb-8">
+    <div className="max-w-5xl mx-auto p-10 bg-black-50 min-h-screen">
+      <h1 className="py-10 text-3xl font-bold text-center text-indigo-600 mb-8" style={{color:"white"}}>
         Sports Resume
       </h1>
 

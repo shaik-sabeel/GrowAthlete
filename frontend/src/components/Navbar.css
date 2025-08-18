@@ -5,11 +5,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: var(--background-dark); /* Dark background from variables.css */
+  background-color: transparent; /* Dark background from variables.css */
   color: rgb(171, 170, 170); /* Light text from variables.css */
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
    /* This will make the navbar span the full width */
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
