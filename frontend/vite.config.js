@@ -5,10 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
  theme: {
     extend: {
-      backgroundImage: {
-        'gradient-primary-button': 'linear-gradient(90deg, #ff8a00, #e23b6b)', // Orange to Red for buttons
-        'gradient-blue-purple': 'linear-gradient(90deg, #6B46E4, #E940A8)', // For previous design's buttons, if needed elsewhere
-      },
+      // backgroundImage: {
+      //   'gradient-primary-button': 'linear-gradient(90deg, #ff8a00, #e23b6b)', // Orange to Red for buttons
+      //   'gradient-blue-purple': 'linear-gradient(90deg, #6B46E4, #E940A8)', // For previous design's buttons, if needed elsewhere
+      // },
       keyframes: {
         'fade-in': {
           '0%': { opacity: '0' },

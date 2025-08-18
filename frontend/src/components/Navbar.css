@@ -5,7 +5,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: transparent; /* Dark background from variables.css */
+  background-color: var(--background-dark); /* Dark background from variables.css */
   color: rgb(171, 170, 170); /* Light text from variables.css */
   position: fixed;
   top: 0;
