@@ -132,7 +132,8 @@
 
 // // src/ContactPage.jsx
 import React from "react";
-import BgImg from "../assets/contus_bg2.jpg";
+import BgImg from "../assets/contus_bg.jpg";
+import '../pages_css/contact.css'
 
 const ContactPage = () => {
   return (
@@ -149,7 +150,7 @@ const ContactPage = () => {
             Fill the form
           </h2> */}
 
-          <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left ">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left style" style={{color:"white"}}>
   Fill the form
 </h2>
 
@@ -230,7 +231,7 @@ const ContactPage = () => {
 
         {/* Right Section: Get in Touch */}
         <div className="flex-1 p-6 text-white flex flex-col justify-center animate-slide-in-right">
-          <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-purple-200">
+          <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-purple-200" style={{color:"white"}}>
             Get in Touch.
           </h2>
           <p className="text-purple-300 text-lg mb-8">
@@ -254,7 +255,7 @@ const ContactPage = () => {
                   {item.icon}
                 </span>
                 <div>
-                  <p className="font-semibold text-lg text-black">
+                  <p className="font-semibold text-lg text-white">
                     {item.title}
                   </p>
                   {item.title === "Email" ? (
@@ -274,7 +275,7 @@ const ContactPage = () => {
                       {item.value}
                     </a>
                   ) : (
-                    <p className="text-purple-300">{item.value}</p>
+                    <p className="text-black px-6">{item.value}</p>
                   )}
                 </div>
               </div>
