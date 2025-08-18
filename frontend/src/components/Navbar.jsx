@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { useNavigate,Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 // --- Important: We assume you have a src/components/Button.jsx file for your <Button> component
 // If not, these won't work and you'd have to use simple <button> or <a> tags with App.css classes.
 import Button from './Button'; // Assuming src/components/Button.jsx
@@ -34,7 +35,9 @@ const navLinks = [
   { name: 'Athletes', path: '/athletes' },
   { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
   { name: 'My Profile', path: '/profile' },
+  { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'Contact Us', path: '/contact' },
+
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events-all' },
     { name: 'Sponsorships', path: '/sponsorships' },
@@ -111,7 +114,7 @@ const [data, setData] = useState(null);
   };
 
   return (
-    <nav className="navbar w-full">
+    <nav className="navbar">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <GrowAthleteLogo />
@@ -158,7 +161,8 @@ const [data, setData] = useState(null);
             ))}
             <div className="navbar-auth mobile-only">
                 {/* Use the common Button component with specific variant */}
-                <Button variant="header-signin" link="/login">Sign In</Button>
+                {/* <Button variant="header-signin" link="/login">Sign In</Button> */}
+                {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
             </div>
           </motion.div>
         )}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import '../pages_css/Profile.css'; // Corrected path for your folder structure
+import Navbar from '../components/Navbar'; // Assuming you have a Navbar component
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -47,6 +48,8 @@ const Profile = () => {
     };
 
     return (
+        <>
+        
         <div className="profile-form-container">
             <section className="profile-header">
                 UPDATE YOUR PROFILE
@@ -151,6 +154,7 @@ const Profile = () => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 

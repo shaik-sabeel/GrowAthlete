@@ -110,6 +110,7 @@ import UserDashboard from './pages/UserDashboard'; // Placeholder
 import MyProfile from './pages/MyProfile'; // Placeholder for user profile page
 import NewsPage from './pages/NewsPage.jsx';
 import ContactPage from './pages/ConatactPage.jsx';
+import SportsResume from './pages/SportsResume.jsx';
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
@@ -135,7 +136,7 @@ function App() {
     // <Router>
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
-      <Navbar /> This is your global site header
+      {/* <Navbar />  */}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -145,6 +146,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/update" element={<Profile/>} />
           {/* <Route path="/contact" element={<ContactPage />} /> */}
+          <Route path="/sports-resume" element={<SportsResume />} />
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
             
