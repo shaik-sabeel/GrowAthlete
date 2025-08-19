@@ -7,10 +7,10 @@ const SportsResume = () => {
     <>
     <Navbar />
     <div className="max-w-5xl mx-auto p-10 bg-black-50 min-h-screen">
-      <h1 className="py-10 text-3xl font-bold text-center text-indigo-600 mb-8" style={{color:"white"}}>
+      <h1 className="py-10 text-3xl font-bold text-center text-indigo-600 mb-8" style={{color:"black"}}>
         Sports Resume
       </h1>
-
+      
       {/* Personal Info */}
       <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 border-b pb-2 text-gray-700">
