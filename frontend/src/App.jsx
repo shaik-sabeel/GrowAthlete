@@ -116,6 +116,7 @@ import ResumeTemplate from './pages/ResumeTemplate.jsx'; // Import your Resume T
 import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
 import './pages_css/variables.css'; // Global CSS variables
+import CommunityPage from './pages/CommunityPage';
 
 // Swiper styles (global for carousels)
 import 'swiper/css';
@@ -146,6 +147,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/update" element={<Profile/>} />
+          <Route path="/community" element={<CommunityPage />} />
           {/* <Route path="/contact" element={<ContactPage />} /> */}
           <Route path="/sports-resume" element={<SportsResume />} />
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
