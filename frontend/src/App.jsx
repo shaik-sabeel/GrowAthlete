@@ -111,6 +111,7 @@ import MyProfile from './pages/MyProfile'; // Placeholder for user profile page
 import NewsPage from './pages/NewsPage.jsx';
 import ContactPage from './pages/ConatactPage.jsx';
 import SportsResume from './pages/SportsResume.jsx';
+import ResumeTemplate from './pages/ResumeTemplate.jsx'; // Import your Resume Template page
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
@@ -152,6 +153,7 @@ function App() {
             
 
 <Route path="/splash" element={<Splash nextPath="/" />} />
+<Route path="/resume-template" element={<ResumeTemplate />} />   
 
 
           {/* --- PROTECTED ROUTES --- */}

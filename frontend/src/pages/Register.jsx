@@ -97,6 +97,7 @@ import React, { useState } from "react";
 import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
 import bg from '../assets/Login_bg.jpg'
+import Navbar from "../components/Navbar";
 // import "../pages_css/Register.css"; // REMOVE THIS LINE
 
 const Register = () => {
@@ -126,6 +127,8 @@ const Register = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 md:p-8"
       style={{ backgroundImage: `url(${bg})` }}
@@ -274,6 +277,7 @@ const Register = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

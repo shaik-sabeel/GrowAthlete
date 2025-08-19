@@ -75,6 +75,7 @@ import React, { useState } from "react";
 import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 import bg from "../assets/Login_bg.jpg"
+import Navbar from "../components/Navbar"; // Import Navbar component
 // import "../pages_css/Login.css"; // REMOVE THIS LINE
 
 const Login = () => {
@@ -101,6 +102,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 md:p-8"
       style={{ backgroundImage: `url(${bg})` }}
@@ -213,6 +216,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
