@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar'; // Importing the global Navbar component
+// import Navbar from '../components/Navbar'; // Removed: Navbar is rendered globally in App.jsx
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import gsap from 'gsap'; // Assuming GSAP is installed: npm install gsap
@@ -185,7 +185,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
 
   return (
     <>
-      <Navbar/>
+      {/* Navbar removed here; rendered globally in App.jsx */}
       {/* 1. Hero Section (Home Page) */}
       <section className="hp-hero-section">
         <video className="hp-hero-video-bg" autoPlay loop muted playsInline>
