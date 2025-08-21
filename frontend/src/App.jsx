@@ -169,6 +169,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/athletes/:id"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <MyProfile />
+               </ProtectedRoute>
+            }
+          />
 
           {/* <Route
             path="/admin-dashboard"
