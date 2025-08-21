@@ -118,6 +118,7 @@ import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
 import './pages_css/variables.css'; // Global CSS variables
 import CommunityPage from './pages/CommunityPage';
+import CreateBlogPost from './pages/CreateBlogPost.jsx'
 
 // Swiper styles (global for carousels)
 import 'swiper/css';
@@ -147,12 +148,13 @@ function App() {
           {/* <Route path="/athletes" element={<AthletesPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/update" element={<Profile/>} />
+          <Route path="/update" element={<Profile />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
-          <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
-            <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+          <Route path="/blog/create" element={<CreateBlogPost />} /> 
+     <Route path="/blog" element={<SportsBlogPage />} />
+        <Route path="/blog/:id" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
           <Route path="/membership" element={<MembershipPage />} />
 
 <Route path="/splash" element={<Splash nextPath="/" />} />
