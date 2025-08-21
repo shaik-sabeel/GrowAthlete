@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { ATHLETE_CARDS_DATA } from '../utils/constants'; // Your dummy athlete data
 import athlete from '../assets/images/athletes-bg.mp4';
 import soham from '../assets/soham.jpg'; // Example athlete image, replace with actual data
+import { useNavigate } from 'react-router-dom';
+
 
 // Assuming you have a reusable Button component here:
 import Button from '../components/Button'; // Assuming src/components/Button.jsx
@@ -78,6 +80,13 @@ const AthletesPage = () => {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
+
+  const navigate = useNavigate();
+
+const handleViewProfile = (id) => {
+  navigate(`/athletes/${id}`);
+};
+
 
   return (
     <>
@@ -193,7 +202,10 @@ const AthletesPage = () => {
                   <small>{athlete.location}</small>
                   <small>{athlete.age}</small>
                   <small>{athlete.achievements}</small>
-                  <Button variant="link" link={`/athletes/${athlete.id}`}>View Profile &rarr;</Button>
+                  <Link to={`/athletes/${athlete._id}`} className="btn btn-primary">
+  View Profile
+</Link>
+
                 </div>
               </motion.div>
             ))}

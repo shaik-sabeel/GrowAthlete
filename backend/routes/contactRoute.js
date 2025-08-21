@@ -4,14 +4,16 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const { verifyToken } = require("../middlewares/authMiddleware");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const router = express.Router();
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "ikramuk812@gmail.com",     // your email (sender)
-    pass: "nrsp rpvx bdqa aqwx",        // your app password from Google
+    user: "ikramuk812@gmail.com",     
+    pass: process.env.EMAIL_PASS,        
   },
 });
 
@@ -27,8 +29,8 @@ router.post("/", async (req, res) => {
 
   try {
     const mailOptions = {
-      from: "ikramuk812@gmail.com",        // always from your email
-      to: "ikramuk812@gmail.com",          // where you want to receive
+      from: "ikramuk812@gmail.com",       
+      to: "ikramuk812@gmail.com",          
       subject: `New Contact Form Message from ${name}`,
       text: `
         You received a new message from your website GrowAthlete:
@@ -37,7 +39,7 @@ router.post("/", async (req, res) => {
         Email: ${email}
         Message: ${message}
       `,
-      replyTo: email,  // so you can hit "reply" to answer the user
+      replyTo: email,  
     };
 
     await transporter.sendMail(mailOptions);
