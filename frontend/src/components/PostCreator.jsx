@@ -13,22 +13,22 @@ const PostCreator = () => {
         <input
           type="text"
           placeholder="Share something with the community..."
-          className="flex-grow ml-4 p-2 pl-6 border border-gray-300 rounded-full outline-none focus:border-blue-500 transition duration-150 ease-in-out"
+          className="flex-grow ml-4 p-2 pl-6 border border-gray-300 rounded-full outline-none transition duration-150 ease-in-out post-creator-input"
         />
 
         {/* Post button */}
-        <button className="ml-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition duration-150 ease-in-out flex-shrink-0">
+        <button className="ml-4 btn-post transition duration-150 ease-in-out flex-shrink-0">
           Post
         </button>
       </div>
 
       <div className="flex items-center space-x-6 text-gray-600 ml-16 mb-4">
         {/* Action links/icons */}
-        <a href="#" className="flex items-center space-x-1 hover:text-blue-500 transition duration-150 ease-in-out">
+        <a href="#" className="flex items-center space-x-1 post-creator-link transition duration-150 ease-in-out">
           <span className="text-lg">🖼️</span>
           <span>Image</span>
         </a>
-        <a href="#" className="flex items-center space-x-1 hover:text-blue-500 transition duration-150 ease-in-out">
+        <a href="#" className="flex items-center space-x-1 post-creator-link transition duration-150 ease-in-out">
           <span className="text-lg">😊</span>
           <span>Feeling</span>
         </a>

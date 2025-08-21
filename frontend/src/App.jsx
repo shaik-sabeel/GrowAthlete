@@ -98,6 +98,7 @@ import Navbar from './components/Navbar'; // Assuming this is your global header
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 // --- PAGE COMPONENTS (from src/pages/ as per your structure) ---
 import Home from './pages/Home'; // Your main homepage
@@ -128,6 +129,8 @@ import Profile from './pages/Profile';
 
 import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
+import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';  // <--- NEWS PAGE (full, original dummy data)
+import LiveScoresPage from './pages/LiveScoresPage.jsx';              // <--- LIVE SCORES PAGE (full, original dummy data)
 function App() {
   // A very basic authentication simulation for ProtectedRoute
   const isAuthenticated = () => {
@@ -139,10 +142,10 @@ function App() {
     // <Router>
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 
-      {/* <Navbar />  */}
+      <Navbar />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
           <Route path="/about" element={<AboutPage />} />
           {/* <Route path="/athletes" element={<AthletesPage />} /> */}
           <Route path="/login" element={<Login />} />
@@ -153,7 +156,13 @@ function App() {
           <Route path="/sports-resume" element={<SportsResume />} />
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+community-page
+          <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
+          <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
+            
+
           <Route path="/membership" element={<MembershipPage />} />
+ main
 
 <Route path="/splash" element={<Splash nextPath="/" />} />
 <Route path="/resume-template" element={<ResumeTemplate />} />   
