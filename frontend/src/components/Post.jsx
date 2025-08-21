@@ -42,11 +42,11 @@ const Post = () => {
 
       {/* Like and Comment Buttons */}
       <div className="flex items-center space-x-6 text-gray-600 border-b border-gray-200 pb-3 mb-4 pl-12">
-        <button className="flex items-center space-x-1 hover:text-blue-500 transition duration-150 ease-in-out">
+        <button className="flex items-center space-x-1 action-btn-like transition duration-150 ease-in-out">
           <span className="text-xl">👍</span> {/* Like icon */}
           <span>Like ({samplePost.likes})</span>
         </button>
-        <button className="flex items-center space-x-1 hover:text-blue-500 transition duration-150 ease-in-out">
+        <button className="flex items-center space-x-1 action-btn-comment transition duration-150 ease-in-out">
           <span className="text-xl">💬</span> {/* Comment icon */}
           <span>Comment</span>
         </button>
