@@ -5,10 +5,11 @@ import React from 'react';
 import PostCreator from '../components/PostCreator';
 import Post from '../components/Post'
 import ImageCarousel from '../components/ImageCarousel';
-
+import Navbar from '../components/Navbar';
 const CommunityPage = () => {
   return (
-    // Adjusting padding and background for the overall page as needed
+    <>
+      <Navbar />
     <div className="flex h-screen bg-gray-100 p-8 font-sans justify-center items-start"> {/* Align items to start of flex container */}
       {/* No Left Sidebar anymore */}
 
@@ -28,6 +29,7 @@ const CommunityPage = () => {
         <ImageCarousel />
       </div>
     </div>
+    </>
   );
 };
 
