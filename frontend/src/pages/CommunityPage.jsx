@@ -41,7 +41,7 @@ const CommunityPage = () => {
         </div>
       </section>
 
-      <aside className="community__sidebar">
+      <aside className="community__sidebar py-14">
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Highlights</h3>
           <div className="community__stats">
