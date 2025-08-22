@@ -239,8 +239,8 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
               {feature.title === 'Sports Blog' && <Button variant="link" link="/sports-blog">View Blog &rarr;</Button>}
-              {feature.title === 'Sports Resume' && <Button variant="link" link="/create-resume">Create Resume &rarr;</Button>}
-              {feature.title === 'Athletes Directory' && <Button variant="link" link="/browse-athletes">Browse Athletes &rarr;</Button>}
+              {feature.title === 'Sports Resume' && <Button variant="link" link="/sports-resume">Create Resume &rarr;</Button>}
+              {feature.title === 'Athletes Directory' && <Button variant="link" link="/athletes">Browse Athletes &rarr;</Button>}
             </motion.div>
           ))}
         </div>
@@ -448,8 +448,8 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
                         <li><FaQuoteLeft/> Get discovered by talent scouts <br/><small>Increase your visibility to professional teams and organizations</small></li>
                       </ul>
                       <div className="hp-cta-buttons">
-                          <Button link="/get-started">Get started &rarr;</Button>
-                          <Button variant="solid-light" link="/learn-more">Learn more</Button>
+                          <Button link="/register">Get started &rarr;</Button>
+                          {/* <Button variant="solid-light" link="/learn-more">Learn more</Button> */}
                       </div>
                   </div>
                   <div className="hp-cta-stats-box">

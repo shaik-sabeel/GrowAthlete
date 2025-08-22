@@ -1,7 +1,14 @@
+ feature/admin-page
 @import './variables.css';
 
 /* src/pages_css/CommunityPage.css */
 
+
+/* src/pages_css/CommunityPage.css */
+
+@import './variables.css';
+
+ main
 .community {
   /* Scoped palette for Community page */
   --ga-navy: #13293D;     /* Headings, links, primary CTA, icons */
@@ -99,7 +106,12 @@
 .contrib .name { font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px; }
 .badge { padding: 4px 8px; border-radius: 999px; border: 1px solid var(--ga-soft); background: var(--ga-soft); color: var(--ga-charcoal); font-size: 12px; }
 .badge--verified { font-size: 11px; color: var(--ga-orange); }
+ feature/admin-page
 .contrib .role { font-size: 12px; color: var(--ga-charcoal); }
+
+.contrib .role { font-size: 12px; color: var(--text-light); }
+.contrib .role { color: var(--ga-charcoal); }
+ main
 .contrib__stats { display: flex; gap: 6px; flex-wrap: wrap; }
 .community .btn-follow { display: inline-flex; align-items: center; justify-content: center; min-width: unset; padding: 5px 12px; font-size: 0.9rem; line-height: 1; border-radius: 999px; background: var(--ga-orange); color: var(--ga-beige); border: 1px solid var(--ga-orange); }
 .btn-follow--corner { position: absolute; right: 14px; bottom: 12px; }
