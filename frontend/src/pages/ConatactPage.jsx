@@ -314,7 +314,7 @@ const ContactPage = () => {
       <div className="relative z-10 p-10 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-10 max-w-6xl w-full bg-white/5 backdrop-blur-md border border-white/20 animate-fade-in-up ">
         {/* Left Section: Fill the form */}
         <div className="flex-1 p-6 text-gray-200">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left ">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left "style={{color: 'white'}}>
             Fill the form
           </h2>
 
@@ -407,7 +407,7 @@ const ContactPage = () => {
         </div>
          {/* Right Section: Get in Touch */}
         <div className="flex-1 p-6 text-white flex flex-col justify-center animate-slide-in-right">
-          <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-yellow-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+          <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-yellow-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"style={{color: 'white'}}>
             Get in Touch.
           </h2>
           <p className="text-purple-300 text-lg mb-8">
