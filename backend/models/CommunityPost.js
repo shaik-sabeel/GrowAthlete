@@ -127,3 +127,4 @@ communityPostSchema.pre('save', function(next) {
 });
 
 module.exports = mongoose.model("CommunityPost", communityPostSchema);
+//just checking if this works
