@@ -29,6 +29,20 @@ const userSchema = new mongoose.Schema({
     enum: ["athlete", "coach", "scout","sponsor", "admin"],
     default: "athlete",
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  isSuspended: {
+    type: Boolean,
+    default: false,
+  },
+  suspendedReason: {
+    type: String,
+  },
+  suspendedUntil: {
+    type: Date,
+  },
   gender: {
     type: String,
     enum: ["male","female","other"],

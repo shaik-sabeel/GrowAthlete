@@ -91,7 +91,7 @@
 
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // ADDED Link here
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'; // ADDED Link here
 
 // --- GLOBAL COMPONENTS (from src/components/ as per your structure) ---
 import Navbar from './components/Navbar'; // Assuming this is your global header
@@ -130,18 +130,33 @@ import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
 import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';  // <--- NEWS PAGE (full, original dummy data)
 import LiveScoresPage from './pages/LiveScoresPage.jsx';              // <--- LIVE SCORES PAGE (full, original dummy data)
-function App() {
-  // A very basic authentication simulation for ProtectedRoute
+// Wrapper component to handle conditional navbar rendering
+function AppContent() {
+  const location = useLocation();
+  
+  // Check authentication and user role
   const isAuthenticated = () => {
-    // In a real app, this would check JWT, user context, etc.
     return localStorage.getItem('token') !== null;
   };
 
-  return (
-    // <Router>
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+  const getUserRole = () => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        return JSON.parse(user).role;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  };
 
-      <Navbar />
+  // Don't show navbar on admin dashboard
+  const showNavbar = !location.pathname.includes('/admin-dashboard');
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
@@ -175,14 +190,14 @@ function App() {
             }
           />
 
-          {/* <Route
+          <Route
             path="/admin-dashboard"
             element={
-              <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
+              <ProtectedRoute role="admin" isAllowed={isAuthenticated() && getUserRole() === 'admin'}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route
             path="/athlete/dashboard"
             element={
@@ -231,6 +246,14 @@ function App() {
         </Routes>
       </main>
       <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <AppContent />
     </Router>
   );
 }

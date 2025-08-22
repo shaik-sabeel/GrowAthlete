@@ -1,13 +1,18 @@
 // src/components/Post.jsx
 
-import React from 'react';
+import React, { useState } from 'react';
+import { FaFlag, FaEllipsisH } from 'react-icons/fa';
+import ContentFlagModal from './ContentFlagModal';
 
 // You might have actual user profile pictures in your assets
 // For now, let's use a generic placeholder or keep it simple.
 import userPlaceholder from '../assets/soham.jpg'; // Assuming 'soham.jpg' is a user profile pic
 
 const Post = () => {
+  const [showFlagModal, setShowFlagModal] = useState(false);
+  
   const samplePost = {
+    id: 'post-1',
     user: {
       name: 'User A. Sporty',
       profilePic: userPlaceholder, // Use your actual user profile image path
@@ -24,17 +29,30 @@ const Post = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-4"> {/* Added mt-4 for spacing from PostCreator */}
       {/* User Info Section */}
-      <div className="flex items-center mb-4">
-        {/* User Picture */}
-        <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
-          <img
-            src={samplePost.user.profilePic}
-            alt={samplePost.user.name}
-            className="w-full h-full object-cover"
-          />
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center">
+          {/* User Picture */}
+          <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
+            <img
+              src={samplePost.user.profilePic}
+              alt={samplePost.user.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {/* User Name */}
+          <p className="font-semibold text-gray-800 ml-3">{samplePost.user.name}</p>
         </div>
-        {/* User Name */}
-        <p className="font-semibold text-gray-800 ml-3">{samplePost.user.name}</p>
+        
+        {/* Post Actions Menu */}
+        <div className="relative">
+          <button
+            onClick={() => setShowFlagModal(true)}
+            className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
+            title="Flag post"
+          >
+            <FaFlag />
+          </button>
+        </div>
       </div>
 
       {/* Post Content */}
@@ -67,6 +85,15 @@ const Post = () => {
           className="mt-3 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:border-blue-500"
         /> */}
       </div>
+      
+      {/* Content Flag Modal */}
+      <ContentFlagModal
+        isOpen={showFlagModal}
+        onClose={() => setShowFlagModal(false)}
+        contentType="community"
+        contentId={samplePost.id}
+        contentPreview={samplePost.content}
+      />
     </div>
   );
 };

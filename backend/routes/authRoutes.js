@@ -30,9 +30,11 @@ router.post("/register", async (req, res) => {
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .json({ message: "Login successful",user: { id: newUser._id, username: newUser.username, role: newUser.role } });
-
-    res.status(201).json("User registered successfully");
+      .json({ 
+        message: "User registered successfully",
+        user: { id: newUser._id, username: newUser.username, role: newUser.role },
+        token: token
+      });
   } catch (err) {
     res.status(500).json("Server error");
     console.error("Error registering user:", err);
@@ -62,7 +64,11 @@ router.post("/login", async (req, res) => {
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .json({ message: "Login successful",user: { id: user._id, username: user.username, role: user.role } });
+      .json({ 
+        message: "Login successful",
+        user: { id: user._id, username: user.username, role: user.role },
+        token: token
+      });
   } catch (err) {
     res.status(500).json("Server error");
   }

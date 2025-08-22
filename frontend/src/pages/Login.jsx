@@ -92,9 +92,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/auth/login", formData);
-      // Redirect to splash page after successful login
+      const response = await api.post("/auth/login", formData);
+      const { user, token } = response.data;
+      
+      // Store user data and JWT token in localStorage
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
+      
+      // Redirect based on user role
+      if (user.role === 'admin') {
+        navigate("/admin-dashboard");
+      } else {
       navigate("/splash");
+      }
     } catch (err) {
       console.error(err);
       alert("Login failed");
