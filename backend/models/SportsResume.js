@@ -21,6 +21,21 @@ const sportsResumeSchema = new mongoose.Schema({
 
   photo: { type: String }, // store uploaded image filename/path
 
+  // Moderation fields
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected', 'flagged'],
+    default: 'pending'
+  },
+  moderationNotes: String,
+  moderatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  moderatedAt: Date,
+  rejectionReason: String,
+  approvalDate: Date,
+
   createdAt: { type: Date, default: Date.now }
 });
 
