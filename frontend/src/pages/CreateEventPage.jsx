@@ -1,6 +1,8 @@
+// frontend/src/pages/CreateEventPage.jsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../utils/api';
+import api from '../utils/api'; // Assuming your API utility is correctly set up
 import Navbar from '../components/Navbar';
 
 const CreateEventPage = () => {
