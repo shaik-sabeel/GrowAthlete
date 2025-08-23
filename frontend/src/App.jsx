@@ -119,7 +119,9 @@ import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
 import './pages_css/variables.css'; // Global CSS variables
 import CommunityPage from './pages/CommunityPage';
-
+import BlogsPage from './pages/BlogsPage.jsx';
+import CreateBlog from './pages/CreateBlogPage.jsx';
+import BlogDetails from './pages/BlogDetails.jsx';
 // Swiper styles (global for carousels)
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -169,8 +171,12 @@ function AppContent() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
-          <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
-            <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+          <Route path="/blog:id" element={<BlogDetails />} />          {/* <--- NEW ROUTE */}
+          <Route path="/create-blog" element={<CreateBlog />} />          {/* <--- NEW ROUTE */}
+
+
+          <Route path="/blogs" element={<BlogsPage />} />          {/* <--- NEW ROUTE */}
+            {/* <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> <--- NEW ROUTE */}
 community-page
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
