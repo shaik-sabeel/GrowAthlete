@@ -201,7 +201,7 @@ community-page
            <Route
             path="/event/create"
             element={
-              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+              <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
                 <CreateEventPage />
               </ProtectedRoute>
             }
