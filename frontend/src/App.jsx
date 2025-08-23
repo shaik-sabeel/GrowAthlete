@@ -126,6 +126,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar'; // Just in case, as some swiper modules use it
 import Profile from './pages/Profile';
+import BlogsPage from "./pages/BlogsPage";
+import CreateBlogPage from "./pages/CreateBlogPage";
+import BlogDetails from "./pages/BlogDetails";
 
 import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
@@ -169,12 +172,17 @@ function AppContent() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
-          <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
-            <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+          <Route path="/create-blog" element={<CreateBlogPage />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
+
+
+          {/* <Route path="/sports-blog" element={<SportsBlogPage />} />          <--- NEW ROUTE */}
+            {/* <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> <--- NEW ROUTE */}
 community-page
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
-            
+          <Route path="/blogs" element={<BlogsPage />} />
+  
 
           <Route path="/membership" element={<MembershipPage />} />
  main

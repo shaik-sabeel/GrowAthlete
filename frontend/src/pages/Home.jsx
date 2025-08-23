@@ -238,7 +238,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
               <div className="hp-feature-box-icon">{feature.icon}</div>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
-              {feature.title === 'Sports Blog' && <Button variant="link" link="/sports-blog">View Blog &rarr;</Button>}
+              {feature.title === 'Sports Blog' && <Button variant="link" link="/blogs">View Blog &rarr;</Button>}
               {feature.title === 'Sports Resume' && <Button variant="link" link="/sports-resume">Create Resume &rarr;</Button>}
               {feature.title === 'Athletes Directory' && <Button variant="link" link="/athletes">Browse Athletes &rarr;</Button>}
             </motion.div>
