@@ -7,7 +7,7 @@ import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 const EventCard = ({ event }) => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
         <img 
-            src={event.image} 
+            src={`http://localhost:5000${event.image}`} 
             alt={event.title}
             className="w-full h-56 object-cover" 
         />
