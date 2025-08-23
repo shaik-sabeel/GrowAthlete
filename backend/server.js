@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoute");
 const path = require("path");
 const sportsResumeRoutes = require("./routes/sportsResume");
+const eventRoutes = require("./routes/eventRoutes");
 
 const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
@@ -24,6 +25,7 @@ require("./db");
 app.use("/api/auth", authRoutes);
 app.use("/api/contact",contactRoutes );
 app.use("/api/sports-resume", sportsResumeRoutes);
+app.use("/api/events", eventRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");
