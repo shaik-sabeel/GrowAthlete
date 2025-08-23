@@ -114,6 +114,8 @@ import ContactPage from './pages/ConatactPage.jsx';
 import SportsResume from './pages/SportsResume.jsx';
 import ResumeTemplate from './pages/ResumeTemplate.jsx'; // Import your Resume Template page
 import MembershipPage from './pages/MembershipPage';
+import EventsPage from './pages/EventsPage'; // Import the new Events page
+import CreateEventPage from './pages/CreateEventPage'; // Import the Admin Create Event page
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
@@ -169,6 +171,7 @@ function AppContent() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
+            <Route path="/events" element={<EventsPage />} /> {/* Route for viewing events */}
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
 community-page
@@ -191,6 +194,15 @@ community-page
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <MyProfile />
+              </ProtectedRoute>
+            }
+          />
+
+           <Route
+            path="/event/create"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <CreateEventPage />
               </ProtectedRoute>
             }
           />

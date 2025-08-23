@@ -29,7 +29,7 @@ const navLinks = [
   { name: 'Contact Us', path: '/contact' },
 
   { name: 'More', subLinks: [
-    { name: 'Events', path: '/events-all' },
+    { name: 'Events', path: '/events' },
     { name: 'Sponsorships', path: '/sponsorships' },
     { name: 'Resources', path: '/resources' },
     { name: 'Membership', path: '/membership' },
