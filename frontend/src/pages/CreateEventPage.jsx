@@ -40,7 +40,9 @@ const CreateEventPage = () => {
         }
 
         try {
-            await api.post('/events', eventData, {
+            // !!! THIS IS THE FIXED LINE !!!
+            // Changed from '/events' to '/events/create' to match your backend route
+            await api.post('/event/create', eventData, { 
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -49,7 +51,8 @@ const CreateEventPage = () => {
             setTimeout(() => navigate('/events'), 2000); // Redirect after 2 seconds
         } catch (err) {
             console.error('Error creating event:', err);
-            setError(err.response?.data?.message || 'Failed to create event.');
+            // Assuming backend sends a 'message' field in error response
+            setError(err.response?.data?.message || 'Failed to create event. Please check all fields and ensure the server is running.');
         }
     };
 

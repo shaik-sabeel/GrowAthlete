@@ -175,7 +175,7 @@ function App() {
           />
 
            <Route
-            path="/admin/create-event"
+            path="/event/create"
             element={
               <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
                 <CreateEventPage />
