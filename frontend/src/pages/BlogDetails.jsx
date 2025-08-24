@@ -28,19 +28,20 @@ const BlogDetails = () => {
 
   return (
     <div className="blog-details-container">
-      <h1>{blog.title}</h1>
-      <p className="blog-author">By {blog.author}</p>
-      <p className="blog-content">{blog.content}</p>
-
+      <h1>Title: {blog.title}</h1><hr /><br />
+      <p className="blog-author">By {blog.author}</p><hr /><br />
+      <p className="blog-content"> <b>Content: </b> <br />{blog.content}</p><br />
+<button className="back-btn" onClick={() => navigate("/blogs")}>
+        ← Back to Blogs
+      </button>
       {blog.author === "Athlete" && (
-        <button className="delete-btn" onClick={handleDelete}>
+        
+        <button className="delete-details-btn" onClick={handleDelete}>
           Delete
         </button>
       )}
 
-      <button className="back-btn" onClick={() => navigate("/blogs")}>
-        ← Back to Blogs
-      </button>
+      
     </div>
   );
 };

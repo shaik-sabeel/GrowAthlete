@@ -115,7 +115,7 @@
 }
 
 /* Blog Details Page */
-.blog-details {
+.blog-details-container {
   max-width: 75%;           /* keep same width as blogs */
   margin: 40px auto;
   padding: 25px;
@@ -123,6 +123,7 @@
   border-radius: 8px;
   border: 1px solid #ddd;
   text-align: left;
+  margin-top: 100px;
 }
 
 .blog-details h2 {
@@ -137,6 +138,12 @@
   color: #777;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.delete-details-btn {
+  background-color: #dc3545;
+  color: white;
+  margin-left: 75%;
 }
 
 .blog-details p {
@@ -159,6 +166,7 @@
   background: #fff;
   border-radius: 8px;
   border: 1px solid #ddd;
+  padding-top: 100px;
 }
 
 .blog-form-container h1 {
