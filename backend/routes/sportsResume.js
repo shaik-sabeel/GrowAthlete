@@ -18,43 +18,77 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST route: create a new sports resume
-router.post("/", upload.single("photo"), async (req, res) => {
+router.post("/", upload.single("profileImage"), async (req, res) => {
   try {
     const {
       fullName,
-      dob,
-      gender,
-      nationality,
-      email,
-      phone,
-      sport,
-      position,
-      height,
-      weight,
-      dominantSide,
-      currentTeam,
-      careerStats,
-      skills,
-      achievements,
+    dateOfBirth, // Renamed from dob for clarity consistent with V2
+    gender,
+    nationality,
+    email,
+    phone,
+    address, // Added from V2
+    
+    // Athletic Details
+    primarySport, // Renamed from sport for clarity consistent with V2
+    position,
+    height,
+    weight,
+    dominantHand, // Renamed from dominantSide for clarity consistent with V2
+    currentTeam,
+    
+    // Education (Added from V2)
+    education,
+    
+    // Career Stats
+    careerStats,
+    
+    // Achievements
+    achievements,
+    
+    // Tournament History (Added from V2)
+    tournaments,
+    
+    // Skills and Attributes
+    skills,
+    
+    // Certifications (Added from V2)
+    certifications,
+    
+    // Professional References (Added from V2)
+    references,
+    
+    // Video Links (Added from V2)
+    videoLinks,
+    
+    // Social Media Profiles (Added from V2)
+    socialMedia,
     } = req.body;
 
     const newResume = new SportsResume({
       fullName,
-      dob,
+      dateOfBirth,
       gender,
       nationality,
       email,
       phone,
-      sport,
+      address,
+      primarySport,
       position,
       height,
       weight,
-      dominantSide,
+      dominantHand,
       currentTeam,
+      education,
       careerStats,
+      tournaments: tournaments ? tournaments.split(",").map((t) => t.trim()) : [],
+      certifications: certifications ? certifications.split(",").map((c) => c.trim()) : [],
+      references: references ? references.split(",").map((s) => s.trim()) : [],
+      videoLinks: videoLinks ? videoLinks.split(",").map((v) => v.trim()) : [],
       skills: skills ? skills.split(",").map((s) => s.trim()) : [],
+      socialMedia: socialMedia ? socialMedia.split(",").map((s) => s.trim()) : [],
       achievements: achievements ? achievements.split(",").map((a) => a.trim()) : [],
-      photo: req.file ? req.file.filename : null,
+      profileImage: req.file ? req.file.filename : null,
     });
 
     await newResume.save();

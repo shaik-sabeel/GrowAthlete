@@ -2,24 +2,28 @@
 const mongoose = require("mongoose");
 const sportsResumeSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
-  dob: { type: Date },
+  dateOfBirth: { type: Date },
   gender: { type: String },
   nationality: { type: String },
   email: { type: String, required: true },
   phone: { type: String },
-
-  sport: { type: String },
+  address: { type: String },
+  primarySport: { type: String },
   position: { type: String },
   height: { type: Number },
   weight: { type: Number },
-  dominantSide: { type: String },
+  dominantHand: { type: String },
   currentTeam: { type: String },
-
+  education: { type: String },
   careerStats: { type: String },
   skills: [{ type: String }],       // stored as array
   achievements: [{ type: String }], // stored as array
-
-  photo: { type: String }, // store uploaded image filename/path
+  tournaments: [{ type: String }], // stored as array
+  references: [{ type: String }], // array of objects
+  certifications: [{ type: String }], // stored as array
+  videoLinks: [{ type: String }], // stored as array
+  profileImage: { type: String }, // store uploaded image filename/path
+  socialMedia: [{ type: String }], 
 
   // Moderation fields
   status: {
