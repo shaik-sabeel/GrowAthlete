@@ -9,6 +9,7 @@ const sportsResumeRoutes = require("./routes/sportsResume");
 const adminRoutes = require("./routes/adminRoutes");
 const contentModerationRoutes = require("./routes/contentModeration");
 const eventRoutes = require("./routes/eventRoutes");
+const membershipRoutes = require("./routes/membershipRoutes"); 
 
 const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
@@ -30,6 +31,7 @@ app.use("/api/sports-resume", sportsResumeRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/moderation", contentModerationRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/memberships", membershipRoutes)
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

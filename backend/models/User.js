@@ -51,6 +51,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["cricket","badminton","football", "basketball", "tennis", "swimming","volleyball", "athletics","hockey", "other"],
   },
+   membershipLevel: {
+    type: String,
+    enum: ["Free", "Standard", "Premium"],
+    default: "Free",
+  },
   age: String,
   location: {
     type: String,
