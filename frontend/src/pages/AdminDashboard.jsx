@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import '../pages_css/AdminDashboard.css';
 import ContentModeration from '../components/ContentModeration';
+import SystemAdministration from '../components/SystemAdministration';
+import SportsEventsManagement from '../components/SportsEventsManagement';
 import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaBell, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const AdminDashboard = () => {
@@ -586,6 +588,24 @@ const AdminDashboard = () => {
             </li>
             <li>
               <button 
+                className={`nav-item ${activeSection === 'sports-events' ? 'active' : ''}`}
+                onClick={() => setActiveSection('sports-events')}
+              >
+                <FaTrophy />
+                {!sidebarCollapsed && <span>Sports & Events</span>}
+              </button>
+            </li>
+            <li>
+              <button 
+                className={`nav-item ${activeSection === 'system-admin' ? 'active' : ''}`}
+                onClick={() => setActiveSection('system-admin')}
+              >
+                <FaCog />
+                {!sidebarCollapsed && <span>System Administration</span>}
+              </button>
+            </li>
+            <li>
+              <button 
                 className={`nav-item ${activeSection === 'settings' ? 'active' : ''}`}
                 onClick={() => setActiveSection('settings')}
               >
@@ -805,6 +825,8 @@ const AdminDashboard = () => {
           </div>
         )}
         {activeSection === 'moderation' && <ContentModeration />}
+        {activeSection === 'sports-events' && <SportsEventsManagement />}
+        {activeSection === 'system-admin' && <SystemAdministration />}
         {activeSection === 'settings' && (
           <div className="admin-section">
             <h2>Platform Settings</h2>

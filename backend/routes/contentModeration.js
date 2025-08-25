@@ -3,7 +3,6 @@ const router = express.Router();
 const { verifyToken, isAdmin } = require("../middlewares/authMiddleware");
 const CommunityPost = require("../models/CommunityPost");
 const BlogPost = require("../models/BlogPost");
-const SportsResume = require("../models/SportsResume");
 const ContentModeration = require("../models/ContentModeration");
 const User = require("../models/User");
 
@@ -221,89 +220,7 @@ router.patch("/blog-posts/:id/moderate", verifyToken, isAdmin, async (req, res) 
   }
 });
 
-// ===== SPORTS RESUME MODERATION =====
 
-// Get all sports resumes for moderation
-router.get("/sports-resumes", verifyToken, isAdmin, async (req, res) => {
-  try {
-    const {
-      page = 1,
-      limit = 20,
-      status = "all",
-      sortBy = "createdAt",
-      sortOrder = "desc"
-    } = req.query;
-
-    const query = {};
-    if (status !== "all") {
-      query.status = status;
-    }
-
-    const sort = {};
-    sort[sortBy] = sortOrder === "desc" ? -1 : 1;
-
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-    const total = await SportsResume.countDocuments(query);
-
-    const resumes = await SportsResume.find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(parseInt(limit))
-      .lean();
-
-    res.json({
-      resumes,
-      total,
-      page: parseInt(page),
-      limit: parseInt(limit),
-      totalPages: Math.ceil(total / parseInt(limit))
-    });
-  } catch (error) {
-    console.error("Error fetching sports resumes:", error);
-    res.status(500).json({ message: "Failed to fetch sports resumes" });
-  }
-});
-
-// Moderate a sports resume
-router.patch("/sports-resumes/:id/moderate", verifyToken, isAdmin, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { action, reason, notes } = req.body;
-
-    const resume = await SportsResume.findById(id);
-    if (!resume) {
-      return res.status(404).json({ message: "Sports resume not found" });
-    }
-
-    let updateData = {
-      status: action,
-      moderationNotes: notes,
-      moderatedBy: req.user.id,
-      moderatedAt: new Date()
-    };
-
-    if (action === "rejected") {
-      updateData.rejectionReason = reason;
-    }
-
-    const updatedResume = await SportsResume.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
-
-    // Log moderation action
-    await logModerationAction(req.user.id, action, "resume", id, reason, notes);
-
-    res.json({
-      message: `Sports resume ${action} successfully`,
-      resume: updatedResume
-    });
-  } catch (error) {
-    console.error("Error moderating sports resume:", error);
-    res.status(500).json({ message: "Failed to moderate sports resume" });
-  }
-});
 
 // ===== CONTENT FILTERING =====
 

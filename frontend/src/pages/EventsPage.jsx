@@ -97,29 +97,53 @@ import Navbar from '../components/Navbar';
 import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom'; // 👈 Import Link to use for the button
 
-const EventCard = ({ event }) => (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
-        <img 
-            src={`http://localhost:5000${event.image}`} 
-            alt={event.title}
-            className="w-full h-56 object-cover" 
-        />
-        <div className="p-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">{event.title}</h3>
-            <div className="flex items-center text-gray-600 mb-4 space-x-4">
-                <p className="flex items-center text-sm sm:text-base">
-                    <FaCalendarAlt className="mr-2 text-blue-500" /> 
-                    {new Date(event.date).toLocaleDateString()}
-                </p>
-                <p className="flex items-center text-sm sm:text-base">
-                    <FaMapMarkerAlt className="mr-2 text-blue-500" /> 
-                    {event.location}
-                </p>
+const EventCard = ({ event }) => {
+    const eventDate = new Date(event.date);
+    const now = new Date();
+    const timeDiff = eventDate.getTime() - now.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    
+    const getTimeStatus = () => {
+        if (daysDiff < 0) return null; // Past event (shouldn't happen with our filter)
+        if (daysDiff === 0) return { text: "Today!", color: "text-red-600 bg-red-100" };
+        if (daysDiff === 1) return { text: "Tomorrow", color: "text-orange-600 bg-orange-100" };
+        if (daysDiff <= 7) return { text: `In ${daysDiff} days`, color: "text-yellow-600 bg-yellow-100" };
+        return { text: `${daysDiff} days away`, color: "text-blue-600 bg-blue-100" };
+    };
+    
+    const timeStatus = getTimeStatus();
+    
+    return (
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
+            <img 
+                src={`http://localhost:5000${event.image}`} 
+                alt={event.title}
+                className="w-full h-56 object-cover" 
+            />
+            <div className="p-6">
+                <div className="flex items-start justify-between mb-2">
+                    <h3 className="text-2xl font-bold text-gray-800">{event.title}</h3>
+                    {timeStatus && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${timeStatus.color}`}>
+                            {timeStatus.text}
+                        </span>
+                    )}
+                </div>
+                <div className="flex items-center text-gray-600 mb-4 space-x-4">
+                    <p className="flex items-center text-sm sm:text-base">
+                        <FaCalendarAlt className="mr-2 text-blue-500" /> 
+                        {eventDate.toLocaleDateString()}
+                    </p>
+                    <p className="flex items-center text-sm sm:text-base">
+                        <FaMapMarkerAlt className="mr-2 text-blue-500" /> 
+                        {event.location}
+                    </p>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-base">{event.description}</p>
             </div>
-            <p className="text-gray-700 leading-relaxed text-base">{event.description}</p>
         </div>
-    </div>
-);
+    );
+};
 
 const EventsPage = () => {
     const [events, setEvents] = useState([]);

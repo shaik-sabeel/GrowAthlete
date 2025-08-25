@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const Event = require("../models/Event");
+const AdBanner = require("../models/AdBanner");
 
 const router = express.Router();
 
@@ -37,10 +38,17 @@ router.post("/create", upload.single("image"), async (req, res) => {
   }
 });
 
-// Get All Events
+// Get All Events (only upcoming and ongoing events)
 router.get("/", async (req, res) => {
   try {
-    const events = await Event.find().sort({ date: 1 });
+    const currentDate = new Date();
+    
+    // Find events that are published and haven't ended yet
+    const events = await Event.find({
+      status: { $in: ["published", "approved"] },
+      date: { $gte: currentDate } // Only show events with dates >= current date/time
+    }).sort({ date: 1 });
+    
     res.status(200).json(events);
   } catch (error) {
     res.status(500).json({ error: "Server error" });
@@ -59,4 +67,15 @@ router.get("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+// Public: Active ads for community page
+router.get("/public/ads", async (req, res) => {
+  try {
+    const ads = await AdBanner.find({ active: true }).sort({ sortOrder: 1, createdAt: -1 }).lean();
+    res.json(ads);
+  } catch (error) {
+    console.error("Error fetching ads:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 

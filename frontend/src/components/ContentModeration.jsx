@@ -20,7 +20,7 @@ import {
   FaHistory,
   FaChartBar,
   FaUsers,
-  FaFileAlt,
+
   FaRedo
 } from 'react-icons/fa';
 
@@ -28,7 +28,7 @@ const ContentModeration = () => {
   const [activeTab, setActiveTab] = useState('community');
   const [posts, setPosts] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
-  const [resumes, setResumes] = useState([]);
+
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -71,9 +71,7 @@ const ContentModeration = () => {
         case 'blog':
           endpoint = '/moderation/blog-posts';
           break;
-        case 'resumes':
-          endpoint = '/moderation/sports-resumes';
-          break;
+
         default:
           break;
       }
@@ -89,9 +87,7 @@ const ContentModeration = () => {
           case 'blog':
             setBlogPosts(data.posts || []);
             break;
-          case 'resumes':
-            setResumes(data.resumes || []);
-            break;
+
           default:
             break;
         }
@@ -115,9 +111,7 @@ const ContentModeration = () => {
         case 'blog':
           endpoint = `/moderation/blog-posts/${contentId}/moderate`;
           break;
-        case 'resumes':
-          endpoint = `/moderation/sports-resumes/${contentId}/moderate`;
-          break;
+
         default:
           break;
       }
@@ -190,7 +184,7 @@ const ContentModeration = () => {
   };
 
   const renderContentTable = () => {
-    const content = activeTab === 'community' ? posts : activeTab === 'blog' ? blogPosts : resumes;
+    const content = activeTab === 'community' ? posts : blogPosts;
     
     if (content.length === 0) {
       return (
@@ -496,7 +490,7 @@ const ContentModeration = () => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Content Moderation</h2>
             <p className="mt-1 text-sm text-gray-500">
-              Manage and moderate community posts, blog posts, and sports resumes
+              Manage and moderate community posts and blog posts
             </p>
           </div>
           <div className="flex space-x-3">
@@ -524,8 +518,7 @@ const ContentModeration = () => {
           <nav className="-mb-px flex space-x-8 px-6">
             {[
               { id: 'community', label: 'Community Posts', icon: <FaUsers /> },
-              { id: 'blog', label: 'Blog Posts', icon: <FaEdit /> },
-              { id: 'resumes', label: 'Sports Resumes', icon: <FaFileAlt /> }
+              { id: 'blog', label: 'Blog Posts', icon: <FaEdit /> }
             ].map((tab) => (
               <button
                 key={tab.id}

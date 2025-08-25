@@ -61,36 +61,7 @@ const CommunityPage = () => {
         </div>
 
         <div className="community__card community__section">
-          <h3 style={{ marginTop: 0 }}>Top Contributors</h3>
-          <div className="contrib-carousel">
-            <div className="contrib-track" style={{ transform: `translateX(-${contribIndex * 100}%)` }}>
-              {topContributors.map((c) => (
-                <div key={c.name} className="contrib-slide">
-                  <div className="contrib contrib--card">
-                    <img className="contrib__avatar-lg" src={c.avatar} alt={c.name} />
-                    <div className="contrib__header">
-                      <div className="name">
-                        {c.name}
-                        {c.verified && <span className="badge badge--verified" aria-label="verified">✔</span>}
-                      </div>
-                      <div className="role">{c.sport}</div>
-                    </div>
-                    <div className="contrib__stats-row">
-                      <div className="stat-pair"><span className="stat-label">posts:</span><span className="stat-value">{c.posts}</span></div>
-                      <div className="stat-pair"><span className="stat-label">kudos:</span><span className="stat-value">{c.kudos}</span></div>
-                      <div className="stat-pair"><span className="stat-label">streak:</span><span className="stat-value">{c.streak}d</span></div>
-                    </div>
-                    <button className="btn-follow btn-follow--corner">Follow</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="contrib-dots">
-              {topContributors.map((_, i) => (
-                <span key={i} onClick={() => setContribIndex(i)} className={`dot ${contribIndex === i ? 'active' : ''}`} />
-              ))}
-            </div>
-          </div>
+          <ImageCarousel />
         </div>
 
         <div className="community__card community__section">
@@ -122,7 +93,36 @@ const CommunityPage = () => {
         </div>
 
         <div className="community__card community__section">
-          <ImageCarousel />
+          <h3 style={{ marginTop: 0 }}>Top Contributors</h3>
+          <div className="contrib-carousel">
+            <div className="contrib-track" style={{ transform: `translateX(-${contribIndex * 100}%)` }}>
+              {topContributors.map((c) => (
+                <div key={c.name} className="contrib-slide">
+                  <div className="contrib contrib--card">
+                    <img className="contrib__avatar-lg" src={c.avatar} alt={c.name} />
+                    <div className="contrib__header">
+                      <div className="name">
+                        {c.name}
+                        {c.verified && <span className="badge badge--verified" aria-label="verified">✔</span>}
+                      </div>
+                      <div className="role">{c.sport}</div>
+                    </div>
+                    <div className="contrib__stats-row">
+                      <div className="stat-pair"><span className="stat-label">posts:</span><span className="stat-value">{c.posts}</span></div>
+                      <div className="stat-pair"><span className="stat-label">kudos:</span><span className="stat-value">{c.kudos}</span></div>
+                      <div className="stat-pair"><span className="stat-label">streak:</span><span className="stat-value">{c.streak}d</span></div>
+                    </div>
+                    <button className="btn-follow btn-follow--corner">Follow</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="contrib-dots">
+              {topContributors.map((_, i) => (
+                <span key={i} onClick={() => setContribIndex(i)} className={`dot ${contribIndex === i ? 'active' : ''}`} />
+              ))}
+            </div>
+          </div>
         </div>
       </aside>
     </div>

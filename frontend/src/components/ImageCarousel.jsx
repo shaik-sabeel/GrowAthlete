@@ -1,23 +1,36 @@
 // src/components/ImageCarousel.jsx
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import img1 from '../assets/shoes-1.jpeg';
-import img2 from '../assets/shoes-2.jpeg';
-import img3 from '../assets/shoes-3.jpeg';
-import img4 from '../assets/shoes-4.jpg';
-import img5 from '../assets/shoes-5.jpeg';
+import api from '../utils/api';
 
 const AUTOPLAY_MS = 3500;
 
 const ImageCarousel = () => {
-  const images = useMemo(() => [img1, img2, img3, img4, img5], []);
+  const [images, setImages] = useState([]);
   const [index, setIndex] = useState(0);
   const timerRef = useRef(null);
 
   const goPrev = () => setIndex((i) => (i - 1 + images.length) % images.length);
   const goNext = () => setIndex((i) => (i + 1) % images.length);
 
+  const [items, setItems] = useState([]);
+
   useEffect(() => {
+    (async () => {
+      try {
+        const res = await api.get('/events/public/ads');
+        const list = res.data || [];
+        setItems(list);
+        setImages(list.map(a => `http://localhost:5000${a.image}`));
+      } catch (e) {
+        setItems([]);
+        setImages([]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!images.length) return;
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setIndex((i) => (i + 1) % images.length);
@@ -27,11 +40,27 @@ const ImageCarousel = () => {
 
   return (
     <div className="relative w-full h-full rounded-lg overflow-hidden flex items-center justify-center shadow-md" style={{ background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(6px)' }}>
-      <img
-        src={images[index]}
-        alt={`Slide ${index + 1}`}
-        className="w-full h-full object-cover transition-opacity duration-500"
-      />
+      {images.length > 0 ? (
+        items[index]?.linkUrl ? (
+          <a href={items[index].linkUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full">
+            <img
+              src={images[index]}
+              alt={items[index]?.title || `Slide ${index + 1}`}
+              className="w-full h-full object-cover transition-opacity duration-500"
+            />
+          </a>
+        ) : (
+          <img
+            src={images[index]}
+            alt={items[index]?.title || `Slide ${index + 1}`}
+            className="w-full h-full object-cover transition-opacity duration-500"
+          />
+        )
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-white/80">
+          No ads yet
+        </div>
+      )}
 
       <button onClick={goPrev} aria-label="Previous" className="absolute left-4 top-1/2 -translate-y-1/2 bg-gray-800 bg-opacity-75 text-white p-3 rounded-full cursor-pointer hover:bg-opacity-100 transition duration-150 ease-in-out">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
