@@ -62,13 +62,19 @@ const AdminDashboard = () => {
     };
   }, [searchTerm]);
 
-  // Admin entry intro animation (only when forced by URL)
+  // Admin entry intro animation (once per session)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const forceIntro = params.get('showIntro') === '1';
-    if (forceIntro) {
+    const hasShown = sessionStorage.getItem('adminIntroShown');
+    if (forceIntro || !hasShown) {
       setShowIntro(true);
-      const t = setTimeout(() => setShowIntro(false), 1200);
+      const t = setTimeout(() => {
+        setShowIntro(false);
+        if (!forceIntro) {
+          sessionStorage.setItem('adminIntroShown', '1');
+        }
+      }, 4000);
       return () => clearTimeout(t);
     }
   }, []);
@@ -601,33 +607,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
-      {isBusy && (
-        <div className="admin-busy-overlay" aria-live="polite" aria-busy="true">
-          <div className="admin-busy-content">
-            <div className="loader">
-              <span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-              <div className="base">
-                <span></span>
-                <div className="face"></div>
-              </div>
-            </div>
-            <div className="admin-loading-text">
-              Loading<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
-            </div>
-          </div>
-          <div className="longfazers">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      )}
       {showIntro && (
         <div className="admin-intro-overlay">
           <div className="admin-intro-badge">
