@@ -15,7 +15,7 @@ const BlogPostCard = ({ post }) => {
         <h3 className="blog-card-title">{post.title}</h3>
         <p className="blog-card-excerpt">{post.excerpt}</p>
         <div className="blog-card-meta">
-          <span>{post.author}</span>
+          <span>{post._id}</span>
           <span>&bull;</span>
           <span>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
         </div>

@@ -55,7 +55,8 @@ export default function CreateBlogPost() {
       content: formData.content,
       summary: formData.summary,
       category: formData.category,
-      author: "64f0e7c8b0a1f2a3b4c5d6e7" // replace with real logged-in user _id
+    //   author: "64f0e7c8b0a1f2a3b4c5d6e7"
+
     }),
   })
     .then((res) => res.json())

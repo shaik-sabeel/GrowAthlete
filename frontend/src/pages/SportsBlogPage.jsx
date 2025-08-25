@@ -49,8 +49,9 @@ const SportsBlogPage = () => {
       <section className="blog-posts-grid-section">
         <div className="blog-posts-grid">
           {blogPosts.map((post) => (
-            <BlogPostCard key={post.id} post={post} />
-          ))}
+  <BlogPostCard key={post._id} post={post} />
+))}
+
         </div>
       </section>
     </div>

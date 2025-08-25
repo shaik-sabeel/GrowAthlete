@@ -43,10 +43,11 @@ const SingleBlogPostPage = () => {
         <span className="post-category">{post.category}</span>
         <h1 className="post-title">{post.title}</h1>
         <div className="post-meta">
-          <span>By {post.author}</span>
-          <span>&bull;</span>
-          <span>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-        </div>
+  <span>By {post.author?.name || "Unknown"}</span>
+  <span>&bull;</span>
+  <span>{new Date(post.createdAt).toLocaleDateString()}</span>
+</div>
+
         <div className="post-body" dangerouslySetInnerHTML={{ __html: post.content }}></div>
       </div>
     </div>
