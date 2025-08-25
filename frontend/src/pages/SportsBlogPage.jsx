@@ -12,13 +12,18 @@ const SportsBlogPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setBlogPosts(mockBlogPosts);
+  fetch("http://localhost:5000/api/blog")
+    .then(res => res.json())
+    .then(data => {
+      setBlogPosts(data);
       setLoading(false);
-    }, 500);
+    })
+    .catch(err => {
+      setError("Failed to load blogs");
+      setLoading(false);
+    });
+}, []);
 
-    return () => clearTimeout(timer);
-  }, []);
 
   if (loading) return <div className="loading-message">Loading blog posts...</div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -30,10 +35,10 @@ const SportsBlogPage = () => {
     <div className="sports-blog-page">
       <div className="blog-hero">
         {/* ADD VIDEO BACKGROUND HERE */}
-        <video autoPlay loop muted playsInline className="blog-hero-video">
+        {/* <video autoPlay loop muted playsInline className="blog-hero-video">
           <source src={BlogVideoBg} type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
+        </video> */}
         <div className="blog-hero-overlay"></div> {/* Optional: For darker overlay */}
         <div className="blog-hero-content"> {/* Wrap existing text in content div */}
           <h1 className="blog-hero-title">Latest <span className="highlight">Sports News</span> & Insights</h1>

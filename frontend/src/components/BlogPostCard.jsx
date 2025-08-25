@@ -7,9 +7,9 @@ import Button from './Button'; // Assuming you have this Button component
 const BlogPostCard = ({ post }) => {
   return (
     <div className="blog-card">
-      <div className="blog-card-image">
+      {/* <div className="blog-card-image">
         <img src={post.image} alt={post.title} />
-      </div>
+      </div> */}
       <div className="blog-card-content">
         <span className="blog-card-category">{post.category}</span>
         <h3 className="blog-card-title">{post.title}</h3>
