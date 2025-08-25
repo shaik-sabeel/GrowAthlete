@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
+const sendWelcomeEmail = require("../utils/mailer"); 
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username,email, password: hashedPassword, role });
     await newUser.save();
+    sendWelcomeEmail(newUser.email, newUser.username);
 
     const token = jwt.sign(
       { id: newUser._id, username: newUser.username, role: newUser.role },
