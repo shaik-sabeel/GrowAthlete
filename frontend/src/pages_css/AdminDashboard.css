@@ -7,6 +7,66 @@
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
+/* Admin intro overlay */
+.admin-intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(19,41,61,0.25), transparent 60%), rgba(0,0,0,0.25);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  animation: introFade 4s ease forwards;
+}
+
+@keyframes introFade {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.admin-intro-badge {
+  position: relative;
+  padding: 18px 28px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #13293D, #1e3a5f);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: .06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  overflow: hidden;
+}
+
+.admin-intro-glow {
+  position: absolute;
+  inset: -200%;
+  background: conic-gradient(from 0deg, rgba(217,128,34,.25), transparent 30%, rgba(217,128,34,.25), transparent 60%);
+  animation: spinGlow 2s linear infinite;
+  filter: blur(18px);
+}
+
+@keyframes spinGlow {
+  to { transform: rotate(360deg); }
+}
+
+.admin-intro-crown {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 4px 10px rgba(217,128,34,.6));
+}
+
+.admin-intro-text {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(90deg, #ffd38f, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 18px rgba(255,211,143,0.35);
+}
+
 /* Sidebar */
 .admin-sidebar {
   width: 280px;

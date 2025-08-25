@@ -29,6 +29,7 @@ const AdminDashboard = () => {
   // Performance states
   const [isSearching, setIsSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [showIntro, setShowIntro] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -57,6 +58,23 @@ const AdminDashboard = () => {
       }
     };
   }, [searchTerm]);
+
+  // Admin entry intro animation (once per session)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const forceIntro = params.get('showIntro') === '1';
+    const hasShown = sessionStorage.getItem('adminIntroShown');
+    if (forceIntro || !hasShown) {
+      setShowIntro(true);
+      const t = setTimeout(() => {
+        setShowIntro(false);
+        if (!forceIntro) {
+          sessionStorage.setItem('adminIntroShown', '1');
+        }
+      }, 4000);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -512,6 +530,15 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
+      {showIntro && (
+        <div className="admin-intro-overlay">
+          <div className="admin-intro-badge">
+            <span className="admin-intro-glow"></span>
+            <span className="admin-intro-crown">👑</span>
+            <span className="admin-intro-text">Admin Mode</span>
+          </div>
+        </div>
+      )}
       {/* Sidebar */}
       <div className={`admin-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">

@@ -7,6 +7,9 @@ const User = require("../models/User");
 const Event = require("../models/Event");
 const SportsCategory = require("../models/SportsCategory");
 const AdBanner = require("../models/AdBanner");
+const TrendingTopic = require("../models/TrendingTopic");
+const CommunityGuideline = require("../models/CommunityGuideline");
+const PlatformAnnouncement = require("../models/PlatformAnnouncement");
 const { updateEventStatuses } = require("../utils/eventStatusUpdater");
 
 // Configure multer storage for event images
@@ -971,6 +974,312 @@ router.delete("/ads/:id", verifyToken, isAdmin, async (req, res) => {
   } catch (error) {
     console.error("Error deleting ad:", error);
     res.status(500).json({ message: "Failed to delete ad" });
+  }
+});
+
+// ===== TRENDING TOPICS MANAGEMENT =====
+
+// Create new trending topic
+router.post("/trending-topics", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { topic, posts = 0, sortOrder = 0 } = req.body;
+    
+    if (!topic || !topic.trim()) {
+      return res.status(400).json({ message: "Topic is required" });
+    }
+
+    const newTopic = await TrendingTopic.create({
+      topic: topic.trim(),
+      posts: Number(posts) || 0,
+      sortOrder: Number(sortOrder) || 0,
+      createdBy: req.user.id
+    });
+
+    res.status(201).json({ message: "Trending topic created", topic: newTopic });
+  } catch (error) {
+    console.error("Error creating trending topic:", error);
+    res.status(500).json({ message: "Failed to create trending topic" });
+  }
+});
+
+// Get all trending topics
+router.get("/trending-topics", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const topics = await TrendingTopic.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
+    res.json(topics);
+  } catch (error) {
+    console.error("Error fetching trending topics:", error);
+    res.status(500).json({ message: "Failed to fetch trending topics" });
+  }
+});
+
+// Update trending topic
+router.patch("/trending-topics/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+    
+    if (update.topic && typeof update.topic === 'string') {
+      update.topic = update.topic.trim();
+      if (!update.topic) {
+        return res.status(400).json({ message: "Topic cannot be empty" });
+      }
+    }
+    
+    if (typeof update.posts !== 'undefined') {
+      update.posts = Number(update.posts) || 0;
+    }
+    
+    if (typeof update.sortOrder !== 'undefined') {
+      update.sortOrder = Number(update.sortOrder) || 0;
+    }
+
+    const topic = await TrendingTopic.findByIdAndUpdate(id, update, { new: true });
+    if (!topic) return res.status(404).json({ message: "Trending topic not found" });
+    
+    res.json({ message: "Trending topic updated", topic });
+  } catch (error) {
+    console.error("Error updating trending topic:", error);
+    res.status(500).json({ message: "Failed to update trending topic" });
+  }
+});
+
+// Delete trending topic
+router.delete("/trending-topics/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const topic = await TrendingTopic.findByIdAndDelete(id);
+    if (!topic) return res.status(404).json({ message: "Trending topic not found" });
+    res.json({ message: "Trending topic deleted" });
+  } catch (error) {
+    console.error("Error deleting trending topic:", error);
+    res.status(500).json({ message: "Failed to delete trending topic" });
+  }
+});
+
+// Public route to get active trending topics (for frontend display)
+router.get("/public/trending-topics", async (req, res) => {
+  try {
+    const topics = await TrendingTopic.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
+    res.json(topics);
+  } catch (error) {
+    console.error("Error fetching public trending topics:", error);
+    res.status(500).json({ message: "Failed to fetch trending topics" });
+  }
+});
+
+// ===== COMMUNITY GUIDELINES MANAGEMENT =====
+
+// Create new community guideline
+router.post("/community-guidelines", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { title, content, category, sortOrder = 0 } = req.body;
+    
+    if (!title || !content || !title.trim() || !content.trim()) {
+      return res.status(400).json({ message: "Title and content are required" });
+    }
+
+    const newGuideline = await CommunityGuideline.create({
+      title: title.trim(),
+      content: content.trim(),
+      category: category || 'general',
+      sortOrder: Number(sortOrder) || 0,
+      createdBy: req.user.id
+    });
+
+    res.status(201).json({ message: "Community guideline created", guideline: newGuideline });
+  } catch (error) {
+    console.error("Error creating community guideline:", error);
+    res.status(500).json({ message: "Failed to create community guideline" });
+  }
+});
+
+// Get all community guidelines
+router.get("/community-guidelines", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const guidelines = await CommunityGuideline.find({}).sort({ sortOrder: 1, createdAt: -1 });
+    res.json(guidelines);
+  } catch (error) {
+    console.error("Error fetching community guidelines:", error);
+    res.status(500).json({ message: "Failed to fetch community guidelines" });
+  }
+});
+
+// Update community guideline
+router.patch("/community-guidelines/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+    
+    if (update.title && typeof update.title === 'string') {
+      update.title = update.title.trim();
+      if (!update.title) {
+        return res.status(400).json({ message: "Title cannot be empty" });
+      }
+    }
+    
+    if (update.content && typeof update.content === 'string') {
+      update.content = update.content.trim();
+      if (!update.content) {
+        return res.status(400).json({ message: "Content cannot be empty" });
+      }
+    }
+
+    update.updatedBy = req.user.id;
+
+    const guideline = await CommunityGuideline.findByIdAndUpdate(id, update, { new: true });
+    if (!guideline) return res.status(404).json({ message: "Community guideline not found" });
+    
+    res.json({ message: "Community guideline updated", guideline });
+  } catch (error) {
+    console.error("Error updating community guideline:", error);
+    res.status(500).json({ message: "Failed to update community guideline" });
+  }
+});
+
+// Delete community guideline
+router.delete("/community-guidelines/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const guideline = await CommunityGuideline.findByIdAndDelete(id);
+    if (!guideline) return res.status(404).json({ message: "Community guideline not found" });
+    res.json({ message: "Community guideline deleted" });
+  } catch (error) {
+    console.error("Error deleting community guideline:", error);
+    res.status(500).json({ message: "Failed to delete community guideline" });
+  }
+});
+
+// Public route to get active community guidelines
+router.get("/public/community-guidelines", async (req, res) => {
+  try {
+    const guidelines = await CommunityGuideline.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 });
+    res.json(guidelines);
+  } catch (error) {
+    console.error("Error fetching public community guidelines:", error);
+    res.status(500).json({ message: "Failed to fetch community guidelines" });
+  }
+});
+
+// ===== PLATFORM ANNOUNCEMENTS MANAGEMENT =====
+
+// Create new platform announcement
+router.post("/platform-announcements", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { title, message, audience, priority, startDate, endDate, isSticky } = req.body;
+    
+    if (!title || !message || !title.trim() || !message.trim()) {
+      return res.status(400).json({ message: "Title and message are required" });
+    }
+
+    const newAnnouncement = await PlatformAnnouncement.create({
+      title: title.trim(),
+      message: message.trim(),
+      audience: audience || 'all',
+      priority: priority || 'medium',
+      startDate: startDate ? new Date(startDate) : new Date(),
+      endDate: endDate ? new Date(endDate) : null,
+      isSticky: isSticky || false,
+      createdBy: req.user.id
+    });
+
+    res.status(201).json({ message: "Platform announcement created", announcement: newAnnouncement });
+  } catch (error) {
+    console.error("Error creating platform announcement:", error);
+    res.status(500).json({ message: "Failed to create platform announcement" });
+  }
+});
+
+// Get all platform announcements
+router.get("/platform-announcements", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const announcements = await PlatformAnnouncement.find({}).sort({ isSticky: -1, createdAt: -1 });
+    res.json(announcements);
+  } catch (error) {
+    console.error("Error fetching platform announcements:", error);
+    res.status(500).json({ message: "Failed to fetch platform announcements" });
+  }
+});
+
+// Update platform announcement
+router.patch("/platform-announcements/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+    
+    if (update.title && typeof update.title === 'string') {
+      update.title = update.title.trim();
+      if (!update.title) {
+        return res.status(400).json({ message: "Title cannot be empty" });
+      }
+    }
+    
+    if (update.message && typeof update.message === 'string') {
+      update.message = update.message.trim();
+      if (!update.message) {
+        return res.status(400).json({ message: "Message cannot be empty" });
+      }
+    }
+
+    if (update.startDate) update.startDate = new Date(update.startDate);
+    if (update.endDate) update.endDate = new Date(update.endDate);
+
+    const announcement = await PlatformAnnouncement.findByIdAndUpdate(id, update, { new: true });
+    if (!announcement) return res.status(404).json({ message: "Platform announcement not found" });
+    
+    res.json({ message: "Platform announcement updated", announcement });
+  } catch (error) {
+    console.error("Error updating platform announcement:", error);
+    res.status(500).json({ message: "Failed to update platform announcement" });
+  }
+});
+
+// Delete platform announcement
+router.delete("/platform-announcements/:id", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const announcement = await PlatformAnnouncement.findByIdAndDelete(id);
+    if (!announcement) return res.status(404).json({ message: "Platform announcement not found" });
+    res.json({ message: "Platform announcement deleted" });
+  } catch (error) {
+    console.error("Error deleting platform announcement:", error);
+    res.status(500).json({ message: "Failed to delete platform announcement" });
+  }
+});
+
+// Public route to get active platform announcements
+router.get("/public/platform-announcements", async (req, res) => {
+  try {
+    const { audience = 'all' } = req.query;
+    const currentDate = new Date();
+    
+    let query = { 
+      isActive: true,
+      startDate: { $lte: currentDate }
+    };
+    
+    // Add end date filter if specified
+    query.$or = [
+      { endDate: null },
+      { endDate: { $gte: currentDate } }
+    ];
+    
+    // Filter by audience
+    if (audience !== 'all') {
+      query.$or = [
+        { audience: 'all' },
+        { audience: audience }
+      ];
+    }
+
+    const announcements = await PlatformAnnouncement.find(query)
+      .sort({ isSticky: -1, priority: -1, createdAt: -1 })
+      .limit(10); // Limit to prevent overwhelming users
+    
+    res.json(announcements);
+  } catch (error) {
+    console.error("Error fetching public platform announcements:", error);
+    res.status(500).json({ message: "Failed to fetch platform announcements" });
   }
 });
 

@@ -15,21 +15,28 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 const SystemAdministration = () => {
   const [activeTab, setActiveTab] = useState('trending');
 
-  // Trending topics stub state
-  const [trendingTopics, setTrendingTopics] = useState([
-    { id: 1, topic: 'Nationals 2025', posts: 128 },
-    { id: 2, topic: 'Transfer Window', posts: 93 }
-  ]);
+  // Trending topics state
+  const [trendingTopics, setTrendingTopics] = useState([]);
   const [newTopic, setNewTopic] = useState('');
+  const [isLoadingTopics, setIsLoadingTopics] = useState(false);
 
-  // Guidelines stub state
-  const [guidelines, setGuidelines] = useState(
-    `Welcome to the GrowAthlete community.\n\nBe respectful. No spam. Stay on-topic. Report abuse via the flag icon.\nModerators reserve the right to remove content that violates these rules.`
-  );
+  // Guidelines state
+  const [guidelines, setGuidelines] = useState([]);
+  const [newGuideline, setNewGuideline] = useState({ title: '', content: '', category: 'general' });
+  const [isLoadingGuidelines, setIsLoadingGuidelines] = useState(false);
 
-  // Announcements stub state
-  const [announcement, setAnnouncement] = useState('');
-  const [announceAudience, setAnnounceAudience] = useState('all');
+  // Announcements state
+  const [announcements, setAnnouncements] = useState([]);
+  const [newAnnouncement, setNewAnnouncement] = useState({
+    title: '',
+    message: '',
+    audience: 'all',
+    priority: 'medium',
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: '',
+    isSticky: false
+  });
+  const [isLoadingAnnouncements, setIsLoadingAnnouncements] = useState(false);
 
   // Backup tools stub state
   const [isBackupRunning, setIsBackupRunning] = useState(false);
@@ -40,6 +47,42 @@ const SystemAdministration = () => {
   const [adLink, setAdLink] = useState('');
   const [adActive, setAdActive] = useState(true);
   const [adSort, setAdSort] = useState(0);
+
+  const fetchTrendingTopics = async () => {
+    try {
+      setIsLoadingTopics(true);
+      const res = await api.get('/admin/trending-topics');
+      setTrendingTopics(res.data);
+    } catch (e) {
+      console.error('Failed to fetch trending topics', e);
+    } finally {
+      setIsLoadingTopics(false);
+    }
+  };
+
+  const fetchGuidelines = async () => {
+    try {
+      setIsLoadingGuidelines(true);
+      const res = await api.get('/admin/community-guidelines');
+      setGuidelines(res.data);
+    } catch (e) {
+      console.error('Failed to fetch guidelines', e);
+    } finally {
+      setIsLoadingGuidelines(false);
+    }
+  };
+
+  const fetchAnnouncements = async () => {
+    try {
+      setIsLoadingAnnouncements(true);
+      const res = await api.get('/admin/platform-announcements');
+      setAnnouncements(res.data);
+    } catch (e) {
+      console.error('Failed to fetch announcements', e);
+    } finally {
+      setIsLoadingAnnouncements(false);
+    }
+  };
 
   const fetchAds = async () => {
     try {
@@ -100,32 +143,144 @@ const SystemAdministration = () => {
     ]
   };
 
-  const addTopic = () => {
+  const addTopic = async () => {
     const trimmed = newTopic.trim();
     if (!trimmed) return;
-    setTrendingTopics(prev => [
-      { id: Date.now(), topic: trimmed, posts: 0 },
-      ...prev
-    ]);
-    setNewTopic('');
+    
+    try {
+      const res = await api.post('/admin/trending-topics', {
+        topic: trimmed,
+        posts: 0,
+        sortOrder: trendingTopics.length
+      });
+      
+      setTrendingTopics(prev => [res.data.topic, ...prev]);
+      setNewTopic('');
+    } catch (e) {
+      console.error('Failed to add trending topic', e);
+      alert('Failed to add trending topic');
+    }
   };
 
-  const removeTopic = (id) => {
-    setTrendingTopics(prev => prev.filter(t => t.id !== id));
+  const removeTopic = async (id) => {
+    if (!confirm('Are you sure you want to remove this trending topic?')) return;
+    
+    try {
+      await api.delete(`/admin/trending-topics/${id}`);
+      setTrendingTopics(prev => prev.filter(t => t._id !== id));
+    } catch (e) {
+      console.error('Failed to remove trending topic', e);
+      alert('Failed to remove trending topic');
+    }
   };
 
-  const saveGuidelines = () => {
-    alert('Guidelines saved (stub).');
+  const updateTopicPosts = async (id, newPosts) => {
+    try {
+      await api.patch(`/admin/trending-topics/${id}`, { posts: newPosts });
+      setTrendingTopics(prev => 
+        prev.map(t => t._id === id ? { ...t, posts: newPosts } : t)
+      );
+    } catch (e) {
+      console.error('Failed to update topic posts', e);
+      alert('Failed to update topic posts');
+    }
   };
 
-  const sendAnnouncement = () => {
-    if (!announcement.trim()) {
-      alert('Please enter an announcement message.');
+  // Guidelines functions
+  const addGuideline = async () => {
+    if (!newGuideline.title.trim() || !newGuideline.content.trim()) {
+      alert('Title and content are required');
       return;
     }
-    alert(`Announcement sent to ${announceAudience} (stub).`);
-    setAnnouncement('');
+
+    try {
+      const res = await api.post('/admin/community-guidelines', newGuideline);
+      setGuidelines(prev => [res.data.guideline, ...prev]);
+      setNewGuideline({ title: '', content: '', category: 'general' });
+      alert('Guideline added successfully');
+    } catch (e) {
+      console.error('Failed to add guideline', e);
+      alert('Failed to add guideline');
+    }
   };
+
+  const updateGuideline = async (id, updates) => {
+    try {
+      await api.patch(`/admin/community-guidelines/${id}`, updates);
+      setGuidelines(prev => 
+        prev.map(g => g._id === id ? { ...g, ...updates } : g)
+      );
+    } catch (e) {
+      console.error('Failed to update guideline', e);
+      alert('Failed to update guideline');
+    }
+  };
+
+  const deleteGuideline = async (id) => {
+    if (!confirm('Are you sure you want to delete this guideline?')) return;
+    
+    try {
+      await api.delete(`/admin/community-guidelines/${id}`);
+      setGuidelines(prev => prev.filter(g => g._id !== id));
+      alert('Guideline deleted successfully');
+    } catch (e) {
+      console.error('Failed to delete guideline', e);
+      alert('Failed to delete guideline');
+    }
+  };
+
+  // Announcements functions
+  const addAnnouncement = async () => {
+    if (!newAnnouncement.title.trim() || !newAnnouncement.message.trim()) {
+      alert('Title and message are required');
+      return;
+    }
+
+    try {
+      const res = await api.post('/admin/platform-announcements', newAnnouncement);
+      setAnnouncements(prev => [res.data.announcement, ...prev]);
+      setNewAnnouncement({
+        title: '',
+        message: '',
+        audience: 'all',
+        priority: 'medium',
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: '',
+        isSticky: false
+      });
+      alert('Announcement added successfully');
+    } catch (e) {
+      console.error('Failed to add announcement', e);
+      alert('Failed to add announcement');
+    }
+  };
+
+  const updateAnnouncement = async (id, updates) => {
+    try {
+      await api.patch(`/admin/platform-announcements/${id}`, updates);
+      setAnnouncements(prev => 
+        prev.map(a => a._id === id ? { ...a, ...updates } : a)
+      );
+    } catch (e) {
+      console.error('Failed to update announcement', e);
+      alert('Failed to update announcement');
+    }
+  };
+
+  const deleteAnnouncement = async (id) => {
+    if (!confirm('Are you sure you want to delete this announcement?')) return;
+    
+    try {
+      await api.delete(`/admin/platform-announcements/${id}`);
+      setAnnouncements(prev => prev.filter(a => a._id !== id));
+      alert('Announcement deleted successfully');
+    } catch (e) {
+      console.error('Failed to delete announcement', e);
+      alert('Failed to delete announcement');
+    }
+  };
+
+  // Remove old stub functions - they're replaced by real implementations above
 
   const runBackup = async () => {
     setIsBackupRunning(true);
@@ -222,7 +377,21 @@ const SystemAdministration = () => {
     if (activeTab === 'ads') {
       fetchAds();
     }
+    if (activeTab === 'trending') {
+      fetchTrendingTopics();
+    }
+    if (activeTab === 'guidelines') {
+      fetchGuidelines();
+    }
+    if (activeTab === 'announcements') {
+      fetchAnnouncements();
+    }
   }, [activeTab]);
+
+  useEffect(() => {
+    // Fetch trending topics on component mount
+    fetchTrendingTopics();
+  }, []);
 
   const renderTrending = () => (
     <div className="space-y-4">
@@ -236,74 +405,158 @@ const SystemAdministration = () => {
             placeholder="Add new topic"
             className="px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
           />
-          <button onClick={addTopic} className="px-3 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700 flex items-center">
-            <FaPlus className="mr-1"/>Add
+          <button 
+            onClick={addTopic} 
+            disabled={isLoadingTopics}
+            className="px-3 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700 disabled:bg-gray-400 flex items-center"
+          >
+            <FaPlus className="mr-1"/>{isLoadingTopics ? 'Adding...' : 'Add'}
           </button>
         </div>
       </div>
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Topic</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posts</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {trendingTopics.map(t => (
-              <tr key={t.id}>
-                <td className="px-6 py-4 text-sm text-gray-900">{t.topic}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{t.posts}</td>
-                <td className="px-6 py-4 text-sm text-right">
-                  <button onClick={() => removeTopic(t.id)} className="inline-flex items-center px-3 py-1 text-red-600 hover:text-red-800">
-                    <FaTrash className="mr-1"/>Remove
-                  </button>
-                </td>
+      
+      {isLoadingTopics ? (
+        <div className="text-center py-8 text-gray-500">Loading trending topics...</div>
+      ) : (
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Topic</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posts</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {trendingTopics.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
+                    No trending topics yet. Add one above!
+                  </td>
+                </tr>
+              ) : (
+                trendingTopics.map(t => (
+                  <tr key={t._id}>
+                    <td className="px-6 py-4 text-sm text-gray-900">{t.topic}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      <input
+                        type="number"
+                        value={t.posts}
+                        onChange={(e) => updateTopicPosts(t._id, parseInt(e.target.value) || 0)}
+                        className="w-20 px-2 py-1 border border-gray-300 rounded text-center"
+                        min="0"
+                      />
+                    </td>
+                    <td className="px-6 py-4 text-sm text-right">
+                      <button onClick={() => removeTopic(t._id)} className="inline-flex items-center px-3 py-1 text-red-600 hover:text-red-800">
+                        <FaTrash className="mr-1"/>Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 
   const renderGuidelines = () => (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-900 flex items-center"><FaBook className="mr-2"/>Community Guidelines</h3>
-      <textarea
-        rows={12}
-        value={guidelines}
-        onChange={(e) => setGuidelines(e.target.value)}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-      />
-      <div className="flex justify-end">
-        <button onClick={saveGuidelines} className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-          <FaSave className="mr-2"/>Save Guidelines
-        </button>
+      
+      {/* Add new guideline form */}
+      <div className="bg-white p-4 rounded-lg shadow border">
+        <h4 className="font-medium text-gray-900 mb-3">Add New Guideline</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+          <input
+            type="text"
+            placeholder="Title"
+            value={newGuideline.title}
+            onChange={(e) => setNewGuideline(prev => ({ ...prev, title: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <select
+            value={newGuideline.category}
+            onChange={(e) => setNewGuideline(prev => ({ ...prev, category: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="general">General</option>
+            <option value="posting">Posting</option>
+            <option value="interaction">Interaction</option>
+            <option value="safety">Safety</option>
+            <option value="other">Other</option>
+          </select>
+          <button
+            onClick={addGuideline}
+            disabled={isLoadingGuidelines}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+          >
+            {isLoadingGuidelines ? 'Adding...' : 'Add Guideline'}
+          </button>
+        </div>
+        <textarea
+          rows={3}
+          placeholder="Guideline content..."
+          value={newGuideline.content}
+          onChange={(e) => setNewGuideline(prev => ({ ...prev, content: e.target.value }))}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+        />
       </div>
+
+      {/* Guidelines list */}
+      {isLoadingGuidelines ? (
+        <div className="text-center py-8 text-gray-500">Loading guidelines...</div>
+      ) : (
+        <div className="space-y-3">
+          {guidelines.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">No guidelines yet. Add one above!</div>
+          ) : (
+            guidelines.map(guideline => (
+              <div key={guideline._id} className="bg-white p-4 rounded-lg shadow border">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                      {guideline.category}
+                    </span>
+                    <h5 className="font-medium text-gray-900">{guideline.title}</h5>
+                  </div>
+                  <button
+                    onClick={() => deleteGuideline(guideline._id)}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+                <p className="text-gray-700 text-sm">{guideline.content}</p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 
   const renderAnnouncements = () => (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-gray-900 flex items-center"><FaBullhorn className="mr-2"/>Platform Announcements</h3>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="md:col-span-3">
-          <textarea
-            rows={6}
-            value={announcement}
-            onChange={(e) => setAnnouncement(e.target.value)}
-            placeholder="Write an announcement to broadcast"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+      
+      {/* Add new announcement form */}
+      <div className="bg-white p-4 rounded-lg shadow border">
+        <h4 className="font-medium text-gray-900 mb-3">Create New Announcement</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+          <input
+            type="text"
+            placeholder="Announcement title"
+            value={newAnnouncement.title}
+            onChange={(e) => setNewAnnouncement(prev => ({ ...prev, title: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
           />
-        </div>
-        <div className="space-y-3">
-          <label className="block text-sm text-gray-700">Audience</label>
           <select
-            value={announceAudience}
-            onChange={(e) => setAnnounceAudience(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            value={newAnnouncement.audience}
+            onChange={(e) => setNewAnnouncement(prev => ({ ...prev, audience: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
           >
             <option value="all">All Users</option>
             <option value="athletes">Athletes</option>
@@ -311,11 +564,104 @@ const SystemAdministration = () => {
             <option value="scouts">Scouts</option>
             <option value="sponsors">Sponsors</option>
           </select>
-          <button onClick={sendAnnouncement} className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-            <FaBullhorn className="mr-2"/>Send
-          </button>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
+          <select
+            value={newAnnouncement.priority}
+            onChange={(e) => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+            <option value="urgent">Urgent</option>
+          </select>
+          <input
+            type="date"
+            value={newAnnouncement.startDate}
+            onChange={(e) => setNewAnnouncement(prev => ({ ...prev, startDate: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <input
+            type="date"
+            placeholder="End date (optional)"
+            value={newAnnouncement.endDate}
+            onChange={(e) => setNewAnnouncement(prev => ({ ...prev, endDate: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={newAnnouncement.isSticky}
+              onChange={(e) => setNewAnnouncement(prev => ({ ...prev, isSticky: e.target.checked }))}
+              className="rounded"
+            />
+            <span className="text-sm text-gray-700">Sticky</span>
+          </label>
+        </div>
+        <textarea
+          rows={4}
+          placeholder="Announcement message..."
+          value={newAnnouncement.message}
+          onChange={(e) => setNewAnnouncement(prev => ({ ...prev, message: e.target.value }))}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 mb-3"
+        />
+        <button
+          onClick={addAnnouncement}
+          disabled={isLoadingAnnouncements}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+        >
+          {isLoadingAnnouncements ? 'Creating...' : 'Create Announcement'}
+        </button>
       </div>
+
+      {/* Announcements list */}
+      {isLoadingAnnouncements ? (
+        <div className="text-center py-8 text-gray-500">Loading announcements...</div>
+      ) : (
+        <div className="space-y-3">
+          {announcements.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">No announcements yet. Create one above!</div>
+          ) : (
+            announcements.map(announcement => (
+              <div key={announcement._id} className={`bg-white p-4 rounded-lg shadow border ${announcement.isSticky ? 'border-l-4 border-l-yellow-400' : ''}`}>
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      announcement.priority === 'urgent' ? 'bg-red-100 text-red-600' :
+                      announcement.priority === 'high' ? 'bg-orange-100 text-orange-600' :
+                      announcement.priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
+                      'bg-gray-100 text-gray-600'
+                    }`}>
+                      {announcement.priority}
+                    </span>
+                    <span className="px-2 py-1 text-xs bg-blue-100 text-blue-600 rounded-full">
+                      {announcement.audience}
+                    </span>
+                    {announcement.isSticky && (
+                      <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-600 rounded-full">
+                        Sticky
+                      </span>
+                    )}
+                    <h5 className="font-medium text-gray-900">{announcement.title}</h5>
+                  </div>
+                  <button
+                    onClick={() => deleteAnnouncement(announcement._id)}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+                <p className="text-gray-700 text-sm mb-2">{announcement.message}</p>
+                <div className="text-xs text-gray-500">
+                  Start: {new Date(announcement.startDate).toLocaleDateString()}
+                  {announcement.endDate && ` • End: ${new Date(announcement.endDate).toLocaleDateString()}`}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 

@@ -12,7 +12,10 @@ const communityPostSchema = new mongoose.Schema({
     maxlength: 2000
   },
   media: [{
-    type: String, // URLs to uploaded media
+    url: {
+      type: String,
+      required: true
+    },
     mediaType: {
       type: String,
       enum: ['image', 'video', 'document'],
@@ -108,6 +111,10 @@ communityPostSchema.index({ status: 1, createdAt: -1 });
 communityPostSchema.index({ author: 1, createdAt: -1 });
 communityPostSchema.index({ isFlagged: 1, flagCount: -1 });
 communityPostSchema.index({ 'flags.reason': 1 });
+
+// Ensure virtuals are included when converting to JSON
+communityPostSchema.set('toJSON', { virtuals: true });
+communityPostSchema.set('toObject', { virtuals: true });
 
 // Virtual for comment count
 communityPostSchema.virtual('commentCount').get(function() {

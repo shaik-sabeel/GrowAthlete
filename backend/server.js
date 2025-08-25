@@ -9,7 +9,11 @@ const sportsResumeRoutes = require("./routes/sportsResume");
 const adminRoutes = require("./routes/adminRoutes");
 const contentModerationRoutes = require("./routes/contentModeration");
 const eventRoutes = require("./routes/eventRoutes");
+<<<<<<< HEAD
 const blogRoutes = require("./routes/blogRoutes");
+=======
+const communityPostRoutes = require("./routes/communityPostRoutes");
+>>>>>>> 10e0fc5 (changed the admin page and created new interface to the community page ,now user can post any thing , like comment in the real time)
 
 const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
@@ -31,7 +35,11 @@ app.use("/api/sports-resume", sportsResumeRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/moderation", contentModerationRoutes);
 app.use("/api/events", eventRoutes);
+<<<<<<< HEAD
 app.use("/api/blog", blogRoutes);
+=======
+app.use("/api/community", communityPostRoutes);
+>>>>>>> 10e0fc5 (changed the admin page and created new interface to the community page ,now user can post any thing , like comment in the real time)
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

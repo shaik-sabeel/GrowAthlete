@@ -2,13 +2,19 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import PostCreator from '../components/PostCreator';
-import Post from '../components/Post';
+import CommunityFeed from '../components/CommunityFeed';
 import ImageCarousel from '../components/ImageCarousel';
+import AnnouncementsDisplay from '../components/AnnouncementsDisplay';
 import '../pages_css/CommunityPage.css';
 import sohamImg from '../assets/soham.jpg';
 import anikaImg from '../assets/anika.jpg';
 import vikramImg from '../assets/vikram.jpg';
+
 import Navbar from '../components/Navbar';
+
+import api from '../utils/api';
+import { getCurrentUserId } from '../utils/auth';
+
 
 const AUTOPLAY_MS = 3500;
 
@@ -23,10 +29,42 @@ const CommunityPage = () => {
   );
 
   const [contribIndex, setContribIndex] = useState(0);
+  const [trendingTopics, setTrendingTopics] = useState([]);
+  const [communityGuidelines, setCommunityGuidelines] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [refreshFeed, setRefreshFeed] = useState(0);
+  
   useEffect(() => {
     const id = setInterval(() => setContribIndex((i) => (i + 1) % topContributors.length), AUTOPLAY_MS);
     return () => clearInterval(id);
   }, [topContributors.length]);
+
+  useEffect(() => {
+    const fetchTrendingTopics = async () => {
+      try {
+        const response = await api.get('/admin/public/trending-topics');
+        setTrendingTopics(response.data);
+      } catch (error) {
+        console.error('Failed to fetch trending topics:', error);
+      }
+    };
+
+    const fetchCommunityGuidelines = async () => {
+      try {
+        const response = await api.get('/admin/public/community-guidelines');
+        setCommunityGuidelines(response.data);
+      } catch (error) {
+        console.error('Failed to fetch community guidelines:', error);
+      }
+    };
+
+    // Get current user ID from auth utility
+    const userId = getCurrentUserId();
+    setCurrentUserId(userId);
+
+    fetchTrendingTopics();
+    fetchCommunityGuidelines();
+  }, []);
 
   return (
     <>
@@ -35,16 +73,26 @@ const CommunityPage = () => {
       <section className="community__main">
         <div className="community__card community__section">
           <h2 style={{ marginTop: 0 }}>Create a post</h2>
-          <PostCreator />
+          <PostCreator 
+            currentUserId={currentUserId}
+            onPostCreated={(newPost) => {
+              // Add the new post to the feed immediately
+              setRefreshFeed(prev => prev + 1);
+            }} 
+          />
         </div>
 
         <div className="community__card community__section">
-          <h3 style={{ marginTop: 0, marginBottom: 16 }}>Community Feed</h3>
-          <Post />
+          <CommunityFeed key={refreshFeed} currentUserId={currentUserId} />
+        </div>
+
+        <div className="community__card community__section">
+          <h3 style={{ marginTop: 0, marginBottom: 16 }}>Platform Announcements</h3>
+          <AnnouncementsDisplay audience="all" />
         </div>
       </section>
 
-      <aside className="community__sidebar py-14">
+      <aside className="community__sidebar">
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Highlights</h3>
           <div className="community__stats">
@@ -57,9 +105,16 @@ const CommunityPage = () => {
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Trending Topics</h3>
           <div className="topics">
-            {['#NextGenAthletes', '#TrainSmart', '#Recovery', '#Sponsorship', '#TechInSports', '#Nutrition'].map((t) => (
-              <span key={t} className="topic">{t}</span>
-            ))}
+            {trendingTopics.length > 0 ? (
+              trendingTopics.map((topic) => (
+                <span key={topic._id} className="topic">
+                  #{topic.topic}
+                  <span className="topic-posts">({topic.posts})</span>
+                </span>
+              ))
+            ) : (
+              <div className="text-gray-500 text-sm">Loading trending topics...</div>
+            )}
           </div>
         </div>
 
@@ -85,13 +140,16 @@ const CommunityPage = () => {
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Community Guidelines</h3>
           <div className="guidelines">
-            {[
-              'Be respectful. Celebrate athletes and constructive feedback.',
-              'No spam or promotions without context.',
-              'Credit sources for stats, images, and news.',
-            ].map((g, i) => (
-              <div key={i} className="guideline">{g}</div>
-            ))}
+            {communityGuidelines.length > 0 ? (
+              communityGuidelines.map((guideline) => (
+                <div key={guideline._id} className="guideline">
+                  <div className="guideline-title">{guideline.title}</div>
+                  <div className="guideline-content">{guideline.content}</div>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-500 text-sm">Loading community guidelines...</div>
+            )}
           </div>
         </div>
 
