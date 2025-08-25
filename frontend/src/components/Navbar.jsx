@@ -98,6 +98,7 @@ const [data, setData] = useState(null);
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout");
+      localStorage.removeItem("token");
       setData(null); // Clear user data on logout
       setIsAuthenticated(false); // Update authentication state
       alert("Logged out successfully!");

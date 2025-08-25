@@ -15,6 +15,7 @@ import { FaMapMarkerAlt, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa'; // 
 // --- Assuming common Button and SectionHeader components (or global classes) ---
 // Using Button.jsx component that reads global classes from App.css
 import Button from '../components/Button';
+import Navbar from '../components/Navbar';
 
 
 // Using a functional SectionHeader (relying on `section-heading` from App.css)
@@ -185,6 +186,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
 
   return (
     <>
+     <Navbar/>
       {/* Navbar removed here; rendered globally in App.jsx */}
       {/* 1. Hero Section (Home Page) */}
       <section className="hp-hero-section">
