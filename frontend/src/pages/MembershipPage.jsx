@@ -183,7 +183,7 @@ const MembershipPage = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
       <Navbar />
       <div className="text-center mb-12 py-20">
-        {/* ...your h1 and p tags... */}
+        <h1>Choose Your Membership Plan</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
