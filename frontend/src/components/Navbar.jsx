@@ -106,7 +106,7 @@ const [data, setData] = useState(null);
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar rounded-full">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <img src={gaLogo} alt="GrowAthlete Logo" className="navbar-logo-icon" />

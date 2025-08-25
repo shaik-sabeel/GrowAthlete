@@ -42,7 +42,7 @@ const CreateEventPage = () => {
         try {
             // !!! THIS IS THE FIXED LINE !!!
             // Changed from '/events' to '/events/create' to match your backend route
-            await api.post('/event/create', eventData, { 
+            await api.post('/events/create', eventData, { 
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
