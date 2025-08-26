@@ -91,7 +91,7 @@
 
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'; // ADDED Link here
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // ADDED Link here
 
 // --- GLOBAL COMPONENTS (from src/components/ as per your structure) ---
 import Navbar from './components/Navbar'; // Assuming this is your global header
@@ -131,33 +131,18 @@ import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
 import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';  // <--- NEWS PAGE (full, original dummy data)
 import LiveScoresPage from './pages/LiveScoresPage.jsx';              // <--- LIVE SCORES PAGE (full, original dummy data)
-// Wrapper component to handle conditional navbar rendering
-function AppContent() {
-  const location = useLocation();
-  
-  // Check authentication and user role
+function App() {
+  // A very basic authentication simulation for ProtectedRoute
   const isAuthenticated = () => {
+    // In a real app, this would check JWT, user context, etc.
     return localStorage.getItem('token') !== null;
   };
 
-  const getUserRole = () => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      try {
-        return JSON.parse(user).role;
-      } catch (e) {
-        return null;
-      }
-    }
-    return null;
-  };
-
-  // Don't show navbar on admin dashboard
-  const showNavbar = !location.pathname.includes('/admin-dashboard');
-
   return (
-    <>
-      {showNavbar && <Navbar />}
+    // <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+
+      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
@@ -171,13 +156,9 @@ function AppContent() {
           <Route path="/sports-resume" element={<SportsResume />} />
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
             <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
-community-page
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
-            
-
           <Route path="/membership" element={<MembershipPage />} />
- main
 
 <Route path="/splash" element={<Splash nextPath="/" />} />
 <Route path="/resume-template" element={<ResumeTemplate />} />   
@@ -203,14 +184,14 @@ community-page
             }
           />
 
-          <Route
+          {/* <Route
             path="/admin-dashboard"
             element={
-              <ProtectedRoute role="admin" isAllowed={isAuthenticated() && getUserRole() === 'admin'}>
+              <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route
             path="/athlete/dashboard"
             element={
@@ -259,14 +240,6 @@ community-page
         </Routes>
       </main>
       <Footer />
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <AppContent />
     </Router>
   );
 }

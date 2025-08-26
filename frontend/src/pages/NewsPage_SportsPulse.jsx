@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { getNews } from '../utils/sportsAPI';
 
 const continents = [
-  { key: 'indian', label: 'Indian', icon: '🇮🇳' },
-  { key: 'asian', label: 'Asian', icon: '🌏' },
-  { key: 'european', label: 'European', icon: '🇪🇺' },
-  { key: 'australian', label: 'Australian', icon: '🇦🇺' },
-  { key: 'american', label: 'American', icon: '🌎' },
-  { key: 'african', label: 'African', icon: '🌍' }
+  { key: 'indian', label: 'India', icon: '🇮🇳' },
+  { key: 'asian', label: 'Asia', icon: '🌏' },
+  { key: 'european', label: 'Europe', icon: '🇪🇺' },
+  { key: 'australian', label: 'AU & NZ', icon: '🇦🇺' },
+  { key: 'american', label: 'America', icon: '🌎' },
+  { key: 'african', label: 'Africa', icon: '🌍' }
 ];
 
 const sports = [
