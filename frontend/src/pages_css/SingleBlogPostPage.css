@@ -1,135 +1,209 @@
-/* src/pages/SingleBlogPostPage.css */
+/* src/pages_css/SingleBlogPostPage.css */
 
 .single-blog-post-page {
-  padding-top: 70px; /* Adjust to clear fixed navbar */
+  padding-top: 70px; /* Adjust to clear fixed navbar if you have one */
   min-height: 100vh;
-  background-color: var(--color-page-background); /* Inherits from global theme */
-  color: var(--color-page-text); /* Inherits from global theme */
+  background-color: #f8f8fa; /* Light greyish background color */
+  color: #333; /* Default text color */
   transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
 }
 
 .post-header-image {
-  width: 100%;
-  height: 400px; /* Height for the header image */
-  overflow: hidden;
-  margin-bottom: 30px;
+  width: 100%; /* Take full width */
+  max-width: 900px; /* Limit the max width of the image container */
+  margin: 2rem auto; /* Center horizontally, add vertical space */
+  display: flex; /* For centering the image */
+  justify-content: center; /* Center the image */
+  align-items: center; /* Center the image vertically if it's smaller than max-height */
 }
 
 .post-header-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; /* Image fills its container */
+  max-height: 400px; /* Max height to prevent excessively tall images */
+  object-fit: contain; /* This will scale the image to fit without cropping, preserving aspect ratio */
   display: block; /* Remove extra space below image */
 }
 
-.post-content-container {
-  max-width: 800px; /* Content width for readability */
-  margin: 0 auto;
-  padding: 0 20px 40px; /* Add some side and bottom padding */
-  box-sizing: border-box; /* Include padding in width calculation */
+.post-content-wrapper {
+  max-width: 760px; /* Adjusted max width for the content area to match screenshot */
+  width: 100%; /* Allow it to shrink on smaller screens */
+  padding: 0 24px; /* Side padding */
+  box-sizing: border-box; /* Include padding in width */
+  margin: 0 auto; /* Center content horizontally */
+  margin-top: 1.5rem; /* Space between image and content, adjusted */
 }
 
-.back-button {
+
+.back-to-blog-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Space between text and category badge */
+  margin-bottom: 1rem; /* Space below the back link/category row */
+}
+
+.back-to-blog-link {
+  display: inline-flex; /* Use flex to align arrow and text */
+  align-items: center;
+  color: #7d7d7d; /* Lighter grey for the back link */
+  text-decoration: none;
+  font-size: 1rem; /* Slightly smaller font for consistency */
+  padding: 0; /* Remove default button padding */
   background: none;
   border: none;
-  color: var(--color-link);
   cursor: pointer;
-  font-size: 1.1em;
-  margin-bottom: 20px;
-  display: inline-block; /* Ensure padding/margin works */
-  padding: 5px 0;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
-.back-button:hover {
-  color: var(--color-link-hover);
-  text-decoration: underline;
+.back-to-blog-link:hover {
+  color: #4f46e5; /* Primary color on hover for back link */
+}
+
+.back-arrow {
+  margin-right: 0.5rem; /* Space between arrow and text */
 }
 
 .post-category {
   display: inline-block;
-  background-color: var(--primary-color);
+  background-color: #6a5acd; /* Specific purple for the category badge */
   color: white;
-  padding: 5px 12px;
-  border-radius: 5px;
-  font-size: 0.9em;
-  font-weight: 600;
-  margin-bottom: 15px;
+  padding: 0.3rem 0.75rem; /* Vertical and horizontal padding */
+  border-radius: 6px; /* Slightly rounded corners */
+  font-size: 0.875rem; /* Tailwnd's text-sm */
+  font-weight: 500; /* Medium weight */
 }
 
 .post-title {
-  font-size: 3em;
-  font-weight: 800;
-  margin-bottom: 15px;
+  font-size: 2.8rem; /* Larger font size for title */
+  font-weight: 700; /* Bold weight for title */
+  color: #333; /* Dark text for title */
+  margin-bottom: 0.75rem; /* Space below title */
   line-height: 1.2;
-  color: var(--color-heading-text);
 }
 
 .post-meta {
-  font-size: 1em;
-  color: var(--color-blog-card-date); /* Reusing card date color */
+  font-size: 0.95rem; /* Slightly smaller for meta info */
+  color: #7d7d7d; /* Consistent grey for meta */
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 30px;
+  gap: 0.75rem; /* Space between meta elements */
+  margin-bottom: 2.5rem; /* More space below meta before content */
+}
+
+.post-meta span {
+  white-space: nowrap; /* Prevent breaking across lines */
 }
 
 .post-body {
-  font-size: 1.1em;
-  line-height: 1.8;
-  color: var(--color-page-text);
+  font-size: 1.05rem; /* Slightly larger text for readability */
+  line-height: 1.7; /* Good line height */
+  color: #555; /* Medium grey for body text */
 }
 
 .post-body p {
-  margin-bottom: 1em;
+  margin-bottom: 1.5em; /* Space between paragraphs */
 }
 
+/* Example styling for rich text content within post-body */
 .post-body h2 {
-  font-size: 1.8em;
-  margin-top: 1.5em;
-  margin-bottom: 0.8em;
-  color: var(--color-heading-text);
+  font-size: 2em;
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: #333;
 }
 
 .post-body h3 {
-  font-size: 1.5em;
-  margin-top: 1.2em;
-  margin-bottom: 0.7em;
-  color: var(--color-heading-text);
+  font-size: 1.6em;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  color: #333;
 }
 
 .post-body ul, .post-body ol {
-  margin-left: 20px;
-  margin-bottom: 1em;
+  margin-left: 2rem; /* Indent lists */
+  margin-bottom: 1.5em;
+  padding-left: 0;
+}
+
+.post-body li {
+  margin-bottom: 0.5em;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .post-header-image {
-    height: 300px;
-  }
-  .post-content-container {
-    padding: 0 15px 30px;
-  }
-  .post-title {
-    font-size: 2.2em;
-  }
-  .post-body {
-    font-size: 1em;
-  }
-  .post-body h2 {
-    font-size: 1.5em;
-  }
-  .post-body h3 {
-    font-size: 1.3em;
+    max-width: 760px; /* Reduce image width for smaller desktops */
+    margin-left: 24px;
+    margin-right: 24px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .single-blog-post-page {
+    padding-top: 60px; /* Adjust for smaller nav if applicable */
+  }
   .post-header-image {
-    height: 250px;
+    max-height: 350px; /* Adjust height */
+    margin: 1.5rem auto;
+  }
+  .post-content-wrapper {
+    max-width: 600px; /* Smaller max width for tablets */
+    padding: 0 16px;
+    margin-top: 1rem;
   }
   .post-title {
+    font-size: 2.2rem;
+  }
+  .post-meta {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .post-body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .post-body h2 {
     font-size: 1.8em;
+  }
+}
+
+@media (max-width: 500px) {
+  .post-header-image {
+    max-height: 250px; /* Even smaller height for mobile */
+    margin: 1rem auto;
+  }
+  .post-content-wrapper {
+    padding: 0 12px;
+    margin-top: 0.75rem;
+  }
+  .post-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .post-meta {
+    font-size: 0.85rem;
+    flex-wrap: wrap; /* Allow meta items to wrap if space is tight */
+    margin-bottom: 1.5rem;
+  }
+  .back-to-blog-container {
+    flex-direction: column; /* Stack link and category vertically */
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  .post-category {
+    margin-top: 0.5rem; /* Add space when stacked */
+  }
+  .post-body {
+    font-size: 0.95rem;
+  }
+  .post-body h2 {
+    font-size: 1.4em;
+  }
+  .post-body h3 {
+    font-size: 1.2em;
   }
 }
