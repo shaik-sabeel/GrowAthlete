@@ -121,6 +121,7 @@ import './App.css'; // Main App global styles, container, etc.
 import './index.css'; // Base HTML resets, font imports etc.
 import './pages_css/variables.css'; // Global CSS variables
 import CommunityPage from './pages/CommunityPage';
+import CreateBlog from './pages/CreateBlogPost.jsx';
 
 // Swiper styles (global for carousels)
 import 'swiper/css';
@@ -171,10 +172,11 @@ function AppContent() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
+          <Route path="/create-blog" element={<CreateBlog />} />
             <Route path="/events" element={<EventsPage />} /> {/* Route for viewing events */}
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
-            <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
-community-page
+          <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
+          <Route path="/community" element={<CommunityPage />} />
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
             

@@ -81,6 +81,20 @@ const [data, setData] = useState(null);
     fetchData();
   }, [isAuthenticated]);
 
+//   useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const res = await api.get("/auth/profile");
+//       setData(res.data.user);
+//       setIsAuthenticated(true);
+//     } catch (err) {
+//       setIsAuthenticated(false);
+//       setData(null);
+//     }
+//   };
+//   fetchData();
+// }, []);
+
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout");
@@ -190,7 +204,7 @@ const [data, setData] = useState(null);
       <div className="navbar-auth desktop-only">
         {/* Use the common Button component with specific variant */}
         {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
-        
+
       </div>
     </nav>
   );
