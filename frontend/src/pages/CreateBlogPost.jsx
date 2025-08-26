@@ -13,7 +13,7 @@ export default function CreateBlogPost() {
     image: "", // Renamed from coverImage to image for consistency with schema, storing URL directly or base64 (not File)
     content: "",
     summary: "",
-    tags: "", // New field for tags
+    
     isPremium: false, // New field for premium content
     publicationStatus: 'publish', // Default status for direct publish
     visibility: 'public', // Default visibility
@@ -72,7 +72,7 @@ export default function CreateBlogPost() {
         summary: formData.summary,
         category: formData.category,
         image: formData.image, // Include the image URL
-        tags: formData.tags, // Include tags
+         // Include tags
         isPremium: formData.isPremium, // Include premium status
         author: hardcodedAuthorId, // Pass the author ID
       }),
@@ -240,7 +240,7 @@ export default function CreateBlogPost() {
                       </div>
                     </div>
 
-                    <div className="sm:col-span-3">
+                    {/* <div className="sm:col-span-3">
                       <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
                         Tags
                       </label>
@@ -255,7 +255,7 @@ export default function CreateBlogPost() {
                           placeholder="e.g. training, youth, technique (comma separated)"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
