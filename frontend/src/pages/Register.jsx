@@ -238,9 +238,9 @@ const Register = () => {
                 }}
               >
                 <option value="athlete" className="bg-gray-800 text-white">Athlete</option>
-                <option value="coach" className="bg-gray-800 text-white">Coach</option>
-                <option value="scout" className="bg-gray-800 text-white">Scout</option>
-                <option value="sponsor" className="bg-gray-800 text-white">Sponsor</option>
+                <option value="athlete" className="bg-gray-800 text-white">Coach</option>
+                <option value="athlete" className="bg-gray-800 text-white">Scout</option>
+                <option value="athlete" className="bg-gray-800 text-white">Sponsor</option>
               </select>
             </div>
 

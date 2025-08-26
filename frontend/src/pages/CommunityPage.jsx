@@ -8,6 +8,7 @@ import '../pages_css/CommunityPage.css';
 import sohamImg from '../assets/soham.jpg';
 import anikaImg from '../assets/anika.jpg';
 import vikramImg from '../assets/vikram.jpg';
+import Navbar from '../components/Navbar';
 
 const AUTOPLAY_MS = 3500;
 
@@ -28,6 +29,8 @@ const CommunityPage = () => {
   }, [topContributors.length]);
 
   return (
+    <>
+    <Navbar />
     <div className="community">
       <section className="community__main">
         <div className="community__card community__section">
@@ -126,6 +129,7 @@ const CommunityPage = () => {
         </div>
       </aside>
     </div>
+    </>
   );
 };
 
