@@ -22,7 +22,8 @@ const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
   { name: 'Athletes', path: '/athletes' },
-  { name: 'News', path: '/news' }, // Updated to use the main news page
+  { name: 'News', path: '/news' }, // Sports News from SportsPulse
+  { name: 'Live Scores', path: '/live-scores' }, // Separated Live Scores
   { name: 'My Profile', path: '/profile' },
   { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'Community', path: '/community' },
