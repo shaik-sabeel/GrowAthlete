@@ -62,21 +62,24 @@ const AdminDashboard = () => {
     };
   }, [searchTerm]);
 
-  // Admin entry intro animation (once per session)
+  // Admin entry intro animation (once per session, optional force via URL)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const forceIntro = params.get('showIntro') === '1';
     const hasShown = sessionStorage.getItem('adminIntroShown');
+    let timeoutId;
     if (forceIntro || !hasShown) {
       setShowIntro(true);
-      const t = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setShowIntro(false);
         if (!forceIntro) {
           sessionStorage.setItem('adminIntroShown', '1');
         }
       }, 4000);
-      return () => clearTimeout(t);
     }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   const fetchUsers = async () => {
@@ -153,41 +156,41 @@ const AdminDashboard = () => {
 
   const handleRoleChange = async (userId, newRole) => {
     await runWithBusy(async () => {
-      try {
-        await api.patch(`/admin/users/${userId}/role`, { role: newRole });
+    try {
+      await api.patch(`/admin/users/${userId}/role`, { role: newRole });
         await fetchUsers();
-      } catch (error) {
-        console.error('Failed to change role:', error);
-        alert('Failed to change user role');
-      }
+    } catch (error) {
+      console.error('Failed to change role:', error);
+      alert('Failed to change user role');
+    }
     });
   };
 
   const handleVerification = async (userId, isVerified) => {
     await runWithBusy(async () => {
-      try {
-        await api.patch(`/admin/users/${userId}/verify`, { isVerified });
+    try {
+      await api.patch(`/admin/users/${userId}/verify`, { isVerified });
         await fetchUsers();
-      } catch (error) {
-        console.error('Failed to update verification:', error);
-        alert('Failed to update verification status');
-      }
+    } catch (error) {
+      console.error('Failed to update verification:', error);
+      alert('Failed to update verification status');
+    }
     });
   };
 
   const handleSuspension = async (userId, isSuspended, reason = '', until = null) => {
     await runWithBusy(async () => {
-      try {
-        await api.patch(`/admin/users/${userId}/suspend`, { 
-          isSuspended, 
-          suspendedReason: reason, 
-          suspendedUntil: until 
-        });
+    try {
+      await api.patch(`/admin/users/${userId}/suspend`, { 
+        isSuspended, 
+        suspendedReason: reason, 
+        suspendedUntil: until 
+      });
         await fetchUsers();
-      } catch (error) {
-        console.error('Failed to update suspension:', error);
-        alert('Failed to update suspension status');
-      }
+    } catch (error) {
+      console.error('Failed to update suspension:', error);
+      alert('Failed to update suspension status');
+    }
     });
   };
 
@@ -607,6 +610,33 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
+      {isBusy && (
+        <div className="admin-busy-overlay" aria-live="polite" aria-busy="true">
+          <div className="admin-busy-content">
+            <div className="loader">
+              <span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <div className="base">
+                <span></span>
+                <div className="face"></div>
+              </div>
+            </div>
+            <div className="admin-loading-text">
+              Loading<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+            </div>
+          </div>
+          <div className="longfazers">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      )}
       {showIntro && (
         <div className="admin-intro-overlay">
           <div className="admin-intro-badge">
