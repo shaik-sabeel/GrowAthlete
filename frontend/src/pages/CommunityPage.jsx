@@ -9,8 +9,6 @@ import '../pages_css/CommunityPage.css';
 import sohamImg from '../assets/soham.jpg';
 import anikaImg from '../assets/anika.jpg';
 import vikramImg from '../assets/vikram.jpg';
-import api from '../utils/api';
-import { getCurrentUserId } from '../utils/auth';
 
 import Navbar from '../components/Navbar';
 

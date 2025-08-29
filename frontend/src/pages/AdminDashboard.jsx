@@ -4,6 +4,7 @@ import '../pages_css/AdminDashboard.css';
 import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
 import SportsEventsManagement from '../components/SportsEventsManagement';
+import AnimatedSportsBackground from '../components/AnimatedSportsBackground';
 import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaBell, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const AdminDashboard = () => {
@@ -610,6 +611,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-layout">
+      <AnimatedSportsBackground />
       {isBusy && (
         <div className="admin-busy-overlay" aria-live="polite" aria-busy="true">
           <div className="admin-busy-content">

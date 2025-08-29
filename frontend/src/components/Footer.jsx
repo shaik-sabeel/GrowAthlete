@@ -95,12 +95,15 @@
 // frontend/src/components/Footer.jsx
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import './Footer.css';
 import { FaEnvelope, FaPhone, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const Footer = () => {
+  const location = useLocation();
+  const isAdminPage = location.pathname === '/admin-dashboard';
   return (
-    <footer className="footer">
+    <footer className={`footer${isAdminPage ? ' footer--admin' : ''}`}>
       <div className="footer-container">
         
         <div className="footer-column">
