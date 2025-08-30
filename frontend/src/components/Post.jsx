@@ -126,6 +126,9 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
   const renderMedia = (media) => {
     if (!media || media.length === 0) return null;
 
+    // Use the same base URL as the API to access uploaded media files
+    const baseURL = 'http://localhost:5000';
+
     return (
       <div className="mt-3 pl-12">
         <div className="grid grid-cols-1 gap-2">
@@ -133,19 +136,26 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
             <div key={index}>
               {item.mediaType === 'image' ? (
                 <img
-                  src={item.url}
+                  src={`${baseURL}${item.url}`}
                   alt="Post media"
                   className="max-w-full h-auto rounded-lg"
+                  onError={(e) => {
+                    console.error('Failed to load image:', `${baseURL}${item.url}`);
+                    e.target.style.display = 'none';
+                  }}
                 />
               ) : item.mediaType === 'video' ? (
                 <video
-                  src={item.url}
+                  src={`${baseURL}${item.url}`}
                   controls
                   className="max-w-full h-auto rounded-lg"
+                  onError={(e) => {
+                    console.error('Failed to load video:', `${baseURL}${item.url}`);
+                  }}
                 />
               ) : (
                 <a
-                  href={item.url}
+                  href={`${baseURL}${item.url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 p-3 bg-gray-100 rounded-lg hover:bg-gray-200"
