@@ -10,6 +10,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const contentModerationRoutes = require("./routes/contentModeration");
 const eventRoutes = require("./routes/eventRoutes");
 const blogRoutes = require("./routes/blogRoutes");
+const communityPostRoutes = require("./routes/communityPostRoutes");
 
 const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
@@ -32,9 +33,27 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/moderation", contentModerationRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/community", communityPostRoutes);
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
+// Handle 404 errors
+app.use((req, res) => {
+  res.status(404).send('Route not found');
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📱 Frontend should be running on http://localhost:5173`);
+}).on('error', (err) => {
+  console.error('❌ Server failed to start:', err.message);
+  process.exit(1);
 });
 
 //comment

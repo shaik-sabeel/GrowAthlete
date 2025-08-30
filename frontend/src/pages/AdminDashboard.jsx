@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import '../pages_css/AdminDashboard.css';
 import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
 import SportsEventsManagement from '../components/SportsEventsManagement';
+import AnimatedSportsBackground from '../components/AnimatedSportsBackground';
 import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaBell, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isBusy, setIsBusy] = useState(false);
+  const BUSY_MIN_MS = 5000;
+  const isFirstLoadRef = useRef(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showUserModal, setShowUserModal] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -29,6 +33,7 @@ const AdminDashboard = () => {
   // Performance states
   const [isSearching, setIsSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [showIntro, setShowIntro] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -58,8 +63,33 @@ const AdminDashboard = () => {
     };
   }, [searchTerm]);
 
+  // Admin entry intro animation (once per session, optional force via URL)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const forceIntro = params.get('showIntro') === '1';
+    const hasShown = sessionStorage.getItem('adminIntroShown');
+    let timeoutId;
+    if (forceIntro || !hasShown) {
+      setShowIntro(true);
+      timeoutId = setTimeout(() => {
+        setShowIntro(false);
+        if (!forceIntro) {
+          sessionStorage.setItem('adminIntroShown', '1');
+        }
+      }, 4000);
+    }
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
+
   const fetchUsers = async () => {
     try {
+      const busyStart = Date.now();
+      // Only show busy overlay with min duration after first load
+      if (!isFirstLoadRef.current) {
+        setIsBusy(true);
+      }
       setLoading(true);
       const params = new URLSearchParams({
         page: currentPage,
@@ -80,41 +110,89 @@ const AdminDashboard = () => {
       console.error('Failed to fetch users:', error);
       setLoading(false);
       setIsSearching(false);
+    } finally {
+      const elapsed = Date.now() - busyStart;
+      if (isFirstLoadRef.current) {
+        // No enforced delay on initial load
+        setIsBusy(false);
+        isFirstLoadRef.current = false;
+      } else {
+        const remaining = Math.max(0, BUSY_MIN_MS - elapsed);
+        if (remaining > 0) {
+          setTimeout(() => setIsBusy(false), remaining);
+        } else {
+          setIsBusy(false);
+        }
+      }
     }
   };
 
+  // Busy state helper for actions
+  const runWithBusy = async (fn) => {
+    try {
+      const busyStart = Date.now();
+      setIsBusy(true);
+      await fn();
+    } finally {
+      const elapsed = Date.now() - busyStart;
+      const remaining = Math.max(0, BUSY_MIN_MS - elapsed);
+      if (remaining > 0) {
+        setTimeout(() => setIsBusy(false), remaining);
+      } else {
+        setIsBusy(false);
+      }
+    }
+  };
+
+  // Simple visual busy feedback when switching sections
+  const changeSection = (section) => {
+    setActiveSection(section);
+    if (section === 'users') {
+      // Users section triggers a real fetch; busy is handled in fetchUsers
+      return;
+    }
+    setIsBusy(true);
+    setTimeout(() => setIsBusy(false), BUSY_MIN_MS);
+  };
+
   const handleRoleChange = async (userId, newRole) => {
+    await runWithBusy(async () => {
     try {
       await api.patch(`/admin/users/${userId}/role`, { role: newRole });
-      fetchUsers();
+        await fetchUsers();
     } catch (error) {
       console.error('Failed to change role:', error);
       alert('Failed to change user role');
     }
+    });
   };
 
   const handleVerification = async (userId, isVerified) => {
+    await runWithBusy(async () => {
     try {
       await api.patch(`/admin/users/${userId}/verify`, { isVerified });
-      fetchUsers();
+        await fetchUsers();
     } catch (error) {
       console.error('Failed to update verification:', error);
       alert('Failed to update verification status');
     }
+    });
   };
 
   const handleSuspension = async (userId, isSuspended, reason = '', until = null) => {
+    await runWithBusy(async () => {
     try {
       await api.patch(`/admin/users/${userId}/suspend`, { 
         isSuspended, 
         suspendedReason: reason, 
         suspendedUntil: until 
       });
-      fetchUsers();
+        await fetchUsers();
     } catch (error) {
       console.error('Failed to update suspension:', error);
       alert('Failed to update suspension status');
     }
+    });
   };
 
   const openUserModal = (user) => {
@@ -219,10 +297,10 @@ const AdminDashboard = () => {
           <p>Here's what's happening with your platform today</p>
         </div>
         <div className="welcome-actions">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
             <FaRocket /> Launch Campaign
           </button>
-          <button className="btn btn-secondary">
+          <button className="btn btn-secondary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
             <FaDownload /> Export Report
           </button>
         </div>
@@ -504,14 +582,72 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="admin-loading">
-        <div className="loading-spinner"></div>
-        <p>Loading your dashboard...</p>
+        <div className="admin-loading-content">
+          <div className="loader">
+            <span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            <div className="base">
+              <span></span>
+              <div className="face"></div>
+            </div>
+          </div>
+          <div className="admin-loading-text" aria-live="polite">
+            Loading<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+          </div>
+        </div>
+        <div className="longfazers">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="admin-layout">
+      <AnimatedSportsBackground />
+      {isBusy && (
+        <div className="admin-busy-overlay" aria-live="polite" aria-busy="true">
+          <div className="admin-busy-content">
+            <div className="loader">
+              <span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+              <div className="base">
+                <span></span>
+                <div className="face"></div>
+              </div>
+            </div>
+            <div className="admin-loading-text">
+              Loading<span className="dot">.</span><span className="dot">.</span><span className="dot">.</span>
+            </div>
+          </div>
+          <div className="longfazers">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      )}
+      {showIntro && (
+        <div className="admin-intro-overlay">
+          <div className="admin-intro-badge">
+            <span className="admin-intro-glow"></span>
+            <span className="admin-intro-crown">👑</span>
+            <span className="admin-intro-text">Admin Mode</span>
+          </div>
+        </div>
+      )}
       {/* Sidebar */}
       <div className={`admin-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
@@ -535,7 +671,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'dashboard' ? 'active' : ''}`}
-                onClick={() => setActiveSection('dashboard')}
+                onClick={() => changeSection('dashboard')}
               >
                 <FaHome />
                 {!sidebarCollapsed && <span>Dashboard</span>}
@@ -544,7 +680,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'users' ? 'active' : ''}`}
-                onClick={() => setActiveSection('users')}
+                onClick={() => changeSection('users')}
               >
                 <FaUsers />
                 {!sidebarCollapsed && <span>User Management</span>}
@@ -553,7 +689,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'verification' ? 'active' : ''}`}
-                onClick={() => setActiveSection('verification')}
+                onClick={() => changeSection('verification')}
               >
                 <FaUserCheck />
                 {!sidebarCollapsed && <span>Verification</span>}
@@ -562,7 +698,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'suspensions' ? 'active' : ''}`}
-                onClick={() => setActiveSection('suspensions')}
+                onClick={() => changeSection('suspensions')}
               >
                 <FaUserTimes />
                 {!sidebarCollapsed && <span>Suspensions</span>}
@@ -571,7 +707,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'analytics' ? 'active' : ''}`}
-                onClick={() => setActiveSection('analytics')}
+                onClick={() => changeSection('analytics')}
               >
                 <FaChartBar />
                 {!sidebarCollapsed && <span>Analytics</span>}
@@ -580,7 +716,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'moderation' ? 'active' : ''}`}
-                onClick={() => setActiveSection('moderation')}
+                onClick={() => changeSection('moderation')}
               >
                 <FaShieldAlt />
                 {!sidebarCollapsed && <span>Content Moderation</span>}
@@ -589,7 +725,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'sports-events' ? 'active' : ''}`}
-                onClick={() => setActiveSection('sports-events')}
+                onClick={() => changeSection('sports-events')}
               >
                 <FaTrophy />
                 {!sidebarCollapsed && <span>Sports & Events</span>}
@@ -598,7 +734,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'system-admin' ? 'active' : ''}`}
-                onClick={() => setActiveSection('system-admin')}
+                onClick={() => changeSection('system-admin')}
               >
                 <FaCog />
                 {!sidebarCollapsed && <span>System Administration</span>}
@@ -607,7 +743,7 @@ const AdminDashboard = () => {
             <li>
               <button 
                 className={`nav-item ${activeSection === 'settings' ? 'active' : ''}`}
-                onClick={() => setActiveSection('settings')}
+                onClick={() => changeSection('settings')}
               >
                 <FaCog />
                 {!sidebarCollapsed && <span>Settings</span>}

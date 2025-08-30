@@ -68,19 +68,38 @@ const [data, setData] = useState(null);
   //   sendAuthState(isAuthenticated);
   // }, [isAuthenticated, sendAuthState]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await api.get("/auth/profile");
+  //       setData(res.data.user);
+  //       setIsAuthenticated(true); // Set authenticated state based on profile data
+  //     } catch (err) {
+  //       setIsAuthenticated(false); // If fetching fails, user is not authenticated
+  //       console.error("Error fetching profile data:", err);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [isAuthenticated]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await api.get("/auth/profile");
-        setData(res.data.user);
-        setIsAuthenticated(true); // Set authenticated state based on profile data
-      } catch (err) {
-        setIsAuthenticated(false); // If fetching fails, user is not authenticated
-        console.error("Error fetching profile data:", err);
-      }
-    };
-    fetchData();
-  }, [isAuthenticated]);
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;  // 🚀 Don't call API if no token
+
+      const res = await api.get("/auth/profile");
+      setData(res.data.user);
+      setIsAuthenticated(true);
+    } catch (err) {
+      setIsAuthenticated(false);
+      setData(null);
+      console.error("Error fetching profile data:", err);
+    }
+  };
+  fetchData();
+}, []); // run once on mount
+
 
 //   useEffect(() => {
 //   const fetchData = async () => {
