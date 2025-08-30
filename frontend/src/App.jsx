@@ -203,7 +203,7 @@ function AppContent() {
            <Route
             path="/event/create"
             element={
-              <ProtectedRoute role="admin" isAllowed={isAuthenticated()}>
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <CreateEventPage />
               </ProtectedRoute>
             }
