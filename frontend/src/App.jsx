@@ -246,7 +246,7 @@ function AppContent() {
           <Route
             path="/sports-news"
             element={
-              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+              <ProtectedRoute isAllowed={isAuthenticated()}>
                 <NewsPage />
               </ProtectedRoute>
             }
