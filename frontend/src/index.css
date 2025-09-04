@@ -76,3 +76,40 @@ button:focus-visible {
 @media (prefers-reduced-motion: no-preference) { ... }
 .card { ... }
 .read-the-docs { ... } */
+
+/* src/index.css (or wherever you define your global styles) */
+
+/*
+Add this block to your CSS.
+It defines keyframes for a text flicker animation and applies it
+with varying opacities and subtle transforms for a glitch effect.
+*/
+
+@keyframes text-flicker {
+  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
+    opacity: 1;
+    transform: none;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+    opacity: 0.8; /* Slight dim */
+    transform: translateY(1px) translateX(-0.5px); /* Minor jitter */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+
+  11%, 31%, 51%, 71%, 91% {
+    opacity: 0; /* Complete momentary disappearance */
+    transform: translateY(2px) translateX(1px) scale(0.99); /* More pronounced jitter */
+    text-shadow: none;
+  }
+  21%, 41%, 61%, 81% {
+    opacity: 0.2; /* Short partial fade out */
+    transform: translateY(-1px) translateX(0.5px);
+  }
+}
+
+.animate-text-flicker {
+  animation: text-flicker 4s infinite alternate ease-in-out; /* Longer, smoother base */
+  will-change: opacity, transform, text-shadow; /* Optimize browser rendering */
+}
