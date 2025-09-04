@@ -113,3 +113,49 @@ with varying opacities and subtle transforms for a glitch effect.
   animation: text-flicker 4s infinite alternate ease-in-out; /* Longer, smoother base */
   will-change: opacity, transform, text-shadow; /* Optimize browser rendering */
 }
+
+
+
+/* src/index.css (or wherever you define your global styles) */
+
+/* Existing flicker keyframes (ensure these are present from previous step) */
+@keyframes text-flicker {
+  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
+    opacity: 1;
+    transform: none;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+    opacity: 0.8;
+    transform: translateY(1px) translateX(-0.5px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  }
+
+  11%, 31%, 51%, 71%, 91% {
+    opacity: 0;
+    transform: translateY(2px) translateX(1px) scale(0.99);
+    text-shadow: none;
+  }
+  21%, 41%, 61%, 81% {
+    opacity: 0.2;
+    transform: translateY(-1px) translateX(0.5px);
+  }
+}
+
+.animate-text-flicker {
+  animation: text-flicker 4s infinite alternate ease-in-out;
+  will-change: opacity, transform, text-shadow;
+}
+
+
+/* New keyframes for the @effectualdesign fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.8; } /* Matching the text's default opacity */
+}
+
+.animate-fade-in {
+  opacity: 0; /* Start invisible */
+  animation: fadeIn 1s forwards ease-out; /* forwards keeps it visible after animation */
+}
