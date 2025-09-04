@@ -408,8 +408,43 @@ router.post("/events", upload.single("image"), verifyToken, isAdmin, async (req,
       isOpen
     } = req.body;
 
-    // Combine date and time
+    // Combine date and time with proper timezone handling
     const eventDateTime = new Date(`${date}T${time}`);
+    
+    // Log for debugging
+    console.log('Creating event with date:', eventDateTime, 'from input:', `${date}T${time}`);
+
+    // Parse JSON strings for arrays
+    let parsedTags = [];
+    let parsedHighlights = [];
+    let parsedRequirements = [];
+
+    // Helper function to properly parse array fields
+    const parseArrayField = (field, fieldName) => {
+      if (!field) return [];
+      
+      if (Array.isArray(field)) return field;
+      
+      if (typeof field === 'string') {
+        try {
+          const parsed = JSON.parse(field);
+          if (Array.isArray(parsed)) return parsed;
+          if (parsed === "[]" || parsed === "") return [];
+          return [parsed];
+        } catch (error) {
+          console.log(`Error parsing ${fieldName}:`, error.message);
+          return field.split(',').map(item => item.trim()).filter(item => item && item !== "[]");
+        }
+      }
+      
+      return [];
+    };
+
+    parsedTags = parseArrayField(tags, 'tags');
+    parsedHighlights = parseArrayField(highlights, 'highlights');
+    parsedRequirements = parseArrayField(requirements, 'requirements');
+
+    console.log('Parsed arrays:', { parsedTags, parsedHighlights, parsedRequirements });
 
     const newEvent = new Event({
       title,
@@ -426,10 +461,10 @@ router.post("/events", upload.single("image"), verifyToken, isAdmin, async (req,
       organizerName,
       organizerEmail,
       organizerPhone,
-      tags: tags || [],
-      highlights: highlights || [],
-      requirements: requirements || [],
-      status: isOpen ? "published" : "draft", // Set status based on toggle
+      tags: parsedTags,
+      highlights: parsedHighlights,
+      requirements: parsedRequirements,
+      status: isOpen === 'true' || isOpen === true ? "published" : "draft", // Fix boolean parsing
       image: req.file ? `/uploads/events/${req.file.filename}` : null
     });
 
@@ -462,13 +497,17 @@ router.get("/events", verifyToken, isAdmin, async (req, res) => {
 
     const query = {};
     
-    if (status !== "all") query.status = status;
-    if (sport !== "all") query.sport = sport;
-    if (category !== "all") query.category = category;
+    // Handle both empty strings and "all" as no filter
+    if (status && status !== "all" && status !== "") query.status = status;
+    if (sport && sport !== "all" && sport !== "") query.sport = sport;
+    if (category && category !== "all" && category !== "") query.category = category;
     
     // Filter out past events unless explicitly requested
     if (showPastEvents !== "true") {
       query.date = { $gte: new Date() };
+      console.log('Filtering for future events only. Current date:', new Date());
+    } else {
+      console.log('Showing all events including past events');
     }
     
     if (search) {
@@ -483,6 +522,9 @@ router.get("/events", verifyToken, isAdmin, async (req, res) => {
     sort[sortBy] = sortOrder === "desc" ? -1 : 1;
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
+    console.log('Events query:', JSON.stringify(query, null, 2));
+    console.log('Sort object:', sort);
+
     const total = await Event.countDocuments(query);
 
     const events = await Event.find(query)
@@ -492,6 +534,11 @@ router.get("/events", verifyToken, isAdmin, async (req, res) => {
       .skip(skip)
       .limit(parseInt(limit))
       .lean();
+
+    console.log(`Found ${events.length} events out of ${total} total`);
+    if (events.length > 0) {
+      console.log('First event:', events[0].title, 'Date:', events[0].date);
+    }
 
     res.json({
       events,

@@ -189,14 +189,14 @@ const EventsPage = () => {
                     </h1>
 
                     {/* --- ADDED: Create New Event button --- */}
-                    <div className="text-center mb-12">
+                    {/* <div className="text-center mb-12">
                         <Link 
                             to="/event/create"
                             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"style={{color:'white'}}
                         >
                             Create New Event
                         </Link>
-                    </div>
+                    </div> */}
                     {/* --- END ADDED BUTTON --- */}
 
                     {events.length === 0 ? (
