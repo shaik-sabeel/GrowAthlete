@@ -5,7 +5,7 @@
 
 export const API_CONFIG = {
   NEWSDATA: {
-    API_KEY: import.meta.env.VITE_NEWSDATA_API_KEY || "", // fallback empty
+    API_KEY: import.meta.env.VITE_NEWSDATA_API_KEY || "pub_44e5a0bf7c6f4d618d4755a6896cef95", // fallback to your API key
     BASE_URL: "https://newsdata.io/api/1/news",
   },
   SPORTSDB: {

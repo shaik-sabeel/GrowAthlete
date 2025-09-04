@@ -22,7 +22,7 @@ const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
   { name: 'Athletes', path: '/athletes' },
-  { name: 'News', path: '/sports-news' }, // Renamed from Sports News for simplicity
+  { name: 'News', path: '/news' }, // Updated to use the main news page
   { name: 'My Profile', path: '/profile' },
   { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'Community', path: '/community' },
@@ -30,6 +30,7 @@ const navLinks = [
 
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events' },
+    { name: 'Saved Articles', path: '/saved-articles' },
     { name: 'Sponsorships', path: '/sponsorships' },
     { name: 'Resources', path: '/resources' },
     { name: 'Membership', path: '/membership' },

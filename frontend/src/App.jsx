@@ -134,6 +134,7 @@ import SportsBlogPage from './pages/SportsBlogPage.jsx';     // <--- NEW IMPORT
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx'; // <--- NEW IMPORT
 import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';  // <--- NEWS PAGE (full, original dummy data)
 import LiveScoresPage from './pages/LiveScoresPage.jsx';              // <--- LIVE SCORES PAGE (full, original dummy data)
+import SavedArticlesPage from './pages/SavedArticlesPage.jsx';        // <--- SAVED ARTICLES PAGE
 // Wrapper component to handle conditional navbar rendering
 function AppContent() {
   const location = useLocation();
@@ -179,6 +180,7 @@ function AppContent() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
+          <Route path="/saved-articles" element={<ErrorBoundary><SavedArticlesPage /></ErrorBoundary>} />         {/* <--- SAVED ARTICLES PAGE */}
             
 
           <Route path="/membership" element={<MembershipPage />} />
