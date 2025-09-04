@@ -27,13 +27,14 @@ const navLinks = [
   { name: 'My Profile', path: '/profile' },
   { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'Community', path: '/community' },
-  { name: 'Contact Us', path: '/contact' },
+  ,
 
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events' },
     { name: 'Sponsorships', path: '/sponsorships' },
     { name: 'Resources', path: '/resources' },
     { name: 'Membership', path: '/membership' },
+    { name: 'Contact Us', path: '/contact' }
    
   ]},
 ];
@@ -122,7 +123,7 @@ const [data, setData] = useState(null);
   };
 
   return (
-    <nav className="navbar rounded-full">
+    <nav className="navbar ">
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <img src={gaLogo} alt="GrowAthlete Logo" className="navbar-logo-icon" />
