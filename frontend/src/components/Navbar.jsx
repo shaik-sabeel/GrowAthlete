@@ -32,7 +32,7 @@ const navLinks = [
     { name: 'Events', path: '/events' },
     { name: 'Saved Articles', path: '/saved-articles' },
     { name: 'Sponsorships', path: '/sponsorships' },
-    { name: 'Resources', path: '/resources' },
+    // { name: 'Resources', path: '/resources' },
     { name: 'Membership', path: '/membership' },
     { name: 'Contact Us', path: '/contact' }
    
