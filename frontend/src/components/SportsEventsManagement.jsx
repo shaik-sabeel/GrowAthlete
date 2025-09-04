@@ -45,7 +45,7 @@ const SportsEventsManagement = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterSport, setFilterSport] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [showPastEvents, setShowPastEvents] = useState(false);
+  const [showPastEvents, setShowPastEvents] = useState(true); // Default to show all events
 
   // Sports Categories State
   const [categories, setCategories] = useState([]);
@@ -100,7 +100,18 @@ const SportsEventsManagement = () => {
     if (activeTab === 'categories') {
       fetchCategories();
     } else if (activeTab === 'events') {
-      fetchEvents();
+      // Auto-update event statuses before fetching events
+      const updateAndFetchEvents = async () => {
+        try {
+          // Automatically update event statuses (mark past events as completed)
+          await api.post('/admin/events/update-statuses');
+        } catch (error) {
+          console.error('Failed to auto-update event statuses:', error);
+        }
+        // Always fetch events, regardless of status update success/failure
+        fetchEvents();
+      };
+      updateAndFetchEvents();
     } else if (activeTab === 'analytics') {
       fetchOverviewStats();
     }
@@ -304,18 +315,20 @@ const SportsEventsManagement = () => {
       const params = new URLSearchParams({
         page: currentPage,
         limit: itemsPerPage,
-        status: filterStatus !== 'all' ? filterStatus : '',
-        sport: filterSport !== 'all' ? filterSport : '',
-        category: filterCategory !== 'all' ? filterCategory : '',
+        status: filterStatus === 'all' ? 'all' : filterStatus,
+        sport: filterSport === 'all' ? 'all' : filterSport,
+        category: filterCategory === 'all' ? 'all' : filterCategory,
         search: searchTerm,
         showPastEvents: showPastEvents.toString()
       });
 
       const response = await api.get(`/admin/events?${params}`);
-      setEvents(response.data.events);
-      setTotalPages(response.data.totalPages);
+      setEvents(response.data.events || []);
+      setTotalPages(response.data.totalPages || Math.ceil((response.data.total || 0) / itemsPerPage));
     } catch (error) {
       console.error('Failed to fetch events:', error);
+      setEvents([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
@@ -476,7 +489,7 @@ const SportsEventsManagement = () => {
   };
 
   const renderEventsTable = () => {
-    if (events.length === 0) {
+    if (!events || !Array.isArray(events) || events.length === 0) {
       return (
         <div className="text-center py-8">
           <FaCalendar className="mx-auto h-12 w-12 text-gray-400" />
@@ -519,7 +532,15 @@ const SportsEventsManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
-                      <img className="h-10 w-10 rounded-lg object-cover" src={event.image} alt={event.title} />
+                      <img 
+                        className="h-10 w-10 rounded-lg object-cover" 
+                        src={`http://localhost:5000${event.image}`} 
+                        alt={event.title}
+                        onError={(e) => {
+                          console.error('Failed to load event image:', `http://localhost:5000${event.image}`);
+                          e.target.style.display = 'none';
+                        }}
+                      />
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-900">{event.title}</div>
