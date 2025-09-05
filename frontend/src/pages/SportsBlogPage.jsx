@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 // No longer importing mockBlogPosts as we're fetching from API
 import '../pages_css/SportsBlogPage.css';
 import BlogVideoBg from '../assets/growathlete_bg.mp4'; // Make sure this path is correct if you use it
+import { Link } from 'react-router-dom';
+import CreateBlog from '../pages/CreateBlogPost.jsx';
 
 const SportsBlogPage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -51,6 +53,8 @@ const SportsBlogPage = () => {
           <div className="blog-hero-content">
             <h1 className="blog-hero-title">Latest <span className="highlight">Sports News</span> & Insights</h1>
             <p className="blog-hero-subtitle">Stay updated with exclusive articles, analysis, and stories from the world of Indian sports.</p>
+            <Link to="/Create-blog" className="blog-hero-link"><button className="blog-hero-link">Create blog</button></Link>
+            
           </div>
         </div>
 

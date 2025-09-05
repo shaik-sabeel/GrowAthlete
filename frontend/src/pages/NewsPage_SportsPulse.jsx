@@ -55,7 +55,7 @@ const NewsPage_SportsPulse = () => {
     header: { background:'rgba(30,41,59,0.65)', backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', borderBottom:'1px solid #334155', padding:'2.5rem 1rem', marginTop:80, textAlign:'center', position:'relative' },
     headingGlass: {
       maxWidth: 720, margin:'0 auto', padding:'1.25rem 1.5rem',
-      background: 'linear-gradient(180deg, rgba(148,163,184,0.10), rgba(148,163,184,0.06))',
+      background: 'linear-gradient(180deg, rgba(148,163,184,0.10), rgba(255, 255, 255, 0.06))',
       border: '1px solid rgba(148,163,184,0.25)', borderRadius: 16,
       boxShadow: '0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.05)'
     },
