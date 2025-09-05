@@ -391,12 +391,12 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           ))}
         </div>
         <div className="hp-view-all-events-btn-container">
-          <Button variant="primary" link="/events-all">
+          <Button variant="primary" link="/events">
             View All Events <span style={{fontSize: '0.8em'}}>&#x1F4C6;</span>
           </Button>
-          <Link to="/calendar" className="hp-view-calendar-link">
+          {/* <Link to="/calendar" className="hp-view-calendar-link">
               View Calendar <span style={{fontSize: '0.8em'}}>&#8594;</span>
-          </Link>
+          </Link> */}
         </div>
       </section>
 

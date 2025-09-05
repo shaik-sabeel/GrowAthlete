@@ -139,12 +139,12 @@ export default function SportsResume() {
               Get Started
             </a>
             {/* Link to view resume. Update the 'to' prop based on your actual route for ViewSportsResumePage */}
-            <Link 
+            {/* <Link 
               to="/view-sports-resume" 
               className="inline-flex items-center ml-3 px-6 py-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 bg-opacity-60 hover:bg-opacity-70"
             >
               View Example
-            </Link>
+            </Link> */}
           </div>
           
           {/* Feature Cards (from V2 UI) */}
