@@ -1,11 +1,14 @@
 /* src/pages_css/SingleBlogPostPage.css */
 
+@import './variables.css';
+
 .single-blog-post-page {
   padding-top: 70px; /* Adjust to clear fixed navbar if you have one */
   min-height: 100vh;
-  background-color: #f8f8fa; /* Light greyish background color */
-  color: #333; /* Default text color */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--background-main); /* Light greyish background color */
+  color: var(--text-dark); /* Default text color */
+  font-family: var(--font-primary);
+  transition: var(--transition-smooth);
   display: flex;
   flex-direction: column;
   align-items: center; /* Center content horizontally */
@@ -76,9 +79,10 @@
 }
 
 .post-title {
+  font-family: var(--font-secondary);
   font-size: 2.8rem; /* Larger font size for title */
   font-weight: 700; /* Bold weight for title */
-  color: #333; /* Dark text for title */
+  color: var(--text-dark); /* Dark text for title */
   margin-bottom: 0.75rem; /* Space below title */
   line-height: 1.2;
 }

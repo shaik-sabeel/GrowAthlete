@@ -1,5 +1,7 @@
 /* src/pages_css/AthletesPage.css */
 
+@import './variables.css';
+
 /* Hero Section with Video Background */
 .ap-hero-section {
   position: relative;
@@ -84,7 +86,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: var(--background-light);
   border-radius: var(--border-radius-card);
   box-shadow: var(--box-shadow-card);
   padding: 20px 30px;
@@ -100,15 +102,18 @@
   width: 100%;
   padding: 12px 15px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--border-radius-button);
   font-size: 1.0em;
+  font-family: var(--font-primary);
+  background-color: var(--background-light);
+  color: var(--text-dark);
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition-smooth);
 }
 
 .ap-filter-input:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+  box-shadow: var(--box-shadow-button);
 }
 
 .ap-filter-actions {
@@ -120,14 +125,15 @@
 
 .ap-show-filters-button, .ap-reset-filters-button {
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-button);
   border: 1px solid var(--border-color);
-  background-color: white;
+  background-color: var(--background-light);
   color: var(--text-dark);
+  font-family: var(--font-primary);
   font-size: 1em;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -184,16 +190,16 @@
 }
 
 .ap-athlete-card {
-  background-color: white;
+  background-color: var(--background-light);
   border-radius: var(--border-radius-card);
   box-shadow: var(--box-shadow-card);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition-smooth);
 }
 
 .ap-athlete-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--box-shadow-card-hover);
 }
 
 .ap-athlete-image {

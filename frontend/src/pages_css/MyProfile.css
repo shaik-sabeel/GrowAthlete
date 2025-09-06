@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import './variables.css';
 
 /* Main container for the entire page */
 .profile-page-container {
@@ -8,8 +8,8 @@
   min-height: 100vh;
   /* Added padding-top to prevent overlap with a fixed navbar */
   padding: 80px 20px 40px 20px;
-  background-color: #f4f7fa;
-  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-main);
+  font-family: var(--font-primary);
 }
 
 /* Header section with profile picture and name */
@@ -25,26 +25,27 @@
 
 .profile-picture-container {
     padding: 6px;
-    background: linear-gradient(135deg, #10c6ff, #0072ff);
+    background: var(--gradient-1);
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 4px 20px rgba(0, 114, 255, 0.3);
+    box-shadow: var(--box-shadow-button);
 }
 
 .profile-picture {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  border: 5px solid #ffffff;
+  border: 5px solid var(--background-light);
   object-fit: cover;
   vertical-align: middle;
 }
 
 .profile-name {
   margin: 20px 0 5px 0;
+  font-family: var(--font-secondary);
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  background: var(--gradient-1);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -54,23 +55,23 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #55667d;
+  color: var(--text-medium);
 }
 
 /* The main info card */
 .profile-card {
   width: 100%;
   max-width: 800px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  background-color: var(--background-light);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow-card);
   overflow: hidden;
 }
 
 /* General styles for each info section */
 .profile-section {
   padding: 30px 40px;
-  border-bottom: 1px solid #e9eef2;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .profile-section:last-child {
@@ -78,9 +79,10 @@
 }
 
 .section-title {
+  font-family: var(--font-secondary);
   font-size: 1.4rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-dark);
   margin-bottom: 25px;
   position: relative;
   padding-bottom: 10px;
@@ -93,8 +95,8 @@
   left: 0;
   width: 60px;
   height: 4px;
-  background: linear-gradient(to right, #25b7ff, #0072ff);
-  border-radius: 2px;
+  background: var(--gradient-1);
+  border-radius: var(--border-radius-button);
 }
 
 /* Grid layouts for information */
@@ -126,32 +128,32 @@
 .info-item .info-label {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-medium);
   margin-bottom: 8px;
   display: block;
 }
 
 .info-item .info-value {
   font-size: 1.05rem;
-  color: #1e293b;
+  color: var(--text-dark);
   font-weight: 500;
 }
 
 .info-item a {
-  color: #0072ff;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: var(--transition-smooth);
 }
 
 .info-item a:hover {
   text-decoration: underline;
-  color: #0056b3;
+  color: var(--secondary-color);
 }
 
 .info-text {
   font-size: 1rem;
-  color: #334155;
+  color: var(--text-dark);
   line-height: 1.7;
   white-space: pre-wrap;
   text-align: left;

@@ -13,12 +13,12 @@ html, body {
 
 /* --- Full Screen Layout --- */
 .community {
-  /* Scoped palette for Community page */
-  --ga-navy: #13293D;     /* Headings, links, primary CTA, icons */
-  --ga-orange: #D98022;   /* Buttons, highlights, hover states, key terms */
-  --ga-beige: #F8F4EB;    /* Backgrounds, card surfaces */
-  --ga-charcoal: #222831; /* Body text, menu, subtle dividers */
-  --ga-soft: #ECECEC;     /* Secondary backgrounds, inputs, borders */
+  /* Use variables.css design system colors */
+  --ga-navy: var(--primary-color);     /* Headings, links, primary CTA, icons */
+  --ga-orange: var(--secondary-color);   /* Buttons, highlights, hover states, key terms */
+  --ga-beige: var(--background-main);    /* Backgrounds, card surfaces */
+  --ga-charcoal: var(--text-dark); /* Body text, menu, subtle dividers */
+  --ga-soft: var(--border-color);     /* Secondary backgrounds, inputs, borders */
 
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -55,17 +55,17 @@ html, body {
 }
 
 .community__card {
-  background: white;
+  background: var(--background-light);
   border: 1px solid var(--ga-soft);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(17, 24, 39, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow-card);
+  transition: var(--transition-smooth);
   overflow: hidden;
   width: 100%;
 }
 
 .community__card:hover { 
-  box-shadow: 0 8px 32px rgba(17, 24, 39, 0.12); 
+  box-shadow: var(--box-shadow-card-hover); 
   transform: translateY(-2px); 
 }
 
@@ -128,6 +128,7 @@ html, body {
   width: 380px;
   flex-shrink: 0;
   max-width: 380px;
+  margin-top: 90px;
 }
 
 .community__sidebar .community__card {

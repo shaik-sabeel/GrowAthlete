@@ -1,12 +1,13 @@
-/* Import a Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+/* Import variables */
+@import './variables.css';
 
 /* Global Styles (Assume body font set in App.css or index.css) */
 .about-container {
   width: 100%;
   overflow-x: hidden;
-  background-color: #f4f7fc;
-  color: #333;
+  background-color: var(--background-main);
+  color: var(--text-dark);
+  font-family: var(--font-primary);
 }
 
 /* Header Navigation */
@@ -15,9 +16,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 5%;
-  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent */
+  background-color: var(--background-light); /* Semi-transparent */
   backdrop-filter: blur(10px); /* Frosted glass effect */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: var(--box-shadow-card);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -26,18 +27,19 @@
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a237e;
+  font-family: var(--font-secondary);
+  color: var(--primary-color);
 }
 .logo span {
-  color: #42a5f5;
+  color: var(--secondary-color);
 }
 
 .about-nav a {
   margin: 0 1rem;
   text-decoration: none;
-  color: #555;
+  color: var(--text-medium);
   font-weight: 600;
-  transition: color 0.3s;
+  transition: var(--transition-smooth);
   position: relative;
 }
 .about-nav a::after {
@@ -47,8 +49,8 @@
   left: 0;
   width: 0%;
   height: 2px;
-  background-color: #42a5f5;
-  transition: width 0.3s ease-out;
+  background-color: var(--secondary-color);
+  transition: var(--transition-smooth);
 }
 
 .about-nav a:hover::after, .about-nav a.active::after {
@@ -56,23 +58,23 @@
 }
 
 .about-nav a:hover, .about-nav a.active {
-  color: #1e88e5;
+  color: var(--primary-color);
 }
 
 .sign-in-btn {
   padding: 0.6rem 1.5rem;
   border: none;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #42a5f5, #1e88e5);
-  color: white;
+  border-radius: var(--border-radius-card);
+  background: var(--gradient-1);
+  color: var(--text-on-dark);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+  transition: var(--transition-smooth);
+  box-shadow: var(--box-shadow-button);
 }
 .sign-in-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(66, 165, 245, 0.5);
+  box-shadow: var(--box-shadow-card-hover);
 }
 
 /* Hero Section */
@@ -108,7 +110,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(26, 35, 126, 0.5); /* Dark blue overlay */
+  background-color: rgba(17, 24, 39, 0.5); /* Dark overlay using background-dark */
   z-index: 2;
 }
 
@@ -119,13 +121,14 @@
 }
 
 .hero-content h1 {
+  font-family: var(--font-secondary);
   font-size: 4.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-  color: #ffffff;
+  color: var(--text-on-dark);
   opacity: 0.8;
-  border-bottom: 2px solid #8bb6f3;
+  border-bottom: 2px solid var(--tertiary-color);
   padding: 1rem;
 }
 
@@ -148,9 +151,10 @@ section {
   text-align: center;
 }
 section h2 {
+    font-family: var(--font-secondary);
     font-size: 2.5rem;
     margin-bottom: 2rem;
-    color: #1a237e;
+    color: var(--primary-color);
     position: relative;
     display: inline-block;
 }
@@ -163,8 +167,8 @@ section h2::after {
     transform: translateX(-50%);
     width: 60px;
     height: 4px;
-    background-color: #42a5f5;
-    border-radius: 2px;
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius-button);
 }
 
 /* Info Cards Section */
@@ -181,36 +185,37 @@ section h2::after {
 }
 
 .info-card {
-  background: white;
+  background: var(--background-light);
   padding: 2.5rem 2rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow-card);
+  transition: var(--transition-smooth);
   animation: fadeInSlideUp 1s ease-out;
-  border-top: 5px solid #42a5f5;
+  border-top: 5px solid var(--secondary-color);
 }
 .info-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(66, 165, 245, 0.25);
+  box-shadow: var(--box-shadow-card-hover);
 }
 .info-icon {
     font-size: 3.5rem;
-    color: #1a237e;
+    color: var(--primary-color);
     margin-bottom: 1rem;
 }
 .info-card h2 {
+  font-family: var(--font-secondary);
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #1a237e;
+  color: var(--primary-color);
 }
 .info-card p {
-    color: #555;
+    color: var(--text-medium);
     line-height: 1.6;
 }
 
 /* Featured Sports Section */
 .featured-sports-section {
-  background-color: #ffffff;
+  background-color: var(--background-light);
 }
 
 .sports-gallery {
@@ -276,32 +281,33 @@ section h2::after {
     text-align: left;
 }
 .value-item {
-    background: #ffffff;
+    background: var(--background-light);
     padding: 2rem;
     padding-right: 1rem;
-    border-left: 5px solid #42a5f5;
-    border-radius: 0 8px 8px 0;
-    transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--secondary-color);
+    border-radius: 0 var(--border-radius-button) var(--border-radius-button) 0;
+    transition: var(--transition-smooth);
+    box-shadow: var(--box-shadow-card);
 }
 .value-item:hover {
-    border-color: #1a237e;
+    border-color: var(--primary-color);
     transform: translateX(5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: var(--box-shadow-card-hover);
 }
 .value-item h3 {
-    color: #1a237e;
+    font-family: var(--font-secondary);
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
 }
 .value-item p {
-    color: #555;
+    color: var(--text-medium);
     line-height: 1.6;
 }
 
 /* Footer */
 .about-footer {
-    background-color: #0f172a;
-    color: #cbd5e1;
+    background-color: var(--background-dark);
+    color: var(--text-on-dark);
     padding: 4rem 5% 1.5rem;
 }
 .footer-content {
@@ -311,21 +317,22 @@ section h2::after {
     margin-bottom: 3rem;
 }
 .footer-col h3 {
-    color: #ffffff;
+    font-family: var(--font-secondary);
+    color: var(--text-on-dark);
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid #42a5f5;
+    border-bottom: 2px solid var(--secondary-color);
     padding-bottom: 0.5rem;
     display: inline-block;
 }
 .footer-col a, .footer-col p {
     display: block;
-    color: #94a3b8;
+    color: var(--text-light);
     text-decoration: none;
     margin-bottom: 0.75rem;
-    transition: color 0.3s;
+    transition: var(--transition-smooth);
 }
 .footer-col a:hover {
-    color: #42a5f5;
+    color: var(--secondary-color);
 }
 .social-icons {
     display: flex;

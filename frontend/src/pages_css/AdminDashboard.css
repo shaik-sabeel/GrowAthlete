@@ -1,10 +1,13 @@
 /* src/pages_css/AdminDashboard.css */
 
+@import './variables.css';
+
 /* Layout */
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--background-main);
+  font-family: var(--font-primary);
 }
 
 /* Admin intro overlay */
@@ -28,15 +31,16 @@
 .admin-intro-badge {
   position: relative;
   padding: 18px 28px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #13293D, #1e3a5f);
-  color: #fff;
+  border-radius: var(--border-radius-card);
+  background: var(--gradient-1);
+  color: var(--text-on-dark);
   font-weight: 800;
+  font-family: var(--font-secondary);
   letter-spacing: .06em;
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  box-shadow: var(--box-shadow-card-hover);
   overflow: hidden;
 }
 
@@ -70,12 +74,12 @@
 /* Sidebar */
 .admin-sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #13293D 0%, #1e3a5f 100%);
-  color: white;
+  background: var(--gradient-1);
+  color: var(--text-on-dark);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  transition: var(--transition-smooth);
+  box-shadow: var(--box-shadow-card);
   overflow: hidden;
   position: relative;
 }
@@ -87,7 +91,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #D98022, transparent);
+  background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
 }
 
 .admin-sidebar.collapsed {
@@ -110,16 +114,17 @@
 }
 
 .brand-icon {
-  color: #D98022;
+  color: var(--secondary-color);
   font-size: 1.8rem;
-  filter: drop-shadow(0 2px 4px rgba(217,128,34,0.3));
+  filter: drop-shadow(0 2px 4px rgba(236, 72, 153, 0.3));
 }
 
 .sidebar-header h3 {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #D98022;
+  font-family: var(--font-secondary);
+  color: var(--secondary-color);
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -324,15 +329,15 @@
 
 /* Welcome Section */
 .welcome-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
+  background: var(--gradient-1);
+  border-radius: var(--border-radius-card);
   padding: 32px;
   margin-bottom: 32px;
-  color: white;
+  color: var(--text-on-dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+  box-shadow: var(--box-shadow-card-hover);
   position: relative;
   overflow: hidden;
 }
@@ -354,6 +359,7 @@
 }
 
 .welcome-content h1 {
+  font-family: var(--font-secondary);
   font-size: 2.5rem;
   margin: 0 0 8px 0;
   font-weight: 700;
@@ -380,14 +386,14 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--background-light);
   padding: 28px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow-card);
+  transition: var(--transition-smooth);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid var(--border-color);
 }
 
 .stat-card::before {
@@ -402,13 +408,13 @@
 
 .stat-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  box-shadow: var(--box-shadow-card-hover);
 }
 
-.stat-primary { --accent-color: #667eea; --accent-color-light: #764ba2; }
-.stat-success { --accent-color: #10b981; --accent-color-light: #059669; }
-.stat-warning { --accent-color: #f59e0b; --accent-color-light: #d97706; }
-.stat-info { --accent-color: #3b82f6; --accent-color-light: #2563eb; }
+.stat-primary { --accent-color: var(--primary-color); --accent-color-light: var(--secondary-color); }
+.stat-success { --accent-color: var(--success-color); --accent-color-light: var(--success-color); }
+.stat-warning { --accent-color: var(--warning-color); --accent-color-light: var(--warning-color); }
+.stat-info { --accent-color: var(--tertiary-color); --accent-color-light: var(--tertiary-color); }
 
 .stat-icon {
   width: 60px;

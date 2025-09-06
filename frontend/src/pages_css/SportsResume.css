@@ -1,4 +1,6 @@
+@import './variables.css';
+
 /* body{
-    background-color: rgb(40, 37, 37);
+    background-color: var(--background-dark);
 }
  */

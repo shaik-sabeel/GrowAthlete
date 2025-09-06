@@ -1,11 +1,14 @@
 /* src/pages/SportsBlogPage.css */
 
+@import './variables.css';
+
 .sports-blog-page {
   padding: 80px 40px; /* Adjust top padding to clear fixed navbar */
   min-height: 100vh;
-  background-color: var(--color-page-background); /* Inherits from global theme */
-  color: var(--color-page-text); /* Inherits from global theme */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for page itself */
+  background-color: var(--background-main); /* Inherits from global theme */
+  color: var(--text-dark); /* Inherits from global theme */
+  font-family: var(--font-primary);
+  transition: var(--transition-smooth); /* Smooth transition for page itself */
 }
 
 /* Hero Section */
@@ -60,6 +63,7 @@
 }
 
 .blog-hero-title {
+  font-family: var(--font-secondary);
   font-size: 3.5em; /* Larger title */
   font-weight: 800;
   margin-bottom: 20px;

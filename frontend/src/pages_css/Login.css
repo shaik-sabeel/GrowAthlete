@@ -1,11 +1,11 @@
 /* LoginPage.css */
 
-/* Import a clean, modern font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+/* Import light theme variables for login page */
+@import './variables-light.css';
 
 /* --- Apply background to the entire page --- */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-primary);
     margin: 0;
     /* --- THIS IS THE KEY --- */
     /* background-image: url('../assets/images/auditorium.383Z.png'); Use the uploaded image */
@@ -30,41 +30,42 @@ body {
 /* -- LOGIN FORM with the glass effect -- */
 .login-form {
   /* --- TRANSPARENT BACKGROUND --- */
-  background: rgb(255, 255, 255);
+  background: var(--background-light);
   opacity: 0.9; /* Black with 50% opacity */
   backdrop-filter: blur(7px);       /* Optional: blurs the image behind the form */
   -webkit-backdrop-filter: blur(8px);
   padding: 40px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-card);
   max-width: 420px;
   width: 100%;
-  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--box-shadow-card-hover);
   animation: fadeIn 0.5s ease-out;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--border-color);
 }
 
 /* -- GRADIENT TEXT (No change needed) -- */
 .gradient-text {
-  background: linear-gradient(90deg, #8A65F5, #E940A8); /* Slightly adjusted for better visibility */
+  background: var(--gradient-1); /* Use variables gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .login-form h2 {
+  font-family: var(--font-secondary);
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: rgb(44, 44, 44);
+  color: var(--text-dark);
 }
 
 .title-underline {
   width: 50px;
   height: 4px;
   margin: 0 auto 30px auto;
-  border-radius: 2px;
-  background: linear-gradient(90deg, #A777F8, #E940A8);
+  border-radius: var(--border-radius-button);
+  background: var(--gradient-1);
 }
 
 /* -- INPUT FIELDS -- */
@@ -77,8 +78,7 @@ body {
   display: block;
   font-size: 0.9rem;
   font-weight: 600;
-  /* CHANGE: Light color for readability */
-  color: #E0E0E0;
+  color: var(--text-medium);
   margin-bottom: 8px;
 }
 
@@ -86,62 +86,59 @@ body {
   width: 100%;
   padding: 14px;
   box-sizing: border-box;
-  /* CHANGE: Styling for a dark, transparent background */
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
-  border-radius: 10px;
+  background-color: var(--background-light);
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+  border-radius: var(--border-radius-button);
   font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+  transition: var(--transition-smooth);
 }
 
 .form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-light);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #A777F8;
-  box-shadow: 0 0 0 4px rgba(167, 119, 248, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: var(--box-shadow-button);
 }
 
 /* -- SIGN UP LINK -- */
 .register-link {
   margin-top: 25px;
   font-size: 0.95rem;
-  /* CHANGE: Light color for readability */
-  color: #000000;
+  color: var(--text-dark);
 }
 
 .register-link a {
-  background: linear-gradient(90deg, #2900a5, #a30065);
+  background: var(--gradient-1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-decoration: none;
   font-weight: 600;
-  
 }
 
 /* -- MODERN LOGIN BUTTON (No change needed) -- */
 .login-btn {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(90deg, #6B46E4, #E940A8);
-  color: white;
+  background: var(--gradient-1);
+  color: var(--text-on-dark);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--border-radius-button);
   font-size: 1.1rem;
   font-weight: 600;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-primary);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-smooth);
 }
 
 .login-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(107, 70, 228, 0.3);
+  box-shadow: var(--box-shadow-button);
 }
 
 /* -- FADE-IN ANIMATION -- */
