@@ -21,6 +21,7 @@
     "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.1.0",

@@ -83,13 +83,57 @@ router.post("/logout", (req, res) => {
 
 
 router.post("/update", verifyToken, async (req, res) => {
-  const {profilePicture, username,age,gender,location,sport,level,bio,achievements, email, phone} = req.body;
+  const {
+    profilePicture, 
+    username, 
+    age, 
+    gender, 
+    location, 
+    sport, 
+    level, 
+    bio, 
+    achievements, 
+    email, 
+    phone,
+    availability,
+    locationType,
+    nextEvent,
+    aiBlurb,
+    performanceDNA
+  } = req.body;
   try {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json("User not found");
+    
+    const updateData = {
+      profilePicture,
+      username,
+      age,
+      gender,
+      location,
+      sport,
+      level,
+      bio,
+      achievements,
+      email,
+      phone,
+      availability,
+      locationType,
+      nextEvent,
+      aiBlurb,
+      performanceDNA
+    };
+    
+    // Remove undefined values
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    });
+    
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { profilePicture,username,age,gender,location,sport,level,bio,achievements, email, phone},
+      updateData,
       { new: true }
     );
     console.log("Updated User:", updatedUser);

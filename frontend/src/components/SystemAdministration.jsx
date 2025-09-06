@@ -96,9 +96,23 @@ const SystemAdministration = () => {
   const uploadAd = async (e) => {
     e.preventDefault();
     if (!adImage) {
-      alert('Select an image');
+      alert('Please select an image file');
       return;
     }
+    
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(adImage.type)) {
+      alert('Please select a valid image file (JPEG, PNG, or WEBP)');
+      return;
+    }
+    
+    // Validate file size (2MB limit)
+    if (adImage.size > 2 * 1024 * 1024) {
+      alert('Image file size must be less than 2MB');
+      return;
+    }
+    
     try {
       const fd = new FormData();
       fd.append('image', adImage);
@@ -106,13 +120,41 @@ const SystemAdministration = () => {
       fd.append('linkUrl', adLink);
       fd.append('active', String(adActive));
       fd.append('sortOrder', String(adSort));
-      await api.post('/admin/ads', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
-      setAdImage(null); setAdTitle(''); setAdLink(''); setAdActive(true); setAdSort(0);
+      
+      console.log('Uploading ad with data:', {
+        image: adImage.name,
+        title: adTitle,
+        linkUrl: adLink,
+        active: adActive,
+        sortOrder: adSort
+      });
+      
+      await api.post('/admin/ads', fd, { 
+        headers: { 
+          'Content-Type': 'multipart/form-data' 
+        } 
+      });
+      
+      // Reset form
+      setAdImage(null); 
+      setAdTitle(''); 
+      setAdLink(''); 
+      setAdActive(true); 
+      setAdSort(0);
+      
+      // Reset file input
+      const fileInput = document.querySelector('input[type="file"][name="image"]');
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      
+      // Refresh ads list
       await fetchAds();
-      alert('Ad uploaded');
-    } catch (e) {
-      console.error('Failed to upload ad', e);
-      alert('Failed to upload ad');
+      alert('Advertisement uploaded successfully!');
+    } catch (error) {
+      console.error('Failed to upload ad:', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to upload advertisement';
+      alert(`Error: ${errorMessage}`);
     }
   };
 
@@ -295,16 +337,73 @@ const SystemAdministration = () => {
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-gray-900">Advertisement Banners</h3>
       <form onSubmit={uploadAd} className="grid grid-cols-1 md:grid-cols-5 gap-4 bg-white p-4 rounded-lg shadow">
-        <input type="file" accept="image/*" onChange={(e) => setAdImage(e.target.files?.[0] || null)} className="md:col-span-2" />
-        <input type="text" placeholder="Title (optional)" value={adTitle} onChange={(e) => setAdTitle(e.target.value)} className="px-3 py-2 border rounded" />
-        <input type="url" placeholder="Link URL (optional)" value={adLink} onChange={(e) => setAdLink(e.target.value)} className="px-3 py-2 border rounded" />
-        <div className="flex items-center gap-3">
-          <label className="text-sm text-gray-600">Active</label>
-          <input type="checkbox" checked={adActive} onChange={(e) => setAdActive(e.target.checked)} />
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Advertisement Image *</label>
+          <input 
+            type="file" 
+            name="image" 
+            accept="image/*" 
+            onChange={(e) => setAdImage(e.target.files?.[0] || null)} 
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+            required
+          />
+          {adImage && (
+            <div className="mt-2 text-sm text-green-600">
+              ✓ Selected: {adImage.name} ({(adImage.size / 1024 / 1024).toFixed(2)} MB)
+            </div>
+          )}
         </div>
-        <input type="number" placeholder="Sort" value={adSort} onChange={(e) => setAdSort(Number(e.target.value) || 0)} className="px-3 py-2 border rounded" />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+          <input 
+            type="text" 
+            placeholder="Advertisement title" 
+            value={adTitle} 
+            onChange={(e) => setAdTitle(e.target.value)} 
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Link URL</label>
+          <input 
+            type="url" 
+            placeholder="https://example.com" 
+            value={adLink} 
+            onChange={(e) => setAdLink(e.target.value)} 
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+          />
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <input 
+              type="checkbox" 
+              id="adActive" 
+              checked={adActive} 
+              onChange={(e) => setAdActive(e.target.checked)} 
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <label htmlFor="adActive" className="text-sm text-gray-700">Active</label>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
+            <input 
+              type="number" 
+              placeholder="0" 
+              value={adSort} 
+              onChange={(e) => setAdSort(Number(e.target.value) || 0)} 
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+            />
+          </div>
+        </div>
         <div className="md:col-span-5 flex justify-end">
-          <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Upload</button>
+          <button 
+            type="submit" 
+            disabled={!adImage}
+            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <FaPlus className="w-4 h-4" />
+            Upload Advertisement
+          </button>
         </div>
       </form>
 

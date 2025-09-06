@@ -918,6 +918,33 @@ router.post("/users/bulk-suspend", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+// ===== REAL-TIME UPDATES =====
+
+// Check for updates (for real-time notifications)
+router.get("/updates/check", verifyToken, isAdmin, async (req, res) => {
+  try {
+    // This is a simple implementation - in production you'd use WebSockets or Server-Sent Events
+    // For now, we'll just return a mock response
+    const hasUpdates = Math.random() > 0.8; // 20% chance of updates
+    
+    if (hasUpdates) {
+      res.json({
+        hasUpdates: true,
+        message: "New user registrations detected",
+        type: "info",
+        refreshData: true
+      });
+    } else {
+      res.json({
+        hasUpdates: false
+      });
+    }
+  } catch (error) {
+    console.error("Error checking for updates:", error);
+    res.status(500).json({ message: "Failed to check for updates" });
+  }
+});
+
 // ===== EXPORT FUNCTIONALITY =====
 
 // Export users data (CSV format)
@@ -955,13 +982,34 @@ router.get("/users/export", verifyToken, isAdmin, async (req, res) => {
 // ===== AD BANNERS MANAGEMENT =====
 
 // Create new ad banner (with image upload)
-router.post("/ads", uploadAds.single("image"), verifyToken, isAdmin, async (req, res) => {
+router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), async (req, res) => {
   try {
+    console.log("Ad upload request received:", {
+      file: req.file ? {
+        filename: req.file.filename,
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      } : null,
+      body: req.body,
+      user: req.user ? req.user.id : null
+    });
+
     if (!req.file) {
+      console.log("No file uploaded");
       return res.status(400).json({ message: "Image is required" });
     }
 
     const { title = "", linkUrl = "", active = true, sortOrder = 0 } = req.body;
+
+    console.log("Creating ad with data:", {
+      title,
+      linkUrl,
+      active: active === "false" ? false : true,
+      sortOrder: Number(sortOrder) || 0,
+      image: `/uploads/ads/${req.file.filename}`,
+      createdBy: req.user.id
+    });
 
     const ad = await AdBanner.create({
       title,
@@ -972,7 +1020,8 @@ router.post("/ads", uploadAds.single("image"), verifyToken, isAdmin, async (req,
       createdBy: req.user.id
     });
 
-    res.status(201).json({ message: "Ad created", ad });
+    console.log("Ad created successfully:", ad);
+    res.status(201).json({ message: "Ad created successfully", ad });
   } catch (error) {
     console.error("Error creating ad:", error);
     const msg = error?.message?.includes('Only JPEG') ? error.message : "Failed to create ad";
