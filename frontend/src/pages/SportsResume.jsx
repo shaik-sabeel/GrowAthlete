@@ -1,6 +1,6 @@
 // src/pages/SportsResume.jsx
 import React, { useState } from 'react';
-// import "../pages_css/SportsResume.css"; // Keep if you have specific custom CSS not handled by Tailwind, or remove if only using Tailwind
+import "../pages_css/SportsResume.css"; // Keep if you have specific custom CSS not handled by Tailwind, or remove if only using Tailwind
 import Navbar from '../components/Navbar'; // Assuming your Navbar component exists here
 import axios from 'axios'; // For API calls if your api.js uses axios directly, otherwise remove if api.js abstracts it entirely
 import api from '../utils/api'; // Your custom API utility, crucial for form submission
@@ -109,22 +109,21 @@ export default function SportsResume() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-white-50 min-h-screen">
       <Navbar /> {/* Render the Navbar */}
       
       {/* Hero Section with Background Image (from V2 UI) */}
       <div className="relative">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-800 to-indigo-700 mix-blend-multiply" />
-          {/* Using standard img tag instead of Next.js Image component */}
-          <img
+          <div className="absolute inset-0 bg-black-700 mix-blend-multiply" />
+          {/* <img
             className="w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
             alt="Sports background"
-          />
+          /> */}
         </div>
         <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl" id="build-your-athletic-profile">
             Build Your Athletic Profile
           </h1>
           <p className="mt-6 max-w-3xl mx-auto text-xl text-indigo-100">
@@ -134,24 +133,24 @@ export default function SportsResume() {
             {/* Direct anchor link for scroll to form */}
             <a
               href="#resume-form" 
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-indigo-700 bg-white hover:bg-indigo-50"
+              className="get-started"
             >
               Get Started
             </a>
             {/* Link to view resume. Update the 'to' prop based on your actual route for ViewSportsResumePage */}
-            <Link 
+            {/* <Link 
               to="/view-sports-resume" 
               className="inline-flex items-center ml-3 px-6 py-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 bg-opacity-60 hover:bg-opacity-70"
             >
               View Example
-            </Link>
+            </Link> */}
           </div>
           
           {/* Feature Cards (from V2 UI) */}
-          <div className="mt-20 max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-20 max-w-7xl mx-auto" >
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" >
               {/* Feature 1 */}
-              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl">
+              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl" id="features">
                 <div className="p-6">
                   <div className="flex items-center">
                     <div className="h-12 w-12 bg-indigo-100 rounded-xl flex items-center justify-center">
@@ -169,7 +168,7 @@ export default function SportsResume() {
               </div>
               
               {/* Feature 2 */}
-              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl">
+              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl" id="features">
                 <div className="p-6">
                   <div className="flex items-center">
                     <div className="h-12 w-12 bg-indigo-100 rounded-xl flex items-center justify-center">
@@ -186,7 +185,7 @@ export default function SportsResume() {
               </div>
               
               {/* Feature 3 */}
-              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl">
+              <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl" id="features">
                 <div className="p-6">
                   <div className="flex items-center">
                     <div className="h-12 w-12 bg-indigo-100 rounded-xl flex items-center justify-center">
@@ -209,17 +208,17 @@ export default function SportsResume() {
       {/* Main Form Section (from V2 UI structure with combined fields) */}
       <div id="resume-form" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="bg-red shadow overflow-hidden sm:rounded-lg"id="resume-form">
             <div className="px-4 py-5 sm:p-6">
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8" >
                 {/* Personal Information Section */}
                 <div>
                   <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
                     Personal Information
                   </h3>
-                  <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                  <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6" >
                     <div className="sm:col-span-6">
-                      <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="profileImage" className="block text-sm font-medium text-gray-100">
                         Profile Photo
                       </label>
                       <div className="mt-1 flex items-center">
@@ -247,7 +246,8 @@ export default function SportsResume() {
                           />
                           <label
                             htmlFor="profileImage"
-                            className="bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer" // Removed focus:ring-offset-2
+                            className="bg-gray-500 py-2 px-3 border border-gray-50 rounded-md shadow-sm text-sm border leading-4 font-medium text-gray-300 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer" // Removed focus:ring-offset-2
+                            id="upload-photo"
                           >
                             Upload Photo
                           </label>
@@ -256,7 +256,7 @@ export default function SportsResume() {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="fullName" className="block text-sm font-medium text-gray-300">
                         Full Name
                       </label>
                       <div className="mt-1">
@@ -267,13 +267,13 @@ export default function SportsResume() {
                           value={formData.fullName}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-300">
                         Date of Birth
                       </label>
                       <div className="mt-1">
@@ -284,13 +284,13 @@ export default function SportsResume() {
                           value={formData.dateOfBirth}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="gender" className="block text-sm font-medium text-gray-300">
                         Gender
                       </label>
                       <div className="mt-1">
@@ -300,7 +300,7 @@ export default function SportsResume() {
                           value={formData.gender}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border p-2 text-gray-100 border-gray-300 rounded-md"
                         >
                           <option value="">Select</option>
                           <option value="male">Male</option>
@@ -311,7 +311,7 @@ export default function SportsResume() {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="nationality" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="nationality" className="block text-sm font-medium text-gray-300">
                         Nationality
                       </label>
                       <div className="mt-1">
@@ -322,13 +322,13 @@ export default function SportsResume() {
                           value={formData.nationality}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 text-gray-100 sm:text-sm border border-gray-300 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                         Email Address
                       </label>
                       <div className="mt-1">
@@ -339,13 +339,13 @@ export default function SportsResume() {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
                         Phone Number
                       </label>
                       <div className="mt-1">
@@ -356,13 +356,13 @@ export default function SportsResume() {
                           value={formData.phone}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-6">
-                      <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="address" className="block text-sm font-medium text-gray-300">
                         Address
                       </label>
                       <div className="mt-1">
@@ -373,7 +373,7 @@ export default function SportsResume() {
                           value={formData.address}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
@@ -382,12 +382,12 @@ export default function SportsResume() {
 
                 {/* Athletic Details Section */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Athletic Details
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-3">
-                      <label htmlFor="primarySport" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="primarySport" className="block text-sm font-medium text-gray-300">
                         Primary Sport
                       </label>
                       <div className="mt-1">
@@ -397,7 +397,7 @@ export default function SportsResume() {
                           value={formData.primarySport}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         >
                           <option value="">Select Sport</option>
                           <option value="cricket">Cricket</option>
@@ -417,7 +417,7 @@ export default function SportsResume() {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="position" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="position" className="block text-sm font-medium text-gray-300">
                         Position / Specialization
                       </label>
                       <div className="mt-1">
@@ -428,13 +428,13 @@ export default function SportsResume() {
                           value={formData.position}
                           onChange={handleInputChange}
                           placeholder="e.g., Striker, Midfielder, Batsman, etc."
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label htmlFor="height" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="height" className="block text-sm font-medium text-gray-300">
                         Height (cm)
                       </label>
                       <div className="mt-1">
@@ -444,13 +444,13 @@ export default function SportsResume() {
                           id="height"
                           value={formData.height}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label htmlFor="weight" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="weight" className="block text-sm font-medium text-gray-300">
                         Weight (kg)
                       </label>
                       <div className="mt-1">
@@ -460,13 +460,13 @@ export default function SportsResume() {
                           id="weight"
                           value={formData.weight}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label htmlFor="dominantHand" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="dominantHand" className="block text-sm font-medium text-gray-300">
                         Dominant Hand/Foot
                       </label>
                       <div className="mt-1">
@@ -475,7 +475,7 @@ export default function SportsResume() {
                           name="dominantHand"
                           value={formData.dominantHand}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         >
                           <option value="">Select</option>
                           <option value="right">Right</option>
@@ -486,7 +486,7 @@ export default function SportsResume() {
                     </div>
 
                     <div className="sm:col-span-6">
-                      <label htmlFor="currentTeam" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="currentTeam" className="block text-sm font-medium text-gray-300">
                         Current Team/Club/School (if applicable)
                       </label>
                       <div className="mt-1">
@@ -496,7 +496,7 @@ export default function SportsResume() {
                           id="currentTeam"
                           value={formData.currentTeam}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                         />
                       </div>
                     </div>
@@ -505,12 +505,12 @@ export default function SportsResume() {
 
                 {/* Education Section */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Education
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="education" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="education" className="block text-sm font-medium text-gray-300">
                         Educational Background
                       </label>
                       <div className="mt-1">
@@ -520,7 +520,7 @@ export default function SportsResume() {
                           rows={3}
                           value={formData.education}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="List your educational qualifications, schools/colleges attended with years"
                         />
                       </div>
@@ -530,12 +530,12 @@ export default function SportsResume() {
 
                 {/* Career Stats Section */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Career Statistics
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="careerStats" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="careerStats" className="block text-sm font-medium text-gray-300">
                         Key Career Statistics
                       </label>
                       <div className="mt-1">
@@ -545,7 +545,7 @@ export default function SportsResume() {
                           rows={4}
                           value={formData.careerStats}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="For Cricket: Batting average, bowling economy, matches played, etc.
 For Football: Goals scored, assists, matches played, etc.
 For other sports: Include relevant statistics."
@@ -557,12 +557,12 @@ For other sports: Include relevant statistics."
 
                 {/* Achievements Section */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Achievements
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="achievements" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="achievements" className="block text-sm font-medium text-gray-300">
                         Awards and Achievements
                       </label>
                       <div className="mt-1">
@@ -572,7 +572,7 @@ For other sports: Include relevant statistics."
                           rows={4}
                           value={formData.achievements}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="List your awards, medals, recognition, records, etc. with dates"
                         />
                       </div>
@@ -582,12 +582,12 @@ For other sports: Include relevant statistics."
 
                 {/* Tournament History */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Tournament History
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="tournaments" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="tournaments" className="block text-sm font-medium text-gray-300">
                         Tournament/Championship Participation
                       </label>
                       <div className="mt-1">
@@ -597,7 +597,7 @@ For other sports: Include relevant statistics."
                           rows={4}
                           value={formData.tournaments}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="List major tournaments/championships you've participated in with dates, venues, and results"
                         />
                       </div>
@@ -607,12 +607,12 @@ For other sports: Include relevant statistics."
 
                 {/* Skills Section */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Skills and Attributes
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="skills" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="skills" className="block text-sm font-medium text-gray-300">
                         Key Skills and Attributes
                       </label>
                       <div className="mt-1">
@@ -622,7 +622,7 @@ For other sports: Include relevant statistics."
                           rows={3}
                           value={formData.skills}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="E.g., Speed, Agility, Leadership, Team player, Technical skills specific to your sport"
                         />
                       </div>
@@ -632,12 +632,12 @@ For other sports: Include relevant statistics."
 
                 {/* Certifications */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Certifications
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="certifications" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="certifications" className="block text-sm font-medium text-gray-300">
                         Sports-related Certifications
                       </label>
                       <div className="mt-1">
@@ -647,7 +647,7 @@ For other sports: Include relevant statistics."
                           rows={3}
                           value={formData.certifications}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="List any coaching licenses, first aid certificates, etc."
                         />
                       </div>
@@ -657,12 +657,12 @@ For other sports: Include relevant statistics."
 
                 {/* References */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 pb-2 border-b border-gray-200">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300 pb-2 border-b border-gray-200">
                     Professional References
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="references" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="references" className="block text-sm font-medium text-gray-300">
                         Coaches/Mentors References
                       </label>
                       <div className="mt-1">
@@ -672,7 +672,7 @@ For other sports: Include relevant statistics."
                           rows={3}
                           value={formData.references}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="Name, position, contact details of coaches or mentors who can provide references"
                         />
                       </div>
@@ -687,7 +687,7 @@ For other sports: Include relevant statistics."
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="videoLinks" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="videoLinks" className="block text-sm font-medium text-gray-300">
                         Video Links
                       </label>
                       <div className="mt-1">
@@ -697,7 +697,7 @@ For other sports: Include relevant statistics."
                           rows={2}
                           value={formData.videoLinks}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="YouTube, Vimeo, or other links to your performance highlights"
                         />
                       </div>
@@ -712,7 +712,7 @@ For other sports: Include relevant statistics."
                   </h3>
                   <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                     <div className="sm:col-span-6">
-                      <label htmlFor="socialMedia" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="socialMedia" className="block text-sm font-medium text-gray-300">
                         Social Media Links
                       </label>
                       <div className="mt-1">
@@ -722,7 +722,7 @@ For other sports: Include relevant statistics."
                           rows={2}
                           value={formData.socialMedia}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
                           placeholder="Instagram, Twitter, LinkedIn, Facebook, etc."
                         />
                       </div>
@@ -737,7 +737,7 @@ For other sports: Include relevant statistics."
                     <button
                       type="button"
                       onClick={() => navigate('/dashboard')}
-                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500" // Removed focus:ring-offset-2
+                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm p-2 text-gray-100 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500" // Removed focus:ring-offset-2
                     >
                       Cancel
                     </button>
@@ -745,7 +745,7 @@ For other sports: Include relevant statistics."
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" // Removed focus:ring-offset-2
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent p-2 text-gray-100 shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" // Removed focus:ring-offset-2
                     >
                       {isSubmitting ? "Creating..." : "Create Resume"}
                     </button>

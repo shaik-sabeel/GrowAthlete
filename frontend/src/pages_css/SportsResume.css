@@ -1,6 +1,85 @@
 @import './variables.css';
 
-/* body{
-    background-color: var(--background-dark);
+body{
+    background-color: var(--background-main);
 }
- */
+
+
+#build-your-athletic-profile{
+    color: var(--primary-color);
+}
+
+.get-started{
+    color: var(--text-dark);
+    background: var(--gradient-1);
+    border-color: var(--primary-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.get-started:hover{
+    background: var(--gradient-2);
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+#features{
+    /* color: var(--text-dark); */
+    background: var(--gradient-1);
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    
+    
+}   
+#features h3{
+    color: var(--background-main);
+    
+}
+#features p{
+    color: var(--background-main);
+}
+#features svg{
+    color: var(--background-main);
+}
+#features a{
+    color: var(--background-main);
+}
+#resume-form{
+    color: var(--background-main);
+}
+#resume-form h3{
+    color: var(--secondary-color);
+}
+#resume-form p{
+    color: var(--text-dark);
+}
+#upload-photo{
+    color: var(--text-dark);
+    background: var(--gradient-1);
+    border-color: var(--primary-color);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+#upload-photo:hover{
+    background: var(--gradient-2);
+    border-color: var(--primary-color);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+}

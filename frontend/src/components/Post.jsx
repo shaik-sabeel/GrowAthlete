@@ -203,7 +203,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
           </div>
           {/* User Name and Time */}
           <div className="ml-3">
-            <p className="font-semibold text-gray-800">{post.author.username}</p>
+            <p className="font-semibold text-gray-100 px-2">{post.author.username}</p>
             <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
           </div>
         </div>
@@ -271,7 +271,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
 
       {/* Post Content */}
       {!showEditForm && (
-        <p className="text-gray-700 mb-4 pl-12">{post.content}</p>
+        <p className="text-white-700 mb-4 pl-12">{post.content}</p>
       )}
 
       {/* Media */}
