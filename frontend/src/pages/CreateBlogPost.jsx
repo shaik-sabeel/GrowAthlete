@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import "../pages_css/variables.css" 
 
 export default function CreateBlogPost() {
   const navigate = useNavigate();
@@ -124,22 +125,22 @@ export default function CreateBlogPost() {
   return (
     <>
       <Navbar />
-      <div className="bg-white">
+      <div className="bg-[#0F172A]">
         {/* Header */}
-        <div className="relative bg-indigo-800">
+        <div className="relative bg-[#1E293B]">
           <div className="absolute inset-0">
-            <img
+            {/* <img
               className="h-full w-full object-cover"
               src="https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
               alt="Sports background"
-            />
+            /> */}
             <div
-              className="absolute inset-0 bg-indigo-800 mix-blend-multiply"
+              className="absolute inset-0 bg-white mix-blend-multiply"
               aria-hidden="true"
             />
           </div>
           <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white-100 sm:text-5xl lg:text-6xl" style={{color: '#8B5CF6'}  }>
               Create New Blog Post
             </h1>
             <p className="mt-6 text-xl text-indigo-100 max-w-3xl">
@@ -152,11 +153,11 @@ export default function CreateBlogPost() {
         {/* Form */}
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
+            <div className="px-4 py-5 sm:p-6" style={{background: '#020617'}}>
               <form className="space-y-8" onSubmit={handleSubmit}>
                 {/* Basic Info */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300">
                     Basic Information
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
@@ -166,7 +167,7 @@ export default function CreateBlogPost() {
                     <div className="sm:col-span-6">
                       <label
                         htmlFor="title"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-300"
                       >
                         Title
                       </label>
@@ -177,7 +178,7 @@ export default function CreateBlogPost() {
                           id="title"
                           value={formData.title}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2 border sm:text-sm border-gray-300 rounded-md"
                           placeholder="Enter a compelling title"
                           required
                         />
@@ -187,7 +188,7 @@ export default function CreateBlogPost() {
                     <div className="sm:col-span-6">
                       <label
                         htmlFor="summary"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-300"
                       >
                         Summary
                       </label>
@@ -198,7 +199,7 @@ export default function CreateBlogPost() {
                           rows={3}
                           value={formData.summary}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm p-2 border border-gray-300 rounded-md"
                           placeholder="Write a brief summary (150-200 characters)"
                           required
                         />
@@ -211,7 +212,7 @@ export default function CreateBlogPost() {
                     <div className="sm:col-span-3">
                       <label
                         htmlFor="category"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-medium text-gray-300"
                       >
                         Category
                       </label>
@@ -221,7 +222,7 @@ export default function CreateBlogPost() {
                           name="category"
                           value={formData.category}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm p-2 border border-gray-300 rounded-md"
                           required
                         >
                           <option value="">Select a category</option>
@@ -261,12 +262,12 @@ export default function CreateBlogPost() {
 
                 {/* Featured Image URL Input */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">Featured Image</h3>
+                  <h3 className="text-lg font-medium leading-6 text-gray-300">Featured Image</h3>
                   <p className="mt-1 text-sm text-gray-500">
                     Add a URL for your blog post's cover image.
                   </p>
                   <div className="mt-6">
-                    <label htmlFor="image-url" className="block text-sm font-medium text-gray-700 sr-only">
+                    <label htmlFor="image-url" className="block text-sm font-medium text-gray-300 sr-only">
                       Image URL
                     </label>
                     <input
@@ -275,7 +276,7 @@ export default function CreateBlogPost() {
                       id="image-url"
                       value={formData.image}
                       onChange={handleImageURLChange}
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm p-2 border border-gray-300 rounded-md"
                       placeholder="e.g. https://images.unsplash.com/photo-..."
                       required
                     />
@@ -290,7 +291,7 @@ export default function CreateBlogPost() {
 
                 {/* Content Editor */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  <h3 className="text-lg font-medium leading-6 text-gray-300">
                     Post Content
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
@@ -304,7 +305,7 @@ export default function CreateBlogPost() {
                       rows={14}
                       value={formData.content}
                       onChange={handleInputChange}
-                      className="block w-full focus:ring-0 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md p-3" // Apply full border, not just focus ring. Remove border-0.
+                      className="block w-full focus:ring-0 focus:border-indigo-500 sm:text-sm border-gray-300 p-2 border rounded-md p-3" // Apply full border, not just focus ring. Remove border-0.
                       placeholder="Write your content here..."
                       required
                     />
@@ -313,7 +314,7 @@ export default function CreateBlogPost() {
 
                 {/* Premium Content Checkbox */}
                 <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">Access Settings</h3>
+                  <h3 className="text-lg font-medium leading-6 text-gray-300">Access Settings</h3>
                   <p className="mt-1 text-sm text-gray-500">
                     Control who can read your content.
                   </p>
@@ -326,11 +327,11 @@ export default function CreateBlogPost() {
                           type="checkbox"
                           checked={formData.isPremium}
                           onChange={handleCheckboxChange}
-                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                          className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 p-2 border border-gray-300 rounded"
                         />
                       </div>
                       <div className="ml-3 text-sm">
-                        <label htmlFor="isPremium" className="font-medium text-gray-700">
+                        <label htmlFor="isPremium" className="font-medium text-gray-300">
                           Premium Content
                         </label>
                         <p className="text-gray-500">Only accessible by premium subscribers.</p>
@@ -344,14 +345,16 @@ export default function CreateBlogPost() {
                   <div className="flex justify-end">
                     <Link
                       to="/sports-blog"
-                      className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="bg-black py-2 px-4 border border-gray-300 rounded-md shadow-sm p-2 border text-500 text-black-100 font-medium text-gray-700 hover:bg-gray-550 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      style={{color : 'white'}}
                     >
                       Cancel
                     </Link>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent p-2 border shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      style={{background : 'linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%)'}}
                     >
                       {isSubmitting ? "Publishing..." : "Publish"}
                     </button>

@@ -3,7 +3,7 @@
 @import './variables.css';
 
 .single-blog-post-page {
-  padding-top: 70px; /* Adjust to clear fixed navbar if you have one */
+  padding: 70px; /* Adjust to clear fixed navbar if you have one */
   min-height: 100vh;
   background-color: var(--background-main); /* Light greyish background color */
   color: var(--text-dark); /* Default text color */
@@ -82,7 +82,7 @@
   font-family: var(--font-secondary);
   font-size: 2.8rem; /* Larger font size for title */
   font-weight: var(--font-weight-extrabold); /* Bold weight for title */
-  color: var(--text-dark); /* Dark text for title */
+  color: var(--primary-color); /* Dark text for title */
   margin-bottom: 0.75rem; /* Space below title */
   line-height: 1.2;
 }
@@ -103,7 +103,7 @@
 .post-body {
   font-size: 1.05rem; /* Slightly larger text for readability */
   line-height: 1.7; /* Good line height */
-  color: #555; /* Medium grey for body text */
+  color: #ffffff; /* Medium grey for body text */
 }
 
 .post-body p {

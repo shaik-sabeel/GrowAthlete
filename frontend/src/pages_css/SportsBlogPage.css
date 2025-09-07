@@ -27,19 +27,6 @@
 }
 
 /* Video Styling */
-.blog-hero-video {
-  /* position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -1; /* Place video behind content */
-  /* transform: translate(-50%, -50%);
-  object-fit: cover; 
-  filter: brightness(60%); */
-}
 
 /* Optional Overlay (alternative/addition to filter) */
 .blog-hero-overlay {
@@ -77,7 +64,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  /* text-fill-color: transparent; */
 }
 
 
@@ -94,7 +81,8 @@
 .blog-posts-grid-section {
   max-width: 1200px; /* Max width for content, similar to Skipper UI */
   margin: 0 auto;
-  padding-top: 50px; /* Add padding between hero and grid section */
+  padding-top: 50px;
+  
 }
 
 .blog-posts-grid {

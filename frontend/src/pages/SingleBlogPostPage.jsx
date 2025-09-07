@@ -53,7 +53,7 @@ const SingleBlogPostPage = () => {
                 </Link>
                 {post.category && <span className="post-category">{post.category}</span>}
             </div>
-
+            
             <h1 className="post-title">{post.title}</h1>
             <div className="post-meta">
                 <span>By {post.author?.name || "Unknown"}</span>
