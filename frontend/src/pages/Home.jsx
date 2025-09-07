@@ -144,13 +144,13 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
         // In a real app, you'd fetch real data
         const dummyFeaturedEvents = [
             {
-                id: 1, title: 'Junior National Swimming Championship 2024', sport: 'Swimming', location: 'Mumbai, Maharashtra',
-                date: 'May 15-20, 2024', description: 'The Junior National Swimming Championship 2024 celebrated the speed, skill, and dedication of India’s brightest young swimmers. Hosted at a world-class aquatic facility, the championship saw participants from every corner of the country compete in various categories and strokes. The event not only pushed athletes to break personal and national records but also provided them with invaluable exposure to competitive swimming at the highest junior level. With electrifying performances and promising new talent emerging, the championship solidified its place as a cornerstone event in India’s sporting calendar.',
+                id: 1, title: 'Junior National Swimming Championship 2025', sport: 'Swimming', location: 'Mumbai, Maharashtra',
+                date: 'May 15-20, 2025', description: 'The Junior National Swimming Championship 2025 celebrated the speed, skill, and dedication of India’s brightest young swimmers. Hosted at a world-class aquatic facility, the championship saw participants from every corner of the country compete in various categories and strokes. The event not only pushed athletes to break personal and national records but also provided them with invaluable exposure to competitive swimming at the highest junior level. With electrifying performances and promising new talent emerging, the championship solidified its place as a cornerstone event in India’s sporting calendar.',
                 imageUrl: swimmingComp
             },
             {
-                id: 2, title: 'All India Football Tournament 2024', sport: 'Football', location: 'Delhi',
-                date: 'June 1-10, 2024', description: 'The All India Football Tournament 2024 was a spectacular display of talent, teamwork, and passion for the beautiful game. Bringing together top teams from across the nation, the tournament served as a platform for seasoned players and emerging stars to showcase their skills on a national stage. With high-intensity matches, tactical brilliance, and nail-biting finishes, the event drew massive crowds and created unforgettable moments for football fans. Beyond the competition, it fostered sportsmanship and unity, inspiring the next generation of footballers to dream big and aim for excellence.',
+                id: 2, title: 'All India Football Tournament 2025', sport: 'Football', location: 'Delhi',
+                date: 'June 1-10, 2025', description: 'The All India Football Tournament 2025 was a spectacular display of talent, teamwork, and passion for the beautiful game. Bringing together top teams from across the nation, the tournament served as a platform for seasoned players and emerging stars to showcase their skills on a national stage. With high-intensity matches, tactical brilliance, and nail-biting finishes, the event drew massive crowds and created unforgettable moments for football fans. Beyond the competition, it fostered sportsmanship and unity, inspiring the next generation of footballers to dream big and aim for excellence.',
                 imageUrl: footballComp
             }
         ];
@@ -202,7 +202,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
            
           <div className="hp-hero-buttons" ref={heroButtonContainerRef}>
            
-            <Button variant="primary" link="/register">Join as Athlete &rarr;</Button>
+            <Button variant="secondary" link="/register">Join as Athlete &rarr;</Button>
             <Button variant="secondary" link="/register">Join as Sponsor &rarr;</Button>
           </div>
 
@@ -223,7 +223,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
       {/* 2. Platform Features Section */}
       <section className="hp-platform-features-section container" ref={platformFeaturesRef}>
         <SectionHeader
-          title="Platform Features" className="hp-platform-features-title"
+          title="Platform Features" className="hp-platform-features-title" 
           description="Modular solutions to empower athletes, coaches, and sponsors—just like Stripe's platform."
         />
         <div className="hp-platform-features-grid">
@@ -312,7 +312,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           ))}
         </div>
         <div className="hp-explore-sports-btn-container">
-          <Button variant="primary" link="/explore-all-sports">
+          <Button variant="secondary" link="/explore-all-sports">
             Explore All Sports &rarr;
           </Button>
         </div>
@@ -391,12 +391,12 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           ))}
         </div>
         <div className="hp-view-all-events-btn-container">
-          <Button variant="primary" link="/events-all">
+          <Button variant="secondary" link="/events-all">
             View All Events <span style={{fontSize: '0.8em'}}>&#x1F4C6;</span>
           </Button>
-          <Link to="/calendar" className="hp-view-calendar-link">
+          {/* <Link to="/calendar" className="hp-view-calendar-link">
               View Calendar <span style={{fontSize: '0.8em'}}>&#8594;</span>
-          </Link>
+          </Link> */}
         </div>
       </section>
 
@@ -445,12 +445,12 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
                       <h2 className="head-des">Ready to boost your sports career?</h2> {/* Uses section-heading */}
                       <p>Join GrowAthlete India today. Connect with coaches, scouts, and sponsors. Showcase your talent and take your athletic journey to the next level.</p>
                       <ul className="hp-cta-list">
-                        <li><FaQuoteLeft/> Create your sports profile <br/><small>Showcase your achievements, skills, and career goals</small></li>
-                        <li><FaQuoteLeft/> Connect with coaches and sponsors <br/><small>Build your network with sports professionals across India</small></li>
-                        <li><FaQuoteLeft/> Get discovered by talent scouts <br/><small>Increase your visibility to professional teams and organizations</small></li>
+                        <li><FaQuoteLeft/> Create your sports profile <br/>Showcase your achievements, skills, and career goals</li>
+                        <li><FaQuoteLeft/> Connect with coaches and sponsors <br/>Build your network with sports professionals across India</li>
+                        <li><FaQuoteLeft/> Get discovered by talent scouts <br/>Increase your visibility to professional teams and organizations</li>
                       </ul>
                       <div className="hp-cta-buttons">
-                          <Button link="/register">Get started &rarr;</Button>
+                          <Button variant='secondary' link="/register">Get started &rarr;</Button>
                           {/* <Button variant="solid-light" link="/learn-more">Learn more</Button> */}
                       </div>
                   </div>
