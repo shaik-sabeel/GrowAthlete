@@ -65,7 +65,7 @@
 .blog-hero-title {
   font-family: var(--font-secondary);
   font-size: 3.5em; /* Larger title */
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   margin-bottom: 20px;
   color: inherit; /* Inherit color from blog-hero-content (white) */
   /* Remove highlight rule if you want plain white, or redefine it for a white glow */

@@ -215,7 +215,9 @@
 }
 
 .ap-athlete-info h3 {
+  font-family: var(--font-secondary);
   font-size: 1.4em;
+  font-weight: var(--font-weight-bold);
   margin-bottom: 5px;
   color: var(--primary-color);
   text-align: left; /* Ensure it's left-aligned */

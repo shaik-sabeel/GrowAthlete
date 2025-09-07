@@ -223,7 +223,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
       {/* 2. Platform Features Section */}
       <section className="hp-platform-features-section container" ref={platformFeaturesRef}>
         <SectionHeader
-          title="Platform Features"
+          title="Platform Features" className="hp-platform-features-title"
           description="Modular solutions to empower athletes, coaches, and sponsors—just like Stripe's platform."
         />
         <div className="hp-platform-features-grid">
@@ -442,7 +442,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           >
               <div className="container hp-call-to-action-content">
                   <div className="hp-cta-text">
-                      <h2 className="">Ready to boost your sports career?</h2> {/* Uses section-heading */}
+                      <h2 className="head-des">Ready to boost your sports career?</h2> {/* Uses section-heading */}
                       <p>Join GrowAthlete India today. Connect with coaches, scouts, and sponsors. Showcase your talent and take your athletic journey to the next level.</p>
                       <ul className="hp-cta-list">
                         <li><FaQuoteLeft/> Create your sports profile <br/><small>Showcase your achievements, skills, and career goals</small></li>

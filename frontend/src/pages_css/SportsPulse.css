@@ -42,8 +42,9 @@
 }
 
 .app-title {
+  font-family: var(--font-secondary);
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-extrabold);
   background: var(--gradient-1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -381,6 +382,8 @@
 
 .filter-title h3 {
   margin: 0;
+  font-family: var(--font-secondary);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   font-size: 1.25rem;
 }

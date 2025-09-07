@@ -362,7 +362,7 @@
   font-family: var(--font-secondary);
   font-size: 2.5rem;
   margin: 0 0 8px 0;
-  font-weight: 700;
+  font-weight: var(--font-weight-extrabold);
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -475,10 +475,11 @@
 }
 
 .analytics-section h2 {
-  color: #1f2937;
+  color: var(--text-dark);
+  font-family: var(--font-secondary);
   margin-bottom: 24px;
   font-size: 1.8rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .analytics-grid {

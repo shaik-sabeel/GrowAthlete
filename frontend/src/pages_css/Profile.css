@@ -31,7 +31,7 @@
 .profile-header {
     font-family: var(--font-secondary);
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-extrabold);
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid var(--border-color);
@@ -47,12 +47,13 @@
 }
 
 .section-title {
+    font-family: var(--font-secondary);
     font-size: 1.5rem; /* Larger title font */
-    font-weight: 700; /* Bolder font */
-    color: #2c3e50; /* Dark blue-gray for contrast */
+    font-weight: var(--font-weight-bold); /* Bolder font */
+    color: var(--text-dark); /* Dark blue-gray for contrast */
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e0e6ed; /* A subtle but clear separator */
+    border-bottom: 2px solid var(--border-color); /* A subtle but clear separator */
     position: relative;
 }
 
