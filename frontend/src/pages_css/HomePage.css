@@ -612,9 +612,7 @@ section {
 .hp-cta-stats-box p {
     font-size: 1.5rem; font-weight: 600;
 }
-.hp-cta-buttons {
-    /* color: var(--tertiary-color); */
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-}
+/* .hp-cta-buttons {
+    
+    
+} */

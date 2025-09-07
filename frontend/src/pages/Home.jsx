@@ -391,7 +391,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
           ))}
         </div>
         <div className="hp-view-all-events-btn-container">
-          <Button variant="secondary" link="/events-all">
+          <Button variant="secondary" link="/events">
             View All Events <span style={{fontSize: '0.8em'}}>&#x1F4C6;</span>
           </Button>
           {/* <Link to="/calendar" className="hp-view-calendar-link">
