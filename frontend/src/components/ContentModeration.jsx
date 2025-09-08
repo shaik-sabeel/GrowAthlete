@@ -24,7 +24,7 @@ import {
   FaRedo
 } from 'react-icons/fa';
 
-const ContentModeration = () => {
+const ContentModeration = ({ initialFilterStatus = 'all' }) => {
   const [activeTab, setActiveTab] = useState('community');
   const [posts, setPosts] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
@@ -32,7 +32,7 @@ const ContentModeration = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const [searchTerm, setSearchTerm] = useState('');
   const [moderationSettings, setModerationSettings] = useState(null);
   const [showSettings, setShowSettings] = useState(false);

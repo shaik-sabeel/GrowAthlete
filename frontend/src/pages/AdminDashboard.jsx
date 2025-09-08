@@ -5,7 +5,7 @@ import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
 import SportsEventsManagement from '../components/SportsEventsManagement';
 import AnimatedSportsBackground from '../components/AnimatedSportsBackground';
-import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown, FaClock } from 'react-icons/fa';
+import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown, FaClock, FaFlag } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -62,11 +62,14 @@ const AdminDashboard = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [showIntro, setShowIntro] = useState(false);
+  const [flaggedPosts, setFlaggedPosts] = useState([]);
+  const [loadingFlagged, setLoadingFlagged] = useState(false);
 
   useEffect(() => {
     fetchUsers();
     fetchStats();
     fetchEngagementMetrics();
+    fetchFlaggedPosts();
   }, [currentPage, usersPerPage, sortField, sortDirection, filterRole]);
 
 
@@ -220,6 +223,19 @@ const AdminDashboard = () => {
         activeTimePeriods: [],
         featureUsage: []
       });
+    }
+  };
+
+  const fetchFlaggedPosts = async () => {
+    try {
+      setLoadingFlagged(true);
+      const resp = await api.get('/moderation/community-posts', { params: { status: 'flagged', limit: 50, sortBy: 'createdAt', sortOrder: 'desc' } });
+      setFlaggedPosts(resp.data?.posts || []);
+    } catch (e) {
+      console.error('Failed to fetch flagged posts:', e);
+      setFlaggedPosts([]);
+    } finally {
+      setLoadingFlagged(false);
     }
   };
 
@@ -446,8 +462,11 @@ const AdminDashboard = () => {
           <p>Here's what's happening with your platform today</p>
         </div>
         <div className="welcome-actions">
-          <button className="btn btn-primary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
-            <FaRocket /> Launch Campaign
+          <button 
+            className="btn btn-primary" 
+            onClick={handleLogout}
+          >
+            <FaSignOutAlt /> Logout
           </button>
           <button className="btn btn-secondary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
             <FaDownload /> Export Report
@@ -860,6 +879,71 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      
+      {/* Flagged Posts */}
+      <div className="admin-section" style={{ marginTop: 24 }}>
+        <div className="section-header">
+          <div className="header-content">
+            <h2><FaFlag style={{ marginRight: 8 }} /> Flagged Posts</h2>
+            <p>Community posts reported by users and pending review</p>
+          </div>
+          <div className="header-actions">
+            <button className="btn btn-secondary" onClick={fetchFlaggedPosts} disabled={loadingFlagged}>{loadingFlagged ? 'Refreshing…' : 'Refresh'}</button>
+          </div>
+        </div>
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Author</th>
+                <th>Excerpt</th>
+                <th>Flags</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {flaggedPosts.length === 0 && (
+                <tr><td colSpan={5} style={{ textAlign: 'center', color: '#6b7280' }}>{loadingFlagged ? 'Loading…' : 'No flagged posts'}</td></tr>
+              )}
+              {flaggedPosts.map((p) => (
+                <tr key={p._id}>
+                  <td>
+                    <div className="user-info">
+                      <div className="user-avatar">{p.author?.username?.[0]?.toUpperCase() || '?'}</div>
+                      <div className="user-details">
+                        <span className="username">{p.author?.username || 'Unknown'}</span>
+                        <span className="email">{new Date(p.createdAt).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="text-gray-700" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', maxWidth: 420 }}>{p.content}</span>
+                  </td>
+                  <td>
+                    <span className="badge suspended"><FaFlag /> {p.flags?.length || 0}</span>
+                  </td>
+                  <td>
+                    <span className="badge pending">{p.status}</span>
+                  </td>
+                  <td>
+                    <button 
+                      onClick={() => {
+                        setActiveSection('moderation');
+                        // The ContentModeration component will show flagged posts by default
+                      }} 
+                      className="btn btn-icon btn-view" 
+                      title="Moderate"
+                    >
+                      <FaEye />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 
@@ -1255,7 +1339,7 @@ const AdminDashboard = () => {
             <p>View platform statistics and user growth metrics.</p>
           </div>
         )}
-        {activeSection === 'moderation' && <ContentModeration />}
+        {activeSection === 'moderation' && <ContentModeration initialFilterStatus="flagged" />}
         {activeSection === 'sports-events' && <SportsEventsManagement />}
         {activeSection === 'system-admin' && <SystemAdministration />}
         {activeSection === 'settings' && (

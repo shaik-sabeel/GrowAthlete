@@ -117,8 +117,8 @@ router.post("/community-posts/:id/flag", verifyToken, async (req, res) => {
       description
     });
 
-    // Auto-flag if threshold reached
-    if (post.flags.length >= 3) {
+    // Auto-flag if threshold reached (lowered to 1 for testing)
+    if (post.flags.length >= 1) {
       post.status = "flagged";
     }
 

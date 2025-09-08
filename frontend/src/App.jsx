@@ -115,6 +115,7 @@ import SportsResume from './pages/SportsResume.jsx';
 import ResumeTemplate from './pages/ResumeTemplate.jsx'; // Import your Resume Template page
 import MembershipPage from './pages/MembershipPage';
 import EventsPage from './pages/EventsPage'; // Import the new Events page
+import EventDetailPage from './pages/EventDetailPage';
 import CreateEventPage from './pages/CreateEventPage'; // Import the Admin Create Event page
 // --- GLOBAL STYLES (from src/ and src/pages_css/ as per your structure) ---
 import './App.css'; // Main App global styles, container, etc.
@@ -187,6 +188,7 @@ function AppContent() {
             
 
           <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
  main
 
 <Route path="/splash" element={<Splash nextPath="/" />} />

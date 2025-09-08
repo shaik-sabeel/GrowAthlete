@@ -100,8 +100,9 @@ import { Link } from 'react-router-dom'; // 👈 Import Link to use for the butt
 const EventCard = ({ event }) => {
     const eventDate = new Date(event.date);
     const now = new Date();
-    const timeDiff = eventDate.getTime() - now.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+    const daysDiff = Math.round((startOfDay(eventDate).getTime() - startOfDay(now).getTime()) / MS_PER_DAY);
     
     const getTimeStatus = () => {
         if (daysDiff < 0) return null; // Past event (shouldn't happen with our filter)
@@ -140,6 +141,15 @@ const EventCard = ({ event }) => {
                     </p>
                 </div>
                 <p className="text-gray-700 leading-relaxed text-base">{event.description}</p>
+                <div className="mt-4">
+                    <Link
+                        to={`/events/${event._id}`}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        style={{color:'white'}}
+                    >
+                        View Details
+                    </Link>
+                </div>
             </div>
         </div>
     );

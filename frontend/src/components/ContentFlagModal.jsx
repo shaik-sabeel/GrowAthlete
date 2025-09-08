@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaFlag, FaTimes, FaExclamationTriangle, FaBan, FaCommentSlash, FaUserSlash, FaNewspaper } from 'react-icons/fa';
 import api from '../utils/api';
 
-const ContentFlagModal = ({ isOpen, onClose, contentType, contentId, contentPreview }) => {
+const ContentFlagModal = ({ isOpen, onClose, contentType, contentId, contentPreview, onSuccess }) => {
   const [reason, setReason] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,6 +48,9 @@ const ContentFlagModal = ({ isOpen, onClose, contentType, contentId, contentPrev
       setReason('');
       setDescription('');
       onClose();
+      if (onSuccess) {
+        onSuccess({ reason, description });
+      }
       
       // Show success message
       alert('Content flagged successfully. Our moderation team will review it.');
