@@ -4,11 +4,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PostCreator from '../components/PostCreator';
 import CommunityFeed from '../components/CommunityFeed';
 import ImageCarousel from '../components/ImageCarousel';
-import AnnouncementsDisplay from '../components/AnnouncementsDisplay';
 import '../pages_css/CommunityPage.css';
-import sohamImg from '../assets/soham.jpg';
-import anikaImg from '../assets/anika.jpg';
-import vikramImg from '../assets/vikram.jpg';
+// Removed Top Contributors and Platform Announcements
 
 import Navbar from '../components/Navbar';
 
@@ -16,28 +13,20 @@ import api from '../utils/api';
 import { getCurrentUserId } from '../utils/auth';
 
 
-const AUTOPLAY_MS = 3500;
+// Removed autoplay for Top Contributors
 
 const CommunityPage = () => {
-  const topContributors = useMemo(
-    () => [
-      { name: 'Soham', sport: 'Football', avatar: sohamImg, posts: 214, kudos: 1280, streak: 12, verified: true },
-      { name: 'Anika', sport: 'Badminton', avatar: anikaImg, posts: 188, kudos: 990, streak: 9, verified: true },
-      { name: 'Vikram', sport: 'Cricket', avatar: vikramImg, posts: 165, kudos: 860, streak: 6, verified: false },
-    ],
-    []
-  );
-
-  const [contribIndex, setContribIndex] = useState(0);
+  // Removed Top Contributors state and data
   const [trendingTopics, setTrendingTopics] = useState([]);
   const [communityGuidelines, setCommunityGuidelines] = useState([]);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [refreshFeed, setRefreshFeed] = useState(0);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [loadingUpcoming, setLoadingUpcoming] = useState(false);
+  const [topContributors, setTopContributors] = useState([]);
+  const [loadingContribs, setLoadingContribs] = useState(false);
   
-  useEffect(() => {
-    const id = setInterval(() => setContribIndex((i) => (i + 1) % topContributors.length), AUTOPLAY_MS);
-    return () => clearInterval(id);
-  }, [topContributors.length]);
+  // Removed contributor carousel autoplay effect
 
   useEffect(() => {
     const fetchTrendingTopics = async () => {
@@ -58,12 +47,63 @@ const CommunityPage = () => {
       }
     };
 
+    const fetchUpcomingEvents = async () => {
+      try {
+        setLoadingUpcoming(true);
+        const resp = await api.get('/events');
+        const now = new Date();
+        const events = Array.isArray(resp.data) ? resp.data : [];
+        const filtered = events
+          .filter(e => new Date(e.date) >= now)
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
+          .slice(0, 3);
+        setUpcomingEvents(filtered);
+      } catch (err) {
+        console.error('Failed to fetch upcoming events:', err);
+        setUpcomingEvents([]);
+      } finally {
+        setLoadingUpcoming(false);
+      }
+    };
+
+    const fetchTopContributors = async () => {
+      try {
+        setLoadingContribs(true);
+        const resp = await api.get('/community/public', {
+          params: { page: 1, limit: 50, sort: 'mostLiked' }
+        });
+        const posts = Array.isArray(resp.data?.posts) ? resp.data.posts : [];
+        const byAuthor = new Map();
+        posts.forEach(p => {
+          const a = p.author;
+          if (!a || !a._id) return;
+          const key = a._id;
+          const likes = Array.isArray(p.likes) ? p.likes.length : 0;
+          const entry = byAuthor.get(key) || { author: a, posts: 0, likes: 0 };
+          entry.posts += 1;
+          entry.likes += likes;
+          byAuthor.set(key, entry);
+        });
+        const ranked = Array.from(byAuthor.values())
+          .sort((x, y) => y.likes - x.likes || y.posts - x.posts)
+          .slice(0, 5);
+        setTopContributors(ranked);
+      } catch (e) {
+        console.error('Failed to fetch top contributors:', e);
+        setTopContributors([]);
+      } finally {
+        setLoadingContribs(false);
+      }
+    };
+
     // Get current user ID from auth utility
     const userId = getCurrentUserId();
     setCurrentUserId(userId);
 
     fetchTrendingTopics();
     fetchCommunityGuidelines();
+    fetchUpcomingEvents();
+    fetchTopContributors();
   }, []);
 
   return (
@@ -86,10 +126,7 @@ const CommunityPage = () => {
           <CommunityFeed key={refreshFeed} currentUserId={currentUserId} />
         </div>
 
-        <div className="community__card community__section">
-          <h3 style={{ marginTop: 0, marginBottom: 16 }}>Platform Announcements</h3>
-          <AnnouncementsDisplay audience="all" />
-        </div>
+        {/* Removed Platform Announcements section */}
       </section>
 
       <aside className="community__sidebar">
@@ -125,14 +162,19 @@ const CommunityPage = () => {
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Upcoming Events</h3>
           <div className="events">
-            {[{ n: 'Talent Scouting Webinar', d: 'Fri, 5 PM', t: 'Online' }, { n: 'Athlete Showcase', d: 'Nov 30', t: 'Mumbai' }].map((e, i) => (
-              <div key={i} className="event">
+            {loadingUpcoming && (
+              <div className="text-gray-500 text-sm">Loading events...</div>
+            )}
+            {!loadingUpcoming && upcomingEvents.length === 0 && (
+              <div className="text-gray-500 text-sm">No upcoming events</div>
+            )}
+            {!loadingUpcoming && upcomingEvents.map((e) => (
+              <a key={e._id} href={`/events/${e._id}`} className="event" style={{ textDecoration: 'none' }}>
                 <div>
-                  <div style={{ fontWeight: 600 }}>{e.n}</div>
-                  <div className="meta">{e.d} • {e.t}</div>
+                  <div style={{ fontWeight: 600 }}>{e.title}</div>
+                  <div className="meta">{new Date(e.date).toLocaleDateString()} • {e.location}</div>
                 </div>
-                <button className="btn-remind">Remind me</button>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -155,35 +197,32 @@ const CommunityPage = () => {
 
         <div className="community__card community__section">
           <h3 style={{ marginTop: 0 }}>Top Contributors</h3>
-          <div className="contrib-carousel">
-            <div className="contrib-track" style={{ transform: `translateX(-${contribIndex * 100}%)` }}>
-              {topContributors.map((c) => (
-                <div key={c.name} className="contrib-slide">
-                  <div className="contrib contrib--card">
-                    <img className="contrib__avatar-lg" src={c.avatar} alt={c.name} />
-                    <div className="contrib__header">
-                      <div className="name">
-                        {c.name}
-                        {c.verified && <span className="badge badge--verified" aria-label="verified">✔</span>}
-                      </div>
-                      <div className="role">{c.sport}</div>
+          {loadingContribs && (
+            <div className="text-gray-500 text-sm">Loading...</div>
+          )}
+          {!loadingContribs && topContributors.length === 0 && (
+            <div className="text-gray-500 text-sm">No data available</div>
+          )}
+          {!loadingContribs && topContributors.length > 0 && (
+            <div className="space-y-3">
+              {topContributors.map(tc => (
+                <div key={tc.author._id} className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                  <div className="flex items-center">
+                    <img
+                      src={tc.author.profilePicture || '/default-avatar.png'}
+                      alt={tc.author.username}
+                      className="w-8 h-8 rounded-full object-cover mr-3"
+                    />
+                    <div>
+                      <div className="text-sm font-medium text-gray-800">{tc.author.username}</div>
+                      <div className="text-xs text-gray-500">{tc.posts} posts • {tc.likes} likes</div>
                     </div>
-                    <div className="contrib__stats-row">
-                      <div className="stat-pair"><span className="stat-label">posts:</span><span className="stat-value">{c.posts}</span></div>
-                      <div className="stat-pair"><span className="stat-label">kudos:</span><span className="stat-value">{c.kudos}</span></div>
-                      <div className="stat-pair"><span className="stat-label">streak:</span><span className="stat-value">{c.streak}d</span></div>
-                    </div>
-                    <button className="btn-follow btn-follow--corner">Follow</button>
                   </div>
+                  <a href={`/profile?user=${tc.author._id}`} className="text-xs text-blue-600 hover:underline">View</a>
                 </div>
               ))}
             </div>
-            <div className="contrib-dots">
-              {topContributors.map((_, i) => (
-                <span key={i} onClick={() => setContribIndex(i)} className={`dot ${contribIndex === i ? 'active' : ''}`} />
-              ))}
-            </div>
-          </div>
+          )}
         </div>
       </aside>
     </div>

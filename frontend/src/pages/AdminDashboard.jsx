@@ -5,7 +5,7 @@ import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
 import SportsEventsManagement from '../components/SportsEventsManagement';
 import AnimatedSportsBackground from '../components/AnimatedSportsBackground';
-import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaBell, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
+import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown, FaClock, FaFlag } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -15,15 +15,43 @@ const AdminDashboard = () => {
   const isFirstLoadRef = useRef(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showUserModal, setShowUserModal] = useState(false);
+  const [isEditingUser, setIsEditingUser] = useState(false);
+  const [editUserData, setEditUserData] = useState({});
   const [activeSection, setActiveSection] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
+  const [lastUpdateTime, setLastUpdateTime] = useState(null);
   
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [totalUsers, setTotalUsers] = useState(0);
+  
+  // Dashboard stats
+  const [dashboardStats, setDashboardStats] = useState({
+    totalUsers: 0,
+    verifiedUsers: 0,
+    suspendedUsers: 0,
+    pendingUsers: 0,
+    recentRegistrations: 0,
+    sportStats: [],
+    levelStats: [],
+    roleStats: []
+  });
+
+  // Engagement metrics
+  const [engagementMetrics, setEngagementMetrics] = useState({
+    dau: 0,
+    wau: 0,
+    mau: 0,
+    retention7Day: 0,
+    retention30Day: 0,
+    avgSessionDuration: 0,
+    sessionDurationBySport: [],
+    activeTimePeriods: [],
+    featureUsage: []
+  });
   const [totalPages, setTotalPages] = useState(0);
   
   // Sorting states
@@ -34,10 +62,16 @@ const AdminDashboard = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [showIntro, setShowIntro] = useState(false);
+  const [flaggedPosts, setFlaggedPosts] = useState([]);
+  const [loadingFlagged, setLoadingFlagged] = useState(false);
 
   useEffect(() => {
     fetchUsers();
+    fetchStats();
+    fetchEngagementMetrics();
+    fetchFlaggedPosts();
   }, [currentPage, usersPerPage, sortField, sortDirection, filterRole]);
+
 
   // Debounced search effect
   useEffect(() => {
@@ -84,8 +118,9 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchUsers = async () => {
+    let busyStart; // Declared outside try block
     try {
-      const busyStart = Date.now();
+      busyStart = Date.now(); // Assigned inside try block
       // Only show busy overlay with min duration after first load
       if (!isFirstLoadRef.current) {
         setIsBusy(true);
@@ -101,9 +136,9 @@ const AdminDashboard = () => {
       });
 
       const response = await api.get(`/admin/users?${params}`);
-      setUsers(response.data.users);
-      setTotalUsers(response.data.total);
-      setTotalPages(Math.ceil(response.data.total / usersPerPage));
+      setUsers(response.data?.users || []);
+      setTotalUsers(response.data?.total || 0);
+      setTotalPages(Math.ceil((response.data?.total || 0) / usersPerPage));
       setLoading(false);
       setIsSearching(false);
     } catch (error) {
@@ -111,19 +146,96 @@ const AdminDashboard = () => {
       setLoading(false);
       setIsSearching(false);
     } finally {
-      const elapsed = Date.now() - busyStart;
-      if (isFirstLoadRef.current) {
-        // No enforced delay on initial load
-        setIsBusy(false);
-        isFirstLoadRef.current = false;
-      } else {
-        const remaining = Math.max(0, BUSY_MIN_MS - elapsed);
-        if (remaining > 0) {
-          setTimeout(() => setIsBusy(false), remaining);
-        } else {
+      if (busyStart !== undefined) { // Added check for busyStart
+        const elapsed = Date.now() - busyStart;
+        if (isFirstLoadRef.current) {
+          // No enforced delay on initial load
           setIsBusy(false);
+          isFirstLoadRef.current = false;
+        } else {
+          const remaining = Math.max(0, BUSY_MIN_MS - elapsed);
+          if (remaining > 0) {
+            setTimeout(() => setIsBusy(false), remaining);
+          } else {
+            setIsBusy(false);
+          }
         }
+      } else {
+        setIsBusy(false); // Ensure busy state is reset even if busyStart was not defined
       }
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await api.get('/admin/stats');
+      setDashboardStats(response.data || {
+        totalUsers: 0,
+        verifiedUsers: 0,
+        suspendedUsers: 0,
+        pendingUsers: 0,
+        recentRegistrations: 0,
+        sportStats: [],
+        levelStats: [],
+        roleStats: []
+      });
+    } catch (error) {
+      console.error('Failed to fetch stats:', error);
+      // Set default stats on error
+      setDashboardStats({
+        totalUsers: 0,
+        verifiedUsers: 0,
+        suspendedUsers: 0,
+        pendingUsers: 0,
+        recentRegistrations: 0,
+        sportStats: [],
+        levelStats: [],
+        roleStats: []
+      });
+    }
+  };
+
+  const fetchEngagementMetrics = async () => {
+    try {
+      const response = await api.get('/admin/engagement-metrics');
+      setEngagementMetrics(response.data || {
+        dau: 0,
+        wau: 0,
+        mau: 0,
+        retention7Day: 0,
+        retention30Day: 0,
+        avgSessionDuration: 0,
+        sessionDurationBySport: [],
+        activeTimePeriods: [],
+        featureUsage: []
+      });
+    } catch (error) {
+      console.error('Failed to fetch engagement metrics:', error);
+      // Set default empty data when API fails
+      setEngagementMetrics({
+        dau: 0,
+        wau: 0,
+        mau: 0,
+        retention7Day: 0,
+        retention30Day: 0,
+        avgSessionDuration: 0,
+        sessionDurationBySport: [],
+        activeTimePeriods: [],
+        featureUsage: []
+      });
+    }
+  };
+
+  const fetchFlaggedPosts = async () => {
+    try {
+      setLoadingFlagged(true);
+      const resp = await api.get('/moderation/community-posts', { params: { status: 'flagged', limit: 50, sortBy: 'createdAt', sortOrder: 'desc' } });
+      setFlaggedPosts(resp.data?.posts || []);
+    } catch (e) {
+      console.error('Failed to fetch flagged posts:', e);
+      setFlaggedPosts([]);
+    } finally {
+      setLoadingFlagged(false);
     }
   };
 
@@ -197,7 +309,60 @@ const AdminDashboard = () => {
 
   const openUserModal = (user) => {
     setSelectedUser(user);
+    setEditUserData({
+      username: user.username || '',
+      email: user.email || '',
+      sport: user.sport || '',
+      level: user.level || '',
+      age: user.age || '',
+      location: user.location || '',
+      bio: user.bio || '',
+      phone: user.phone || '',
+      role: user.role || 'athlete',
+      isVerified: user.isVerified || false,
+      isSuspended: user.isSuspended || false
+    });
     setShowUserModal(true);
+  };
+
+  const handleEditUser = () => {
+    setIsEditingUser(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingUser(false);
+    setEditUserData({
+      username: selectedUser.username || '',
+      email: selectedUser.email || '',
+      sport: selectedUser.sport || '',
+      level: selectedUser.level || '',
+      age: selectedUser.age || '',
+      location: selectedUser.location || '',
+      bio: selectedUser.bio || '',
+      phone: selectedUser.phone || '',
+      role: selectedUser.role || 'athlete',
+      isVerified: selectedUser.isVerified || false,
+      isSuspended: selectedUser.isSuspended || false
+    });
+  };
+
+  const handleSaveUser = async () => {
+    try {
+      await api.patch(`/admin/users/${selectedUser._id}/profile`, editUserData);
+      await fetchUsers();
+      setIsEditingUser(false);
+      alert('User updated successfully');
+    } catch (error) {
+      console.error('Failed to update user:', error);
+      alert('Failed to update user');
+    }
+  };
+
+  const handleEditInputChange = (field, value) => {
+    setEditUserData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleLogout = () => {
@@ -297,8 +462,11 @@ const AdminDashboard = () => {
           <p>Here's what's happening with your platform today</p>
         </div>
         <div className="welcome-actions">
-          <button className="btn btn-primary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
-            <FaRocket /> Launch Campaign
+          <button 
+            className="btn btn-primary" 
+            onClick={handleLogout}
+          >
+            <FaSignOutAlt /> Logout
           </button>
           <button className="btn btn-secondary" onClick={() => { setIsBusy(true); setTimeout(() => setIsBusy(false), BUSY_MIN_MS); }}>
             <FaDownload /> Export Report
@@ -314,41 +482,41 @@ const AdminDashboard = () => {
           </div>
           <div className="stat-content">
             <h3>Total Users</h3>
-            <p className="stat-number">{totalUsers}</p>
-            <span className="stat-change positive">+12% from last month</span>
+            <p className="stat-number">{dashboardStats.totalUsers}</p>
+            <span className="stat-change positive">+{dashboardStats.recentRegistrations} this week</span>
           </div>
         </div>
 
         <div className="stat-card stat-success">
           <div className="stat-icon">
-            <FaGlobe />
+            <FaCheckCircle />
           </div>
           <div className="stat-content">
-            <h3>Platform Reach</h3>
-            <p className="stat-number">24 Countries</p>
-            <span className="stat-change positive">+3 new markets</span>
+            <h3>Verified Users</h3>
+            <p className="stat-number">{dashboardStats.verifiedUsers}</p>
+            <span className="stat-change positive">{dashboardStats.totalUsers > 0 ? Math.round((dashboardStats.verifiedUsers / dashboardStats.totalUsers) * 100) : 0}% verified</span>
           </div>
         </div>
 
         <div className="stat-card stat-warning">
           <div className="stat-icon">
-            <FaServer />
+            <FaExclamationTriangle />
           </div>
           <div className="stat-content">
-            <h3>System Health</h3>
-            <p className="stat-number">98.7%</p>
-            <span className="stat-change positive">+0.3% uptime</span>
+            <h3>Suspended Users</h3>
+            <p className="stat-number">{dashboardStats.suspendedUsers}</p>
+            <span className="stat-change negative">{dashboardStats.totalUsers > 0 ? Math.round((dashboardStats.suspendedUsers / dashboardStats.totalUsers) * 100) : 0}% suspended</span>
           </div>
         </div>
 
         <div className="stat-card stat-info">
           <div className="stat-icon">
-            <FaArrowUp />
+            <FaClock />
           </div>
           <div className="stat-content">
-            <h3>Growth Rate</h3>
-            <p className="stat-number">+23%</p>
-            <span className="stat-change positive">+5% vs last month</span>
+            <h3>Pending Users</h3>
+            <p className="stat-number">{dashboardStats.pendingUsers}</p>
+            <span className="stat-change neutral">Awaiting verification</span>
           </div>
         </div>
       </div>
@@ -356,6 +524,145 @@ const AdminDashboard = () => {
       {/* Platform Analytics */}
       <div className="analytics-section">
         <h2>Platform Analytics</h2>
+        
+
+        {/* Real-time Engagement Metrics */}
+        <div className="engagement-metrics-section">
+          <h2>Real-time Engagement Metrics</h2>
+          
+          {/* Key Metrics Cards */}
+          <div className="engagement-cards-grid">
+            <div className="engagement-card">
+              <div className="engagement-header">
+                <FaUsers className="engagement-icon" />
+                <h3>Active Users</h3>
+              </div>
+              <div className="engagement-metrics">
+                <div className="metric-item">
+                  <span className="metric-label">Daily Active Users</span>
+                  <span className="metric-value">{engagementMetrics.dau.toLocaleString()}</span>
+                </div>
+                <div className="metric-item">
+                  <span className="metric-label">Weekly Active Users</span>
+                  <span className="metric-value">{engagementMetrics.wau.toLocaleString()}</span>
+                </div>
+                <div className="metric-item">
+                  <span className="metric-label">Monthly Active Users</span>
+                  <span className="metric-value">{engagementMetrics.mau.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="engagement-card">
+              <div className="engagement-header">
+                <FaUserCheck className="engagement-icon" />
+                <h3>User Retention</h3>
+              </div>
+              <div className="engagement-metrics">
+                <div className="metric-item">
+                  <span className="metric-label">7-Day Retention</span>
+                  <span className="metric-value">{engagementMetrics.retention7Day}%</span>
+                </div>
+                <div className="metric-item">
+                  <span className="metric-label">30-Day Retention</span>
+                  <span className="metric-value">{engagementMetrics.retention30Day}%</span>
+                </div>
+                <div className="metric-item">
+                  <span className="metric-label">Avg Session Duration</span>
+                  <span className="metric-value">{engagementMetrics.avgSessionDuration}m</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Session Duration by Sport */}
+          <div className="engagement-chart-section">
+            <h3>Average Session Duration by Sport</h3>
+            <div className="session-duration-chart">
+              {engagementMetrics.sessionDurationBySport && engagementMetrics.sessionDurationBySport.length > 0 ? (
+                engagementMetrics.sessionDurationBySport.map((sport, index) => (
+                  <div key={sport.sport} className="session-duration-item">
+                    <div className="sport-info">
+                      <span className="sport-name">{sport.sport}</span>
+                      <span className="sport-users">({sport.users} users)</span>
+                    </div>
+                    <div className="duration-bar">
+                      <div 
+                        className="duration-fill" 
+                        style={{ 
+                          width: `${(sport.duration / Math.max(...engagementMetrics.sessionDurationBySport.map(s => s.duration))) * 100}%`,
+                          backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                        }}
+                      ></div>
+                    </div>
+                    <span className="duration-value">{sport.duration}m</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-data">No session duration data available</div>
+              )}
+            </div>
+          </div>
+
+          {/* Most Active Time Periods */}
+          <div className="engagement-chart-section">
+            <h3>Most Active Time Periods</h3>
+            <div className="time-periods-chart">
+              {engagementMetrics.activeTimePeriods && engagementMetrics.activeTimePeriods.length > 0 ? (
+                engagementMetrics.activeTimePeriods.map((period, index) => (
+                  <div key={period.period} className="time-period-item">
+                    <span className="period-label">{period.period}</span>
+                    <div className="period-bar">
+                      <div 
+                        className="period-fill" 
+                        style={{ 
+                          width: `${period.percentage}%`,
+                          backgroundColor: `hsl(${index * 30}, 70%, 50%)`
+                        }}
+                      ></div>
+                    </div>
+                    <div className="period-stats">
+                      <span className="period-users">{period.users} users</span>
+                      <span className="period-percentage">{period.percentage}%</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-data">No time period data available</div>
+              )}
+            </div>
+          </div>
+
+          {/* Feature Usage Statistics */}
+          <div className="engagement-chart-section">
+            <h3>Feature Usage Statistics</h3>
+            <div className="feature-usage-chart">
+              {engagementMetrics.featureUsage && engagementMetrics.featureUsage.length > 0 ? (
+                engagementMetrics.featureUsage.map((feature, index) => (
+                  <div key={feature.feature} className="feature-usage-item">
+                    <div className="feature-info">
+                      <span className="feature-name">{feature.feature}</span>
+                      <span className="feature-users">({feature.users.toLocaleString()} users)</span>
+                    </div>
+                    <div className="usage-bar">
+                      <div 
+                        className="usage-fill" 
+                        style={{ 
+                          width: `${feature.usage}%`,
+                          backgroundColor: `hsl(${index * 45}, 70%, 50%)`
+                        }}
+                      ></div>
+                    </div>
+                    <span className="usage-percentage">{feature.usage}%</span>
+                  </div>
+                ))
+              ) : (
+                <div className="no-data">No feature usage data available</div>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="analytics-grid">
           <div className="analytics-card">
             <div className="analytics-header">
@@ -513,10 +820,6 @@ const AdminDashboard = () => {
             <span>System Settings</span>
           </button>
           <button className="action-card">
-            <FaBell />
-            <span>Notifications</span>
-          </button>
-          <button className="action-card">
             <FaCalendarAlt />
             <span>Schedule Tasks</span>
           </button>
@@ -576,6 +879,71 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      
+      {/* Flagged Posts */}
+      <div className="admin-section" style={{ marginTop: 24 }}>
+        <div className="section-header">
+          <div className="header-content">
+            <h2><FaFlag style={{ marginRight: 8 }} /> Flagged Posts</h2>
+            <p>Community posts reported by users and pending review</p>
+          </div>
+          <div className="header-actions">
+            <button className="btn btn-secondary" onClick={fetchFlaggedPosts} disabled={loadingFlagged}>{loadingFlagged ? 'Refreshing…' : 'Refresh'}</button>
+          </div>
+        </div>
+        <div className="users-table-container">
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>Author</th>
+                <th>Excerpt</th>
+                <th>Flags</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {flaggedPosts.length === 0 && (
+                <tr><td colSpan={5} style={{ textAlign: 'center', color: '#6b7280' }}>{loadingFlagged ? 'Loading…' : 'No flagged posts'}</td></tr>
+              )}
+              {flaggedPosts.map((p) => (
+                <tr key={p._id}>
+                  <td>
+                    <div className="user-info">
+                      <div className="user-avatar">{p.author?.username?.[0]?.toUpperCase() || '?'}</div>
+                      <div className="user-details">
+                        <span className="username">{p.author?.username || 'Unknown'}</span>
+                        <span className="email">{new Date(p.createdAt).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="text-gray-700" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', maxWidth: 420 }}>{p.content}</span>
+                  </td>
+                  <td>
+                    <span className="badge suspended"><FaFlag /> {p.flags?.length || 0}</span>
+                  </td>
+                  <td>
+                    <span className="badge pending">{p.status}</span>
+                  </td>
+                  <td>
+                    <button 
+                      onClick={() => {
+                        setActiveSection('moderation');
+                        // The ContentModeration component will show flagged posts by default
+                      }} 
+                      className="btn btn-icon btn-view" 
+                      title="Moderate"
+                    >
+                      <FaEye />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 
@@ -612,6 +980,8 @@ const AdminDashboard = () => {
   return (
     <div className="admin-layout">
       <AnimatedSportsBackground />
+      
+
       {isBusy && (
         <div className="admin-busy-overlay" aria-live="polite" aria-busy="true">
           <div className="admin-busy-content">
@@ -839,9 +1209,18 @@ const AdminDashboard = () => {
                       </td>
                       <td>
                         <div className="role-badge">
-                          <span className={`role role-${user.role}`}>
-                            {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                          </span>
+                          <select
+                            value={user.role}
+                            onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                            className={`role-select role-${user.role}`}
+                            disabled={user._id === JSON.parse(localStorage.getItem('user') || '{}')._id}
+                          >
+                            <option value="athlete">Athlete</option>
+                            <option value="coach">Coach</option>
+                            <option value="scout">Scout</option>
+                            <option value="sponsor">Sponsor</option>
+                            <option value="admin">Admin</option>
+                          </select>
                         </div>
                       </td>
                       <td>
@@ -960,7 +1339,7 @@ const AdminDashboard = () => {
             <p>View platform statistics and user growth metrics.</p>
           </div>
         )}
-        {activeSection === 'moderation' && <ContentModeration />}
+        {activeSection === 'moderation' && <ContentModeration initialFilterStatus="flagged" />}
         {activeSection === 'sports-events' && <SportsEventsManagement />}
         {activeSection === 'system-admin' && <SystemAdministration />}
         {activeSection === 'settings' && (
@@ -983,35 +1362,182 @@ const AdminDashboard = () => {
             </div>
             <div className="user-details">
               <div className="detail-row">
+                <label>Username:</label>
+                {isEditingUser ? (
+                  <input
+                    type="text"
+                    value={editUserData.username}
+                    onChange={(e) => handleEditInputChange('username', e.target.value)}
+                    className="form-input"
+                  />
+                ) : (
+                  <span>{selectedUser.username}</span>
+                )}
+              </div>
+              <div className="detail-row">
                 <label>Email:</label>
-                <span>{selectedUser.email}</span>
+                {isEditingUser ? (
+                  <input
+                    type="email"
+                    value={editUserData.email}
+                    onChange={(e) => handleEditInputChange('email', e.target.value)}
+                    className="form-input"
+                  />
+                ) : (
+                  <span>{selectedUser.email}</span>
+                )}
               </div>
               <div className="detail-row">
                 <label>Role:</label>
-                <span className={`role role-${selectedUser.role}`}>
-                  {selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)}
-                </span>
+                {isEditingUser ? (
+                  <select
+                    value={editUserData.role}
+                    onChange={(e) => handleEditInputChange('role', e.target.value)}
+                    className="form-select"
+                  >
+                    <option value="athlete">Athlete</option>
+                    <option value="coach">Coach</option>
+                    <option value="scout">Scout</option>
+                    <option value="sponsor">Sponsor</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                ) : (
+                  <span className={`role role-${selectedUser.role}`}>
+                    {selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)}
+                  </span>
+                )}
               </div>
               <div className="detail-row">
                 <label>Sport:</label>
-                <span>{selectedUser.sport || 'Not specified'}</span>
-              </div>
-              <div className="detail-row">
-                <label>Location:</label>
-                <span>{selectedUser.location || 'Not specified'}</span>
+                {isEditingUser ? (
+                  <select
+                    value={editUserData.sport}
+                    onChange={(e) => handleEditInputChange('sport', e.target.value)}
+                    className="form-select"
+                  >
+                    <option value="">Select Sport</option>
+                    <option value="cricket">Cricket</option>
+                    <option value="football">Football</option>
+                    <option value="basketball">Basketball</option>
+                    <option value="tennis">Tennis</option>
+                    <option value="swimming">Swimming</option>
+                    <option value="other">Other</option>
+                  </select>
+                ) : (
+                  <span>{selectedUser.sport || 'Not specified'}</span>
+                )}
               </div>
               <div className="detail-row">
                 <label>Level:</label>
-                <span>{selectedUser.level || 'Not specified'}</span>
+                {isEditingUser ? (
+                  <select
+                    value={editUserData.level}
+                    onChange={(e) => handleEditInputChange('level', e.target.value)}
+                    className="form-select"
+                  >
+                    <option value="">Select Level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                ) : (
+                  <span>{selectedUser.level || 'Not specified'}</span>
+                )}
+              </div>
+              <div className="detail-row">
+                <label>Location:</label>
+                {isEditingUser ? (
+                  <input
+                    type="text"
+                    value={editUserData.location}
+                    onChange={(e) => handleEditInputChange('location', e.target.value)}
+                    className="form-input"
+                  />
+                ) : (
+                  <span>{selectedUser.location || 'Not specified'}</span>
+                )}
+              </div>
+              <div className="detail-row">
+                <label>Age:</label>
+                {isEditingUser ? (
+                  <input
+                    type="text"
+                    value={editUserData.age}
+                    onChange={(e) => handleEditInputChange('age', e.target.value)}
+                    className="form-input"
+                  />
+                ) : (
+                  <span>{selectedUser.age || 'Not specified'}</span>
+                )}
+              </div>
+              <div className="detail-row">
+                <label>Phone:</label>
+                {isEditingUser ? (
+                  <input
+                    type="tel"
+                    value={editUserData.phone}
+                    onChange={(e) => handleEditInputChange('phone', e.target.value)}
+                    className="form-input"
+                  />
+                ) : (
+                  <span>{selectedUser.phone || 'Not specified'}</span>
+                )}
+              </div>
+              <div className="detail-row">
+                <label>Bio:</label>
+                {isEditingUser ? (
+                  <textarea
+                    value={editUserData.bio}
+                    onChange={(e) => handleEditInputChange('bio', e.target.value)}
+                    className="form-textarea"
+                    rows="3"
+                  />
+                ) : (
+                  <span>{selectedUser.bio || 'Not specified'}</span>
+                )}
+              </div>
+              <div className="detail-row">
+                <label>Status:</label>
+                <div className="status-controls">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={isEditingUser ? editUserData.isVerified : selectedUser.isVerified}
+                      onChange={(e) => handleEditInputChange('isVerified', e.target.checked)}
+                      disabled={!isEditingUser}
+                    />
+                    Verified
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={isEditingUser ? editUserData.isSuspended : selectedUser.isSuspended}
+                      onChange={(e) => handleEditInputChange('isSuspended', e.target.checked)}
+                      disabled={!isEditingUser}
+                    />
+                    Suspended
+                  </label>
+                </div>
               </div>
             </div>
             <div className="modal-actions">
               <button className="btn btn-secondary" onClick={() => setShowUserModal(false)}>
                 Close
               </button>
-              <button className="btn btn-primary">
-                Edit User
-              </button>
+              {!isEditingUser ? (
+                <button className="btn btn-primary" onClick={handleEditUser}>
+                  Edit User
+                </button>
+              ) : (
+                <>
+                  <button className="btn btn-secondary" onClick={handleCancelEdit}>
+                    Cancel
+                  </button>
+                  <button className="btn btn-success" onClick={handleSaveUser}>
+                    Save Changes
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -288,6 +288,59 @@ router.delete('/:id/like', verifyToken, async (req, res) => {
   }
 });
 
+// ===== REACTIONS ROUTES =====
+
+// React to a post (set/replace reaction type for current user)
+router.post('/:id/react', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type } = req.body;
+    const userId = req.user.id;
+    const ALLOWED = ['👍','❤️','😂','👏','🙌'];
+    if (!ALLOWED.includes(type)) {
+      return res.status(400).json({ message: 'Invalid reaction type' });
+    }
+    const post = await CommunityPost.findById(id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    // remove existing reaction by this user
+    post.reactions = (post.reactions || []).filter(r => r.userId.toString() !== userId);
+    // add new reaction
+    post.reactions.push({ userId, type, createdAt: new Date() });
+    await post.save();
+    const counts = ALLOWED.reduce((acc, t) => {
+      acc[t] = post.reactions.filter(r => r.type === t).length;
+      return acc;
+    }, {});
+    res.json({ message: 'Reaction saved', counts, myReaction: type });
+  } catch (e) {
+    console.error('Error reacting to post:', e);
+    res.status(500).json({ message: 'Failed to save reaction' });
+  }
+});
+
+// Remove current user's reaction
+router.delete('/:id/react', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const ALLOWED = ['👍','❤️','😂','👏','🙌'];
+    const post = await CommunityPost.findById(id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    const before = (post.reactions || []).length;
+    post.reactions = (post.reactions || []).filter(r => r.userId.toString() !== userId);
+    const removed = before !== post.reactions.length;
+    await post.save();
+    const counts = ALLOWED.reduce((acc, t) => {
+      acc[t] = post.reactions.filter(r => r.type === t).length;
+      return acc;
+    }, {});
+    res.json({ message: removed ? 'Reaction removed' : 'No reaction to remove', counts, myReaction: null });
+  } catch (e) {
+    console.error('Error removing reaction:', e);
+    res.status(500).json({ message: 'Failed to remove reaction' });
+  }
+});
+
 // ===== COMMENT ROUTES =====
 
 // Add a comment to a post
@@ -332,6 +385,35 @@ router.post('/:id/comments', verifyToken, async (req, res) => {
   } catch (error) {
     console.error('Error adding comment:', error);
     res.status(500).json({ message: 'Failed to add comment' });
+  }
+});
+
+// Add a reply to a comment
+router.post('/:id/comments/:commentId/replies', verifyToken, async (req, res) => {
+  try {
+    const { id, commentId } = req.params;
+    const { content } = req.body;
+    const author = req.user.id;
+    if (!content || content.trim().length === 0) {
+      return res.status(400).json({ message: 'Reply content is required' });
+    }
+    const post = await CommunityPost.findById(id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    const comment = post.comments.id(commentId);
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
+    const reply = { author, content: content.trim(), createdAt: new Date() };
+    comment.replies = comment.replies || [];
+    comment.replies.push(reply);
+    await post.save();
+    // populate reply author
+    await post.populate('comments.author', 'username profilePicture');
+    await post.populate('comments.replies.author', 'username profilePicture');
+    const savedComment = post.comments.id(commentId);
+    const newReply = savedComment.replies[savedComment.replies.length - 1];
+    res.status(201).json({ message: 'Reply added', reply: newReply });
+  } catch (e) {
+    console.error('Error adding reply:', e);
+    res.status(500).json({ message: 'Failed to add reply' });
   }
 });
 

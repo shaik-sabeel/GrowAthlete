@@ -117,8 +117,8 @@ router.post("/community-posts/:id/flag", verifyToken, async (req, res) => {
       description
     });
 
-    // Auto-flag if threshold reached
-    if (post.flags.length >= 3) {
+    // Auto-flag if threshold reached (lowered to 1 for testing)
+    if (post.flags.length >= 1) {
       post.status = "flagged";
     }
 
@@ -172,6 +172,32 @@ router.get("/blog-posts", verifyToken, isAdmin, async (req, res) => {
   } catch (error) {
     console.error("Error fetching blog posts:", error);
     res.status(500).json({ message: "Failed to fetch blog posts" });
+  }
+});
+
+// Flag a blog post
+router.post("/blog-posts/:id/flag", verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason, description } = req.body;
+
+    const post = await BlogPost.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Blog post not found" });
+    }
+
+    post.flags.push({
+      reporter: req.user.id,
+      reason,
+      description
+    });
+
+    await post.save();
+
+    res.json({ message: "Blog post flagged successfully" });
+  } catch (error) {
+    console.error("Error flagging blog post:", error);
+    res.status(500).json({ message: "Failed to flag blog post" });
   }
 });
 

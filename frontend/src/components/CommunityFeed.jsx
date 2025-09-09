@@ -1,6 +1,6 @@
 // src/components/CommunityFeed.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Post from './Post';
 import api from '../utils/api';
 
@@ -26,6 +26,7 @@ const CommunityFeed = ({ currentUserId }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [sortBy, setSortBy] = useState('newest');
   const [hasMore, setHasMore] = useState(true);
+  const loaderRef = useRef(null);
 
   const fetchPosts = async (page = 1, sort = sortBy, append = false) => {
     try {
@@ -89,6 +90,23 @@ const CommunityFeed = ({ currentUserId }) => {
     }
   };
 
+  // Infinite scroll via IntersectionObserver
+  useEffect(() => {
+    const el = loaderRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting) {
+          loadMorePosts();
+        }
+      },
+      { root: null, rootMargin: '200px', threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [loaderRef, hasMore, isLoading, currentPage, sortBy]);
+
   const handleSortChange = (newSort) => {
     setSortBy(newSort);
     setCurrentPage(1);
@@ -148,18 +166,15 @@ const CommunityFeed = ({ currentUserId }) => {
         </div>
       )}
 
-      {/* Load More Button */}
-      {hasMore && posts.length > 0 && (
-        <div className="text-center mt-6">
-          <button
-            onClick={loadMorePosts}
-            disabled={isLoading}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? 'Loading...' : 'Load More Posts'}
-          </button>
-        </div>
-      )}
+      {/* Infinite Scroll Sentinel */}
+      <div ref={loaderRef} className="h-8 w-full flex items-center justify-center mt-6">
+        {isLoading && posts.length > 0 && (
+          <span className="text-gray-400 text-sm">Loading…</span>
+        )}
+        {!hasMore && posts.length > 0 && (
+          <span className="text-gray-300 text-xs">No more posts</span>
+        )}
+      </div>
 
       {/* Loading State */}
       {isLoading && posts.length === 0 && (

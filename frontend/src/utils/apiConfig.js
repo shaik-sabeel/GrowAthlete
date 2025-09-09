@@ -9,8 +9,11 @@
 export const API_CONFIG = {
   // NewsData.io API Configuration
   NEWSDATA: {
-    API_KEY: import.meta.env.VITE_NEWSDATA_API_KEY || "pub_44e5a0bf7c6f4d618d4755a6896cef95", // fallback to your API key
-    BASE_URL: "https://newsdata.io/api/1/news",
+    BASE_URL: 'https://newsdata.io/api/1/latest',
+    // Use Vite env for API key (Preferred)
+    API_KEY: (import.meta?.env?.VITE_NEWSDATA_API_KEY) || 'pub_cb80615c107443f5a0bb1176a738fff0',
+    RATE_LIMIT: 200, // requests per hour for free tier
+    CACHE_DURATION: 5 * 60 * 1000 // 5 minutes
   },
   
   // TheSportsDB API Configuration (completely free)

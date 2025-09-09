@@ -41,6 +41,56 @@ const blogPostSchema = new mongoose.Schema({
   isPremium: { // To distinguish premium content if needed
     type: Boolean,
     default: false
+  },
+  // Moderation fields
+  status: {
+    type: String,
+    enum: ['draft', 'pending', 'approved', 'rejected', 'flagged', 'removed', 'published'],
+    default: 'draft'
+  },
+  moderationNotes: String,
+  moderatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  moderatedAt: Date,
+  rejectionReason: String,
+  flags: [{
+    reporter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    reason: {
+      type: String,
+      enum: ['spam', 'inappropriate', 'harassment', 'fake_news', 'violence', 'other'],
+      required: true
+    },
+    description: String,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  isFlagged: {
+    type: Boolean,
+    default: false
+  },
+  flagCount: {
+    type: Number,
+    default: 0
+  },
+  // Content filtering
+  containsInappropriateContent: {
+    type: Boolean,
+    default: false
+  },
+  inappropriateKeywords: [String],
+  languageScore: {
+    type: Number,
+    min: 0,
+    max: 100,
+    default: 100
   }
 }, {
   timestamps: true // This will automatically add createdAt and updatedAt
