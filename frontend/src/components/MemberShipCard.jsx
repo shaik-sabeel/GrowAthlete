@@ -24,15 +24,15 @@ const MembershipCard = ({ level, price, description, features, buttonText, bgCol
         {level}
       </h2>
       <p className={`text-5xl font-extrabold text-gray-900 mb-6 ${textColor}`}>
-        {price}<span className="text-2xl font-medium text-gray-600">/month</span>
+        {price}<span className="text-2xl font-medium text-gray-400">/month</span>
       </p>
-      <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+      <p className="text-white text-lg mb-6 leading-relaxed">
         {description}
       </p>
 
       <ul className="list-none space-y-3 mb-8 w-full">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-center text-gray-800 text-md">
+          <li key={index} className="flex items-center text-white text-md">
             <svg
               className={`w-5 h-5 mr-3 ${textColor}`}
               fill="currentColor"
@@ -51,7 +51,7 @@ const MembershipCard = ({ level, price, description, features, buttonText, bgCol
       </ul>
 
       <button
-        className={`
+        className= {`
           ${textColor === 'text-green-800' ? 'bg-green-600 hover:bg-green-700' : ''}
           ${textColor === 'text-blue-800' ? 'bg-blue-600 hover:bg-blue-700' : ''}
           ${textColor === 'text-purple-800' ? 'bg-purple-600 hover:bg-purple-700' : ''}

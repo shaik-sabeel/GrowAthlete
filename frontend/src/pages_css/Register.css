@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import './variables-light.css';
 
 /* --- Apply background to the entire page --- */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-primary);
     margin: 0;
     /* --- THIS IS THE KEY --- */
     /* background-image: url('../assets/images/auditorium.383Z.png'); Use the uploaded image */
@@ -27,26 +27,27 @@ body {
 
 /* Form Card */
 .register-form {
-  background: rgb(255, 255, 255);
+  background: var(--background-light);
   opacity: 0.9; /* Black with 50% opacity */
   backdrop-filter: blur(7px);       /* Optional: blurs the image behind the form */
   -webkit-backdrop-filter: blur(8px);
   padding: 40px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-card);
   max-width: 420px;
   width: 100%;
-  box-shadow: 0 10px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--box-shadow-card-hover);
   animation: fadeIn 0.5s ease-out;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--border-color);
 }
 
 /* Title */
 .register-form h2 {
+  font-family: var(--font-secondary);
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: rgb(44, 44, 44);
+  color: var(--text-dark);
 }
 
 /* Input Groups */

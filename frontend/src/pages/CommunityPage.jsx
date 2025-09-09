@@ -112,7 +112,7 @@ const CommunityPage = () => {
     <div className="community">
       <section className="community__main">
         <div className="community__card community__section">
-          <h2 style={{ marginTop: 0 }}>Create a post</h2>
+          <h2 style={{ marginTop: 0 , fontSize: "40px"}}>Create a post</h2>
           <PostCreator 
             currentUserId={currentUserId}
             onPostCreated={(newPost) => {

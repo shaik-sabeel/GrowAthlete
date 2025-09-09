@@ -1,11 +1,14 @@
 /* src/pages/SportsBlogPage.css */
 
+@import './variables.css';
+
 .sports-blog-page {
   padding: 80px 40px; /* Adjust top padding to clear fixed navbar */
   min-height: 100vh;
-  background-color: var(--color-page-background); /* Inherits from global theme */
-  color: var(--color-page-text); /* Inherits from global theme */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for page itself */
+  background-color: var(--background-main); /* Inherits from global theme */
+  color: var(--text-dark); /* Inherits from global theme */
+  font-family: var(--font-primary);
+  transition: var(--transition-smooth); /* Smooth transition for page itself */
 }
 
 /* Hero Section */
@@ -24,19 +27,6 @@
 }
 
 /* Video Styling */
-.blog-hero-video {
-  /* position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  z-index: -1; /* Place video behind content */
-  /* transform: translate(-50%, -50%);
-  object-fit: cover; 
-  filter: brightness(60%); */
-}
 
 /* Optional Overlay (alternative/addition to filter) */
 .blog-hero-overlay {
@@ -60,8 +50,9 @@
 }
 
 .blog-hero-title {
+  font-family: var(--font-secondary);
   font-size: 3.5em; /* Larger title */
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   margin-bottom: 20px;
   color: inherit; /* Inherit color from blog-hero-content (white) */
   /* Remove highlight rule if you want plain white, or redefine it for a white glow */
@@ -73,7 +64,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
+  /* text-fill-color: transparent; */
 }
 
 
@@ -90,7 +81,8 @@
 .blog-posts-grid-section {
   max-width: 1200px; /* Max width for content, similar to Skipper UI */
   margin: 0 auto;
-  padding-top: 50px; /* Add padding between hero and grid section */
+  padding-top: 50px;
+  
 }
 
 .blog-posts-grid {

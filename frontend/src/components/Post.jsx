@@ -265,7 +265,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
           </div>
           {/* User Name and Time */}
           <div className="ml-3">
-            <p className="font-semibold text-gray-800">{post.author.username}</p>
+            <p className="font-semibold text-gray-100 px-2">{post.author.username}</p>
             <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
           </div>
         </div>
@@ -333,29 +333,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
 
       {/* Post Content with Read more toggle */}
       {!showEditForm && (
-        <div className="mb-3 pl-12">
-          <p
-            className="text-gray-700"
-            style={isPostExpanded ? {} : {
-              display: '-webkit-box',
-              WebkitLineClamp: 4,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
-            }}
-          >
-            {post.content}
-          </p>
-          {post.content && post.content.length > 220 && (
-            <button
-              type="button"
-              onClick={() => setIsPostExpanded(s => !s)}
-              className="mt-1 text-[13px] text-gray-500 hover:text-gray-700 hover:underline"
-              style={{ background: 'transparent', border: 'none', padding: 0 }}
-            >
-              {isPostExpanded ? 'Show less' : 'Read more'}
-            </button>
-          )}
-        </div>
+        <p className="text-white-700 mb-4 pl-12">{post.content}</p>
       )}
 
       {/* Media */}

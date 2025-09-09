@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import './variables.css';
 
 /* ===== BRAND COLOR VARIABLES ===== */
 :root {
@@ -795,13 +795,14 @@
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  border: 5px solid #ffffff;
+  border: 5px solid var(--background-light);
   object-fit: cover;
   vertical-align: middle;
 }
 
 .profile-name {
   margin: 20px 0 5px 0;
+  font-family: var(--font-secondary);
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--ga-navy);
@@ -838,6 +839,7 @@
 }
 
 .section-title {
+  font-family: var(--font-secondary);
   font-size: 1.4rem;
   font-weight: 600;
   color: var(--ga-navy);
@@ -901,7 +903,7 @@
   color: var(--ga-navy);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: var(--transition-smooth);
 }
 
 .info-item a:hover {

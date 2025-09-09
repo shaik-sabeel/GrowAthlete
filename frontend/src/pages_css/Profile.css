@@ -1,8 +1,10 @@
 /* --- AESTHETIC & BRIGHT STYLING --- */
 
+@import './variables.css';
+
 /* General container for the entire page */
 .profile-form-container {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--background-main);
     padding: 3rem 1rem; /* Added more vertical padding */
     display: flex;
     flex-direction: column;
@@ -11,28 +13,29 @@
     min-height: 100vh;
     width: 100%;
 
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: var(--font-primary);
 }
 
 /* The main form element */
 .profile-form {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    background-color: var(--background-light);
     backdrop-filter: blur(10px); /* Frosted glass effect */
     padding: 3rem;
-    border-radius: 20px; /* Softer, more modern border radius */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--border-radius-card); /* Softer, more modern border radius */
+    box-shadow: var(--box-shadow-card);
+    border: 1px solid var(--border-color);
     max-width: 900px;
     width: 100%;
 }
 
 .profile-header {
+    font-family: var(--font-secondary);
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-extrabold);
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e0e6ed;
-    background: linear-gradient(90deg, #07e8f8 0%, #2e83fb 100%);
+    border-bottom: 2px solid var(--border-color);
+    background: var(--gradient-1);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -44,12 +47,13 @@
 }
 
 .section-title {
+    font-family: var(--font-secondary);
     font-size: 1.5rem; /* Larger title font */
-    font-weight: 700; /* Bolder font */
-    color: #2c3e50; /* Dark blue-gray for contrast */
+    font-weight: var(--font-weight-bold); /* Bolder font */
+    color: var(--text-dark); /* Dark blue-gray for contrast */
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e0e6ed; /* A subtle but clear separator */
+    border-bottom: 2px solid var(--border-color); /* A subtle but clear separator */
     position: relative;
 }
 

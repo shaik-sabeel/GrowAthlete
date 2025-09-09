@@ -1,11 +1,14 @@
 /* src/pages_css/SingleBlogPostPage.css */
 
+@import './variables.css';
+
 .single-blog-post-page {
-  padding-top: 70px; /* Adjust to clear fixed navbar if you have one */
+  padding: 70px; /* Adjust to clear fixed navbar if you have one */
   min-height: 100vh;
-  background-color: #f8f8fa; /* Light greyish background color */
-  color: #333; /* Default text color */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--background-main); /* Light greyish background color */
+  color: var(--text-dark); /* Default text color */
+  font-family: var(--font-primary);
+  transition: var(--transition-smooth);
   display: flex;
   flex-direction: column;
   align-items: center; /* Center content horizontally */
@@ -76,9 +79,10 @@
 }
 
 .post-title {
+  font-family: var(--font-secondary);
   font-size: 2.8rem; /* Larger font size for title */
-  font-weight: 700; /* Bold weight for title */
-  color: #333; /* Dark text for title */
+  font-weight: var(--font-weight-extrabold); /* Bold weight for title */
+  color: var(--primary-color); /* Dark text for title */
   margin-bottom: 0.75rem; /* Space below title */
   line-height: 1.2;
 }
@@ -99,7 +103,7 @@
 .post-body {
   font-size: 1.05rem; /* Slightly larger text for readability */
   line-height: 1.7; /* Good line height */
-  color: #555; /* Medium grey for body text */
+  color: #ffffff; /* Medium grey for body text */
 }
 
 .post-body p {
@@ -108,19 +112,21 @@
 
 /* Example styling for rich text content within post-body */
 .post-body h2 {
+  font-family: var(--font-secondary);
   font-size: 2em;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   margin-top: 2em;
   margin-bottom: 1em;
-  color: #333;
+  color: var(--text-dark);
 }
 
 .post-body h3 {
+  font-family: var(--font-secondary);
   font-size: 1.6em;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   margin-top: 1.5em;
   margin-bottom: 0.8em;
-  color: #333;
+  color: var(--text-dark);
 }
 
 .post-body ul, .post-body ol {

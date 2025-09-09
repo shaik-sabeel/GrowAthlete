@@ -166,15 +166,18 @@ const CommunityFeed = ({ currentUserId }) => {
         </div>
       )}
 
-      {/* Infinite Scroll Sentinel */}
-      <div ref={loaderRef} className="h-8 w-full flex items-center justify-center mt-6">
-        {isLoading && posts.length > 0 && (
-          <span className="text-gray-400 text-sm">Loading…</span>
-        )}
-        {!hasMore && posts.length > 0 && (
-          <span className="text-gray-300 text-xs">No more posts</span>
-        )}
-      </div>
+      {/* Load More Button */}
+      {hasMore && posts.length > 0 && (
+        <div className="text-center mt-6">
+          <button
+            onClick={loadMorePosts}
+            disabled={isLoading}
+            className="px-6 py-2 bg-gray-200 text-white-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? 'Loading...' : 'Load More Posts'}
+          </button>
+        </div>
+      )}
 
       {/* Loading State */}
       {isLoading && posts.length === 0 && (

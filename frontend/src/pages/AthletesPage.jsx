@@ -460,14 +460,14 @@ const AthletesPage = () => {
                 <div className="ap-athlete-info">
                   <h3>{athlete.username}</h3>
                   <p>{athlete.sport}</p>
-                  {athlete.bio && <small>{athlete.bio}</small>}
+                  {/* {athlete.bio && <small>{athlete.bio}</small>} */}
                   {athlete.location && <small>{athlete.location}</small>}
                   {athlete.age && <small>{athlete.age}</small>}
-                  {athlete.achievements && <small>{athlete.achievements}</small>}
+                  {/* {athlete.achievements && <small>{athlete.achievements}</small>} */}
                   <Link
                     // onClick={() => handleViewProfile(athlete._id)}
                     to={`/athletes/${athlete._id}`}
-                    className="btn btn-primary"
+                    className="athelete-info btn btn-secondary"
                   >
                     View Profile
                   </Link>

@@ -9,36 +9,43 @@
   --font-primary: 'Inter', sans-serif;
   --font-secondary: 'Poppins', sans-serif;
   
-  /* CORE COLORS */
-  --primary-color: #6366F1;   /* A pleasing, modern Indigo */
-  --secondary-color: #EC4899;  /* A vibrant Pink */
-  --tertiary-color: #22D3EE;  /* A bright Cyan for accents */
+  /* FONT WEIGHTS */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* CORE COLORS - Dark Theme with Blue/Purple */
+  --primary-color: #8B5CF6;   /* Purple primary color */
+  --secondary-color: #049c9e;  /* Cyan secondary color */
+  --tertiary-color: #3B82F6;  /* Blue accent color */
   --success-color: #10B981;    /* Green */
   --warning-color: #F59E0B;    /* Amber */
 
-  /* TEXT COLORS */
-  --text-dark: #1F2937;        /* For headings and primary text */
-  --text-medium: #4B5563;      /* For body copy and secondary text */
-  --text-light: #6B7280;       /* For muted text and descriptions */
+  /* TEXT COLORS - Dark Theme */
+  --text-dark: #FFFFFF;        /* White text for dark backgrounds */
+  --text-medium: #D1D5DB;      /* Light gray for secondary text */
+  --text-light: #9CA3AF;       /* Muted gray for descriptions */
   --text-on-dark: #FFFFFF;     /* For text on dark or colored backgrounds */
 
-  /* BACKGROUND & SURFACE COLORS */
-  --background-main: #F9FAFB;  /* Very light gray for the main page background */
-  --background-light: #FFFFFF;  /* For cards and surfaces */
-  --background-dark: #111827;   /* For dark mode or dark sections */
+  /* BACKGROUND & SURFACE COLORS - Dark Theme */
+  --background-main: #0F172A;  /* Very dark blue/navy for main background */
+  --background-light: #1E293B; /* Dark gray/blue for cards and surfaces */
+  --background-dark: #020617;   /* Even darker for special sections */
 
-  /* BORDER COLORS */
-  --border-color: #E5E7EB;     /* A light, non-distracting border color */
+  /* BORDER COLORS - Dark Theme */
+  --border-color: #334155;     /* Dark border color for dark theme */
 
-  /* GRADIENTS - For that aesthetic pop */
+  /* GRADIENTS - Dark Theme Gradients */
   --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  --gradient-2: linear-gradient(135deg, #A5B4FC 0%, #F9A8D4 100%); /* Lighter variant */
-  --gradient-3: linear-gradient(135deg, #67E8F9 0%, #22D3EE 100%); /* Cyan accent gradient */
+  --gradient-2: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%); /* Purple to blue */
+  --gradient-3: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%); /* Cyan to blue */
 
-  /* SHADOWS - Creates depth */
-  --box-shadow-card: 0 4px 15px rgba(0, 0, 0, 0.06);
-  --box-shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
-  --box-shadow-button: 0 4px 10px rgba(99, 102, 241, 0.3);
+  /* SHADOWS - Dark Theme Shadows */
+  --box-shadow-card: 0 4px 15px rgba(0, 0, 0, 0.25);
+  --box-shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
+  --box-shadow-button: 0 4px 10px rgba(139, 92, 246, 0.4);
 
   /* BORDER RADIUS */
   --border-radius-card: 16px;  /* For main cards and containers */

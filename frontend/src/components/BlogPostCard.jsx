@@ -28,7 +28,7 @@ const BlogPostCard = ({ post }) => {
           </div>
         </div>
         <Link to={`/sports-blog/${post.slug}`} className="blog-card-link">
-          <Button variant="blog-readmore">Read More &rarr;</Button>
+          <Button className="blog-readmore">Read More &rarr;</Button>
         </Link>
       </div>
     </div>
