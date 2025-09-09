@@ -131,7 +131,7 @@ export default function SportsResume() {
           </p>
           <div className="mt-10 flex justify-center">
             {/* Direct anchor link for scroll to form */}
-            <a
+            <a 
               href="#resume-form" 
               className="get-started"
             >

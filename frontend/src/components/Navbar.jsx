@@ -34,7 +34,8 @@ const navLinks = [
     { name: 'Sponsorships', path: '/sponsorships' },
     // { name: 'Resources', path: '/resources' },
     { name: 'Membership', path: '/membership' },
-    { name: 'Contact Us', path: '/contact' }
+    { name: 'Contact Us', path: '/contact' },
+    {name : 'Sports Blog', path: '/sports-blog'}
    
   ]},
 ];

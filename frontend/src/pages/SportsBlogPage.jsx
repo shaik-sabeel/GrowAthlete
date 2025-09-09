@@ -50,7 +50,7 @@ const SportsBlogPage = () => {
           )} */}
           <div className="blog-hero-overlay"></div> {/* Optional: For darker overlay */}
           <div className="blog-hero-content">
-            <h1 className="blog-hero-title">Latest <span className="highlight">Sports News</span> & Insights</h1>
+            <h1 className="blog-hero-title">Latest <span className="highlight">Sports Blogs</span> & Insights</h1>
             <p className="blog-hero-subtitle">Stay updated with exclusive articles, analysis, and stories from the world of Indian sports.</p>
             <Link
                     // onClick={() => handleViewProfile(athlete._id)}
