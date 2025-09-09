@@ -508,7 +508,7 @@ const MyProfile = () => {
             <div className="availability-pill">
               {!isEditMode ? (
                 <>
-                  <div className="availability-status">
+                  <div className="availability-status ">
                     <span className="status-dot"></span>
                     <span>{user.availability || "Open to tryouts"}</span>
                   </div>
@@ -600,7 +600,7 @@ const MyProfile = () => {
         </header>
 
         {/* Performance DNA Band */}
-        <section className="performance-dna-band">
+        {/* <section className="performance-dna-band">
           <div className="dna-container">
             <h3 className="dna-title">Performance DNA</h3>
             {!isEditMode ? (
@@ -740,7 +740,7 @@ const MyProfile = () => {
               </div>
             )}
           </div>
-        </section>
+        </section> */}
 
         {/* Profile Card */}
         <div className="profile-card">

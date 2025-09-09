@@ -2,11 +2,12 @@
 
 /* ===== BRAND COLOR VARIABLES ===== */
 :root {
-  --ga-navy: #13293D;
-  --ga-orange: #D98022;
-  --ga-beige: #F8F4EB;
-  --ga-charcoal: #222831;
-  --ga-soft: #ECECEC;
+  /* Map MyProfile theme to global SportsResume theme tokens */
+  --ga-navy: var(--primary-color);
+  --ga-orange: var(--secondary-color);
+  --ga-beige: var(--background-light);
+  --ga-charcoal: var(--text-dark);
+  --ga-soft: var(--border-color);
   
   /* Wave Motion Colors */
   --wave-royal-blue: #1e3a8a;
@@ -25,10 +26,10 @@
   --minimal-shadow: rgba(0, 0, 0, 0.05);
   --minimal-shadow-strong: rgba(0, 0, 0, 0.1);
   
-  /* Gradient Accents */
-  --gradient-navy-teal: linear-gradient(135deg, #1e3a8a, #0d9488);
-  --gradient-indigo-violet: linear-gradient(135deg, #4f46e5, #7c3aed);
-  --gradient-text: linear-gradient(135deg, #1e3a8a, #0d9488);
+  /* Gradient Accents aligned with global gradients */
+  --gradient-navy-teal: var(--gradient-1);
+  --gradient-indigo-violet: var(--gradient-2);
+  --gradient-text: var(--gradient-1);
 }
 
 /* ===== KINETIC HEADER STYLES ===== */
@@ -52,7 +53,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--ga-beige);
+  background: var(--background-main);
   transition: all 0.3s ease;
 }
 
@@ -410,7 +411,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: white;
+  background: #212848;
   padding: 1rem 1.5rem;
   border-radius: 25px;
   border: 1px solid var(--ga-soft);
@@ -459,7 +460,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: white;
+  background:#212848;
   padding: 1rem 1.5rem;
   border-radius: 15px;
   border: 1px solid var(--ga-soft);
@@ -767,7 +768,7 @@
   min-height: 100vh;
   /* Added padding-top to prevent overlap with a fixed navbar */
   padding: 80px 0 40px 0;
-  background: var(--ga-beige);
+  background: var(--background-main);
   font-family: 'Poppins', sans-serif;
   position: relative;
 }

@@ -14,12 +14,12 @@ const COLORS = {
 };
 
 const continents = [
-  { key: 'indian', label: 'Indian', icon: '🇮🇳' },
-  { key: 'asian', label: 'Asian', icon: '🌏' },
-  { key: 'european', label: 'European', icon: '🇪🇺' },
-  { key: 'australian', label: 'Australian', icon: '🇦🇺' },
-  { key: 'american', label: 'American', icon: '🌎' },
-  { key: 'african', label: 'African', icon: '🌍' }
+  { key: 'indian', label: 'Indian' },
+  { key: 'asian', label: 'Asian'},
+  { key: 'european', label: 'European'},
+  { key: 'australian', label: 'Australian' },
+  { key: 'american', label: 'American' },
+  { key: 'african', label: 'African'}
 ];
 
 const sports = [
@@ -150,12 +150,13 @@ const NewsPage_SportsPulse = () => {
   const styles = {
     page: { 
       minHeight: '100vh', 
-      background: `linear-gradient(135deg, ${COLORS.beige} 0%, ${COLORS.soft} 100%)`, 
+      // background: `linear-gradient(135deg, ${COLORS.beige} 0%, ${COLORS.soft} 100%)`, 
+      background: '#212848',
       color: COLORS.charcoal, 
       fontFamily: 'Inter, sans-serif' 
     },
     header: { 
-      background: `linear-gradient(135deg, ${COLORS.navy} 0%, #1a3a52 100%)`, 
+      background: `linear-gradient(135deg, ${COLORS.navy} 0%,rgb(29, 65, 93) 100%)`, 
       padding: '3rem 1rem 2rem', 
       marginTop: 80, 
       textAlign: 'center', 
@@ -195,12 +196,12 @@ const NewsPage_SportsPulse = () => {
       justifyContent: 'center', 
       margin: '2rem 0',
       padding: '1.5rem',
-      background: COLORS.beige,
+      background:'rgba(47, 69, 110, 0.61)' ,
       borderRadius: 16,
       boxShadow: '0 4px 12px rgba(19, 41, 61, 0.1)'
     },
     btn: (active) => ({ 
-      background: active ? COLORS.orange : COLORS.soft, 
+      background: active ? 'rgb(29, 65, 93)': COLORS.soft, 
       border: `2px solid ${active ? COLORS.orange : COLORS.charcoal}`, 
       color: active ? COLORS.beige : COLORS.charcoal, 
       padding: '0.75rem 1.5rem', 
@@ -227,7 +228,7 @@ const NewsPage_SportsPulse = () => {
       position: 'relative'
     },
     breakingNewsHeader: {
-      background: COLORS.orange,
+      background: 'rgb(29, 65, 93)',
       padding: '0.75rem 1.5rem',
       display: 'flex',
       alignItems: 'center',
@@ -306,14 +307,14 @@ const NewsPage_SportsPulse = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      color: COLORS.soft,
+      color: 'gray',
       fontSize: '0.9rem'
     },
     breakingNewsBookmark: {
       position: 'absolute',
       top: '1rem',
       right: '1rem',
-      background: 'rgba(0,0,0,0.7)',
+      background: 'white',
       border: 'none',
       borderRadius: '50%',
       width: '40px',
@@ -334,13 +335,14 @@ const NewsPage_SportsPulse = () => {
       gap: '1.5rem' 
     },
     card: { 
-      background: COLORS.beige, 
+      background: 'rgba(47, 69, 110, 0.61)', 
       border: `2px solid ${COLORS.soft}`, 
       borderRadius: 16, 
       overflow: 'hidden', 
       position: 'relative',
       transition: 'all 0.3s ease',
-      boxShadow: '0 4px 12px rgba(19, 41, 61, 0.1)'
+      boxShadow: '0 4px 12px rgba(19, 41, 61, 0.1)',
+      
     },
     cardHover: {
       transform: 'translateY(-4px)',
@@ -377,20 +379,20 @@ const NewsPage_SportsPulse = () => {
       fontSize: 18, 
       fontWeight: 600,
       lineHeight: 1.4, 
-      color: COLORS.charcoal,
+      color: 'white',
       display: '-webkit-box', 
       WebkitLineClamp: 2, 
       WebkitBoxOrient: 'vertical', 
       overflow: 'hidden'
     },
     cardDescription: {
-      color: COLORS.charcoal,
+      color: 'white',
       fontSize: 14,
       lineHeight: 1.6,
       marginBottom: '1rem'
     },
     cardSummary: {
-      color: COLORS.charcoal,
+      color: 'white',
       fontSize: 14,
       lineHeight: 1.6,
       marginBottom: '1rem',
@@ -401,7 +403,7 @@ const NewsPage_SportsPulse = () => {
       transition: 'all 0.3s ease'
     },
     cardDescriptionExpanded: {
-      color: COLORS.charcoal,
+      color: 'white',
       fontSize: 14,
       lineHeight: 1.6,
       marginBottom: '1rem',
@@ -410,7 +412,7 @@ const NewsPage_SportsPulse = () => {
     expandButton: {
       background: 'transparent',
       border: 'none',
-      color: COLORS.orange,
+      color: 'white',
       fontSize: 12,
       fontWeight: 600,
       cursor: 'pointer',
@@ -430,12 +432,12 @@ const NewsPage_SportsPulse = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      color: COLORS.charcoal,
+      color: 'gray',
       fontSize: 12,
       fontWeight: 500
     },
     readMoreLink: {
-      color: COLORS.orange,
+      color: 'white',
       textDecoration: 'none',
       fontWeight: 600,
       fontSize: 14,
