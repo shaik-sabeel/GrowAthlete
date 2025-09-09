@@ -36,32 +36,32 @@ const EventCard = ({ event }) => {
             <img
                 src={`http://localhost:5000${event.image}`}
                 alt={event.title}
-                className="w-full h-56 object-cover"
+                className="w-full h-48 sm:h-56 object-cover"
             />
-            <div className="p-6">
-                <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-2xl font-bold text-white">{event.title}</h3>
+            <div className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2 gap-2">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white leading-tight">{event.title}</h3>
                     {timeStatus && (
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${timeStatus.color}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium self-start ${timeStatus.color}`}>
                             {timeStatus.text}
                         </span>
                     )}
                 </div>
-                <div className="flex items-center text-gray-600 mb-4 space-x-4">
-                    <p className="flex text-white items-center text-sm sm:text-base">
-                        <FaCalendarAlt className="mr-2 text-white" />
-                        {eventDate.toLocaleDateString()} {startTime && endTime && `(${startTime} - ${endTime})`}
+                <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 mb-4 space-y-2 sm:space-y-0 sm:space-x-4">
+                    <p className="flex text-white items-center text-xs sm:text-sm lg:text-base">
+                        <FaCalendarAlt className="mr-2 text-white flex-shrink-0" />
+                        <span className="truncate">{eventDate.toLocaleDateString()} {startTime && endTime && `(${startTime} - ${endTime})`}</span>
                     </p>
-                    <p className="flex items-center text-white text-sm sm:text-base">
-                        <FaMapMarkerAlt className="mr-2 text-blue-500" />
-                        {event.location}
+                    <p className="flex items-center text-white text-xs sm:text-sm lg:text-base">
+                        <FaMapMarkerAlt className="mr-2 text-blue-500 flex-shrink-0" />
+                        <span className="truncate">{event.location}</span>
                     </p>
                 </div>
-                <p className="text-white leading-relaxed text-base">{event.description}</p>
+                <p className="text-white leading-relaxed text-sm sm:text-base line-clamp-3">{event.description}</p>
                 <div className="mt-4">
                     <Link
                         to={`/events/${event._id}`}
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                         style={{color:'white'}}
                     >
                         View Details
@@ -112,25 +112,25 @@ const EventsPage = () => {
             <Navbar />
             <div className="bg-[#0F172A] min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="container mx-auto">
-                    <h1 className="text-5xl font-extrabold text-center text-white mb-10 md:mb-12" style={{color:'white'}}>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-white mb-8 md:mb-10 lg:mb-12" style={{color:'white'}}>
                         Upcoming Events
                     </h1>
 
                     {/* View Toggle Buttons */}
-                    <div className="text-center mb-8 flex justify-center space-x-4">
+                    <div className="text-center mb-8 flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`flex items-center px-6 py-3 rounded-md shadow-sm transition duration-300
+                            className={`flex items-center justify-center px-4 sm:px-6 py-3 rounded-md shadow-sm transition duration-300 text-sm sm:text-base
                                 ${viewMode === 'list' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                         >
-                            <FaListUl className="mr-2" /> List View
+                            <FaListUl className="mr-2" /> <span className="hidden xs:inline">List View</span><span className="xs:hidden">List</span>
                         </button>
                         <button
                             onClick={() => setViewMode('calendar')}
-                            className={`flex items-center px-6 py-3 rounded-md shadow-sm transition duration-300
+                            className={`flex items-center justify-center px-4 sm:px-6 py-3 rounded-md shadow-sm transition duration-300 text-sm sm:text-base
                                 ${viewMode === 'calendar' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                         >
-                            <FaCalendarCheck className="mr-2" /> Calendar View
+                            <FaCalendarCheck className="mr-2" /> <span className="hidden xs:inline">Calendar View</span><span className="xs:hidden">Calendar</span>
                         </button>
                     </div>
 
@@ -140,7 +140,7 @@ const EventsPage = () => {
                         </p>
                     ) : (
                         viewMode === 'list' ? (
-                            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                                 {events.map(event => (
                                     <EventCard  key={event._id} event={event} />
                                 ))}

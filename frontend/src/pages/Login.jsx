@@ -115,10 +115,10 @@ const Login = () => {
     <>
     <Navbar />
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 md:p-8"
+      className="min-h-screen flex items-center justify-center bg-cover bg-center p-2 sm:p-4 md:p-8"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      <div className="flex flex-col lg:flex-row w-full   max-w-4xl bg-black bg-opacity-30 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl animate-fade-in-up" style={{opacity:"0.8"}}>
+      <div className="flex flex-col lg:flex-row w-full max-w-4xl bg-black bg-opacity-30 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl animate-fade-in-up" style={{opacity:"0.8"}}>
         {/* Left 'Welcome!' Section */}
         <div className="flex-1 p-8 md:p-12 text-white flex flex-col justify-center items-center lg:items-start text-center lg:text-left animate-slide-in-left">
           {/* Logo placeholder - replace with an actual SVG/image if desired */}
@@ -127,12 +127,12 @@ const Login = () => {
             <span className="bg-white h-5 w-5 block"></span>
           </div> */}
 
-          <h1 className="text-5xl lg:text-6xl font-extrabold mb-4" style={{color:"white"}}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4" style={{color:"white"}}>
             Welcome!
           </h1>
           <div className="w-20 h-1 bg-white mb-6 rounded"></div>{" "}
           {/* Underline */}
-          <p className="text-lg text-white/90 leading-relaxed mb-8 max-w-md">
+          <p className="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed mb-6 sm:mb-8 max-w-md">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
@@ -147,11 +147,11 @@ const Login = () => {
 
         {/* Right 'Sign in' Form Section */}
         <div className="flex-1 p-8 md:p-12 bg-black bg-opacity-20 flex flex-col justify-center items-center rounded-xl lg:rounded-l-none animate-slide-in-right">
-          <h2 className="text-4xl lg:text-5xl font-semibold mb-8 text-white text-center" style={{color:"white"}}>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-8 text-white text-center" style={{color:"white"}}>
             Sign in
           </h2>
 
-          <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6">
+          <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4 sm:space-y-6">
             <div>
               <label
                 htmlFor="email"

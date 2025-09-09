@@ -33,6 +33,26 @@ section {
     overflow: hidden; /* Important for containing decorative elements */
 }
 
+/* Mobile Section Adjustments */
+@media (max-width: 768px) {
+    section {
+        padding: 4rem 0;
+    }
+    
+    .section-header-common {
+        margin-bottom: 3rem;
+    }
+    
+    .section-heading {
+        font-size: clamp(1.8rem, 6vw, 2.5rem);
+        margin-bottom: 1rem;
+    }
+    
+    .section-description {
+        font-size: clamp(0.9rem, 3vw, 1.1rem);
+    }
+}
+
 
 /* ============================
    1. HERO SECTION
@@ -45,6 +65,41 @@ section {
     justify-content: center;
     color: var(--text-on-dark);
     text-align: center;
+}
+
+/* Mobile Hero Adjustments */
+@media (max-width: 768px) {
+    .hp-hero-section {
+        height: 100vh;
+        padding: 0 1rem;
+    }
+    
+    .hp-hero-content h1 {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+        margin-bottom: 1.5rem;
+    }
+    
+    .hp-hero-content p {
+        font-size: clamp(1rem, 4vw, 1.2rem);
+        margin-bottom: 2rem;
+    }
+    
+    .hp-hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .hp-hero-features {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 3rem;
+    }
+    
+    .hp-hero-features > div {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
 }
 .hp-hero-video-bg {
     position: absolute;
@@ -157,6 +212,33 @@ section {
     gap: 2.5rem; /* Increased gap for a more spacious feel */
 }
 
+/* Mobile Platform Features */
+@media (max-width: 768px) {
+    .hp-platform-features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .hp-feature-box {
+        padding: 2rem 1.5rem;
+        margin-bottom: 0;
+    }
+    
+    .hp-feature-box-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    
+    .hp-feature-box h3 {
+        font-size: 1.4rem;
+    }
+    
+    .hp-feature-box p {
+        font-size: 0.95rem;
+    }
+}
+
 /* Update feature boxes with a "glassmorphism" effect to complement the new bg */
 .hp-feature-box {
     background-color: rgba(255, 255, 255, 0.16); /* Semi-transparent white */
@@ -220,6 +302,28 @@ section {
     border-bottom: 1px solid var(--border-color);
     padding: 4rem 2rem;
 }
+
+/* Mobile Impact Stats */
+@media (max-width: 768px) {
+    .hp-impact-stats {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 3rem 1rem;
+        text-align: center;
+    }
+    
+    .hp-impact-stat-item {
+        padding: 1rem;
+    }
+    
+    .hp-impact-stat-number {
+        font-size: clamp(2.5rem, 8vw, 3.5rem);
+    }
+    
+    .hp-impact-stat-label {
+        font-size: 1rem;
+    }
+}
 .hp-impact-stat-item {
     text-align: center;
     position: relative; /* For positioning pseudo-elements if needed */
@@ -258,6 +362,30 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2.5rem; /* Increased gap */
+}
+
+/* Mobile Sports Categories */
+@media (max-width: 768px) {
+    .hp-categories-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .hp-category-card {
+        height: 300px;
+    }
+    
+    .hp-category-card-overlay {
+        padding: 1.5rem;
+    }
+    
+    .hp-category-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .hp-category-card p {
+        font-size: 0.9rem;
+    }
 }
 .hp-category-card {
     height: 420px;
@@ -409,6 +537,35 @@ section {
     grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: 2rem;
 }
+
+/* Mobile Events */
+@media (max-width: 768px) {
+    .hp-upcoming-events-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .hp-upcoming-event-card {
+        margin-bottom: 1rem;
+    }
+    
+    .hp-upcoming-event-card-content {
+        padding: 1rem;
+    }
+    
+    .hp-upcoming-event-card-content h4 {
+        font-size: 1.1rem;
+    }
+    
+    .hp-upcoming-event-card-content p {
+        font-size: 0.9rem;
+    }
+    
+    .hp-upcoming-events-title {
+        font-size: 1.8rem;
+        margin: 4rem 0 2rem 0;
+    }
+}
 .hp-upcoming-event-card {
     background-color: #19193f;
     border-radius: var(--border-radius-card);
@@ -487,6 +644,46 @@ section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
+}
+
+/* Mobile Testimonials */
+@media (max-width: 768px) {
+    .hp-testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .hp-testimonial-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .hp-testimonial-quote {
+        font-size: 1.1rem;
+    }
+    
+    .hp-testimonial-author-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .hp-cta-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hp-cta-text p {
+        font-size: 1rem;
+    }
+    
+    .hp-cta-list li {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hp-cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
 .hp-testimonial-card {
     background: var(--background-light);
