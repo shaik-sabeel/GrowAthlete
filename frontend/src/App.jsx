@@ -99,6 +99,7 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+import ScrollToTop from "./components/ScrollToTop";
 
 // --- PAGE COMPONENTS (from src/pages/ as per your structure) ---
 import Home from './pages/Home'; // Your main homepage
@@ -166,6 +167,7 @@ function AppContent() {
     <>
       {showNavbar && <Navbar />}
       <main>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
           <Route path="/about" element={<AboutPage />} />

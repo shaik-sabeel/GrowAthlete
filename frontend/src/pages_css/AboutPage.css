@@ -361,3 +361,179 @@ section h2::after {
 .footer-bottom p {
   margin-bottom: 0;
 }
+
+
+/* Team Members Section */
+.team-members-section {
+  padding: 4rem 10%;
+  text-align: center;
+  background-color: var(--background-main); /* Ensure consistent background */
+}
+
+.team-members-section h2 {
+    margin-bottom: 3rem; /* More space below heading */
+}
+
+.team-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 2rem; /* Space for lines connecting up */
+    width: 100%; /* Ensure tree container spans available width */
+    max-width: 1200px; /* Limit width for large screens */
+    margin: 0 auto; /* Center the tree */
+}
+
+/* Connective lines - Vertical lines from one level to the next */
+.team-level.founder {
+    z-index: 2; /* Ensure founder card is above line */
+    margin-bottom: 4rem; /* More space to accommodate connecting lines */
+    position: relative;
+}
+.team-level.founder::after {
+    content: '';
+    position: absolute;
+    bottom: -3.5rem; /* Connects to the co-founder level line */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 3rem;
+    background-color: var(--secondary-color);
+    z-index: 1;
+}
+
+.team-level.co-founder {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    position: relative;
+    margin-top: 1.5rem; /* Visually aligns with the line coming down */
+    margin-bottom: 4rem; /* Space before developers level */
+    z-index: 2; /* Ensure co-founder card is above line */
+}
+
+.team-level.co-founder::before { /* Vertical line from co-founder to horizontal dev line */
+    content: '';
+    position: absolute;
+    top: -3.5rem; /* Connects to founder line */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 3.5rem; /* Height to connect to founder's line */
+    background-color: var(--secondary-color);
+    z-index: 1;
+}
+.team-level.co-founder::after { /* Horizontal line that the developers connect to */
+    content: '';
+    position: absolute;
+    bottom: -3.5rem; /* Below the co-founder card */
+    width: 80%; /* Adjust width to span developers */
+    height: 2px;
+    background-color: var(--secondary-color);
+    z-index: 1;
+}
+
+.team-level.developers {
+    display: flex;
+    flex-wrap: wrap; /* Allow developers to wrap on smaller screens */
+    justify-content: center;
+    gap: 1rem; /* Smaller gap between developers */
+    position: relative;
+    margin-top: 1.5rem; /* Aligns with the vertical line coming from co-founder */
+    padding-top: 3.5rem; /* Space for the lines above it */
+}
+/* Line from the co-founder horizontal line down to the individual developer cards */
+.team-level.developers .member-card::before {
+    content: '';
+    position: absolute;
+    top: -2rem; /* Position it above the card */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 2rem; /* Length to connect to the horizontal line above */
+    background-color: var(--secondary-color);
+    z-index: 0;
+}
+
+
+.member-card {
+  background: var(--background-light);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 200px; /* Fixed width for consistent cards */
+  margin: 1rem; /* Add margin for spacing when wrapping */
+  position: relative; /* For member-image stacking context and ::before */
+  z-index: 2; /* Ensures cards are above lines */
+}
+
+.member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-card-hover);
+}
+
+.member-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.member-info h3 {
+  font-family: var(--font-secondary);
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-bottom: 0.3rem;
+}
+
+.member-info p {
+  font-size: 0.95rem;
+  color: var(--text-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .team-level {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem; /* Smaller gap between levels on mobile */
+  }
+  .team-level.founder::after {
+    bottom: -2.5rem;
+    height: 2rem;
+  }
+  .team-level.co-founder {
+    margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .team-level.co-founder::before {
+    top: -2.5rem;
+    height: 2.5rem;
+  }
+  .team-level.co-founder::after {
+    width: 90%; /* Wider horizontal line for co-founders on mobile */
+    bottom: -2.5rem;
+  }
+  .team-level.developers {
+    padding-top: 2.5rem;
+    margin-top: 0rem;
+    gap: 1rem;
+  }
+  .team-level.developers .member-card::before {
+    top: -1.5rem;
+    height: 1.5rem;
+  }
+  .member-card {
+      width: 90%; /* Make cards wider on smaller screens */
+      max-width: 250px;
+  }
+}
