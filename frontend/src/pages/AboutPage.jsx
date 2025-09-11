@@ -158,6 +158,7 @@ import faraz from '../assets/Faraz.jpeg';
 import sabeel from '../assets/SA.jpeg';
 import mourya from '../assets/MO.jpeg';
 import ikram from '../assets/IK.jpeg';
+import vamshi from '../assets/VA.jpeg';
 
 import '../pages_css/AboutPage.css'; // Correct path to the CSS file
 import Footer from '../components/Footer'; // Import the new Footer
@@ -309,6 +310,14 @@ const AboutPage = () => {
               <img src={ikram} alt="Developer 2" className="member-image" />
               <div className="member-info">
                 <h3>Muhammed Ikram R</h3>
+                <p>Web Developer</p>
+              </div>
+            </div>
+
+            <div className="member-card">
+              <img src={vamshi} alt="Developer 2" className="member-image" />
+              <div className="member-info">
+                <h3>Vamshi</h3>
                 <p>Web Developer</p>
               </div>
             </div>

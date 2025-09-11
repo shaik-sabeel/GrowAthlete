@@ -75,7 +75,7 @@ const SavedArticlesPage = () => {
   const styles = {
     page: { 
       minHeight: '100vh', 
-      background: `linear-gradient(135deg, ${COLORS.beige} 0%, ${COLORS.soft} 100%)`, 
+      background: 'bg-[#30405a]', 
       color: COLORS.charcoal, 
       fontFamily: 'Inter, sans-serif',
       paddingTop: '80px'
@@ -92,12 +92,12 @@ const SavedArticlesPage = () => {
     title: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      color: COLORS.navy,
+      color: 'white',
       margin: '0 0 1rem 0',
       textShadow: '2px 2px 4px rgba(19, 41, 61, 0.1)'
     },
     subtitle: {
-      color: COLORS.charcoal,
+      color: 'white',
       fontSize: '1.1rem',
       margin: '0 0 2rem 0',
       opacity: 0.8
@@ -115,12 +115,12 @@ const SavedArticlesPage = () => {
     emptyTitle: {
       fontSize: '1.5rem',
       marginBottom: '0.5rem',
-      color: COLORS.navy,
+      color: 'white',
       fontWeight: 600
     },
     emptyText: {
       marginBottom: '2rem',
-      color: COLORS.charcoal,
+      color: 'gray',
       opacity: 0.7
     },
     backButton: {

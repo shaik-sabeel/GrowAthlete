@@ -221,7 +221,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
       </section>
 
       {/* 2. Platform Features Section */}
-      <section className="hp-platform-features-section container" ref={platformFeaturesRef}>
+      <section className="hp-platform-features-section container" style={{paddingTop: '60px', paddingBottom: '60px'}} ref={platformFeaturesRef}>
         <SectionHeader
           title="Platform Features" className="hp-platform-features-title" 
           description="Modular solutions to empower athletes, coaches, and sponsors—just like Stripe's platform."
@@ -287,7 +287,7 @@ const [isAuthenticatedFromNavbar, setIsAuthenticatedFromNavbar] = useState(false
       </section>
 
       {/* 4. Sports Categories Section */}
-      <section className="hp-sports-categories-section container" ref={categoriesRef}>
+      <section className="hp-sports-categories-section container" style={{paddingTop: '60px', paddingBottom: '60px'}} ref={categoriesRef}>
         <SectionHeader
           title="Sports Categories"
           description="Explore various sports disciplines where young Indian talents are making their mark."
