@@ -365,10 +365,24 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+  const handleLogout = async () => {
+    console.log("Logout button clicked!"); // Debug log
+    try {
+      console.log("Attempting to call logout API..."); // Debug log
+      await api.post("/auth/logout");
+      console.log("Logout API call successful"); // Debug log
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      alert("Logged out successfully!");
+      window.location.href = '/login';
+    } catch (err) {
+      console.error("Logout failed:", err);
+      // Even if API call fails, clear local storage and redirect
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      alert("Logged out successfully!");
+      window.location.href = '/login';
+    }
   };
 
   // Pagination handlers
@@ -1123,7 +1137,16 @@ const AdminDashboard = () => {
         </nav>
         
         <div className="sidebar-footer">
-          <button className="nav-item logout-btn" onClick={handleLogout}>
+          <button 
+            className="nav-item logout-btn" 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log("Button click event triggered");
+              handleLogout();
+            }}
+            style={{ cursor: 'pointer', zIndex: 1000 }}
+          >
             <FaSignOutAlt />
             {!sidebarCollapsed && <span>Logout</span>}
           </button>
