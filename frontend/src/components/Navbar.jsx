@@ -27,14 +27,14 @@ const navLinks = [
   { name: 'My Profile', path: '/profile' },
   { name: 'Sports Resume', path: '/sports-resume' },
   { name: 'Community', path: '/community' },
-  ,
+  {name : 'Blogs', path: '/sports-blog'},
+  { name: 'Membership', path: '/membership' },
 
   { name: 'More', subLinks: [
     { name: 'Events', path: '/events' },
     { name: 'Saved Articles', path: '/saved-articles' },
     { name: 'Sponsorships', path: '/sponsorships' },
     // { name: 'Resources', path: '/resources' },
-    { name: 'Membership', path: '/membership' },
     { name: 'Contact Us', path: '/contact' }
    
   ]},
