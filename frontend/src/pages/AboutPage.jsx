@@ -154,7 +154,10 @@ import cricket from '../assets/cricket.png';
 import football from '../assets/football.png';
 import basketball from '../assets/basketball.png';
 import swimming from '../assets/swimming.png';
-
+import faraz from '../assets/Faraz.jpeg';
+import sabeel from '../assets/SA.jpeg';
+import mourya from '../assets/MO.jpeg';
+import ikram from '../assets/IK.jpeg';
 
 import '../pages_css/AboutPage.css'; // Correct path to the CSS file
 import Footer from '../components/Footer'; // Import the new Footer
@@ -264,7 +267,7 @@ const AboutPage = () => {
         <div className="team-tree">
           <div className="team-level founder">
             <div className="member-card">
-              <img src="/assets/team/founder.jpg" alt="Founder" className="member-image" />
+              <img src="../assets/Faraz.jpeg" alt="Founder" className="member-image" />
               <div className="member-info">
                 <h3>John Doe</h3>
                 <p>Founder & CEO</p>
@@ -282,24 +285,31 @@ const AboutPage = () => {
           </div>
           <div className="team-level developers">
             <div className="member-card">
-              <img src="/assets/team/dev1.jpg" alt="Developer 1" className="member-image" />
+              <img src={sabeel} alt="Developer 1" className="member-image" />
               <div className="member-info">
-                <h3>Alice Williams</h3>
-                <p>Lead Developer</p>
+                <h3>Mohammad Sabeel S A</h3>
+                <p>Web Developer</p>
               </div>
             </div>
             <div className="member-card">
-              <img src="/assets/team/dev2.jpg" alt="Developer 2" className="member-image" />
+              <img src={faraz} alt="Developer 2" className="member-image" />
               <div className="member-info">
-                <h3>Bob Johnson</h3>
-                <p>Full-Stack Developer</p>
+                <h3>Mohammad Faraz K</h3>
+                <p>Front-End Developer</p>
               </div>
             </div>
             <div className="member-card">
-              <img src="/assets/team/dev3.jpg" alt="Developer 3" className="member-image" />
+              <img src={mourya} alt="Developer 3" className="member-image" />
               <div className="member-info">
-                <h3>Carol White</h3>
-                <p>UI/UX Developer</p>
+                <h3>Mourya Ayyappa N</h3>
+                <p>Web Developer</p>
+              </div>
+            </div>
+            <div className="member-card">
+              <img src={ikram} alt="Developer 2" className="member-image" />
+              <div className="member-info">
+                <h3>Muhammed Ikram R</h3>
+                <p>Web Developer</p>
               </div>
             </div>
           </div>
