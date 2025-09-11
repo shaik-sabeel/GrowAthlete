@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { enforceContentModeration } = require('../middlewares/moderation');
 const BlogPost = require("../models/BlogPost");
 const slugify = require("slugify");
 // Assuming you have a User model for populating author details
@@ -13,7 +14,7 @@ const calculateReadTime = (content) => {
 };
 
 // Create new blog
-router.post("/", async (req, res) => {
+router.post("/", enforceContentModeration(), async (req, res) => {
   try {
     // You should get author from an authenticated user's session/token
     // For now, we'll use a placeholder or assume a test user exists

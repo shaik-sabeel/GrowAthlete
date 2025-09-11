@@ -11,6 +11,8 @@ const contentModerationRoutes = require("./routes/contentModeration");
 const eventRoutes = require("./routes/eventRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const communityPostRoutes = require("./routes/communityPostRoutes");
+const PlatformSettings = require("./models/PlatformSettings");
+const maintenanceMiddleware = require('./middlewares/maintenance');
 
 const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
@@ -27,6 +29,8 @@ app.use(cookieParser());
 require("./db");
 
 app.use("/api/auth", authRoutes);
+// central maintenance middleware using config.js
+app.use(maintenanceMiddleware);
 app.use("/api/contact",contactRoutes );
 app.use("/api/sports-resume", sportsResumeRoutes);
 app.use("/api/admin", adminRoutes);

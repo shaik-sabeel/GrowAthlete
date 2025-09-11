@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const Event = require("../models/Event");
 const AdBanner = require("../models/AdBanner");
+const { enforceUploadConstraints } = require('../middlewares/upload');
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Create Event
-router.post("/create", upload.single("image"), async (req, res) => {
+router.post("/create", upload.single("image"), enforceUploadConstraints(), async (req, res) => {
   try {
     const { title, description, date, location } = req.body;
     const newEvent = new Event({

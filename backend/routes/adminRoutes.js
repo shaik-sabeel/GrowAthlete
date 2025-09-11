@@ -11,6 +11,10 @@ const TrendingTopic = require("../models/TrendingTopic");
 const CommunityGuideline = require("../models/CommunityGuideline");
 const PlatformAnnouncement = require("../models/PlatformAnnouncement");
 const { updateEventStatuses } = require("../utils/eventStatusUpdater");
+const CommunityPost = require("../models/CommunityPost");
+const BlogPost = require("../models/BlogPost");
+const PlatformSettings = require("../models/PlatformSettings");
+const { enforceUploadConstraints } = require('../middlewares/upload');
 
 // Configure multer storage for event images
 const storage = multer.diskStorage({
@@ -112,6 +116,114 @@ router.get("/users", verifyToken, isAdmin, async (req, res) => {
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Failed to fetch users" });
+  }
+});
+
+// ===== EXPORT FUNCTIONALITY =====
+
+// Export users data (CSV, JSON, XLSX) with filters and scope
+router.get("/users/export-file", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const {
+      role,
+      status,
+      search = "",
+      sortBy = "username",
+      sortOrder = "asc",
+      page = 1,
+      limit = 10,
+      scope = "all", // all | page
+      format = "csv" // csv | json | xlsx
+    } = req.query;
+
+    // Build query
+    const query = {};
+    if (role && role !== "all") query.role = role;
+    if (status === "verified") query.isVerified = true;
+    else if (status === "unverified") query.isVerified = false;
+    else if (status === "suspended") query.isSuspended = true;
+    if (search) {
+      query.$or = [
+        { username: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { sport: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    const sort = {};
+    sort[sortBy] = sortOrder === "desc" ? -1 : 1;
+
+    // Determine scope
+    let usersQuery = User.find(query)
+      .select("_id username email role isVerified isSuspended createdAt updatedAt")
+      .sort(sort)
+      .lean();
+
+    if (scope === "page") {
+      const skip = (parseInt(page) - 1) * parseInt(limit);
+      usersQuery = usersQuery.skip(skip).limit(parseInt(limit));
+    }
+
+    const users = await usersQuery.exec();
+
+    // Audit log (basic)
+    console.log(`[EXPORT] user=${req.user?.id} role=${req.user?.role} count=${users.length} format=${format} scope=${scope} filters=${JSON.stringify({ role, status, search })}`);
+
+    // Build rows
+    const rows = users.map((u) => ({
+      userId: String(u._id),
+      name: u.username,
+      email: u.email,
+      role: u.role,
+      status: u.isSuspended ? "suspended" : "active",
+      isVerified: !!u.isVerified,
+      joinDate: u.createdAt || null,
+      lastLogin: u.updatedAt || null
+    }));
+
+    if (format === "json") {
+      res.setHeader('Content-Type', 'application/json');
+      return res.status(200).send(JSON.stringify(rows));
+    }
+
+    if (format === "xlsx") {
+      try {
+        const XLSX = require('xlsx');
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(rows);
+        XLSX.utils.book_append_sheet(wb, ws, 'Users');
+        const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=users-export.xlsx');
+        return res.status(200).send(buf);
+      } catch (e) {
+        // Fallback if xlsx lib not installed
+        console.warn('XLSX generation failed or library missing. Falling back to CSV. Error:', e.message);
+      }
+    }
+
+    // Default: CSV
+    const header = [
+      'User ID','Name','Email','Role','Status','Join date','Last login','Verified'
+    ];
+    const csvRows = rows.map(r => [
+      r.userId,
+      r.name || '',
+      r.email || '',
+      r.role || '',
+      r.status || '',
+      r.joinDate ? new Date(r.joinDate).toISOString() : '',
+      r.lastLogin ? new Date(r.lastLogin).toISOString() : '',
+      r.isVerified
+    ].map(v => typeof v === 'string' && v.includes(',') ? `"${v.replace(/"/g, '""')}"` : v).join(',')).join('\n');
+    const csv = header.join(',') + '\n' + csvRows;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=users-export.csv');
+    return res.status(200).send(csv);
+  } catch (error) {
+    console.error("Error exporting users:", error);
+    res.status(500).json({ error: 'EXPORT_FAILED', message: "Failed to export users. Try narrowing filters or using JSON/CSV." });
   }
 });
 
@@ -385,7 +497,7 @@ router.delete("/sports-categories/:id", verifyToken, isAdmin, async (req, res) =
 // ===== EVENT MANAGEMENT =====
 
 // Create new event (admin)
-router.post("/events", upload.single("image"), verifyToken, isAdmin, async (req, res) => {
+router.post("/events", upload.single("image"), enforceUploadConstraints(), verifyToken, isAdmin, async (req, res) => {
   try {
     const {
       title,
@@ -833,6 +945,185 @@ router.get("/stats", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
+// ===== ENGAGEMENT METRICS (for Admin Dashboard) =====
+
+// Provides high-level engagement metrics for dashboard widgets
+router.get("/engagement-metrics", verifyToken, isAdmin, async (req, res) => {
+  try {
+    // Basic DAU/WAU/MAU approximations using createdAt as fallback
+    const now = new Date();
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    // If you later add a dedicated sessions/analytics collection, replace these with real numbers
+    const dau = await User.countDocuments({ updatedAt: { $gte: oneDayAgo } }).catch(() => 0);
+    const wau = await User.countDocuments({ updatedAt: { $gte: sevenDaysAgo } }).catch(() => 0);
+    const mau = await User.countDocuments({ updatedAt: { $gte: thirtyDaysAgo } }).catch(() => 0);
+
+    // Retention approximations (percentage of users active in last window vs MAU)
+    const active7 = await User.countDocuments({ updatedAt: { $gte: sevenDaysAgo } }).catch(() => 0);
+    const active30 = await User.countDocuments({ updatedAt: { $gte: thirtyDaysAgo } }).catch(() => 0);
+    const totalUsers = await User.countDocuments().catch(() => 1);
+
+    const retention7Day = totalUsers ? Math.round((active7 / totalUsers) * 100) : 0;
+    const retention30Day = totalUsers ? Math.round((active30 / totalUsers) * 100) : 0;
+
+    // Average session duration placeholder (until real telemetry exists)
+    const avgSessionDuration = 0;
+
+    // Session duration by sport (use number of updated users per sport as a proxy)
+    const sessionDurationBySportAgg = await User.aggregate([
+      { $match: { sport: { $exists: true, $ne: null } } },
+      { $group: { _id: "$sport", users: { $sum: 1 } } },
+      { $sort: { users: -1 } },
+      { $limit: 5 }
+    ]).catch(() => []);
+
+    const sessionDurationBySport = sessionDurationBySportAgg.map((s) => ({
+      sport: s._id,
+      duration: Math.max(5, Math.min(60, s.users * 3)) // naive proxy: 3m per user
+    }));
+
+    // Most active time periods (placeholder buckets)
+    const activeTimePeriods = [
+      { period: "Morning", users: Math.round(dau * 0.35), percentage: 35 },
+      { period: "Afternoon", users: Math.round(dau * 0.4), percentage: 40 },
+      { period: "Evening", users: Math.round(dau * 0.25), percentage: 25 }
+    ];
+
+    // Feature usage: counts across key content areas
+    const communityCount = await CommunityPost.countDocuments().catch(() => 0);
+    const eventsCount = await Event.countDocuments().catch(() => 0);
+    const blogCount = await BlogPost.countDocuments().catch(() => 0);
+    const featureUsage = [
+      { feature: "Community", usage: communityCount },
+      { feature: "Events", usage: eventsCount },
+      { feature: "Blog", usage: blogCount }
+    ];
+
+    res.json({
+      dau,
+      wau,
+      mau,
+      retention7Day,
+      retention30Day,
+      avgSessionDuration,
+      sessionDurationBySport,
+      activeTimePeriods,
+      featureUsage
+    });
+  } catch (error) {
+    console.error("Error fetching engagement metrics:", error);
+    res.status(500).json({ message: "Failed to fetch engagement metrics" });
+  }
+});
+
+// ===== PLATFORM SETTINGS (unique, not overlapping other sections) =====
+
+// Get platform settings (single document pattern)
+router.get("/platform-settings", verifyToken, isAdmin, async (req, res) => {
+  try {
+    let settings = await PlatformSettings.findOne();
+    if (!settings) {
+      settings = await PlatformSettings.create({ updatedBy: req.user.id });
+    }
+    res.json(settings);
+  } catch (error) {
+    console.error("Error fetching platform settings:", error);
+    res.status(500).json({ message: "Failed to fetch platform settings" });
+  }
+});
+
+// Update platform settings (partial updates allowed)
+router.patch("/platform-settings", verifyToken, isAdmin, async (req, res) => {
+  try {
+    const updates = req.body || {};
+    const settings = await PlatformSettings.findOneAndUpdate(
+      {},
+      { ...updates, updatedBy: req.user.id },
+      { new: true, upsert: true }
+    );
+    // Notify subscribers waiting via long-poll
+    try {
+      if (Array.isArray(global.__platformSettingsWaiters)) {
+        for (const resolve of global.__platformSettingsWaiters) {
+          try { resolve(settings); } catch {}
+        }
+        global.__platformSettingsWaiters = [];
+      }
+    } catch {}
+
+    res.json({ message: "Platform settings updated", settings });
+  } catch (error) {
+    console.error("Error updating platform settings:", error);
+    res.status(500).json({ message: "Failed to update platform settings" });
+  }
+});
+
+// Public platform settings (sanitized)
+router.get("/public/platform-settings", async (req, res) => {
+  try {
+    let settings = await PlatformSettings.findOne();
+    if (!settings) settings = await PlatformSettings.create({});
+    const sanitized = {
+      maintenanceMode: settings.maintenanceMode,
+      maintenanceMessage: settings.maintenanceMessage,
+      registration: {
+        allowRegistration: settings.registration?.allowRegistration,
+        inviteOnly: settings.registration?.inviteOnly,
+        allowedEmailDomains: settings.registration?.allowedEmailDomains || []
+      },
+      features: settings.features || {},
+      uploads: settings.uploads || {},
+      appearance: settings.appearance || {},
+      seo: settings.seo || {}
+    };
+    res.json(sanitized);
+  } catch (error) {
+    console.error("Error fetching public platform settings:", error);
+    res.status(500).json({ message: "Failed to fetch platform settings" });
+  }
+});
+
+// Long-poll subscribe for realtime updates (returns immediately when updated or after timeout)
+router.get("/platform-settings/subscribe", async (req, res) => {
+  try {
+    // Set headers for long-poll
+    res.setHeader('Cache-Control', 'no-cache, no-transform');
+    res.setHeader('Content-Type', 'application/json');
+
+    const timeoutMs = Math.min(30000, Math.max(5000, parseInt(req.query.timeout || '25000')));
+
+    // Ensure waiters array exists
+    if (!Array.isArray(global.__platformSettingsWaiters)) {
+      global.__platformSettingsWaiters = [];
+    }
+
+    let settled = false;
+    const timer = setTimeout(async () => {
+      if (settled) return;
+      settled = true;
+      try {
+        const current = await PlatformSettings.findOne();
+        res.status(200).end(JSON.stringify({ timeout: true, settings: current }));
+      } catch {
+        res.status(200).end(JSON.stringify({ timeout: true }));
+      }
+    }, timeoutMs);
+
+    global.__platformSettingsWaiters.push((payload) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      res.status(200).end(JSON.stringify({ updated: true, settings: payload }));
+    });
+  } catch (error) {
+    console.error('Subscribe error:', error);
+    res.status(500).json({ message: 'Subscription failed' });
+  }
+});
+
 // ===== BULK OPERATIONS =====
 
 // Bulk operations
@@ -945,44 +1236,10 @@ router.get("/updates/check", verifyToken, isAdmin, async (req, res) => {
   }
 });
 
-// ===== EXPORT FUNCTIONALITY =====
-
-// Export users data (CSV format)
-router.get("/users/export", verifyToken, isAdmin, async (req, res) => {
-  try {
-    const { role, status } = req.query;
-    
-    let query = {};
-    if (role && role !== "all") query.role = role;
-    if (status === "verified") query.isVerified = true;
-    else if (status === "unverified") query.isVerified = false;
-    else if (status === "suspended") query.isSuspended = true;
-
-    const users = await User.find(query)
-      .select("username email role sport location level isVerified isSuspended createdAt")
-      .lean();
-
-    // Convert to CSV format
-    const csvHeader = "Username,Email,Role,Sport,Location,Level,Verified,Suspended,Created At\n";
-    const csvRows = users.map(user => 
-      `"${user.username}","${user.email}","${user.role}","${user.sport || ''}","${user.location || ''}","${user.level || ''}","${user.isVerified}","${user.isSuspended}","${user.createdAt}"`
-    ).join('\n');
-
-    const csv = csvHeader + csvRows;
-
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=users-export.csv');
-    res.send(csv);
-  } catch (error) {
-    console.error("Error exporting users:", error);
-    res.status(500).json({ message: "Failed to export users" });
-  }
-});
-
 // ===== AD BANNERS MANAGEMENT =====
 
 // Create new ad banner (with image upload)
-router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), async (req, res) => {
+router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUploadConstraints(), async (req, res) => {
   try {
     console.log("Ad upload request received:", {
       file: req.file ? {

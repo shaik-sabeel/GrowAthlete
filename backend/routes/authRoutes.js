@@ -4,11 +4,12 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const sendWelcomeEmail = require("../utils/mailer"); 
+const { enforceRegistrationRules, enforceAdmin2FA } = require('../middlewares/auth');
 
 const router = express.Router();
 
 // Register
-router.post("/register", async (req, res) => {
+router.post("/register", enforceRegistrationRules(), async (req, res) => {
   const { username,email, password, role } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -58,6 +59,10 @@ router.post("/login", async (req, res) => {
       "yourSecretKey",
       { expiresIn: "1d" }
     );
+
+    // enforce admin 2FA if required
+    req.user = user;
+    const twoFAResult = await new Promise((resolve) => enforceAdmin2FA()(req, res, resolve));
 
     res
       .cookie("token", token, {

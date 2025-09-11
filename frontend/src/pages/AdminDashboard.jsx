@@ -3,6 +3,7 @@ import api from '../utils/api';
 import '../pages_css/AdminDashboard.css';
 import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
+import AdminSettings from '../components/AdminSettings';
 import SportsEventsManagement from '../components/SportsEventsManagement';
 import AnimatedSportsBackground from '../components/AnimatedSportsBackground';
 import { FaUsers, FaUserCheck, FaUserTimes, FaChartBar, FaCog, FaSignOutAlt, FaHome, FaEye, FaEdit, FaTrash, FaPlus, FaSearch, FaFilter, FaDownload, FaCrown, FaShieldAlt, FaTrophy, FaRocket, FaGlobe, FaDatabase, FaServer, FaExclamationTriangle, FaCheckCircle, FaArrowUp, FaCalendarAlt, FaStar, FaAward, FaChevronLeft, FaChevronRight, FaSort, FaSortUp, FaSortDown, FaClock, FaFlag } from 'react-icons/fa';
@@ -22,6 +23,9 @@ const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [lastUpdateTime, setLastUpdateTime] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportFormat, setExportFormat] = useState('csv');
+  const [exportScope, setExportScope] = useState('page');
   
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -223,6 +227,46 @@ const AdminDashboard = () => {
         activeTimePeriods: [],
         featureUsage: []
       });
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      setExporting(true);
+      const params = new URLSearchParams({
+        role: filterRole !== 'all' ? filterRole : '',
+        status: '',
+        search: searchTerm || '',
+        sortBy: sortField,
+        sortOrder: sortDirection,
+        page: String(currentPage),
+        limit: String(usersPerPage),
+        scope: exportScope,
+        format: exportFormat
+      });
+      const url = `/admin/users/export-file?${params.toString()}`;
+      const resp = await api.get(url, { responseType: 'blob' });
+      const contentType = resp.headers?.['content-type'] || '';
+      // Determine actual format (server may fall back to CSV if XLSX not available)
+      let actualFormat = exportFormat;
+      if (contentType.includes('text/csv')) actualFormat = 'csv';
+      else if (contentType.includes('application/json')) actualFormat = 'json';
+      else if (contentType.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) actualFormat = 'xlsx';
+
+      const blob = resp.data;
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      const ts = new Date().toISOString().replace(/[:.]/g, '-');
+      link.download = `users-export-${exportScope}-${ts}.${actualFormat}`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (e) {
+      console.error('Export failed:', e);
+      const msg = e?.response?.data?.message || e?.response?.data || e?.message || 'Export failed. Try a different format or narrow filters.';
+      alert(String(msg));
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -652,24 +696,35 @@ const AdminDashboard = () => {
             <h3>Feature Usage Statistics</h3>
             <div className="feature-usage-chart">
               {engagementMetrics.featureUsage && engagementMetrics.featureUsage.length > 0 ? (
-                engagementMetrics.featureUsage.map((feature, index) => (
-                  <div key={feature.feature} className="feature-usage-item">
-                    <div className="feature-info">
-                      <span className="feature-name">{feature.feature}</span>
-                      <span className="feature-users">({feature.users.toLocaleString()} users)</span>
-                    </div>
-                    <div className="usage-bar">
-                      <div 
-                        className="usage-fill" 
-                        style={{ 
-                          width: `${feature.usage}%`,
-                          backgroundColor: `hsl(${index * 45}, 70%, 50%)`
-                        }}
-                      ></div>
-                    </div>
-                    <span className="usage-percentage">{feature.usage}%</span>
-                  </div>
-                ))
+                (() => {
+                  const items = engagementMetrics.featureUsage;
+                  const counts = items.map((f) => Number(f.users ?? f.usage ?? 0));
+                  const maxCount = Math.max(1, ...counts);
+                  return items.map((feature, index) => {
+                    const userCount = Number(feature.users ?? feature.usage ?? 0);
+                    const pct = typeof feature.usage === 'number' && feature.usage <= 100
+                      ? feature.usage
+                      : Math.round((userCount / maxCount) * 100);
+                    return (
+                      <div key={feature.feature} className="feature-usage-item">
+                        <div className="feature-info">
+                          <span className="feature-name">{feature.feature}</span>
+                          <span className="feature-users">({userCount.toLocaleString()} users)</span>
+                        </div>
+                        <div className="usage-bar">
+                          <div 
+                            className="usage-fill" 
+                            style={{ 
+                              width: `${pct}%`,
+                              backgroundColor: `hsl(${index * 45}, 70%, 50%)`
+                            }}
+                          ></div>
+                        </div>
+                        <span className="usage-percentage">{pct}%</span>
+                      </div>
+                    );
+                  });
+                })()
               ) : (
                 <div className="no-data">No feature usage data available</div>
               )}
@@ -1164,6 +1219,20 @@ const AdminDashboard = () => {
                 <p>Manage and monitor all platform users ({totalUsers} total)</p>
               </div>
               <div className="header-actions">
+                <div className="export-controls" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <select value={exportFormat} onChange={(e) => setExportFormat(e.target.value)} className="role-filter">
+                    <option value="csv">CSV</option>
+                    <option value="xlsx">Excel (.xlsx)</option>
+                    <option value="json">JSON</option>
+                  </select>
+                  <select value={exportScope} onChange={(e) => setExportScope(e.target.value)} className="role-filter">
+                    <option value="page">Current Page</option>
+                    <option value="all">All (with filters)</option>
+                  </select>
+                  <button className="btn btn-primary" onClick={handleExport} disabled={exporting} title="Export users">
+                    <FaDownload /> {exporting ? 'Exporting…' : 'Export'}
+                  </button>
+                </div>
                 <div className="search-box">
                   <FaSearch />
                   <input
@@ -1369,6 +1438,9 @@ const AdminDashboard = () => {
           <div className="admin-section">
             <h2>Platform Settings</h2>
             <p>Configure platform-wide settings and policies.</p>
+            <div style={{ marginTop: '16px' }}>
+              <AdminSettings />
+            </div>
           </div>
         )}
       </div>

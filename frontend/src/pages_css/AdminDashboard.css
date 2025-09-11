@@ -9,11 +9,33 @@
   --ga-soft: #ECECEC;
 }
 
+/* ===== USER THEME VARIABLES (Dark Navy Scheme) ===== */
+:root {
+  --background-main: #0F172A;  /* very dark navy */
+  --background-light: #1E293B; /* dark gray-blue for surfaces */
+  --background-dark: #020617;  /* almost black */
+
+  /* Text Colors */
+  --text-main: #000000;   /* primary black text for high contrast */
+  --text-muted: #374151;  /* darker gray for secondary info */
+  --text-black: #000000;  /* pure black, for headings/logos/special emphasis */
+
+  /* Derived surface and border tokens for admin UI */
+  --bg-primary: var(--background-main);
+  --bg-secondary: var(--background-light);
+  --bg-tertiary: var(--background-dark);
+  --text-primary: var(--text-main);
+  --text-secondary: var(--text-muted);
+  --border-color: rgba(148, 163, 184, 0.15);
+  --card-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
+}
+
 /* Layout */
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: var(--ga-beige);
+  background: var(--bg-primary);
+  color: var(--text-main);
 }
 
 /* Admin intro overlay */
@@ -79,8 +101,8 @@
 /* Sidebar */
 .admin-sidebar {
   width: 280px;
-  background: var(--ga-navy);
-  color: white;
+  background: var(--bg-tertiary);
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -128,8 +150,7 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--ga-orange);
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  color: #ffffff;
 }
 
 .sidebar-toggle {
@@ -210,7 +231,7 @@
   width: 100%;
   background: none;
   border: none;
-  color: var(--ga-soft);
+  color: rgba(255,255,255,0.85);
   padding: 16px 20px;
   text-align: left;
   cursor: pointer;
@@ -236,8 +257,8 @@
 }
 
 .nav-item:hover {
-  background: rgba(255,255,255,0.08);
-  color: white;
+  background: rgba(255,255,255,0.06);
+  color: #ffffff;
   transform: translateX(8px);
 }
 
@@ -246,8 +267,8 @@
 }
 
 .nav-item.active {
-  background: linear-gradient(90deg, rgba(217,128,34,0.2), rgba(217,128,34,0.1));
-  color: white;
+  background: linear-gradient(90deg, rgba(148,163,184,0.18), rgba(148,163,184,0.08));
+  color: #ffffff;
   border-right: 4px solid var(--ga-orange);
 }
 
@@ -318,6 +339,8 @@
   overflow-y: auto;
   position: relative;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-primary);
+  color: var(--text-main);
 }
 
 .admin-sidebar.collapsed + .admin-main {
@@ -333,15 +356,15 @@
 
 /* Welcome Section */
 .welcome-section {
-  background: var(--ga-beige);
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 32px;
   margin-bottom: 32px;
-  color: var(--ga-navy);
+  color: var(--text-black);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(19,41,61,0.3);
+  box-shadow: var(--card-shadow);
   position: relative;
   overflow: hidden;
 }
@@ -389,14 +412,14 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-secondary);
   padding: 28px;
   border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid var(--border-color);
 }
 
 .stat-card::before {
@@ -434,7 +457,7 @@
 }
 
 .stat-content h3 {
-  color: var(--ga-charcoal);
+  color: var(--text-muted);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -443,7 +466,7 @@
 }
 
 .stat-number {
-  color: var(--ga-navy);
+  color: var(--text-black);
   font-size: 2.5rem;
   font-weight: 800;
   margin: 0 0 8px 0;
@@ -470,12 +493,12 @@
 
 /* Platform Analytics */
 .analytics-section {
-  background: var(--ga-beige);
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 28px;
   margin-bottom: 32px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  border: 1px solid var(--ga-soft);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .analytics-section h2 {
@@ -513,7 +536,7 @@
 }
 
 .analytics-header h3 {
-  color: var(--ga-navy);
+  color: var(--text-black);
   margin: 0;
   font-size: 1.2rem;
   font-weight: 600;
@@ -543,12 +566,12 @@
 }
 
 .metric-row span:first-child {
-  color: var(--ga-charcoal);
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
 .metric-value {
-  color: var(--ga-navy);
+  color: var(--text-black);
   font-weight: 600;
   font-size: 1rem;
 }
@@ -567,15 +590,15 @@
 
 /* Recent Activities */
 .activities-section {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 28px;
   margin-bottom: 32px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .activities-section h2 {
-  color: var(--ga-navy);
+  color: var(--text-black);
   margin-bottom: 24px;
   font-size: 1.8rem;
   font-weight: 700;
@@ -592,10 +615,10 @@
   align-items: flex-start;
   gap: 16px;
   padding: 20px;
-  background: #f8fafc;
+  background: var(--bg-primary);
   border-radius: 12px;
   transition: all 0.3s ease;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-color);
 }
 
 .activity-item:hover {
@@ -626,14 +649,14 @@
 }
 
 .activity-content h4 {
-  color: var(--ga-navy);
+  color: var(--text-black);
   margin: 0 0 4px 0;
   font-size: 1rem;
   font-weight: 600;
 }
 
 .activity-content p {
-  color: var(--ga-charcoal);
+  color: var(--text-muted);
   margin: 0 0 8px 0;
   font-size: 0.9rem;
 }
@@ -646,15 +669,15 @@
 
 /* Quick Actions */
 .quick-actions {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 28px;
   margin-bottom: 32px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .quick-actions h2 {
-  color: var(--ga-navy);
+  color: var(--text-black);
   margin-bottom: 24px;
   font-size: 1.5rem;
   font-weight: 700;
@@ -667,7 +690,7 @@
 }
 
 .action-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, rgba(148,163,184,0.15) 0%, rgba(30,41,59,0.4) 100%);
   border: 2px solid transparent;
   border-radius: 16px;
   padding: 24px;
@@ -693,7 +716,7 @@
 
 .action-card span {
   font-weight: 600;
-  color: #374151;
+  color: var(--text-black);
 }
 
 /* System Health */
