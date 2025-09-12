@@ -95,11 +95,7 @@ router.post("/update", verifyToken, async (req, res) => {
     achievements, 
     email, 
     phone,
-    availability,
-    locationType,
-    nextEvent,
-    aiBlurb,
-    performanceDNA
+    
   } = req.body;
   try {
     const user = await User.findById(req.user.id);
@@ -117,11 +113,7 @@ router.post("/update", verifyToken, async (req, res) => {
       achievements,
       email,
       phone,
-      availability,
-      locationType,
-      nextEvent,
-      aiBlurb,
-      performanceDNA
+     
     };
     
     // Remove undefined values
