@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("./models/User");
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/GrowAthlete")
+mongoose.connect(process.env.MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("MongoDB connection error:", err));
 

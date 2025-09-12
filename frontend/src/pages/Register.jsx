@@ -122,7 +122,7 @@ const Register = () => {
       navigate("/update");
     } catch (err) {
       console.error(err);
-      alert("Registration failed");
+      alert("Must contain 1 uppercase, 1 lowercase, 1 number & 1 special character(@$!%*?&), Pass123@");
     }
   };
 
@@ -206,7 +206,7 @@ const Register = () => {
                 htmlFor="password"
                 className="block text-white text-sm font-medium mb-2"
               >
-                Password
+                Password 
               </label>
               <input
                 type="password"

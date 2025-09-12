@@ -12,7 +12,7 @@ const router = express.Router();
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "ikramuk812@gmail.com",     
+    user: process.env.EMAIL_USER,     
     pass: process.env.EMAIL_PASS,        
   },
 });
@@ -29,8 +29,8 @@ router.post("/", async (req, res) => {
 
   try {
     const mailOptions = {
-      from: "ikramuk812@gmail.com",       
-      to: "ikramuk812@gmail.com",          
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
       subject: `New Contact Form Message from ${name}`,
       text: `
         You received a new message from your website GrowAthlete:
