@@ -72,22 +72,22 @@ const userSchema = new mongoose.Schema({
   },
   bio : String,
   achievements: String,
-  availability: {
-    type: String,
-    default: "Open to tryouts"
-  },
-  locationType: {
-    type: String,
-    default: "Remote/On-site"
-  },
-  nextEvent: {
-    type: String,
-    default: ""
-  },
-  aiBlurb: {
-    type: String,
-    default: ""
-  },
+  // availability: {
+  //   type: String,
+  //   default: "Open to tryouts"
+  // },
+  // locationType: {
+  //   type: String,
+  //   default: "Remote/On-site"
+  // },
+  // nextEvent: {
+  //   type: String,
+  //   default: ""
+  // },
+  // aiBlurb: {
+  //   type: String,
+  //   default: ""
+  // },
   // performanceDNA: {
   //   speed: { type: Number, default: 50 },
   //   endurance: { type: Number, default: 50 },
