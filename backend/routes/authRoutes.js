@@ -83,7 +83,7 @@ router.post("/logout", (req, res) => {
 });
 
 
-router.post("/update", verifyToken, async (req, res) => {
+router.post("/update",  async (req, res) => {
   const {
     profilePicture, 
     username, 
