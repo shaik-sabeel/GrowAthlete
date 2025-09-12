@@ -1,6 +1,6 @@
 // // src/pages/MembershipPage.jsx
 import React from 'react';
-import MembershipCard from '../components/MembershipCard.jsx'; // Adjust path if components are in a different sub-folder
+import MembershipCard from '../components/MemberShipCard'; // Adjust path if components are in a different sub-folder
 import Navbar from '../components/Navbar';
 import '../pages_css/variables.css'
 
