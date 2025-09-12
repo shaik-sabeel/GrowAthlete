@@ -122,7 +122,7 @@ const Register = () => {
       navigate("/update");
     } catch (err) {
       console.error(err);
-      alert("Must contain 1 uppercase, 1 lowercase, 1 number & 1 special character(@$!%*?&), Pass123@");
+      alert("Registration failed");
     }
   };
 
