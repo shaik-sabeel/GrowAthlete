@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        
+
+
     },
   phone: {
     type: String,
@@ -77,13 +80,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
-  performanceDNA: {
-    speed: { type: Number, default: 50 },
-    endurance: { type: Number, default: 50 },
-    agility: { type: Number, default: 50 },
-    strength: { type: Number, default: 50 },
-    skill: { type: Number, default: 50 }
-  }
+  // performanceDNA: {
+  //   speed: { type: Number, default: 50 },
+  //   endurance: { type: Number, default: 50 },
+  //   agility: { type: Number, default: 50 },
+  //   strength: { type: Number, default: 50 },
+  //   skill: { type: Number, default: 50 }
+  // }
 
 });
 

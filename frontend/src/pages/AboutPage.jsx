@@ -159,6 +159,9 @@ import sabeel from '../assets/SA.jpeg';
 import mourya from '../assets/MO.jpeg';
 import ikram from '../assets/IK.jpeg';
 import vamshi from '../assets/VA.jpeg';
+import hemanth from '../assets/HE.jpg';
+import { Link } from 'react-router-dom';
+import joshitha from '../assets/JO.jpg';
 
 import '../pages_css/AboutPage.css'; // Correct path to the CSS file
 import Footer from '../components/Footer'; // Import the new Footer
@@ -268,19 +271,21 @@ const AboutPage = () => {
         <div className="team-tree">
           <div className="team-level founder">
             <div className="member-card">
-              <img src="../assets/Faraz.jpeg" alt="Founder" className="member-image" />
+              <img src={hemanth} alt="Founder" className="member-image" />
               <div className="member-info">
-                <h3>John Doe</h3>
+                <h3>Ande Hemanth</h3>
                 <p>Founder & CEO</p>
+                <Link to='https://www.linkedin.com/in/ande-hemanth-884020283/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
               </div>
             </div>
           </div>
           <div className="team-level co-founder">
             <div className="member-card">
-              <img src="/assets/team/cofounder.jpg" alt="Co-Founder" className="member-image" />
+              <img src={joshitha} alt="Co-Founder" className="member-image" />
               <div className="member-info">
-                <h3>Jane Smith</h3>
-                <p>Co-Founder & COO</p>
+                <h3>Yalaga Joshitha</h3>
+                <p>Co-Founder</p>
+                <Link to='https://www.linkedin.com/in/yalaga-joshitha-612b62376/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
               </div>
             </div>
           </div>
@@ -290,20 +295,7 @@ const AboutPage = () => {
               <div className="member-info">
                 <h3>Mohammad Sabeel S A</h3>
                 <p>Web Developer</p>
-              </div>
-            </div>
-            <div className="member-card">
-              <img src={faraz} alt="Developer 2" className="member-image" />
-              <div className="member-info">
-                <h3>Mohammad Faraz K</h3>
-                <p>Front-End Developer</p>
-              </div>
-            </div>
-            <div className="member-card">
-              <img src={mourya} alt="Developer 3" className="member-image" />
-              <div className="member-info">
-                <h3>Mourya Ayyappa N</h3>
-                <p>Web Developer</p>
+                <Link to="https://www.linkedin.com/in/shaik-sabeel/" rel='noopener noreferrer' target='_blank'>View Profile</Link>
               </div>
             </div>
             <div className="member-card">
@@ -311,6 +303,24 @@ const AboutPage = () => {
               <div className="member-info">
                 <h3>Muhammed Ikram R</h3>
                 <p>Web Developer</p>
+                <Link to='https://www.linkedin.com/in/muhammed-ikram-7b56202bb' rel='noopener noreferrer' target='_blank'>View Profile</Link>
+              </div>
+            </div>
+
+            <div className="member-card">
+              <img src={faraz} alt="Developer 2" className="member-image" />
+              <div className="member-info">
+                <h3>Mohammad Faraz K</h3>
+                <p>Front-End Developer</p>
+                <Link to='https://www.linkedin.com/in/faraz-shaik-a906192bb/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
+              </div>
+            </div>
+            <div className="member-card">
+              <img src={mourya} alt="Developer 3" className="member-image" />
+              <div className="member-info">
+                <h3>Mourya Ayyappa N</h3>
+                <p>Web Developer</p>
+                <Link to='https://www.linkedin.com/in/mourya-ayyappa-485563330/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
               </div>
             </div>
 
@@ -319,6 +329,7 @@ const AboutPage = () => {
               <div className="member-info">
                 <h3>Vamshi</h3>
                 <p>Web Developer</p>
+                <Link to='https://www.linkedin.com/in/saivamshi-webdev/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
               </div>
             </div>
           </div>
