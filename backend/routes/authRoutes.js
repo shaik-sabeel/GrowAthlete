@@ -28,8 +28,8 @@ router.post("/register", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // change to true in production with HTTPS
-        sameSite: "lax",
+        secure: true, // change to true in production with HTTPS
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })
       .json({ 
@@ -62,8 +62,9 @@ router.post("/login", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // change to true in production with HTTPS
-        sameSite: "lax",
+        secure: true, // change to true in production with HTTPS
+        
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })
       .json({ 
