@@ -31,6 +31,15 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+// Simple test route (before DB connection)
+app.get("/test", (req, res) => {
+  res.json({ 
+    message: "Backend is working!", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // connect to DB
 require("./db");
 
