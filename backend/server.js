@@ -17,7 +17,8 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
   origin: [
-    "https://growathlete-2.onrender.com", // Your current frontend URL
+    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
+    "https://growathlete-2.onrender.com", // Previous frontend URL
     "https://growathlete-frontend.onrender.com", // Previous frontend URL
     "https://growathlete-y2lc.onrender.com", // Previous frontend URL
     "https://growathlete.onrender.com", 
