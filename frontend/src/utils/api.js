@@ -19,28 +19,8 @@ const api = axios.create({
 // Export the base URL for use in other components
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://growathlete-1.onrender.com";
 
-// Enhanced API with fallback to mock
-const enhancedApi = {
-  post: async (url, data) => {
-    try {
-      return await api.post(url, data);
-    } catch (error) {
-      console.warn('Backend unavailable, using mock API:', error.message);
-      return await mockApi.post(url, data);
-    }
-  },
-  
-  get: async (url) => {
-    try {
-      return await api.get(url);
-    } catch (error) {
-      console.warn('Backend unavailable, using mock API:', error.message);
-      return await mockApi.get(url);
-    }
-  }
-};
-
-export default enhancedApi;
+// Use real API now that backend is working
+export default api;
 
 // Add request interceptor to include JWT token
 api.interceptors.request.use(
