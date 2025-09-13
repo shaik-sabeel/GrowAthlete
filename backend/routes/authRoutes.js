@@ -173,57 +173,94 @@ router.post("/logout", (req, res) => {
 });
 
 
-router.post("/update",  async (req, res) => {
-  const {
-    profilePicture, 
-    username, 
-    age, 
-    gender, 
-    location, 
-    sport, 
-    level, 
-    bio, 
-    achievements, 
-    email, 
-    phone,
-    
-  } = req.body;
+router.post("/update", verifyToken, async (req, res) => {
   try {
+    const {
+      profilePicture, 
+      username, 
+      age, 
+      gender, 
+      location, 
+      sport, 
+      level, 
+      bio, 
+      achievements, 
+      email, 
+      phone
+    } = req.body;
+
+    // Validate user exists
     const user = await User.findById(req.user.id);
-    if (!user) return res.status(404).json("User not found");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Prepare update data
+    const updateData = {};
     
-    const updateData = {
-      profilePicture,
-      username,
-      age,
-      gender,
-      location,
-      sport,
-      level,
-      bio,
-      achievements,
-      email,
-      phone,
-     
-    };
+    // Only update fields that are provided and not empty
+    if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+    if (username !== undefined && username.trim()) updateData.username = username.trim();
+    if (age !== undefined) updateData.age = age;
+    if (gender !== undefined) updateData.gender = gender;
+    if (location !== undefined) updateData.location = location;
+    if (sport !== undefined) updateData.sport = sport;
+    if (level !== undefined) updateData.level = level;
+    if (bio !== undefined) updateData.bio = bio;
+    if (achievements !== undefined) updateData.achievements = achievements;
+    if (phone !== undefined) updateData.phone = phone;
     
-    // Remove undefined values
-    Object.keys(updateData).forEach(key => {
-      if (updateData[key] === undefined) {
-        delete updateData[key];
+    // Handle email update separately (check for duplicates)
+    if (email !== undefined && email !== user.email) {
+      const existingUser = await User.findOne({ email: email });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already exists" });
       }
-    });
-    
+      updateData.email = email;
+    }
+
+    // Update user
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       updateData,
-      { new: true }
-    );
+      { new: true, runValidators: true }
+    ).select('-password'); // Don't return password
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     console.log("Updated User:", updatedUser);
-    res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
+    res.status(200).json({ 
+      success: true,
+      message: "Profile updated successfully", 
+      user: updatedUser 
+    });
   } catch (err) {
     console.error("Error updating profile:", err);
-    res.status(500).json("Server error");
+    
+    // Handle validation errors
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ 
+        success: false,
+        message: "Validation error", 
+        errors: Object.values(err.errors).map(e => e.message) 
+      });
+    }
+    
+    // Handle duplicate key errors
+    if (err.code === 11000) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Email already exists" 
+      });
+    }
+    
+    res.status(500).json({ 
+      success: false,
+      message: "Server error",
+      error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+    });
   }
 });
 
