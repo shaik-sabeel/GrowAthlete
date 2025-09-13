@@ -534,10 +534,10 @@ const SportsEventsManagement = () => {
                     <div className="flex-shrink-0 h-10 w-10">
                       <img 
                         className="h-10 w-10 rounded-lg object-cover" 
-                        src={`https://growathlete.onrender.com${event.image}`} 
+                        src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`} 
                         alt={event.title}
                         onError={(e) => {
-                          console.error('Failed to load event image:', `https://growathlete.onrender.com${event.image}`);
+                          console.error('Failed to load event image:', `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`);
                           e.target.style.display = 'none';
                         }}
                       />

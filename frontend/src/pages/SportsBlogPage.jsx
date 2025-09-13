@@ -14,7 +14,7 @@ const SportsBlogPage = () => {
 
   useEffect(() => {
     // Fetch blog posts from your backend API
-    fetch("https://growathlete.onrender.com/api/blog")
+    fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}/api/blog`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

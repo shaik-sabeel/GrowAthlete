@@ -17,7 +17,8 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
   origin: [
-    "https://growathlete-y2lc.onrender.com", // Your frontend URL
+    "https://growathlete-frontend.onrender.com", // Your new frontend URL
+    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
     "https://growathlete.onrender.com", 
     "http://localhost:5173" // Local development
   ],

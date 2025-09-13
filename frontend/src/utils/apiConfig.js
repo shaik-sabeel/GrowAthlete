@@ -11,7 +11,7 @@ export const API_CONFIG = {
   NEWSDATA: {
     BASE_URL: 'https://newsdata.io/api/1/latest',
     // Use Vite env for API key (Preferred)
-    API_KEY: (import.meta?.env?.VITE_NEWSDATA_API_KEY) || 'pub_cb80615c107443f5a0bb1176a738fff0',
+    API_KEY: (import.meta?.env?.VITE_NEWSDATA_API_KEY) || 'pub_8a903795015d4fb1bd83ff7bd2f94ee5',
     RATE_LIMIT: 200, // requests per hour for free tier
     CACHE_DURATION: 5 * 60 * 1000 // 5 minutes
   },

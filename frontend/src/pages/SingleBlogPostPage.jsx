@@ -14,7 +14,7 @@ const SingleBlogPostPage = () => {
 
   useEffect(() => {
     // Fetch single blog post from your backend API
-    fetch(`https://growathlete.onrender.com/api/blog/${slug}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}/api/blog/${slug}`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

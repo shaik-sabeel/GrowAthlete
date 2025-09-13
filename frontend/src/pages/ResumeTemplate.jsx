@@ -86,7 +86,7 @@
 //         <div className="mb-4">
 //           {resume.profileImage && (
 //             <img
-//               src={`https://growathlete.onrender.com/uploads/${resume.profileImage}`}
+//               src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}/uploads/${resume.profileImage}`}
 //               alt="Profile"
 //               className="w-28 h-28 object-cover border mb-3"
 //             />
@@ -313,7 +313,7 @@ const ResumeTemplate = () => {
         <div className="flex items-center border-b pb-4 mb-6">
           {resume.profileImage && (
             <img
-              src={`https://growathlete.onrender.com/uploads/${resume.profileImage}`}
+              src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}/uploads/${resume.profileImage}`}
               alt="Profile"
               className="w-28 h-28 object-cover border mr-6"
             />

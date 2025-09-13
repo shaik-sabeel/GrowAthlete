@@ -174,7 +174,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
     if (!media || media.length === 0) return null;
 
     // Use the same base URL as the API to access uploaded media files
-    const baseURL = 'https://growathlete.onrender.com';
+    const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com';
 
     const isCarousel = media.length > 1;
 

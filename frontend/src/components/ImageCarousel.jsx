@@ -21,7 +21,7 @@ const ImageCarousel = () => {
         const res = await api.get('/events/public/ads');
         const list = res.data || [];
         setItems(list);
-        setImages(list.map(a => `https://growathlete.onrender.com${a.image}`));
+        setImages(list.map(a => `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${a.image}`));
       } catch (e) {
         setItems([]);
         setImages([]);

@@ -71,7 +71,7 @@ const ProfileEdit = () => {
                     socialLinks: initializedSocialLinks
                 });
                 // Set image preview from fetched URL (correcting local /uploads path)
-                setImagePreview(user.profilePicture && user.profilePicture.startsWith('/uploads') ? `https://growathlete.onrender.com${user.profilePicture}` : user.profilePicture || defaultAvatar);
+                setImagePreview(user.profilePicture && user.profilePicture.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${user.profilePicture}` : user.profilePicture || defaultAvatar);
             } catch (err) {
                 console.error('Error fetching user data for edit:', err);
                 setError('Failed to load user data. Please ensure you are logged in. Redirecting to login...');
@@ -109,7 +109,7 @@ const ProfileEdit = () => {
             setImagePreview(URL.createObjectURL(file)); // Show local preview for file
         } else {
             // If file selection is cancelled, revert to current URL or default
-            setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `https://growathlete.onrender.com${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); 
+            setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); 
         }
     };
 
@@ -221,7 +221,7 @@ const ProfileEdit = () => {
                             {profileImageFile && (
                                 <button 
                                     type="button" 
-                                    onClick={() => { setProfileImageFile(null); setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `https://growathlete.onrender.com${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); }}
+                                    onClick={() => { setProfileImageFile(null); setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); }}
                                     className="text-red-500 hover:text-red-700 text-sm mt-1"
                                 >
                                     Cancel local upload

@@ -34,7 +34,7 @@ const EventCard = ({ event }) => {
     return (
         <div className="bg-[#30405a] rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <img
-                src={`https://growathlete.onrender.com${event.image}`}
+                src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`}
                 alt={event.title}
                 className="w-full h-48 sm:h-56 object-cover"
             />

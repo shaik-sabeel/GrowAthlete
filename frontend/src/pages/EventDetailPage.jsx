@@ -72,7 +72,7 @@ const EventDetailPage = () => {
             <div className="bg-[#25334a] min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="container mx-auto max-w-4xl bg-[#30405a] rounded-xl shadow-md overflow-hidden">
                     {event.image && (
-                        <img src={`https://growathlete.onrender.com${event.image}`} alt={event.title} className="w-100 h-100 mx-auto
+                        <img src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`} alt={event.title} className="w-100 h-100 mx-auto
                          object-cover" />
                     )}
                     <div className="p-6 sm:p-8">
