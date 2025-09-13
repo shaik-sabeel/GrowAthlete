@@ -43,6 +43,15 @@ app.use("/api/events", eventRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/community", communityPostRoutes);
 
+// Health check route
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "GrowAthlete Backend API is running!", 
+    status: "healthy",
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

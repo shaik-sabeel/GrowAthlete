@@ -22,7 +22,9 @@ mongoose
     console.error("❌ Failed to connect to MongoDB:", err.message);
     console.error("Please make sure MongoDB is running on localhost:27017");
     console.error("You can start MongoDB with: mongod");
-    process.exit(1); // Exit the process if DB connection fails
+    console.error("Continuing without database connection for now...");
+    // Don't exit the process - let the server start without DB for now
+    // process.exit(1); // Exit the process if DB connection fails
   });
 
 
