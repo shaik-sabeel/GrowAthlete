@@ -444,7 +444,7 @@ const SystemAdministration = () => {
                         {(drag) => (
                           <tr ref={drag.innerRef} {...drag.draggableProps} {...drag.dragHandleProps}>
                             <td className="px-6 py-4 text-sm text-gray-500">{idx + 1}</td>
-                            <td className="px-6 py-4"><img src={`http://localhost:5000${a.image}`} alt={a.title || 'ad'} className="h-12 w-auto rounded"/></td>
+                            <td className="px-6 py-4"><img src={`https://growathlete.onrender.com${a.image}`} alt={a.title || 'ad'} className="h-12 w-auto rounded"/></td>
                             <td className="px-6 py-4 text-sm text-gray-900">{a.title}</td>
                             <td className="px-6 py-4 text-sm text-blue-600">{a.linkUrl}</td>
                             <td className="px-6 py-4 text-sm">

@@ -14,7 +14,7 @@ const SingleBlogPostPage = () => {
 
   useEffect(() => {
     // Fetch single blog post from your backend API
-    fetch(`http://localhost:5000/api/blog/${slug}`)
+    fetch(`https://growathlete.onrender.com/api/blog/${slug}`)
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);

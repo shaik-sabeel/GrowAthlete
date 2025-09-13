@@ -174,7 +174,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
     if (!media || media.length === 0) return null;
 
     // Use the same base URL as the API to access uploaded media files
-    const baseURL = 'http://localhost:5000';
+    const baseURL = 'https://growathlete.onrender.com';
 
     const isCarousel = media.length > 1;
 

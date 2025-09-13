@@ -75,7 +75,7 @@ const ViewSportsProfilePage = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start pb-8 mb-8 border-b border-gray-200">
                 {profile.profilePicture && (
                     <img
-                        src={`http://localhost:5000/${profile.profilePicture}`}
+                        src={`https://growathlete.onrender.com/${profile.profilePicture}`}
                         alt="Profile"
                         className="w-48 h-48 rounded-full object-cover mr-0 md:mr-10 mb-6 md:mb-0 border-4 border-blue-500 shadow-lg"
                     />

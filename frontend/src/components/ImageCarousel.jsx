@@ -21,7 +21,7 @@ const ImageCarousel = () => {
         const res = await api.get('/events/public/ads');
         const list = res.data || [];
         setItems(list);
-        setImages(list.map(a => `http://localhost:5000${a.image}`));
+        setImages(list.map(a => `https://growathlete.onrender.com${a.image}`));
       } catch (e) {
         setItems([]);
         setImages([]);

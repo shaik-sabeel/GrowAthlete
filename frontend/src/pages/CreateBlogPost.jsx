@@ -64,7 +64,7 @@ export default function CreateBlogPost() {
     // `context`, or a state management solution after a user logs in.
     const hardcodedAuthorId = "6544955b23d90f230f305c74"; // Replace with an actual User _id from your database
 
-    fetch("http://localhost:5000/api/blog", {
+    fetch("https://growathlete.onrender.com/api/blog", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
