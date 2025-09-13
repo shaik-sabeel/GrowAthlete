@@ -1,2 +1,5 @@
-# SPA routing for Render
+# SPA routing for Netlify
 /*    /index.html   200
+
+# API routes (if any)
+/api/*  https://growathlete-1.onrender.com/api/:splat  200

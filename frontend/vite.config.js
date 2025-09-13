@@ -24,5 +24,11 @@ export default defineConfig({
         secure: false,
       },
     },
+    historyApiFallback: true,
+  },
+  preview: {
+    port: 3000,
+    strictPort: true,
+    historyApiFallback: true,
   },
 });
