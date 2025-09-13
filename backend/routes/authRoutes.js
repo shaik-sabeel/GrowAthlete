@@ -3,25 +3,69 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
-const sendWelcomeEmail = require("../utils/mailer"); 
+const sendWelcomeEmail = require("../utils/mailer");
+const passwordValidator = require("../utils/passwordValidator"); 
 
 const router = express.Router();
 
 // Register
 router.post("/register", async (req, res) => {
-  const { username,email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
+  
   try {
+    // Check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json("User already exists");
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+        field: "email"
+      });
+    }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username,email, password: hashedPassword, role });
+    // Validate password strength
+    const passwordValidation = passwordValidator.validatePassword(password);
+    
+    if (!passwordValidation.isValid) {
+      return res.status(400).json({
+        success: false,
+        message: "Password does not meet requirements",
+        field: "password",
+        errors: passwordValidation.errors,
+        warnings: passwordValidation.warnings,
+        strength: passwordValidation.strength
+      });
+    }
+
+    // Check if password contains username or email
+    const lowerPassword = password.toLowerCase();
+    const lowerUsername = username.toLowerCase();
+    const lowerEmail = email.toLowerCase();
+    
+    if (lowerPassword.includes(lowerUsername) || lowerPassword.includes(lowerEmail.split('@')[0])) {
+      return res.status(400).json({
+        success: false,
+        message: "Password cannot contain your username or email",
+        field: "password"
+      });
+    }
+
+    // Hash password and create user
+    const hashedPassword = await bcrypt.hash(password, 12); // Increased salt rounds for better security
+    const newUser = new User({ username, email, password: hashedPassword, role });
     await newUser.save();
-    sendWelcomeEmail(newUser.email, newUser.username);
+    
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(newUser.email, newUser.username);
+    } catch (emailError) {
+      console.error("Welcome email failed:", emailError);
+      // Don't fail registration if email fails
+    }
 
     const token = jwt.sign(
       { id: newUser._id, username: newUser.username, role: newUser.role },
-      "yourSecretKey",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -33,9 +77,14 @@ router.post("/register", async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       })
       .json({ 
+        success: true,
         message: "User registered successfully",
         user: { id: newUser._id, username: newUser.username, role: newUser.role },
-        token: token
+        token: token,
+        passwordStrength: {
+          score: passwordValidation.strength,
+          level: passwordValidator.getStrengthLevel(passwordValidation.strength)
+        }
       });
   } catch (err) {
     res.status(500).json("Server error");
@@ -55,7 +104,7 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, username: user.username, role: user.role },
-      "yourSecretKey",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -75,6 +124,47 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json("Server error");
   }
+});
+
+// Check password strength (for real-time validation)
+router.post("/check-password-strength", (req, res) => {
+  const { password, username, email } = req.body;
+  
+  if (!password) {
+    return res.status(400).json({
+      success: false,
+      message: "Password is required"
+    });
+  }
+
+  const passwordValidation = passwordValidator.validatePassword(password);
+  
+  // Check if password contains username or email
+  let additionalErrors = [];
+  if (username) {
+    const lowerPassword = password.toLowerCase();
+    const lowerUsername = username.toLowerCase();
+    if (lowerPassword.includes(lowerUsername)) {
+      additionalErrors.push("Password cannot contain your username");
+    }
+  }
+  
+  if (email) {
+    const lowerPassword = password.toLowerCase();
+    const lowerEmail = email.toLowerCase();
+    if (lowerPassword.includes(lowerEmail.split('@')[0])) {
+      additionalErrors.push("Password cannot contain your email");
+    }
+  }
+
+  res.json({
+    success: true,
+    isValid: passwordValidation.isValid && additionalErrors.length === 0,
+    errors: [...passwordValidation.errors, ...additionalErrors],
+    warnings: passwordValidation.warnings,
+    strength: passwordValidation.strength,
+    strengthLevel: passwordValidator.getStrengthLevel(passwordValidation.strength)
+  });
 });
 
 // Logout

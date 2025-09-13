@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import api from '../utils/api';
 import { useNavigate,Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNotification } from '../context/NotificationContext';
 
 
 // --- Important: We assume you have a src/components/Button.jsx file for your <Button> component
@@ -64,6 +65,7 @@ const Navbar = () => {
 const navigate = useNavigate();
 const [isAuthenticated, setIsAuthenticated] = useState(false);
 const [data, setData] = useState(null);
+const { showSuccess, showError } = useNotification();
 
   // useEffect(() => {
   //   // Whenever isAuthenticated changes, notify parent
@@ -121,14 +123,17 @@ const [data, setData] = useState(null);
     try {
       await api.post("/auth/logout");
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       setData(null); // Clear user data on logout
       setIsAuthenticated(false); // Update authentication state
-      alert("Logged out successfully!");
+      showSuccess("Logged out successfully!");
       // Redirect to home page after logout
-      navigate('/') // Redirect to home after logout
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     } catch (err) {
       console.error("Logout failed:", err);
-      alert("Logout failed");
+      showError("Logout failed. Please try again.");
     }
   };
 

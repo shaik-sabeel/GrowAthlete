@@ -76,6 +76,7 @@ import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 import bg from "../assets/Login_bg.jpg"
 import Navbar from "../components/Navbar"; // Import Navbar component
+import { useNotification } from "../context/NotificationContext";
 // import "../pages_css/Login.css"; // REMOVE THIS LINE
 
 const Login = () => {
@@ -83,7 +84,10 @@ const Login = () => {
     email: "", // User Name in UI maps to email
     password: "",
   });
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  
   const navigate = useNavigate();
+  const { showSuccess, showError, showInfo } = useNotification();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -91,6 +95,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoggingIn(true);
+    
     try {
       const response = await api.post("/auth/login", formData);
       const { user, token } = response.data;
@@ -99,15 +105,34 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
       
+      // Show success message
+      showSuccess(`Welcome back, ${user.username}!`);
+      
       // Redirect based on user role
-      if (user.role === 'admin') {
-        navigate("/admin-dashboard");
-      } else {
-      navigate("/splash");
-      }
+      setTimeout(() => {
+        if (user.role === 'admin') {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/splash");
+        }
+      }, 1000);
+      
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+      
+      // Handle specific error messages
+      if (err.response && err.response.data) {
+        const errorMessage = err.response.data;
+        if (typeof errorMessage === 'string') {
+          showError(errorMessage);
+        } else {
+          showError(errorMessage.message || "Login failed");
+        }
+      } else {
+        showError("Login failed. Please check your credentials and try again.");
+      }
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -190,9 +215,21 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full p-4 mt-6 rounded-md text-white font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg transform hover:scale-[1.01]"
+              disabled={isLoggingIn}
+              className={`w-full p-4 mt-6 rounded-md text-white font-semibold transition-all duration-300 shadow-lg transform hover:scale-[1.01] ${
+                isLoggingIn
+                  ? 'bg-gray-500 cursor-not-allowed opacity-50'
+                  : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600'
+              }`}
             >
-              Submit
+              {isLoggingIn ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Signing In...</span>
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
 

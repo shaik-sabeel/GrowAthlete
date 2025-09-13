@@ -16,7 +16,7 @@ const app = express();
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
- origin: ["https://growathlete-y2lc.onrender.com", "https://growathlete.onrender.com"],
+ origin: ["https://growathlete-y2lc.onrender.com", "https://growathlete.onrender.com", "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));

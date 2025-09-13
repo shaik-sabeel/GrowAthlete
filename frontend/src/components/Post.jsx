@@ -6,6 +6,10 @@ import ContentFlagModal from './ContentFlagModal';
 import api from '../utils/api';
 
 const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
+  // Add null check for post
+  if (!post) {
+    return <div className="p-4 text-center text-gray-500">Post data is missing</div>;
+  }
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [isFlaggedLocal, setIsFlaggedLocal] = useState(post.isFlagged || post.status === 'flagged');
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -13,7 +17,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [editContent, setEditContent] = useState(post.content);
+  const [editContent, setEditContent] = useState(post.content || '');
   const [isEditing, setIsEditing] = useState(false);
   const [showAllComments, setShowAllComments] = useState(false);
   const [replyOpenMap, setReplyOpenMap] = useState({});
@@ -29,12 +33,12 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
   });
   const [myReaction, setMyReaction] = useState(() => {
     if (!post.reactions) return null;
-    const r = post.reactions.find(r => r.userId === currentUserId);
+    const r = post.reactions?.find(r => r.userId === currentUserId);
     return r ? r.type : null;
   });
 
-  const isAuthor = currentUserId === post.author._id;
-  const isLiked = post.likes.some(like => like._id === currentUserId);
+  const isAuthor = post.author && currentUserId === post.author._id;
+  const isLiked = post.likes && post.likes.some(like => like._id === currentUserId);
 
   const handleLike = async () => {
     if (isLiking) return;
@@ -51,8 +55,8 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
       const updatedPost = {
         ...post,
         likes: isLiked 
-          ? post.likes.filter(like => like._id !== currentUserId)
-          : [...post.likes, { _id: currentUserId }]
+          ? (post.likes || []).filter(like => like._id !== currentUserId)
+          : [...(post.likes || []), { _id: currentUserId }]
       };
       
       if (onPostUpdated) {
@@ -258,14 +262,14 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
           {/* User Picture */}
           <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
             <img
-              src={post.author.profilePicture || '/default-avatar.png'}
-                             alt={post.author.username}
+              src={post.author?.profilePicture || '/default-avatar.png'}
+              alt={post.author?.username || 'Unknown User'}
               className="w-full h-full object-cover"
             />
           </div>
           {/* User Name and Time */}
           <div className="ml-3">
-            <p className="font-semibold text-gray-100 px-2">{post.author.username}</p>
+            <p className="font-semibold text-gray-100 px-2">{post.author?.username || 'Unknown User'}</p>
             <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
           </div>
         </div>
@@ -321,7 +325,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
             <button
               onClick={() => {
                 setShowEditForm(false);
-                setEditContent(post.content);
+                setEditContent(post.content || '');
               }}
               className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
             >
@@ -333,7 +337,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
 
       {/* Post Content with Read more toggle */}
       {!showEditForm && (
-        <p className="text-white-700 mb-4 pl-12">{post.content}</p>
+        <p className="text-white-700 mb-4 pl-12">{post.content || 'No content available'}</p>
       )}
 
       {/* Media */}
@@ -367,7 +371,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
           aria-label="Comment"
         >
           <FaComment className="text-[16px] text-gray-500" />
-          <span className="text-[12px] text-gray-500">{post.comments.length}</span>
+          <span className="text-[12px] text-gray-500">{post.comments?.length || 0}</span>
         </button>
       </div>
 
@@ -395,7 +399,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
       )}
 
       {/* Comments Section */}
-      {post.comments.length > 0 && (
+      {post.comments && post.comments.length > 0 && (
         <div className="pl-12">
           {(() => {
             const sorted = [...post.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -449,7 +453,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
                             const newReply = resp.data?.reply || { _id: Math.random().toString(36).slice(2), content, author: { _id: currentUserId }, createdAt: new Date().toISOString() };
                             const updatedPost = {
                               ...post,
-                              comments: post.comments.map(c => c._id === comment._id ? { ...c, replies: [...(c.replies || []), newReply] } : c)
+                              comments: (post.comments || []).map(c => c._id === comment._id ? { ...c, replies: [...(c.replies || []), newReply] } : c)
                             };
                             if (onPostUpdated) onPostUpdated(updatedPost);
                             setReplyContentMap(m => ({ ...m, [comment._id]: '' }));
@@ -472,7 +476,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
                     )}
                   </div>
                 ))}
-                {post.comments.length > 2 && (
+                {post.comments && post.comments.length > 2 && (
                   <div className="mt-1 flex justify-end">
                     <span
                       role="button"
@@ -498,7 +502,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
          onClose={() => setShowFlagModal(false)}
          contentType="community"
          contentId={post._id}
-         contentPreview={post.content}
+         contentPreview={post.content || 'No content available'}
          onSuccess={() => {
            setIsFlaggedLocal(true);
          }}

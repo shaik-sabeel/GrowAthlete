@@ -42,6 +42,7 @@ const CommunityFeed = ({ currentUserId }) => {
       });
 
       console.log('API Response:', response.data); // Debug log
+      console.log('Posts data:', response.data.posts); // Debug individual posts
 
       const { posts: newPosts, totalPages: total, currentPage: pageNum } = response.data;
       

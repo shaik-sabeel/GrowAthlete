@@ -100,6 +100,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import ScrollToTop from "./components/ScrollToTop";
+import { NotificationProvider } from './context/NotificationContext';
 
 // --- PAGE COMPONENTS (from src/pages/ as per your structure) ---
 import Home from './pages/Home'; // Your main homepage
@@ -194,9 +195,8 @@ function AppContent() {
 
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
- main
 
-<Route path="/splash" element={<Splash nextPath="/" />} />
+          <Route path="/splash" element={<Splash nextPath="/" />} />
 <Route path="/resume-template" element={<ResumeTemplate />} />   
 
 
@@ -291,9 +291,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <AppContent />
-    </Router>
+    <NotificationProvider>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <AppContent />
+      </Router>
+    </NotificationProvider>
   );
 }
 
