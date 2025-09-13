@@ -12,6 +12,28 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
+    <!-- SPA Fallback Script - Handles 404 errors on refresh -->
+    <script>
+      // Fallback for SPA routing issues
+      if (window.location.pathname !== '/' && !window.location.pathname.startsWith('/api/')) {
+        // Check if the current path should be handled by React Router
+        const validRoutes = [
+          '/', '/about', '/login', '/register', '/community', '/contact', 
+          '/sports-resume', '/create-blog', '/events', '/explore-all-sports',
+          '/sports-blog', '/sponsorships', '/news', '/live-scores', '/saved-articles',
+          '/membership', '/profile', '/athlete/dashboard', '/admin-dashboard',
+          '/athletes', '/sports-news', '/update', '/resume-template', '/splash'
+        ];
+        
+        const isDynamicRoute = window.location.pathname.match(/\/(events|athletes|sports-blog)\/\d+/);
+        
+        if (!validRoutes.includes(window.location.pathname) && !isDynamicRoute) {
+          // If it's not a valid route, redirect to home
+          window.location.href = '/';
+        }
+      }
+    </script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/printThis/1.15.0/printThis.js"></script>
     <!-- <script>
