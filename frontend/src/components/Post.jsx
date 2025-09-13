@@ -173,8 +173,16 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
   const renderMedia = (media) => {
     if (!media || media.length === 0) return null;
 
-    // Use the same base URL as the API to access uploaded media files
-    const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com';
+    // Helper function to construct proper image URLs
+    const getImageUrl = (url) => {
+      // If URL is already a full URL (starts with http), return as is
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+      }
+      // Otherwise, prepend the base URL
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com';
+      return `${baseURL}${url}`;
+    };
 
     const isCarousel = media.length > 1;
 
@@ -194,26 +202,26 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
             >
               {item.mediaType === 'image' ? (
                 <img
-                  src={`${baseURL}${item.url}`}
+                  src={getImageUrl(item.url)}
                   alt="Post media"
                   className={`rounded-lg ${isCarousel ? 'w-full h-40 sm:h-52 object-cover' : 'max-w-full h-auto'}`}
                   onError={(e) => {
-                    console.error('Failed to load image:', `${baseURL}${item.url}`);
+                    console.error('Failed to load image:', getImageUrl(item.url));
                     e.target.style.display = 'none';
                   }}
                 />
               ) : item.mediaType === 'video' ? (
                 <video
-                  src={`${baseURL}${item.url}`}
+                  src={getImageUrl(item.url)}
                   controls
                   className={`rounded-lg ${isCarousel ? 'w-full h-40 sm:h-52 object-cover' : 'max-w-full h-auto'}`}
                   onError={(e) => {
-                    console.error('Failed to load video:', `${baseURL}${item.url}`);
+                    console.error('Failed to load video:', getImageUrl(item.url));
                   }}
                 />
               ) : (
                 <a
-                  href={`${baseURL}${item.url}`}
+                  href={getImageUrl(item.url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`flex items-center space-x-2 p-3 bg-gray-100 rounded-lg hover:bg-gray-200 ${isCarousel ? 'w-64 sm:w-80' : ''}`}

@@ -185,7 +185,6 @@ function AppContent() {
           {/* Route for viewing events */}
           <Route path="/sports-blog" element={<SportsBlogPage />} />          {/* <--- NEW ROUTE */}
           <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} /> {/* <--- NEW ROUTE */}
-          <Route path="/community" element={<CommunityPage />} />
           <Route path="/sponsorships" element={<Sponsorship />} />
 
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
