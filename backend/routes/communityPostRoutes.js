@@ -113,7 +113,9 @@ router.post('/', verifyToken, upload.array('media', 5), async (req, res) => {
 
     // Process uploaded media files
     const media = [];
+    console.log('Files received:', req.files ? req.files.length : 0);
     if (req.files && req.files.length > 0) {
+      console.log('Processing files:', req.files.map(f => ({ name: f.originalname, type: f.mimetype, size: f.size })));
       for (const file of req.files) {
         try {
           let mediaResult;
