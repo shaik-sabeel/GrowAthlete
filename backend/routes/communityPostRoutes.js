@@ -4,22 +4,15 @@ const CommunityPost = require('../models/CommunityPost');
 const { verifyToken } = require('../middlewares/authMiddleware');
 const multer = require('multer');
 const path = require('path');
+const { uploadToCloudinary, fallbackToLocal, isCloudinaryConfigured } = require('../utils/cloudStorage');
 
-// Configure multer for media uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/community/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Configure multer for media uploads (memory storage for cloud uploads)
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 10 * 1024 * 1024, // 10MB limit for cloud uploads
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|avi|mov|pdf|doc|docx/;
@@ -121,14 +114,40 @@ router.post('/', verifyToken, upload.array('media', 5), async (req, res) => {
     // Process uploaded media files
     const media = [];
     if (req.files && req.files.length > 0) {
-      req.files.forEach(file => {
-        const mediaType = file.mimetype.startsWith('image/') ? 'image' :
-                         file.mimetype.startsWith('video/') ? 'video' : 'document';
-        media.push({
-          url: `/uploads/community/${file.filename}`,
-          mediaType: mediaType
-        });
-      });
+      for (const file of req.files) {
+        try {
+          let mediaResult;
+          
+          // Try cloud storage first if configured
+          if (isCloudinaryConfigured()) {
+            try {
+              mediaResult = await uploadToCloudinary(file, 'growathlete/community');
+            } catch (cloudError) {
+              console.warn('Cloud upload failed, falling back to local storage:', cloudError.message);
+              mediaResult = fallbackToLocal(file, 'uploads/community/');
+            }
+          } else {
+            // Use local storage if cloud not configured
+            mediaResult = fallbackToLocal(file, 'uploads/community/');
+          }
+          
+          const mediaType = file.mimetype.startsWith('image/') ? 'image' :
+                           file.mimetype.startsWith('video/') ? 'video' : 'document';
+          
+          media.push({
+            url: mediaResult.url,
+            publicId: mediaResult.publicId,
+            mediaType: mediaType,
+            size: mediaResult.size,
+            format: mediaResult.format,
+            width: mediaResult.width,
+            height: mediaResult.height
+          });
+        } catch (error) {
+          console.error('File processing error:', error);
+          // Continue with other files even if one fails
+        }
+      }
     }
 
     // Extract hashtags from content
@@ -209,6 +228,23 @@ router.delete('/:id', verifyToken, async (req, res) => {
 
     if (post.author.toString() !== userId) {
       return res.status(403).json({ message: 'You can only delete your own posts' });
+    }
+
+    // Delete media files from cloud storage if they exist
+    if (post.media && post.media.length > 0) {
+      const { deleteFromCloudinary } = require('../utils/cloudStorage');
+      
+      for (const mediaItem of post.media) {
+        if (mediaItem.publicId) {
+          try {
+            await deleteFromCloudinary(mediaItem.publicId);
+            console.log(`Deleted cloud file: ${mediaItem.publicId}`);
+          } catch (error) {
+            console.error(`Failed to delete cloud file ${mediaItem.publicId}:`, error);
+            // Continue even if cloud deletion fails
+          }
+        }
+      }
     }
 
     await CommunityPost.findByIdAndDelete(postId);

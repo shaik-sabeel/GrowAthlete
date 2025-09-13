@@ -16,10 +16,30 @@ const communityPostSchema = new mongoose.Schema({
       type: String,
       required: true
     },
+    publicId: {
+      type: String,
+      default: null // Cloudinary public ID for cloud storage
+    },
     mediaType: {
       type: String,
       enum: ['image', 'video', 'document'],
       default: 'image'
+    },
+    size: {
+      type: Number,
+      default: 0 // File size in bytes
+    },
+    format: {
+      type: String,
+      default: 'jpg' // File format
+    },
+    width: {
+      type: Number,
+      default: null // Image/video width
+    },
+    height: {
+      type: Number,
+      default: null // Image/video height
     }
   }],
   tags: [String],
