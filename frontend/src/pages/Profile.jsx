@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import '../pages_css/Profile.css'; // Corrected path for your folder structure
@@ -19,6 +19,15 @@ const Profile = () => {
         email: '',
         phone: ''
     });
+
+    // Check if user is authenticated
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('No token found, redirecting to login');
+            navigate('/login');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

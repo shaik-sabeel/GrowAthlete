@@ -167,9 +167,18 @@ const Register = () => {
     setIsSubmitting(true);
     
     try {
+      console.log("Form data submitted:", formData);
       const response = await api.post("/auth/register", formData);
       
       if (response.data.success) {
+        // Store the token and user data
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+        }
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        
         showSuccess("Account created successfully! Welcome to GrowAthlete!");
         setTimeout(() => {
           navigate("/update");
@@ -178,11 +187,15 @@ const Register = () => {
         showError(response.data.message || "Registration failed");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Registration error:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
       
       // Handle specific error messages
       if (err.response && err.response.data) {
         const errorData = err.response.data;
+        console.log("Error data:", errorData);
+        
         if (errorData.field === 'password') {
           showError(`Password Error: ${errorData.message}`);
           if (errorData.errors && errorData.errors.length > 0) {
