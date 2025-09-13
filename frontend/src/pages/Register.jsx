@@ -109,15 +109,16 @@ const Register = () => {
     role: "athlete",
   });
 
-  const [passwordStrength, setPasswordStrength] = useState({
-    score: 0,
-    level: "Very Weak",
-    color: "red",
-    errors: [],
-    warnings: []
-  });
+  // Password strength removed
+  // const [passwordStrength, setPasswordStrength] = useState({
+  //   score: 0,
+  //   level: "Very Weak",
+  //   color: "red",
+  //   errors: [],
+  //   warnings: []
+  // });
 
-  const [isCheckingPassword, setIsCheckingPassword] = useState(false);
+  // const [isCheckingPassword, setIsCheckingPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -126,55 +127,41 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     
-    // Check password strength in real-time
-    if (e.target.name === "password" && e.target.value.length > 0) {
-      checkPasswordStrength(e.target.value);
-    } else if (e.target.name === "password" && e.target.value.length === 0) {
-      setPasswordStrength({
-        score: 0,
-        level: "Very Weak",
-        color: "red",
-        errors: [],
-        warnings: []
-      });
-    }
+    // Password strength checking removed
   };
 
-  const checkPasswordStrength = async (password) => {
-    if (password.length < 3) return; // Don't check for very short passwords
-    
-    setIsCheckingPassword(true);
-    try {
-      const response = await api.post("/auth/check-password-strength", {
-        password,
-        username: formData.username,
-        email: formData.email
-      });
-      
-      if (response.data.success) {
-        setPasswordStrength({
-          score: response.data.strength,
-          level: response.data.strengthLevel.level,
-          color: response.data.strengthLevel.color,
-          errors: response.data.errors || [],
-          warnings: response.data.warnings || []
-        });
-      }
-    } catch (error) {
-      console.error("Password strength check failed:", error);
-    } finally {
-      setIsCheckingPassword(false);
-    }
-  };
+  // Password strength checking removed
+  // const checkPasswordStrength = async (password) => {
+  //   if (password.length < 3) return; // Don't check for very short passwords
+  //   
+  //   setIsCheckingPassword(true);
+  //   try {
+  //     const response = await api.post("/auth/check-password-strength", {
+  //       password,
+  //       username: formData.username,
+  //       email: formData.email
+  //     });
+  //     
+  //     if (response.data.success) {
+  //       setPasswordStrength({
+  //         score: response.data.strength,
+  //         level: response.data.strengthLevel.level,
+  //         color: response.data.strengthLevel.color,
+  //         errors: response.data.errors || [],
+  //         warnings: response.data.warnings || []
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Password strength check failed:", error);
+  //   } finally {
+  //     setIsCheckingPassword(false);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check if password meets requirements before submitting
-    if (passwordStrength.errors.length > 0) {
-      showError("Please fix password requirements before submitting");
-      return;
-    }
+    // Password strength validation removed
     
     setIsSubmitting(true);
     
@@ -305,96 +292,7 @@ const Register = () => {
                 className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
               />
               
-              {/* Password Strength Indicator */}
-              {formData.password.length > 0 && (
-                <div className="mt-2">
-                  {/* Strength Bar */}
-                  <div className="flex items-center space-x-2 mb-2">
-                    <div className="flex-1 bg-gray-600 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          passwordStrength.color === 'red' ? 'bg-red-500' :
-                          passwordStrength.color === 'orange' ? 'bg-orange-500' :
-                          passwordStrength.color === 'yellow' ? 'bg-yellow-500' :
-                          passwordStrength.color === 'lightgreen' ? 'bg-green-400' :
-                          'bg-green-500'
-                        }`}
-                        style={{ width: `${passwordStrength.score}%` }}
-                      ></div>
-                    </div>
-                    <span className={`text-xs font-medium ${
-                      passwordStrength.color === 'red' ? 'text-red-400' :
-                      passwordStrength.color === 'orange' ? 'text-orange-400' :
-                      passwordStrength.color === 'yellow' ? 'text-yellow-400' :
-                      passwordStrength.color === 'lightgreen' ? 'text-green-400' :
-                      'text-green-500'
-                    }`}>
-                      {passwordStrength.level}
-                    </span>
-                    {isCheckingPassword && (
-                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
-                    )}
-                  </div>
-                  
-                  {/* Password Requirements */}
-                  <div className="text-xs text-white/70 space-y-1">
-                    <div className={`flex items-center space-x-1 ${
-                      formData.password.length >= 8 ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      <span>{formData.password.length >= 8 ? '✓' : '✗'}</span>
-                      <span>At least 8 characters</span>
-                    </div>
-                    <div className={`flex items-center space-x-1 ${
-                      /[A-Z]/.test(formData.password) ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      <span>{/[A-Z]/.test(formData.password) ? '✓' : '✗'}</span>
-                      <span>One uppercase letter</span>
-                    </div>
-                    <div className={`flex items-center space-x-1 ${
-                      /[a-z]/.test(formData.password) ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      <span>{/[a-z]/.test(formData.password) ? '✓' : '✗'}</span>
-                      <span>One lowercase letter</span>
-                    </div>
-                    <div className={`flex items-center space-x-1 ${
-                      /\d/.test(formData.password) ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      <span>{/\d/.test(formData.password) ? '✓' : '✗'}</span>
-                      <span>One number</span>
-                    </div>
-                    <div className={`flex items-center space-x-1 ${
-                      /[@$!%*?&^#()_+\-=\[\]{};':"\\|,.<>\/~`]/.test(formData.password) ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      <span>{/[@$!%*?&^#()_+\-=\[\]{};':"\\|,.<>\/~`]/.test(formData.password) ? '✓' : '✗'}</span>
-                      <span>One special character</span>
-                    </div>
-                  </div>
-                  
-                  {/* Error Messages */}
-                  {passwordStrength.errors.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {passwordStrength.errors.map((error, index) => (
-                        <div key={index} className="text-xs text-red-400 flex items-center space-x-1">
-                          <span>⚠</span>
-                          <span>{error}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  {/* Warning Messages */}
-                  {passwordStrength.warnings.length > 0 && (
-                    <div className="mt-2 space-y-1">
-                      {passwordStrength.warnings.map((warning, index) => (
-                        <div key={index} className="text-xs text-yellow-400 flex items-center space-x-1">
-                          <span>💡</span>
-                          <span>{warning}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Password strength indicator removed */}
             </div>
 
             <div>
@@ -424,9 +322,9 @@ const Register = () => {
 
             <button
               type="submit"
-              disabled={isSubmitting || passwordStrength.errors.length > 0}
+              disabled={isSubmitting}
               className={`w-full p-4 mt-6 rounded-md text-white font-semibold transition-all duration-300 shadow-lg transform hover:scale-[1.01] ${
-                isSubmitting || passwordStrength.errors.length > 0
+                isSubmitting
                   ? 'bg-gray-500 cursor-not-allowed opacity-50'
                   : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600'
               }`}
