@@ -1,6 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import './utils/errorReporting.js'
+import './utils/performance.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

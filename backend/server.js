@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoute");
 const path = require("path");
@@ -13,6 +15,40 @@ const blogRoutes = require("./routes/blogRoutes");
 const communityPostRoutes = require("./routes/communityPostRoutes");
 
 const app = express();
+
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      connectSrc: ["'self'", "https://api.newscatcherapi.com"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+// Stricter rate limiting for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: "Too many authentication attempts, please try again later.",
+});
+app.use("/api/auth", authLimiter);
+
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
