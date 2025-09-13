@@ -1,0 +1,349 @@
+/* Admin Dashboard Specific Color Scheme */
+:root {
+  /* Admin Dashboard Colors */
+  --ga-navy: #13293D;      /* headings, links, primary accents, icons, active dots */
+  --ga-orange: #D98022;    /* buttons, highlights, hover states, action CTAs */
+  --ga-beige: #F8F4EB;     /* page and card backgrounds */
+  --ga-charcoal: #222831;  /* body text, subtle dividers */
+  --ga-soft: #ECECEC;      /* secondary backgrounds, inputs, borders */
+}
+
+/* Admin Dashboard Container */
+.admin-dashboard {
+  background-color: var(--ga-beige);
+  color: var(--ga-charcoal);
+  min-height: 100vh;
+}
+
+/* Admin Dashboard Headers */
+.admin-dashboard h1,
+.admin-dashboard h2,
+.admin-dashboard h3,
+.admin-dashboard h4,
+.admin-dashboard h5,
+.admin-dashboard h6 {
+  color: var(--ga-navy);
+  font-weight: 600;
+}
+
+/* Admin Dashboard Links */
+.admin-dashboard a {
+  color: var(--ga-navy);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.admin-dashboard a:hover {
+  color: var(--ga-orange);
+}
+
+/* Admin Dashboard Buttons */
+.admin-dashboard .btn {
+  background-color: var(--ga-orange);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-dashboard .btn:hover {
+  background-color: #c46f1e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217, 128, 34, 0.3);
+}
+
+.admin-dashboard .btn-secondary {
+  background-color: var(--ga-soft);
+  color: var(--ga-charcoal);
+  border: 2px solid var(--ga-soft);
+}
+
+.admin-dashboard .btn-secondary:hover {
+  background-color: var(--ga-navy);
+  color: white;
+  border-color: var(--ga-navy);
+}
+
+/* Admin Dashboard Cards */
+.admin-dashboard .card {
+  background-color: white;
+  border: 1px solid var(--ga-soft);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard .card-header {
+  background-color: var(--ga-beige);
+  border-bottom: 2px solid var(--ga-soft);
+  padding: 16px 24px;
+  margin: -24px -24px 20px -24px;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Admin Dashboard Tables */
+.admin-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.admin-dashboard th {
+  background-color: var(--ga-navy);
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.admin-dashboard td {
+  padding: 16px;
+  border-bottom: 1px solid var(--ga-soft);
+  color: var(--ga-charcoal);
+}
+
+.admin-dashboard tr:hover {
+  background-color: var(--ga-beige);
+}
+
+/* Admin Dashboard Forms */
+.admin-dashboard .form-group {
+  margin-bottom: 20px;
+}
+
+.admin-dashboard label {
+  color: var(--ga-navy);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.admin-dashboard input,
+.admin-dashboard select,
+.admin-dashboard textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--ga-soft);
+  border-radius: 8px;
+  background-color: white;
+  color: var(--ga-charcoal);
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.admin-dashboard input:focus,
+.admin-dashboard select:focus,
+.admin-dashboard textarea:focus {
+  outline: none;
+  border-color: var(--ga-orange);
+  box-shadow: 0 0 0 3px rgba(217, 128, 34, 0.1);
+}
+
+/* Admin Dashboard Navigation */
+.admin-dashboard .admin-nav {
+  background-color: var(--ga-navy);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-dashboard .admin-nav h1 {
+  color: white;
+  margin: 0;
+  font-size: 28px;
+}
+
+.admin-dashboard .admin-nav .nav-links {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.admin-dashboard .admin-nav .nav-links a {
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.admin-dashboard .admin-nav .nav-links a:hover,
+.admin-dashboard .admin-nav .nav-links a.active {
+  background-color: var(--ga-orange);
+  color: white;
+}
+
+/* Admin Dashboard Stats Cards */
+.admin-dashboard .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-dashboard .stat-card {
+  background: linear-gradient(135deg, var(--ga-navy) 0%, #1a3a4a 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(19, 41, 61, 0.3);
+}
+
+.admin-dashboard .stat-card h3 {
+  color: white;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-dashboard .stat-card .stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ga-orange);
+  margin: 0;
+}
+
+/* Admin Dashboard Icons */
+.admin-dashboard .icon {
+  color: var(--ga-navy);
+  font-size: 20px;
+}
+
+.admin-dashboard .icon-orange {
+  color: var(--ga-orange);
+}
+
+.admin-dashboard .icon-soft {
+  color: var(--ga-soft);
+}
+
+/* Admin Dashboard Active States */
+.admin-dashboard .active {
+  background-color: var(--ga-orange);
+  color: white;
+}
+
+.admin-dashboard .active-dot {
+  background-color: var(--ga-orange);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Admin Dashboard Dividers */
+.admin-dashboard .divider {
+  height: 1px;
+  background-color: var(--ga-soft);
+  margin: 20px 0;
+}
+
+.admin-dashboard .divider-thick {
+  height: 2px;
+  background-color: var(--ga-charcoal);
+  margin: 30px 0;
+}
+
+/* Admin Dashboard Alerts */
+.admin-dashboard .alert {
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+}
+
+.admin-dashboard .alert-success {
+  background-color: #f0f9ff;
+  border-left-color: #10b981;
+  color: #065f46;
+}
+
+.admin-dashboard .alert-warning {
+  background-color: #fffbeb;
+  border-left-color: var(--ga-orange);
+  color: #92400e;
+}
+
+.admin-dashboard .alert-error {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+/* Admin Dashboard Responsive */
+@media (max-width: 768px) {
+  .admin-dashboard .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-dashboard .admin-nav .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .admin-dashboard .card {
+    padding: 16px;
+  }
+  
+  .admin-dashboard table {
+    font-size: 14px;
+  }
+  
+  .admin-dashboard th,
+  .admin-dashboard td {
+    padding: 12px 8px;
+  }
+}
+
+/* Admin Dashboard Loading States */
+.admin-dashboard .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: var(--ga-charcoal);
+}
+
+.admin-dashboard .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--ga-soft);
+  border-top: 4px solid var(--ga-orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Admin Dashboard Empty States */
+.admin-dashboard .empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ga-charcoal);
+}
+
+.admin-dashboard .empty-state .icon {
+  font-size: 48px;
+  color: var(--ga-soft);
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .empty-state h3 {
+  color: var(--ga-navy);
+  margin-bottom: 10px;
+}
+
+.admin-dashboard .empty-state p {
+  color: var(--ga-charcoal);
+  margin-bottom: 20px;
+}
