@@ -3,12 +3,8 @@ const express = require("express");
 const multer = require("multer");
 const path = require ("path");
 const Event = require("../models/Event");
-<<<<<<< HEAD
-const AdBanner = require("../models/AdBanner"); // Already existing
-=======
 const AdBanner = require("../models/AdBanner");
 const { enforceUploadConstraints } = require('../middlewares/upload');
->>>>>>> admin-page
 
 const router = express.Router();
 
@@ -24,13 +20,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-<<<<<<< HEAD
 // Create Event - UPDATED TO INCLUDE REQUIRED FIELDS (sport, category, organizer, organizerName, organizerEmail, endDate)
-router.post("/create", upload.single("image"), async (req, res) => {
-=======
-// Create Event
 router.post("/create", upload.single("image"), enforceUploadConstraints(), async (req, res) => {
->>>>>>> admin-page
   try {
     // Extract more fields based on your Event model schema
     const { title, description, date, endDate, location, sport, category, organizer, organizerName, organizerEmail } = req.body;

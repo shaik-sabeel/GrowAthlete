@@ -3,25 +3,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
-<<<<<<< HEAD
-const sendWelcomeEmail = require("../utils/mailer");
-const passwordValidator = require("../utils/passwordValidator"); 
-=======
-const sendWelcomeEmail = require("../utils/mailer"); 
 const { enforceRegistrationRules, enforceAdmin2FA } = require('../middlewares/auth');
->>>>>>> admin-page
+const sendWelcomeEmail = require("../utils/mailer");
+const passwordValidator = require("../utils/passwordValidator");
 
 const router = express.Router();
 
 // Register
-<<<<<<< HEAD
 router.post("/register", async (req, res) => {
   const { username, email, password, role } = req.body;
-  
-=======
-router.post("/register", enforceRegistrationRules(), async (req, res) => {
-  const { username,email, password, role } = req.body;
->>>>>>> admin-page
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
