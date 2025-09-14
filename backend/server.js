@@ -18,6 +18,18 @@ const maintenanceMiddleware = require('./middlewares/maintenance');
 
 const app = express();
 
+// Trust proxy for production deployment (Render, Heroku, etc.)
+app.set('trust proxy', 1);
+
+// Production optimizations
+if (process.env.NODE_ENV === 'production') {
+  // Disable X-Powered-By header for security
+  app.disable('x-powered-by');
+  
+  // Set production-specific settings
+  app.set('env', 'production');
+}
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -40,6 +52,12 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
+  // Skip rate limiting for health checks
+  skip: (req) => req.path === '/test' || req.path === '/',
+  // Use X-Forwarded-For header when available (for proxy setups)
+  keyGenerator: (req) => {
+    return req.ip || req.connection.remoteAddress;
+  }
 });
 app.use(limiter);
 
@@ -48,6 +66,10 @@ const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 requests per windowMs
   message: "Too many authentication attempts, please try again later.",
+  // Use X-Forwarded-For header when available (for proxy setups)
+  keyGenerator: (req) => {
+    return req.ip || req.connection.remoteAddress;
+  }
 });
 app.use("/api/auth", authLimiter);
 
@@ -111,6 +133,16 @@ app.get("/", (req, res) => {
   res.json({ 
     message: "GrowAthlete Backend API is running!", 
     status: "healthy",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: process.env.npm_package_version || '1.0.0'
+  });
+});
+
+// Additional health check for load balancers
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: "ok",
     timestamp: new Date().toISOString()
   });
 });
