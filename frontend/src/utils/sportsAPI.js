@@ -5,7 +5,7 @@ import { API_CONFIG, DEMO_NEWS, DEMO_LIVE_SCORES, FEATURES } from './apiConfig.j
 const ENV_API_KEY = (import.meta?.env?.VITE_NEWSDATA_API_KEY) || (import.meta?.env?.REACT_APP_NEWSDATA_API_KEY);
 
 // API Configuration
-const NEWSDATA_API_KEY = ENV_API_KEY || API_CONFIG.NEWSDATA.API_KEY || "pub_8a903795015d4fb1bd83ff7bd2f94ee5";
+const NEWSDATA_API_KEY = ENV_API_KEY || API_CONFIG.NEWSDATA.API_KEY || "pub_b5b347272be94204bf47403a809e0b74";
 const NEWSDATA_BASE_URL = API_CONFIG.NEWSDATA.BASE_URL;
 const SPORTSDB_BASE_URL = API_CONFIG.SPORTSDB.BASE_URL;
 
@@ -14,6 +14,12 @@ console.log('🔧 News API Configuration:');
 console.log('Environment API Key:', ENV_API_KEY ? 'Found' : 'Not found');
 console.log('Final API Key:', NEWSDATA_API_KEY ? `${NEWSDATA_API_KEY.substring(0, 10)}...` : 'Not set');
 console.log('Base URL:', NEWSDATA_BASE_URL);
+
+// Check if API key is valid format
+const isValidAPIKey = (key) => key && key.startsWith('pub_') && key.length > 10;
+if (!isValidAPIKey(NEWSDATA_API_KEY)) {
+  console.warn('⚠️ Invalid API key format detected. Please get a new API key from https://newsdata.io/');
+}
 
 // Continent to country mapping
 const CONTINENT_COUNTRIES = {
@@ -396,6 +402,16 @@ export const getNews = async (continent = 'indian', sport = 'all') => {
     if (!res.ok) {
       const errorText = await res.text();
       console.error(`[getNews] HTTP Error ${res.status}:`, errorText);
+      
+      if (res.status === 401) {
+        console.error('🔑 API Key Authentication Failed!');
+        console.error('💡 Solutions:');
+        console.error('   1. Get a new API key from: https://newsdata.io/');
+        console.error('   2. Update VITE_NEWSDATA_API_KEY in your .env file');
+        console.error('   3. Restart your development server');
+        console.error('   4. Check if your API key has expired or been revoked');
+      }
+      
       throw new Error(`HTTP ${res.status}: ${errorText}`);
     }
     
