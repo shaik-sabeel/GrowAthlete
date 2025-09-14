@@ -3,15 +3,25 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
+<<<<<<< HEAD
 const sendWelcomeEmail = require("../utils/mailer");
 const passwordValidator = require("../utils/passwordValidator"); 
+=======
+const sendWelcomeEmail = require("../utils/mailer"); 
+const { enforceRegistrationRules, enforceAdmin2FA } = require('../middlewares/auth');
+>>>>>>> admin-page
 
 const router = express.Router();
 
 // Register
+<<<<<<< HEAD
 router.post("/register", async (req, res) => {
   const { username, email, password, role } = req.body;
   
+=======
+router.post("/register", enforceRegistrationRules(), async (req, res) => {
+  const { username,email, password, role } = req.body;
+>>>>>>> admin-page
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -107,6 +117,10 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET || 'fallback-secret-for-development-only',
       { expiresIn: "1d" }
     );
+
+    // enforce admin 2FA if required
+    req.user = user;
+    const twoFAResult = await new Promise((resolve) => enforceAdmin2FA()(req, res, resolve));
 
     res
       .cookie("token", token, {

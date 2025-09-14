@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { enforceContentModeration } = require('../middlewares/moderation');
 const CommunityPost = require('../models/CommunityPost');
 const { verifyToken } = require('../middlewares/authMiddleware');
 const multer = require('multer');
@@ -102,7 +103,7 @@ router.get('/public/:id', async (req, res) => {
 // ===== AUTHENTICATED USER ROUTES =====
 
 // Create a new post
-router.post('/', verifyToken, upload.array('media', 5), async (req, res) => {
+router.post('/', verifyToken, upload.array('media', 5), enforceContentModeration(), async (req, res) => {
   try {
     const { content, tags } = req.body;
     const author = req.user.id;
