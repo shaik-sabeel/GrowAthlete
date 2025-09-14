@@ -5,9 +5,15 @@ import { API_CONFIG, DEMO_NEWS, DEMO_LIVE_SCORES, FEATURES } from './apiConfig.j
 const ENV_API_KEY = (import.meta?.env?.VITE_NEWSDATA_API_KEY) || (import.meta?.env?.REACT_APP_NEWSDATA_API_KEY);
 
 // API Configuration
-const NEWSDATA_API_KEY = ENV_API_KEY || API_CONFIG.NEWSDATA.API_KEY || "pub_44e5a0bf7c6f4d618d4755a6896cef95";
+const NEWSDATA_API_KEY = ENV_API_KEY || API_CONFIG.NEWSDATA.API_KEY || "pub_8a903795015d4fb1bd83ff7bd2f94ee5";
 const NEWSDATA_BASE_URL = API_CONFIG.NEWSDATA.BASE_URL;
 const SPORTSDB_BASE_URL = API_CONFIG.SPORTSDB.BASE_URL;
+
+// Debug logging
+console.log('🔧 News API Configuration:');
+console.log('Environment API Key:', ENV_API_KEY ? 'Found' : 'Not found');
+console.log('Final API Key:', NEWSDATA_API_KEY ? `${NEWSDATA_API_KEY.substring(0, 10)}...` : 'Not set');
+console.log('Base URL:', NEWSDATA_BASE_URL);
 
 // Continent to country mapping
 const CONTINENT_COUNTRIES = {
@@ -365,6 +371,13 @@ const MOCK_NEWS_DATA = {
 // Simple fetch per user's spec
 export const getNews = async (continent = 'indian', sport = 'all') => {
   try {
+    console.log(`[getNews] Starting request for continent: ${continent}, sport: ${sport}`);
+    
+    if (!NEWSDATA_API_KEY) {
+      console.warn('[getNews] No API key found, using mock data');
+      return getMockNews(continent, sport);
+    }
+    
     const countries = SIMPLE_COUNTRIES[continent] || SIMPLE_COUNTRIES['indian'];
     const url = new URL(NEWSDATA_BASE_URL);
     url.searchParams.append('apikey', NEWSDATA_API_KEY);
@@ -373,13 +386,31 @@ export const getNews = async (continent = 'indian', sport = 'all') => {
     url.searchParams.append('language', 'en');
     if (sport && sport !== 'all') url.searchParams.append('q', sport);
 
-    console.log('[getNews] url:', url.toString());
+    console.log('[getNews] Request URL:', url.toString());
+    console.log('[getNews] Making API request...');
+    
     const res = await fetch(url.toString());
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    console.log('[getNews] Response status:', res.status);
+    console.log('[getNews] Response headers:', Object.fromEntries(res.headers.entries()));
+    
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`[getNews] HTTP Error ${res.status}:`, errorText);
+      throw new Error(`HTTP ${res.status}: ${errorText}`);
+    }
+    
     const data = await res.json();
+    console.log('[getNews] API Response:', data);
+    
     const results = Array.isArray(data?.results) ? data.results : [];
+    console.log(`[getNews] Found ${results.length} articles`);
 
-    return results.map(item => ({
+    if (results.length === 0) {
+      console.warn('[getNews] No articles returned from API, using mock data');
+      return getMockNews(continent, sport);
+    }
+
+    const processedResults = results.map(item => ({
       id: item.article_id || item.link || Math.random().toString(36).slice(2),
       title: item.title,
       description: item.description,
@@ -388,24 +419,55 @@ export const getNews = async (continent = 'indian', sport = 'all') => {
       publishedAt: item.pubDate,
       source: item.source_id
     }));
+    
+    console.log(`[getNews] Returning ${processedResults.length} processed articles`);
+    return processedResults;
+    
   } catch (e) {
-    console.error('[getNews] error:', e);
-    console.warn('Falling back to mock data due to API error.');
+    console.error('[getNews] Error:', e);
+    console.warn('[getNews] Falling back to mock data due to API error.');
     return getMockNews(continent, sport);
   }
 };
 
 // Fallback function to get mock news data
 const getMockNews = (continent, sport) => {
+  console.log(`[getMockNews] Generating mock data for continent: ${continent}, sport: ${sport}`);
+  
   const continentData = MOCK_NEWS_DATA[continent] || MOCK_NEWS_DATA.indian;
   const sportData = continentData[sport] || continentData.all;
+  
+  console.log(`[getMockNews] Found ${sportData.length} mock articles`);
   
   // Add some randomization to make it feel more dynamic
   const shuffledData = [...sportData].sort(() => Math.random() - 0.5);
   
-  return shuffledData.map(item => ({
+  const mockResults = shuffledData.map(item => ({
     ...item,
     // Add some variation to published dates
     publishedAt: new Date(Date.now() - Math.random() * 86400000 * 7).toISOString()
   }));
+  
+  console.log(`[getMockNews] Returning ${mockResults.length} mock articles`);
+  return mockResults;
 };
+
+// Test function for debugging - can be called from browser console
+export const testNewsAPI = async () => {
+  console.log('🧪 Testing News API...');
+  try {
+    const news = await getNews('indian', 'cricket');
+    console.log('✅ News API Test Results:', news);
+    console.log(`📊 Retrieved ${news.length} articles`);
+    return news;
+  } catch (error) {
+    console.error('❌ News API Test Failed:', error);
+    return null;
+  }
+};
+
+// Make test function available globally for debugging
+if (typeof window !== 'undefined') {
+  window.testNewsAPI = testNewsAPI;
+  window.getNews = getNews;
+}
