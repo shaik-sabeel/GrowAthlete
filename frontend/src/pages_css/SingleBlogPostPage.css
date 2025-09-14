@@ -3,7 +3,7 @@
 @import './variables.css';
 
 .single-blog-post-page {
-  padding: 70px; /* Adjust to clear fixed navbar if you have one */
+  padding: 80px 20px 40px; /* Adjust to clear fixed navbar and add responsive padding */
   min-height: 100vh;
   background-color: var(--background-main); /* Light greyish background color */
   color: var(--text-dark); /* Default text color */
@@ -178,6 +178,9 @@
 }
 
 @media (max-width: 500px) {
+  .single-blog-post-page {
+    padding: 70px 15px 30px; /* Reduced padding for mobile */
+  }
   .post-header-image {
     max-height: 250px; /* Even smaller height for mobile */
     margin: 1rem auto;
@@ -211,5 +214,23 @@
   }
   .post-body h3 {
     font-size: 1.2em;
+  }
+}
+
+@media (max-width: 375px) {
+  .single-blog-post-page {
+    padding: 60px 10px 20px; /* Minimal padding for very small screens */
+  }
+  .post-title {
+    font-size: 1.5rem;
+  }
+  .post-body {
+    font-size: 0.9rem;
+  }
+  .post-body h2 {
+    font-size: 1.3em;
+  }
+  .post-body h3 {
+    font-size: 1.1em;
   }
 }
