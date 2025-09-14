@@ -43,18 +43,8 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
   credentials: true,
-  optionsSuccessStatus: 200,
-  preflightContinue: false
+  optionsSuccessStatus: 200
 }));
-
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.status(200).end();
-});
 
 // Security middleware
 app.use(helmet({
@@ -71,38 +61,21 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// Rate limiting - more lenient for production
+// Rate limiting - simplified for production
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 200, // Increased limit for production
   message: "Too many requests from this IP, please try again later.",
   standardHeaders: true,
-  legacyHeaders: false,
-  // Skip rate limiting for health checks and preflight requests
-  skip: (req) => {
-    return req.path === '/test' || 
-           req.path === '/' || 
-           req.path === '/health' ||
-           req.method === 'OPTIONS';
-  },
-  // Use X-Forwarded-For header when available (for proxy setups)
-  keyGenerator: (req) => {
-    return req.ip || req.connection.remoteAddress;
-  }
+  legacyHeaders: false
 });
 app.use(limiter);
 
-// Stricter rate limiting for auth routes - more lenient
+// Stricter rate limiting for auth routes
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 20, // Increased from 5 to 20 for production
-  message: "Too many authentication attempts, please try again later.",
-  // Skip for preflight requests
-  skip: (req) => req.method === 'OPTIONS',
-  // Use X-Forwarded-For header when available (for proxy setups)
-  keyGenerator: (req) => {
-    return req.ip || req.connection.remoteAddress;
-  }
+  message: "Too many authentication attempts, please try again later."
 });
 app.use("/api/auth", authLimiter);
 
