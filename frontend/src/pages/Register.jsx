@@ -99,7 +99,6 @@ import { Link, useNavigate } from "react-router-dom";
 import bg from '../assets/Login_bg.jpg'
 import Navbar from "../components/Navbar";
 import { useNotification } from "../context/NotificationContext";
-import ApiDebug from "../components/ApiDebug";
 // import "../pages_css/Register.css"; // REMOVE THIS LINE
 
 const Register = () => {
@@ -222,7 +221,6 @@ const Register = () => {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="flex flex-col lg:flex-row w-full   max-w-4xl bg-black bg-opacity-30 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl animate-fade-in-up" style={{opacity:"0.8"}}>
-        <ApiDebug />
         {/* Left 'Welcome!' Section - Reused for consistency */}
         <div className="flex-1 p-8 md:p-12 text-white flex flex-col justify-center items-center lg:items-start text-center lg:text-left animate-slide-in-left" >
           {/* Logo placeholder - replace with an actual SVG/image if desired */}
