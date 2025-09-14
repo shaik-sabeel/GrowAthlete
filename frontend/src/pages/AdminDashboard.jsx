@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../utils/api';
 import '../pages_css/AdminDashboard.css';
+import '../pages_css/admin-dashboard.css';
 import ContentModeration from '../components/ContentModeration';
 import SystemAdministration from '../components/SystemAdministration';
 import SportsEventsManagement from '../components/SportsEventsManagement';
@@ -454,7 +455,7 @@ const AdminDashboard = () => {
   };
 
   const renderDashboard = () => (
-    <div className="admin-dashboard">
+    <div className="admin-dashboard-content">
       {/* Welcome Section */}
       <div className="welcome-section">
         <div className="welcome-content">
@@ -978,7 +979,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="admin-layout">
+    <div className="admin-layout admin-dashboard">
       <AnimatedSportsBackground />
       
 

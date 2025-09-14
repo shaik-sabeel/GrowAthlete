@@ -1,9 +1,12 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://growathlete.onrender.com/api",
+  baseURL: (import.meta.env.VITE_API_BASE_URL || "https://growathlete-1.onrender.com") + "/api",
   withCredentials: true,
 });
+
+// Export the base URL for use in other components
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://growathlete-1.onrender.com";
 
 // Add request interceptor to include JWT token
 api.interceptors.request.use(
@@ -19,4 +22,5 @@ api.interceptors.request.use(
   }
 );
 
+// Use real API now that backend is working
 export default api;

@@ -13,7 +13,22 @@ body {
   padding: 40px 20px;
 }
 
-/* Mobile Responsive Adjustments */
+/* Tablet and Mobile Responsive Adjustments */
+@media (max-width: 1024px) {
+  .news-page-container {
+    padding: 30px 15px;
+  }
+  
+  .featured-title {
+    font-size: 2rem;
+  }
+  
+  .news-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+}
+
 @media (max-width: 768px) {
   .news-page-container {
     padding: 20px 10px;
@@ -29,12 +44,12 @@ body {
     margin-top: 20px;
   }
   
-  .featured-article-content h1 {
+  .featured-title {
     font-size: 1.8rem;
     line-height: 1.3;
   }
   
-  .featured-article-content p {
+  .featured-excerpt {
     font-size: 1rem;
     line-height: 1.5;
   }
@@ -48,21 +63,21 @@ body {
     margin-bottom: 20px;
   }
   
-  .news-card img {
+  .news-image-placeholder {
     height: 200px;
   }
   
-  .news-card h3 {
+  .news-title {
     font-size: 1.2rem;
     line-height: 1.3;
   }
   
-  .news-card p {
+  .news-excerpt {
     font-size: 0.9rem;
     line-height: 1.4;
   }
   
-  .category-buttons {
+  .category-filters {
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
@@ -88,25 +103,57 @@ body {
     height: 250px;
   }
   
-  .featured-article-content h1 {
+  .featured-title {
     font-size: 1.5rem;
   }
   
-  .news-card img {
+  .featured-excerpt {
+    font-size: 0.9rem;
+  }
+  
+  .news-image-placeholder {
     height: 180px;
   }
   
-  .news-card h3 {
+  .news-title {
     font-size: 1.1rem;
   }
   
-  .category-buttons {
+  .news-content {
+    padding: 20px;
+  }
+  
+  .category-filters {
     justify-content: center;
   }
   
   .category-button {
     padding: 6px 12px;
     font-size: 0.8rem;
+  }
+  
+  .read-more-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .news-page-container {
+    padding: 10px 5px;
+  }
+  
+  .featured-title {
+    font-size: 1.3rem;
+  }
+  
+  .news-content {
+    padding: 15px;
+  }
+  
+  .category-button {
+    padding: 5px 10px;
+    font-size: 0.75rem;
   }
 }
 

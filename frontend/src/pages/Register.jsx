@@ -98,6 +98,7 @@ import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
 import bg from '../assets/Login_bg.jpg'
 import Navbar from "../components/Navbar";
+import { useNotification } from "../context/NotificationContext";
 // import "../pages_css/Register.css"; // REMOVE THIS LINE
 
 const Register = () => {
@@ -108,21 +109,107 @@ const Register = () => {
     role: "athlete",
   });
 
+  // Password strength removed
+  // const [passwordStrength, setPasswordStrength] = useState({
+  //   score: 0,
+  //   level: "Very Weak",
+  //   color: "red",
+  //   errors: [],
+  //   warnings: []
+  // });
+
+  // const [isCheckingPassword, setIsCheckingPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const navigate = useNavigate();
+  const { showSuccess, showError, showWarning, showInfo } = useNotification();
+  
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    
+    // Password strength checking removed
   };
+
+  // Password strength checking removed
+  // const checkPasswordStrength = async (password) => {
+  //   if (password.length < 3) return; // Don't check for very short passwords
+  //   
+  //   setIsCheckingPassword(true);
+  //   try {
+  //     const response = await api.post("/auth/check-password-strength", {
+  //       password,
+  //       username: formData.username,
+  //       email: formData.email
+  //     });
+  //     
+  //     if (response.data.success) {
+  //       setPasswordStrength({
+  //         score: response.data.strength,
+  //         level: response.data.strengthLevel.level,
+  //         color: response.data.strengthLevel.color,
+  //         errors: response.data.errors || [],
+  //         warnings: response.data.warnings || []
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Password strength check failed:", error);
+  //   } finally {
+  //     setIsCheckingPassword(false);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Password strength validation removed
+    
+    setIsSubmitting(true);
+    
     try {
-      await api.post("/auth/register", formData);
-      alert("Registered successfully!");
-      // navigate("/splash"); // Keeping existing redirect behavior
-      navigate("/update");
+      console.log("Form data submitted:", formData);
+      const response = await api.post("/auth/register", formData);
+      
+      if (response.data.success) {
+        // Store the token and user data
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+        }
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        
+        showSuccess("Account created successfully! Welcome to GrowAthlete!");
+        setTimeout(() => {
+          navigate("/update");
+        }, 1500);
+      } else {
+        showError(response.data.message || "Registration failed");
+      }
     } catch (err) {
-      console.error(err);
-      alert("Registration failed");
+      console.error("Registration error:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
+      
+      // Handle specific error messages
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+        console.log("Error data:", errorData);
+        
+        if (errorData.field === 'password') {
+          showError(`Password Error: ${errorData.message}`);
+          if (errorData.errors && errorData.errors.length > 0) {
+            showWarning(`Requirements: ${errorData.errors.join(', ')}`);
+          }
+        } else if (errorData.field === 'email') {
+          showError(`Email Error: ${errorData.message}`);
+        } else {
+          showError(errorData.message || "Registration failed");
+        }
+      } else {
+        showError("Registration failed. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -206,17 +293,19 @@ const Register = () => {
                 htmlFor="password"
                 className="block text-white text-sm font-medium mb-2"
               >
-                Password 
+                Password
               </label>
               <input
                 type="password"
                 id="password"
                 name="password"
                 onChange={handleChange}
-                placeholder="Create a password"
+                placeholder="Create a strong password"
                 required
                 className="w-full p-4 rounded-md bg-white/28 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-200"
               />
+              
+              {/* Password strength indicator removed */}
             </div>
 
             <div>
@@ -246,9 +335,21 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full p-4 mt-6 rounded-md text-white font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg transform hover:scale-[1.01]"
+              disabled={isSubmitting}
+              className={`w-full p-4 mt-6 rounded-md text-white font-semibold transition-all duration-300 shadow-lg transform hover:scale-[1.01] ${
+                isSubmitting
+                  ? 'bg-gray-500 cursor-not-allowed opacity-50'
+                  : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600'
+              }`}
             >
-              Create Account
+              {isSubmitting ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Creating Account...</span>
+                </div>
+              ) : (
+                'Create Account'
+              )}
             </button>
           </form>
 

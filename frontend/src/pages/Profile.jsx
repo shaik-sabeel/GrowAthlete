@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import '../pages_css/Profile.css'; // Corrected path for your folder structure
@@ -13,12 +13,21 @@ const Profile = () => {
         gender: '',
         location: '',
         sport: '',
-        level: 'Beginner',
+        level: 'beginner',
         bio: '',
         achievements: '',
         email: '',
         phone: ''
     });
+
+    // Check if user is authenticated
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('No token found, redirecting to login');
+            navigate('/login');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,13 +46,36 @@ const Profile = () => {
         // alert(formData.username + " Profile Created Successfully!"); // Alert with username
 
         try {
-            await api.post("/auth/update", formData);
+            // Clean and validate form data before sending
+            const cleanedData = {
+                ...formData,
+                level: formData.level?.toLowerCase() || 'beginner',
+                gender: formData.gender?.toLowerCase() || '',
+                sport: formData.sport?.toLowerCase() || '',
+                age: formData.age ? String(formData.age) : '',
+                phone: formData.phone || '',
+                bio: formData.bio || '',
+                achievements: formData.achievements || '',
+                location: formData.location || ''
+            };
+            
+            console.log("Sending profile update data:", cleanedData);
+            const response = await api.post("/auth/update", cleanedData);
+            console.log("Profile update response:", response.data);
             alert("Profile Updated successfully!");
             // navigate(`/`);
             navigate("/splash");
         } catch (err) {
-            console.error(err);
-            alert("Registration failed",err);
+            console.error("Profile update error:", err);
+            console.error("Error response:", err.response?.data);
+            console.error("Error status:", err.response?.status);
+            console.error("Error details:", err.response);
+            
+            if (err.response?.data?.message) {
+                alert(`Profile update failed: ${err.response.data.message}`);
+            } else {
+                alert("Profile update failed. Please try again.");
+            }
         }
     };
 
@@ -115,9 +147,9 @@ const Profile = () => {
                         <div className="form-group">
                             <label htmlFor="level">Current Level</label>
                             <select id="currentLevel" name="level" value={formData.level} onChange={handleChange}>
-                                <option value="Beginner">Beginner</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Advanced">Advanced</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
                             </select>
                         </div>
                     </div>

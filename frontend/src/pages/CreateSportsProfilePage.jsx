@@ -193,7 +193,7 @@ const CreateSportsProfilePage = () => {
                     <label className="block text-gray-700 text-lg font-semibold mb-4">Profile Picture:</label>
                     {currentProfilePicUrl && (
                         <img
-                            src={`http://localhost:5000/${currentProfilePicUrl}`}
+                            src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}/${currentProfilePicUrl}`}
                             alt="Profile"
                             className="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-lg mb-4"
                         />

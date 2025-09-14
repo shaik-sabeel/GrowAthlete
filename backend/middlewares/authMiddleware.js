@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
   if (!token) return res.status(401).json("Access Denied");
 
   try {
-    const verified = jwt.verify(token, "yourSecretKey");
+    const verified = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-for-development-only');
     req.user = verified;
     next();
   } catch (err) {

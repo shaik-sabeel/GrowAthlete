@@ -21,7 +21,19 @@ const ImageCarousel = () => {
         const res = await api.get('/events/public/ads');
         const list = res.data || [];
         setItems(list);
-        setImages(list.map(a => `http://localhost:5000${a.image}`));
+        
+        // Helper function to construct proper image URLs
+        const getImageUrl = (url) => {
+          // If URL is already a full URL (starts with http), return as is
+          if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+          }
+          // Otherwise, prepend the base URL
+          const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com';
+          return `${baseURL}${url}`;
+        };
+        
+        setImages(list.map(a => getImageUrl(a.image)));
       } catch (e) {
         setItems([]);
         setImages([]);

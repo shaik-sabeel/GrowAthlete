@@ -39,9 +39,19 @@ const PostCreator = ({ onPostCreated, currentUserId }) => {
       const formData = new FormData();
       formData.append('content', content.trim());
       
-      selectedFiles.forEach(file => {
+      console.log('Selected files:', selectedFiles);
+      console.log('Number of files:', selectedFiles.length);
+      
+      selectedFiles.forEach((file, index) => {
+        console.log(`Adding file ${index}:`, file.name, file.type, file.size);
         formData.append('media', file);
       });
+
+      // Log FormData contents
+      console.log('FormData entries:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
       const response = await api.post('/community', formData, {
         headers: {

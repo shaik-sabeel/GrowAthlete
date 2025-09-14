@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoute");
 const path = require("path");
@@ -13,16 +15,67 @@ const blogRoutes = require("./routes/blogRoutes");
 const communityPostRoutes = require("./routes/communityPostRoutes");
 
 const app = express();
+
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      connectSrc: ["'self'", "https://api.newscatcherapi.com"],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+// Stricter rate limiting for auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: "Too many authentication attempts, please try again later.",
+});
+app.use("/api/auth", authLimiter);
+
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use(cors({
- origin: ["https://growathlete-y2lc.onrender.com", "https://growathlete.onrender.com"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: [
+    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
+    "https://growathlete-2.onrender.com", // Previous frontend URL
+    "https://growathlete-frontend.onrender.com", // Previous frontend URL
+    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
+    "https://growathlete.onrender.com", 
+    "http://localhost:5173" // Local development
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Simple test route (before DB connection)
+app.get("/test", (req, res) => {
+  res.json({ 
+    message: "Backend is working!", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // connect to DB
 require("./db");
@@ -36,10 +89,23 @@ app.use("/api/events", eventRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/community", communityPostRoutes);
 
+// Health check route
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "GrowAthlete Backend API is running!", 
+    status: "healthy",
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).json({ 
+    error: 'Something broke!',
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
 });
 
 // Handle 404 errors
