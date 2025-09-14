@@ -30,6 +30,32 @@ if (process.env.NODE_ENV === 'production') {
   app.set('env', 'production');
 }
 
+// CORS must be set up BEFORE other middleware
+app.use(cors({
+  origin: [
+    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
+    "https://growathlete-2.onrender.com", // Previous frontend URL
+    "https://growathlete-frontend.onrender.com", // Previous frontend URL
+    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
+    "https://growathlete.onrender.com", 
+    "http://localhost:5173" // Local development
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  preflightContinue: false
+}));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(200).end();
+});
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -45,15 +71,20 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// Rate limiting
+// Rate limiting - more lenient for production
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // Increased limit for production
   message: "Too many requests from this IP, please try again later.",
   standardHeaders: true,
   legacyHeaders: false,
-  // Skip rate limiting for health checks
-  skip: (req) => req.path === '/test' || req.path === '/',
+  // Skip rate limiting for health checks and preflight requests
+  skip: (req) => {
+    return req.path === '/test' || 
+           req.path === '/' || 
+           req.path === '/health' ||
+           req.method === 'OPTIONS';
+  },
   // Use X-Forwarded-For header when available (for proxy setups)
   keyGenerator: (req) => {
     return req.ip || req.connection.remoteAddress;
@@ -61,11 +92,13 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Stricter rate limiting for auth routes
+// Stricter rate limiting for auth routes - more lenient
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
+  max: 20, // Increased from 5 to 20 for production
   message: "Too many authentication attempts, please try again later.",
+  // Skip for preflight requests
+  skip: (req) => req.method === 'OPTIONS',
   // Use X-Forwarded-For header when available (for proxy setups)
   keyGenerator: (req) => {
     return req.ip || req.connection.remoteAddress;
@@ -88,29 +121,32 @@ app.use("/uploads", (req, res, next) => {
   });
 });
 
-app.use(cors({
-  origin: [
-    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
-    "https://growathlete-2.onrender.com", // Previous frontend URL
-    "https://growathlete-frontend.onrender.com", // Previous frontend URL
-    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
-    "https://growathlete.onrender.com", 
-    "http://localhost:5173" // Local development
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true,
-  optionsSuccessStatus: 200
-}));
-
 app.use(express.json());
 app.use(cookieParser());
+
+// Debug middleware for CORS issues
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
 
 // Simple test route (before DB connection)
 app.get("/test", (req, res) => {
   res.json({ 
     message: "Backend is working!", 
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    origin: req.headers.origin
+  });
+});
+
+// CORS test route
+app.get("/cors-test", (req, res) => {
+  res.json({
+    message: "CORS is working!",
+    origin: req.headers.origin,
+    method: req.method,
+    headers: req.headers
   });
 });
 
