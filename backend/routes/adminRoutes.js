@@ -1290,7 +1290,31 @@ router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUplo
 router.get("/ads", verifyToken, isAdmin, async (req, res) => {
   try {
     const ads = await AdBanner.find({}).sort({ sortOrder: 1, createdAt: -1 });
-    res.json(ads);
+    
+    // Filter out ads with missing files
+    const validAds = [];
+    const fs = require('fs');
+    const path = require('path');
+    
+    for (const ad of ads) {
+      const imagePath = ad.image;
+      if (imagePath && imagePath.startsWith('/uploads/ads/')) {
+        const filename = path.basename(imagePath);
+        const fullPath = path.join(__dirname, '..', 'uploads', 'ads', filename);
+        
+        if (fs.existsSync(fullPath)) {
+          validAds.push(ad);
+        } else {
+          console.warn(`Missing ad image file: ${filename}`);
+          // Optionally delete the orphaned ad
+          // await AdBanner.findByIdAndDelete(ad._id);
+        }
+      } else {
+        validAds.push(ad);
+      }
+    }
+    
+    res.json(validAds);
   } catch (error) {
     console.error("Error fetching ads:", error);
     res.status(500).json({ message: "Failed to fetch ads" });
@@ -1633,6 +1657,39 @@ router.get("/public/platform-announcements", async (req, res) => {
   } catch (error) {
     console.error("Error fetching public platform announcements:", error);
     res.status(500).json({ message: "Failed to fetch platform announcements" });
+  }
+});
+
+// Public route to get active ads (for frontend display)
+router.get("/public/ads", async (req, res) => {
+  try {
+    const ads = await AdBanner.find({ active: true }).sort({ sortOrder: 1, createdAt: -1 });
+    
+    // Filter out ads with missing files
+    const validAds = [];
+    const fs = require('fs');
+    const path = require('path');
+    
+    for (const ad of ads) {
+      const imagePath = ad.image;
+      if (imagePath && imagePath.startsWith('/uploads/ads/')) {
+        const filename = path.basename(imagePath);
+        const fullPath = path.join(__dirname, '..', 'uploads', 'ads', filename);
+        
+        if (fs.existsSync(fullPath)) {
+          validAds.push(ad);
+        } else {
+          console.warn(`Missing ad image file: ${filename}`);
+        }
+      } else {
+        validAds.push(ad);
+      }
+    }
+    
+    res.json(validAds);
+  } catch (error) {
+    console.error("Error fetching public ads:", error);
+    res.status(500).json({ message: "Failed to fetch ads" });
   }
 });
 

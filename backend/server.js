@@ -51,7 +51,20 @@ const authLimiter = rateLimit({
 });
 app.use("/api/auth", authLimiter);
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// Serve static files with fallback for missing files
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
+  fallthrough: false
+}));
+
+// Handle missing static files gracefully
+app.use("/uploads", (req, res, next) => {
+  console.warn(`Missing static file: ${req.path}`);
+  res.status(404).json({ 
+    error: 'File not found',
+    message: 'The requested file does not exist',
+    path: req.path
+  });
+});
 
 app.use(cors({
   origin: [
