@@ -133,8 +133,7 @@ const Login = () => {
           <div className="w-20 h-1 bg-white mb-6 rounded"></div>{" "}
           {/* Underline */}
           <p className="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed mb-6 sm:mb-8 max-w-md">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Welcome back! Let's pick up right where you left off.
           </p>
           <Link
             to="/register" // Adjust this path as needed
