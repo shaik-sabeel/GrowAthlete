@@ -71,13 +71,13 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Stricter rate limiting for auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // Increased from 5 to 20 for production
-  message: "Too many authentication attempts, please try again later."
-});
-app.use("/api/auth", authLimiter);
+// Rate limiting for auth routes - disabled for development/testing
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 20, // Increased from 5 to 20 for production
+//   message: "Too many authentication attempts, please try again later."
+// });
+// app.use("/api/auth", authLimiter);
 
 // Serve static files with fallback for missing files
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
