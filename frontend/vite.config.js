@@ -12,28 +12,35 @@ export default defineConfig(({ mode }) => {
       tailwindcss()
     ],
     build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['framer-motion', 'gsap'],
-          utils: ['axios', 'moment', 'bcryptjs'],
+      outDir: 'dist',
+      assetsDir: 'assets',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
+          passes: 2,
         },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        mangle: {
+          toplevel: true,
+        },
       },
-    },
-    chunkSizeWarningLimit: 1000,
+      sourcemap: false,
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom'],
+            ui: ['framer-motion', 'gsap'],
+            utils: ['axios', 'moment', 'bcryptjs'],
+          },
+          chunkFileNames: 'assets/[name]-[hash].js',
+          entryFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
+        },
+      },
     },
     define: {
       // Make environment variables available to the client
