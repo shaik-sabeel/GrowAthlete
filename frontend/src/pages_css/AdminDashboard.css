@@ -27,13 +27,9 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-<<<<<<< HEAD
   background: var(--background-main);
   font-family: var(--font-primary);
-=======
-  background: var(--bg-primary);
   color: var(--text-main);
->>>>>>> admin-page
 }
 
 /* Admin intro overlay */
@@ -100,13 +96,8 @@
 /* Sidebar */
 .admin-sidebar {
   width: 280px;
-<<<<<<< HEAD
   background: var(--gradient-1);
   color: var(--text-on-dark);
-=======
-  background: var(--bg-tertiary);
-  color: #ffffff;
->>>>>>> admin-page
   display: flex;
   flex-direction: column;
   transition: var(--transition-smooth);
@@ -154,13 +145,9 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
-<<<<<<< HEAD
   font-family: var(--font-secondary);
   color: var(--secondary-color);
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-=======
-  color: #ffffff;
->>>>>>> admin-page
 }
 
 .sidebar-toggle {
@@ -366,7 +353,6 @@
 
 /* Welcome Section */
 .welcome-section {
-<<<<<<< HEAD
   background: var(--gradient-1);
   border-radius: var(--border-radius-card);
   padding: 32px;
@@ -376,17 +362,6 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--box-shadow-card-hover);
-=======
-  background: var(--bg-secondary);
-  border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 32px;
-  color: var(--text-black);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: var(--card-shadow);
->>>>>>> admin-page
   position: relative;
   overflow: hidden;
 }
@@ -435,19 +410,11 @@
 }
 
 .stat-card {
-<<<<<<< HEAD
   background: var(--background-light);
   padding: 28px;
   border-radius: var(--border-radius-card);
   box-shadow: var(--box-shadow-card);
   transition: var(--transition-smooth);
-=======
-  background: var(--bg-secondary);
-  padding: 28px;
-  border-radius: 20px;
-  box-shadow: var(--card-shadow);
-  transition: all 0.3s ease;
->>>>>>> admin-page
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border-color);
