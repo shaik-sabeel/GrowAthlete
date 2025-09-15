@@ -300,7 +300,7 @@ export default function SportsResume() {
                           value={formData.gender}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border p-2 text-gray-100 border-gray-300 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border p-2 text-gray-100 border-gray-300 rounded-md" style={{color: 'black'}}
                         >
                           <option value="">Select</option>
                           <option value="male">Male</option>
@@ -397,7 +397,7 @@ export default function SportsResume() {
                           value={formData.primarySport}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"style={{color: 'black'}}
                         >
                           <option value="">Select Sport</option>
                           <option value="cricket">Cricket</option>
@@ -475,7 +475,7 @@ export default function SportsResume() {
                           name="dominantHand"
                           value={formData.dominantHand}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md" style={{color: 'black'}}
                         >
                           <option value="">Select</option>
                           <option value="right">Right</option>
