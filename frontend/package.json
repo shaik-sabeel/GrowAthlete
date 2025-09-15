@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "node server.js",
+    "serve": "serve dist -p 3000",
+    "deploy": "powershell -ExecutionPolicy Bypass -File deploy-production.ps1"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",

@@ -373,32 +373,32 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
         </div>
         <button 
           onClick={() => setShowCommentInput(!showCommentInput)}
-          className="inline-flex items-center gap-1 text-gray-600 hover:text-blue-500"
-          style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: 0 }}
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+          style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
           title="Comment"
           aria-label="Comment"
         >
-          <FaComment className="text-[16px] text-gray-500" />
-          <span className="text-[12px] text-gray-500">{post.comments?.length || 0}</span>
+          <FaComment className="text-[18px] text-gray-500" />
+          <span className="text-[14px] text-gray-500 font-medium">{post.comments?.length || 0}</span>
         </button>
       </div>
 
       {/* Comment Input */}
       {showCommentInput && (
         <div className="mb-4 pl-12">
-          <form onSubmit={handleComment} className="flex space-x-2">
+          <form onSubmit={handleComment} className="flex flex-col sm:flex-row gap-3 sm:gap-2">
             <input
               type="text"
               value={commentContent}
               onChange={(e) => setCommentContent(e.target.value)}
               placeholder="Write a comment..."
-              className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              className="flex-1 p-3 sm:p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-base sm:text-sm"
               maxLength="500"
             />
             <button
               type="submit"
               disabled={isSubmittingComment || !commentContent.trim()}
-              className="px-4 py-2 bg-[var(--ga-orange)] text-white rounded-lg hover:opacity-90 disabled:opacity-50"
+              className="px-6 py-3 sm:px-4 sm:py-2 bg-[var(--ga-orange)] text-white rounded-lg hover:opacity-90 disabled:opacity-50 font-medium text-base sm:text-sm"
             >
               {isSubmittingComment ? 'Posting...' : 'Post'}
             </button>

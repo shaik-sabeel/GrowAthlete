@@ -18,7 +18,7 @@ const ImageCarousel = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await api.get('/events/public/ads');
+        const res = await api.get('/admin/public/ads');
         const list = res.data || [];
         setItems(list);
         

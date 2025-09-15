@@ -18,6 +18,34 @@ const maintenanceMiddleware = require('./middlewares/maintenance');
 
 const app = express();
 
+// Trust proxy for production deployment (Render, Heroku, etc.)
+app.set('trust proxy', 1);
+
+// Production optimizations
+if (process.env.NODE_ENV === 'production') {
+  // Disable X-Powered-By header for security
+  app.disable('x-powered-by');
+  
+  // Set production-specific settings
+  app.set('env', 'production');
+}
+
+// CORS must be set up BEFORE other middleware
+app.use(cors({
+  origin: [
+    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
+    "https://growathlete-2.onrender.com", // Previous frontend URL
+    "https://growathlete-frontend.onrender.com", // Previous frontend URL
+    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
+    "https://growathlete.onrender.com", 
+    "http://localhost:5173" // Local development
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -33,49 +61,65 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 
-// Rate limiting
+// Rate limiting - simplified for production
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 200, // Increased limit for production
   message: "Too many requests from this IP, please try again later.",
   standardHeaders: true,
-  legacyHeaders: false,
+  legacyHeaders: false
 });
 app.use(limiter);
 
-// Stricter rate limiting for auth routes
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
-  message: "Too many authentication attempts, please try again later.",
-});
-app.use("/api/auth", authLimiter);
+// Rate limiting for auth routes - disabled for development/testing
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 20, // Increased from 5 to 20 for production
+//   message: "Too many authentication attempts, please try again later."
+// });
+// app.use("/api/auth", authLimiter);
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-
-app.use(cors({
-  origin: [
-    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
-    "https://growathlete-2.onrender.com", // Previous frontend URL
-    "https://growathlete-frontend.onrender.com", // Previous frontend URL
-    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
-    "https://growathlete.onrender.com", 
-    "http://localhost:5173" // Local development
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true,
-  optionsSuccessStatus: 200
+// Serve static files with fallback for missing files
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
+  fallthrough: false
 }));
+
+// Handle missing static files gracefully
+app.use("/uploads", (req, res, next) => {
+  console.warn(`Missing static file: ${req.path}`);
+  res.status(404).json({ 
+    error: 'File not found',
+    message: 'The requested file does not exist',
+    path: req.path
+  });
+});
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Debug middleware for CORS issues
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin}`);
+  next();
+});
 
 // Simple test route (before DB connection)
 app.get("/test", (req, res) => {
   res.json({ 
     message: "Backend is working!", 
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    origin: req.headers.origin
+  });
+});
+
+// CORS test route
+app.get("/cors-test", (req, res) => {
+  res.json({
+    message: "CORS is working!",
+    origin: req.headers.origin,
+    method: req.method,
+    headers: req.headers
   });
 });
 
@@ -98,6 +142,16 @@ app.get("/", (req, res) => {
   res.json({ 
     message: "GrowAthlete Backend API is running!", 
     status: "healthy",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: process.env.npm_package_version || '1.0.0'
+  });
+});
+
+// Additional health check for load balancers
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: "ok",
     timestamp: new Date().toISOString()
   });
 });

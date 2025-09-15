@@ -641,4 +641,51 @@ html, body {
   .guideline-content {
     font-size: 13px;
   }
+  
+  /* Mobile-specific comment button styling */
+  .post button[title="Comment"] {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .post button[title="Comment"] .text-xs {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .post button[title="Comment"] .text-base {
+    font-size: 18px;
+  }
+  
+  /* Ensure comment input is visible on mobile */
+  .post .pl-12 {
+    padding-left: 16px;
+  }
+  
+  .post .pr-4 {
+    padding-right: 16px;
+  }
+  
+  /* Make comment form more mobile-friendly */
+  .post form.flex.space-x-2 {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .post form.flex.space-x-2 input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .post form.flex.space-x-2 button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
 }
