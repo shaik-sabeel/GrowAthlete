@@ -99,6 +99,7 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
 import ErrorBoundary from './components/ErrorBoundary.jsx';
+import usePageTracking from './hooks/usePageTracking'; // Google Analytics 4 page tracking
 
 // --- PAGE COMPONENTS (from src/pages/ as per your structure) ---
 import Home from './pages/Home'; // Your main homepage
@@ -141,6 +142,9 @@ import SavedArticlesPage from './pages/SavedArticlesPage.jsx';        // <--- SA
 function AppContent() {
   const location = useLocation();
   
+  // Track page views in Google Analytics 4 on route changes
+  usePageTracking();
+
   // Check authentication and user role
   const isAuthenticated = () => {
     return localStorage.getItem('token') !== null;
