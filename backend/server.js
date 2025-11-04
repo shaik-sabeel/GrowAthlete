@@ -30,21 +30,45 @@ if (process.env.NODE_ENV === 'production') {
   app.set('env', 'production');
 }
 
-// CORS must be set up BEFORE other middleware
-app.use(cors({
-  origin: [
-    "https://grow-athlete.vercel.app", // Your Vercel frontend URL
-    "https://growathlete-2.onrender.com", // Previous frontend URL
-    "https://growathlete-frontend.onrender.com", // Previous frontend URL
-    "https://growathlete-y2lc.onrender.com", // Previous frontend URL
-    "https://growathlete.onrender.com", 
-    "http://localhost:5173" // Local development
-  ],
+// --- CORS CONFIG ---
+const defaultAllowedOrigins = [
+  "https://www.growathlete.tech",
+  "https://growathlete.tech",
+  "http://localhost:5173",
+];
+
+// Support comma-separated env var like: https://foo.com,https://bar.com
+const envOrigins = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map(s => s.trim())
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...envOrigins])];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow server-to-server, curl, Postman (no Origin header)
+    if (!origin) return callback(null, true);
+
+    // Allow matching origins from whitelist
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+
+    // Allow all Vercel preview deployments if needed
+    const vercelPreview = /https?:\/\/[^.]+\.vercel\.app$/.test(origin);
+    if (vercelPreview) return callback(null, true);
+
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
   credentials: true,
-  optionsSuccessStatus: 200
-}));
+  optionsSuccessStatus: 204,
+};
+
+// Apply CORS early
+app.use(cors(corsOptions));
+// Explicitly respond to preflight
+app.options('*', cors(corsOptions));
 
 // Security middleware
 app.use(helmet({
@@ -55,7 +79,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      connectSrc: ["'self'", "https://api.newscatcherapi.com"],
+      connectSrc: ["'self'"],
     },
   },
   crossOriginEmbedderPolicy: false,
@@ -175,7 +199,7 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📱 Frontend should be running on http://localhost:5173`);
+  console.log(`✅ Allowed CORS origins: ${allowedOrigins.join(', ')}`);
 }).on('error', (err) => {
   console.error('❌ Server failed to start:', err.message);
   process.exit(1);
