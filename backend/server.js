@@ -2,15 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const authRoutes = require("./routes/authRoutes");
-const contactRoutes = require("./routes/contactRoute");
 const path = require("path");
-const sportsResumeRoutes = require("./routes/sportsResume");
-const adminRoutes = require("./routes/adminRoutes");
-const contentModerationRoutes = require("./routes/contentModeration");
-const eventRoutes = require("./routes/eventRoutes");
-const blogRoutes = require("./routes/blogRoutes");
-const communityPostRoutes = require("./routes/communityPostRoutes");
 const PlatformSettings = require("./models/PlatformSettings");
 const maintenanceMiddleware = require('./middlewares/maintenance');
 
@@ -37,7 +29,7 @@ const corsOptions = {
   origin: function (origin, callback) {
     if (!origin) return callback(null, true); // Postman/curl
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    // Silent deny without exposing reason
+    // Silent deny
     return callback(null, false);
   },
   credentials: true,
@@ -54,10 +46,11 @@ app.use(cookieParser());
 // connect to DB
 require("./db");
 
-// Helper to safely mount routers and log failures
-function safeMount(pathMount, routerInstance) {
+// Helper to safely mount routers with lazy require
+function safeMount(pathMount, loader) {
   try {
-    app.use(pathMount, routerInstance);
+    const router = loader();
+    app.use(pathMount, router);
     console.log(`Mounted route at ${pathMount}`);
   } catch (e) {
     console.error(`Failed to mount route at ${pathMount}: ${e.message}`);
@@ -65,17 +58,17 @@ function safeMount(pathMount, routerInstance) {
   }
 }
 
-// Mount routes safely
-safeMount("/api/auth", authRoutes);
+// Mount routes safely (lazy require each)
+safeMount("/api/auth", () => require("./routes/authRoutes"));
 // central maintenance middleware using config.js
 app.use(maintenanceMiddleware);
-safeMount("/api/contact", contactRoutes);
-safeMount("/api/sports-resume", sportsResumeRoutes);
-safeMount("/api/admin", adminRoutes);
-safeMount("/api/moderation", contentModerationRoutes);
-safeMount("/api/events", eventRoutes);
-safeMount("/api/blog", blogRoutes);
-safeMount("/api/community", communityPostRoutes);
+safeMount("/api/contact", () => require("./routes/contactRoute"));
+safeMount("/api/sports-resume", () => require("./routes/sportsResume"));
+safeMount("/api/admin", () => require("./routes/adminRoutes"));
+safeMount("/api/moderation", () => require("./routes/contentModeration"));
+safeMount("/api/events", () => require("./routes/eventRoutes"));
+safeMount("/api/blog", () => require("./routes/blogRoutes"));
+safeMount("/api/community", () => require("./routes/communityPostRoutes"));
 
 // Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
