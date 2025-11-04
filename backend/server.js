@@ -54,16 +54,28 @@ app.use(cookieParser());
 // connect to DB
 require("./db");
 
-app.use("/api/auth", authRoutes);
+// Helper to safely mount routers and log failures
+function safeMount(pathMount, routerInstance) {
+  try {
+    app.use(pathMount, routerInstance);
+    console.log(`Mounted route at ${pathMount}`);
+  } catch (e) {
+    console.error(`Failed to mount route at ${pathMount}: ${e.message}`);
+    throw e;
+  }
+}
+
+// Mount routes safely
+safeMount("/api/auth", authRoutes);
 // central maintenance middleware using config.js
 app.use(maintenanceMiddleware);
-app.use("/api/contact",contactRoutes );
-app.use("/api/sports-resume", sportsResumeRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/moderation", contentModerationRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/blog", blogRoutes);
-app.use("/api/community", communityPostRoutes);
+safeMount("/api/contact", contactRoutes);
+safeMount("/api/sports-resume", sportsResumeRoutes);
+safeMount("/api/admin", adminRoutes);
+safeMount("/api/moderation", contentModerationRoutes);
+safeMount("/api/events", eventRoutes);
+safeMount("/api/blog", blogRoutes);
+safeMount("/api/community", communityPostRoutes);
 
 // Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
