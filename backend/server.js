@@ -62,8 +62,8 @@ const corsOptions = {
 
 // Apply CORS early
 app.use(cors(corsOptions));
-// Explicitly respond to preflight
-app.options('*', cors(corsOptions));
+// Explicitly respond to preflight (use regex to avoid path-to-regexp '*' issue)
+app.options(/.*/, cors(corsOptions));
 
 // Security middleware
 app.use(helmet({
