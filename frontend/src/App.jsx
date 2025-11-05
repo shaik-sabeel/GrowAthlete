@@ -100,6 +100,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import usePageTracking from './hooks/usePageTracking'; // Google Analytics 4 page tracking
+import useAdminGA from './hooks/useAdminGA'; // GA4 for admin-only tracking
 import ScrollToTop from "./components/ScrollToTop";
 import { NotificationProvider } from './context/NotificationContext';
 
@@ -148,6 +149,12 @@ function AppContent() {
   // Track page views in Google Analytics 4 on route changes
   usePageTracking();
 
+  // Admin-only GA: load GA script and track only on admin routes or when user is admin
+  // NOTE: Replace 'G-XXXXXXXXXX' with your real GA4 Measurement ID or source it from env
+  // Prevents tracking in development via the hook's internal check
+  // Determine admin-ness from role or current path
+  // (kept local here to avoid duplicating logic across components)
+
   // Check authentication and user role
   const isAuthenticated = () => {
     return localStorage.getItem('token') !== null;
@@ -167,6 +174,14 @@ function AppContent() {
 
   // Don't show navbar on admin dashboard
   const showNavbar = !location.pathname.includes('/admin-dashboard');
+
+  const userRole = getUserRole();
+  const isAdmin = userRole === 'admin';
+  const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.includes('/admin-dashboard');
+  useAdminGA('G-FPCM7YR90D', {
+    enabled: isAdmin || isAdminRoute,
+    adminPathPrefixes: ['/admin', '/admin-dashboard'],
+  });
 
   return (
     <>

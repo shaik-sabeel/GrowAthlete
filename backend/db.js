@@ -5,14 +5,18 @@ require("dotenv").config();
 
 // MongoDB connection options
 const mongoOptions = {
+  // Modern drivers ignore these flags; safe to keep for compatibility
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
   socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
 };
 
+// Allow either MONGOURI or MONGODB_URI (Render often uses MONGODB_URI)
+const mongoUri = process.env.MONGOURI || process.env.MONGODB_URI;
+
 mongoose
-  .connect(process.env.MONGOURI, mongoOptions)
+  .connect(mongoUri, mongoOptions)
   .then(() => {
     console.log("✅ Connected to MongoDB");
     // Seed default admin if not present
@@ -20,8 +24,10 @@ mongoose
   })
   .catch((err) => {
     console.error("❌ Failed to connect to MongoDB:", err.message);
-    console.error("Please make sure MongoDB is running on localhost:27017");
-    console.error("You can start MongoDB with: mongod");
+    if (!mongoUri) {
+      console.error("Environment variable MONGOURI or MONGODB_URI is not set.");
+    }
+    console.error("Please verify your MongoDB connection string and availability.");
     console.error("Continuing without database connection for now...");
     // Don't exit the process - let the server start without DB for now
     // process.exit(1); // Exit the process if DB connection fails
