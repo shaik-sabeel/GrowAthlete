@@ -18,35 +18,30 @@ const maintenanceMiddleware = require('./middlewares/maintenance');
 
 const app = express();
 
-// Trust proxy for production deployment (Render, Heroku, etc.)
-app.set('trust proxy', 1);
+// Reduce header exposure
+app.disable('x-powered-by');
 
-// Production optimizations
-if (process.env.NODE_ENV === 'production') {
-  // Disable X-Powered-By header for security
-  app.disable('x-powered-by');
-  
-  // Set production-specific settings
-  app.set('env', 'production');
-}
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-// --- CORS CONFIG ---
+
 const defaultAllowedOrigins = [
   "https://www.growathlete.tech",
   "https://growathlete.tech",
   "http://localhost:5173",
 ];
 
-// Support comma-separated env var like: https://foo.com,https://bar.com
 const envOrigins = (process.env.CORS_ORIGINS || "")
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
 
+
+
 const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...envOrigins])];
 
 const corsOptions = {
   origin: function (origin, callback) {
+
     // Allow server-to-server, curl, Postman (no Origin header)
     if (!origin) return callback(null, true);
 
@@ -150,59 +145,44 @@ app.get("/cors-test", (req, res) => {
 // connect to DB
 require("./db");
 
-app.use("/api/auth", authRoutes);
+// Helper to safely mount routers and log failures
+function safeMount(pathMount, routerInstance) {
+  try {
+    app.use(pathMount, routerInstance);
+    console.log(`Mounted route at ${pathMount}`);
+  } catch (e) {
+    console.error(`Failed to mount route at ${pathMount}: ${e.message}`);
+    throw e;
+  }
+}
+
+// Mount routes safely
+safeMount("/api/auth", authRoutes);
 // central maintenance middleware using config.js
 app.use(maintenanceMiddleware);
-app.use("/api/contact",contactRoutes );
-app.use("/api/sports-resume", sportsResumeRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/moderation", contentModerationRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/blog", blogRoutes);
-app.use("/api/community", communityPostRoutes);
+safeMount("/api/contact", contactRoutes);
+safeMount("/api/sports-resume", sportsResumeRoutes);
+safeMount("/api/admin", adminRoutes);
+safeMount("/api/moderation", contentModerationRoutes);
+safeMount("/api/events", eventRoutes);
+safeMount("/api/blog", blogRoutes);
+safeMount("/api/community", communityPostRoutes);
 
-// Health check route
-app.get("/", (req, res) => {
-  res.json({ 
-    message: "GrowAthlete Backend API is running!", 
-    status: "healthy",
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    version: process.env.npm_package_version || '1.0.0'
-  });
-});
-
-// Additional health check for load balancers
-app.get("/health", (req, res) => {
-  res.status(200).json({ 
-    status: "ok",
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Error handling middleware
+// Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
-    error: 'Something broke!',
-    message: err.message,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
-  });
+  res.status(500).send('Internal Server Error');
 });
 
-// Handle 404 errors
+// Handle 404 errors (generic)
 app.use((req, res) => {
-  res.status(404).send('Route not found');
+  res.status(404).send('Not Found');
 });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`✅ Allowed CORS origins: ${allowedOrigins.join(', ')}`);
+  console.log(`Server running on port ${PORT}`);
 }).on('error', (err) => {
-  console.error('❌ Server failed to start:', err.message);
-  process.exit(1);
-});
-
-//comment 
+  console.error('Server failed to start:', err.message);
+}); 
