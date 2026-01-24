@@ -13,17 +13,24 @@ const userSchema = new mongoose.Schema({
         unique : true
     },
     password:{
-        type:String,
-        required:true,
+        type: String,
+        required: false, // false for OAuth-only users (e.g. Google)
         minlength: 8,
         maxlength: 128,
         validate: {
           validator: function (value) {
+            // Allow empty/undefined for OAuth users
+            if (value == null || value === '') return true;
             // Must contain: 1 lowercase, 1 uppercase, 1 digit, 1 special char
             return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_+\-=\[\]{};':"\\|,.<>\/~`])[A-Za-z\d@$!%*?&^#()_+\-=\[\]{};':"\\|,.<>\/~`]{8,128}$/.test(value);
           },
           message: "Password must be 8-128 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character."
         }
+    },
+    googleId: {
+        type: String,
+        required: false,
+        sparse: true,
     },
   phone: {
     type: String,

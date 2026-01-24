@@ -56,6 +56,9 @@ export default defineConfig(({ mode }) => {
         },
       },
       historyApiFallback: true,
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+      },
     },
     preview: {
       port: 3000,

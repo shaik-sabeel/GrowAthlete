@@ -13,7 +13,22 @@ const mongoOptions = {
 };
 
 // Allow either MONGOURI or MONGODB_URI (Render often uses MONGODB_URI)
-const mongoUri = process.env.MONGOURI || process.env.MONGODB_URI;
+let mongoUri = process.env.MONGOURI || process.env.MONGODB_URI;
+
+// Ensure we use the growathlete database, not MongoDB's default "test"
+const DB_NAME = "growathlete";
+if (mongoUri) {
+  const p = mongoUri.indexOf("?");
+  const base = p >= 0 ? mongoUri.slice(0, p) : mongoUri;
+  const qs = p >= 0 ? mongoUri.slice(p + 1) : "";
+  const m = base.match(/\/([^/?#]*)\s*$/);
+  const dbInUri = (m && m[1]) ? m[1].trim() : "";
+  if (!dbInUri || dbInUri === "test") {
+    const baseWithoutLast = base.replace(/\/[^/?#]*\s*$/, ""); // remove /test or trailing /
+    mongoUri = baseWithoutLast + "/" + DB_NAME + (qs ? "?" + qs : "");
+    console.log("Using database: " + DB_NAME + (dbInUri === "test" ? ' (replaced "test")' : " (was missing in URI)"));
+  }
+}
 
 mongoose
   .connect(mongoUri, mongoOptions)

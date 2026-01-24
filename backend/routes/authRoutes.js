@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { OAuth2Client } = require("google-auth-library");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const { enforceRegistrationRules, enforceAdmin2FA } = require('../middlewares/auth');
@@ -8,6 +9,7 @@ const sendWelcomeEmail = require("../utils/mailer");
 const passwordValidator = require("../utils/passwordValidator");
 
 const router = express.Router();
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Register
 router.post("/register", async (req, res) => {
@@ -144,6 +146,127 @@ router.post("/login", async (req, res) => {
     console.log(`Login timing: query=${t1 - t0}ms, bcrypt=${t2 - t1}ms, twoFA=${t3 - t2}ms, total=${t4 - t0}ms`);
   } catch (err) {
     res.status(500).json("Server error");
+  }
+});
+
+// Google Sign-In / Sign-Up
+// mode: "signin" = only allow existing users (never create). "signup" = find or create and save to DB.
+router.post("/google", async (req, res) => {
+  const { credential, mode } = req.body;
+  const isSignUp = mode === "signup";
+  try {
+    if (!credential) {
+      return res.status(400).json({ message: "Google credential is required" });
+    }
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return res.status(500).json({ message: "Google Sign-In is not configured" });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload;
+    if (!email || !googleId) {
+      return res.status(400).json({ message: "Invalid Google credential: email and id are required." });
+    }
+
+    let user = await User.findOne({ googleId });
+    if (user) {
+      // Existing Google user: log in (both signin and signup)
+    } else {
+      user = await User.findOne({ email });
+      if (user) {
+        if (user.googleId) {
+          if (user.googleId !== googleId) {
+            return res.status(400).json({
+              message: "This email is already linked to a different Google account. Please sign in with your password.",
+            });
+          }
+        } else {
+          // User exists with email/password but no Google link
+          if (isSignUp) {
+            user.googleId = googleId;
+            await user.save();
+            try {
+              await sendWelcomeEmail(user.email, user.username);
+            } catch (emailError) {
+              console.error("Welcome email failed (Google link):", emailError);
+            }
+          } else {
+            return res.status(400).json({
+              message: "This email is registered. Sign in with your password, or use Sign up with Google on the Register page to link your account.",
+            });
+          }
+        }
+      } else {
+        // No user found
+        if (isSignUp) {
+          // Sign-up: create new user and save to DB
+          const username = name || email.split("@")[0] || "User";
+          user = new User({
+            username,
+            email,
+            googleId,
+            profilePicture: picture || undefined,
+            role: "athlete",
+          });
+          await user.save();
+          try {
+            await sendWelcomeEmail(user.email, user.username);
+          } catch (emailError) {
+            console.error("Welcome email failed:", emailError);
+          }
+        } else {
+          // Sign-in: do NOT create; reject
+          return res.status(400).json({
+            message: "No account found with this Google account. Please sign up first.",
+          });
+        }
+      }
+    }
+
+    // Safety: must have user (signin with no account must have returned 400 earlier)
+    if (!user) {
+      return res.status(403).json({ message: "No account found. Please sign up first." });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, username: user.username, role: user.role },
+      process.env.JWT_SECRET || "fallback-secret-for-development-only",
+      { expiresIn: "1d" }
+    );
+
+    req.user = user;
+    enforceAdmin2FA()(req, res, () => {});
+    if (res.headersSent) return;
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .json({
+        message: "Login successful",
+        user: { id: user._id, username: user.username, role: user.role },
+        token,
+      });
+  } catch (err) {
+    console.error("Google auth error:", err);
+    // Invalid/expired token or wrong audience -> 400
+    const isTokenError =
+      err.message?.includes("Token") ||
+      err.message?.includes("audience") ||
+      err.message?.includes("expired") ||
+      err.code === "EBADCSRFTOKEN";
+    const status = isTokenError ? 400 : 500;
+    const message = isTokenError
+      ? "Invalid or expired Google sign-in. Please try again."
+      : (err.message || "Google Sign-In failed");
+    res.status(status).json({ message });
   }
 });
 

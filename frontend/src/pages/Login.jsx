@@ -71,11 +71,12 @@
 
 
   // src/components/Login.jsx (or wherever your Login.jsx is)
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import api from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
-import bg from "../assets/Login_bg.jpg"
-import Navbar from "../components/Navbar"; // Import Navbar component
+import bg from "../assets/Login_bg.jpg";
+import Navbar from "../components/Navbar";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 import { useNotification } from "../context/NotificationContext";
 // import "../pages_css/Login.css"; // REMOVE THIS LINE
 
@@ -92,6 +93,30 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleGoogleCredential = useCallback(async (credential) => {
+    setIsLoggingIn(true);
+    try {
+      const response = await api.post("/auth/google", { credential, mode: "signin" });
+      const { user, token } = response.data || {};
+      if (!user || !token) {
+        showError("Sign-in did not return user. Please try again.");
+        return;
+      }
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      showSuccess(`Welcome back, ${user.username}!`);
+      setTimeout(() => {
+        if (user.role === "admin") navigate("/admin-dashboard");
+        else navigate("/splash");
+      }, 500);
+    } catch (err) {
+      const msg = err.response?.data?.message || "Google Sign-In failed.";
+      showError(msg);
+    } finally {
+      setIsLoggingIn(false);
+    }
+  }, [navigate, showSuccess, showError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -230,6 +255,21 @@ const Login = () => {
                 'Sign In'
               )}
             </button>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/30"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-transparent text-white/70">Or</span>
+              </div>
+            </div>
+
+            <GoogleSignInButton
+              mode="signin"
+              onCredential={handleGoogleCredential}
+              disabled={isLoggingIn}
+            />
           </form>
 
           {/* Social Icons */}

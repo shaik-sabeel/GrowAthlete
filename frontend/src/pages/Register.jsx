@@ -93,11 +93,12 @@
 
 
 // src/components/Register.jsx (or wherever your Register.jsx is)
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import api from "../utils/api";
 import { Link, useNavigate } from "react-router-dom";
-import bg from '../assets/Login_bg.jpg'
+import bg from "../assets/Login_bg.jpg";
 import Navbar from "../components/Navbar";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 import { useNotification } from "../context/NotificationContext";
 // import "../pages_css/Register.css"; // REMOVE THIS LINE
 
@@ -126,9 +127,28 @@ const Register = () => {
   
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    
-    // Password strength checking removed
   };
+
+  const handleGoogleCredential = useCallback(async (credential) => {
+    setIsSubmitting(true);
+    try {
+      const response = await api.post("/auth/google", { credential, mode: "signup" });
+      const { user, token } = response.data || {};
+      if (!user || !token) {
+        showError("Sign-up did not complete. Please try again.");
+        return;
+      }
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      showSuccess("Account created with Google! Welcome to GrowAthlete!");
+      setTimeout(() => navigate("/update"), 500);
+    } catch (err) {
+      const msg = err.response?.data?.message || "Google Sign-Up failed.";
+      showError(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [navigate, showSuccess, showError]);
 
   // Password strength checking removed
   // const checkPasswordStrength = async (password) => {
@@ -351,6 +371,21 @@ const Register = () => {
                 'Create Account'
               )}
             </button>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/30"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-transparent text-white/70">Or</span>
+              </div>
+            </div>
+
+            <GoogleSignInButton
+              mode="signup"
+              onCredential={handleGoogleCredential}
+              disabled={isSubmitting}
+            />
           </form>
 
           {/* Social Icons - Reused for consistency */}
