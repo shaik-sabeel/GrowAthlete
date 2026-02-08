@@ -105,7 +105,7 @@ const TournamentsPage = () => {
             </div>
           )}
 
-          <MapSection />
+          <MapSection tournaments={filteredTournaments} />
 
           {/* Tournament Cards Grid */}
           {loading ? (
