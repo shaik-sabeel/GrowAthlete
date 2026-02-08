@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const User = require("./models/User");
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true })
+// Connect to MongoDB (supports MONGOURI or MONGODB_URI)
+mongoose.connect(process.env.MONGOURI || process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("MongoDB connection error:", err));
 

@@ -96,10 +96,19 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
+    const t0 = Date.now();
+    if (!email || !password) {
+      return res.status(400).json("Email and password are required");
+    }
+
+    // Step 1: fetch user by email
     const user = await User.findOne({ email });
+    const t1 = Date.now();
     if (!user) return res.status(400).json("Invalid credentials");
 
+    // Step 2: compare password
     const isMatch = await bcrypt.compare(password, user.password);
+    const t2 = Date.now();
     if (!isMatch) return res.status(400).json("Invalid credentials");
 
     const token = jwt.sign(
@@ -110,13 +119,24 @@ router.post("/login", async (req, res) => {
 
     // enforce admin 2FA if required
     req.user = user;
-    const twoFAResult = await new Promise((resolve) => enforceAdmin2FA()(req, res, resolve));
+    // Run middleware; if it sends a 401 response, stop processing to avoid hanging
+    enforceAdmin2FA()(req, res, () => {});
+    const t3 = Date.now();
+    if (res.headersSent) {
+      console.log(`Login timing: query=${t1 - t0}ms, bcrypt=${t2 - t1}ms, twoFA=${t3 - t2}ms`);
+      return; // 2FA middleware already responded
+    }
 
     res
       .cookie("token", token, {
         httpOnly: true,
+<<<<<<< HEAD
         secure: true, // change to true in production with HTTPS
 
+=======
+        secure: process.env.NODE_ENV === 'production', // only secure in production/HTTPS
+        
+>>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })
@@ -125,6 +145,8 @@ router.post("/login", async (req, res) => {
         user: { id: user._id, username: user.username, role: user.role },
         token: token
       });
+    const t4 = Date.now();
+    console.log(`Login timing: query=${t1 - t0}ms, bcrypt=${t2 - t1}ms, twoFA=${t3 - t2}ms, total=${t4 - t0}ms`);
   } catch (err) {
     res.status(500).json("Server error");
   }

@@ -43,31 +43,54 @@ app.disable('x-powered-by');
 
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-// --- CORS CONFIG: allow prod domains and localhost ---
+
 const defaultAllowedOrigins = [
   "https://www.growathlete.tech",
   "https://growathlete.tech",
   "http://localhost:5173",
 ];
+
 const envOrigins = (process.env.CORS_ORIGINS || "")
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
+
+
+
 const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...envOrigins])];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // Postman/curl
+
+    // Allow server-to-server, curl, Postman (no Origin header)
+    if (!origin) return callback(null, true);
+
+    // Allow matching origins from whitelist
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    // Silent deny without exposing reason
-    return callback(null, false);
+
+    // Allow all Vercel preview deployments if needed
+    const vercelPreview = /https?:\/\/[^.]+\.vercel\.app$/.test(origin);
+    if (vercelPreview) return callback(null, true);
+
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
   },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
   credentials: true,
+<<<<<<< HEAD
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+=======
+>>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
   optionsSuccessStatus: 204,
 };
+
+// Apply CORS early
 app.use(cors(corsOptions));
+<<<<<<< HEAD
+=======
+// Explicitly respond to preflight (use regex to avoid path-to-regexp '*' issue)
+>>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
 app.options(/.*/, cors(corsOptions));
 
 // Security middleware
@@ -79,7 +102,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      connectSrc: ["'self'", "https://api.newscatcherapi.com"],
+      connectSrc: ["'self'"],
     },
   },
   crossOriginEmbedderPolicy: false,
