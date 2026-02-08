@@ -41,6 +41,7 @@ import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx';
 import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';
 import LiveScoresPage from './pages/LiveScoresPage.jsx';
 import SavedArticlesPage from './pages/SavedArticlesPage.jsx';
+import CreateTournamentPage from './pages/CreateTournamentPage'; // Import the new page
 
 // --- GLOBAL STYLES ---
 import './App.css';
@@ -76,7 +77,7 @@ function AppContent() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/update" element={<Profile/>} />
+          <Route path="/update" element={<Profile />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
@@ -107,7 +108,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-           <Route
+          <Route
             path="/event/create"
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
@@ -120,7 +121,7 @@ function AppContent() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <MyProfile />
-               </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
           <Route
@@ -128,6 +129,14 @@ function AppContent() {
             element={
               <ProtectedRoute role="admin" isAllowed={isAuthenticated() && getUserRole() === 'admin'}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tournaments/create"
+            element={
+              <ProtectedRoute role="admin" isAllowed={isAuthenticated() && getUserRole() === 'admin'}>
+                <CreateTournamentPage />
               </ProtectedRoute>
             }
           />
@@ -167,9 +176,9 @@ function AppContent() {
           {/* Fallback for undefined routes */}
           <Route path="*" element={
             <div style={{ padding: '80px 20px', minHeight: '80vh', textAlign: 'center', paddingTop: '150px' }}>
-                <h1>404 - Page Not Found</h1>
-                <p>Oops! The page you're looking for doesn't exist.</p>
-                <Link to="/" className="btn btn-primary" style={{marginTop: '20px'}}>Go to Homepage</Link>
+              <h1>404 - Page Not Found</h1>
+              <p>Oops! The page you're looking for doesn't exist.</p>
+              <Link to="/" className="btn btn-primary" style={{ marginTop: '20px' }}>Go to Homepage</Link>
             </div>
           } />
 

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-const FilterSidebar = () => {
+const FilterSidebar = ({ filters, onFilterChange, onClearFilters }) => {
   return (
     <aside className="w-full lg:w-72 bg-white p-6 shadow-md rounded-lg flex-shrink-0">
       <h2 className="text-xl font-semibold mb-6 text-gray-800">Filter Tournaments</h2>
@@ -17,8 +17,11 @@ const FilterSidebar = () => {
             <input
               type="text"
               id="searchTournaments"
+              name="search"
+              value={filters?.search || ''}
+              onChange={onFilterChange}
               placeholder="e.g., Marathon, League"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
           </div>
@@ -31,7 +34,10 @@ const FilterSidebar = () => {
           </label>
           <select
             id="sport"
-            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+            name="sport"
+            value={filters?.sport || ''}
+            onChange={onFilterChange}
+            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
           >
             <option>Select a sport</option>
             <option>Football</option>
@@ -43,7 +49,6 @@ const FilterSidebar = () => {
             <option>Running</option>
             <option>Volleyball</option>
             <option>Kabaddi</option>
-            {/* Add more sports */}
           </select>
         </div>
 
@@ -55,8 +60,11 @@ const FilterSidebar = () => {
           <input
             type="text"
             id="location"
+            name="location"
+            value={filters?.location || ''}
+            onChange={onFilterChange}
             placeholder="e.g., Mumbai, Delhi"
-            className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+            className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
           />
         </div>
 
@@ -69,24 +77,33 @@ const FilterSidebar = () => {
             <input
               type="date"
               id="startDate"
-              className="w-1/2 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+              name="startDate"
+              value={filters?.startDate || ''}
+              onChange={onFilterChange}
+              className="w-1/2 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
             />
             <input
               type="date"
               id="endDate"
-              className="w-1/2 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+              name="endDate"
+              value={filters?.endDate || ''}
+              onChange={onFilterChange}
+              className="w-1/2 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
             />
           </div>
         </div>
 
-        {/* Category (represented as simple text input for flexibility) */}
+        {/* Category */}
         <div>
           <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
             Category
           </label>
           <select
             id="category"
-            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+            name="category"
+            value={filters?.category || ''}
+            onChange={onFilterChange}
+            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
           >
             <option>Select category</option>
             <option>Local League</option>
@@ -102,7 +119,10 @@ const FilterSidebar = () => {
           </label>
           <select
             id="sortBy"
-            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+            name="sortBy"
+            value={filters?.sortBy || ''}
+            onChange={onFilterChange}
+            className="w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-gray-900"
           >
             <option>Date (Upcoming)</option>
             <option>Date (Past)</option>
@@ -114,10 +134,9 @@ const FilterSidebar = () => {
 
       {/* Filter Buttons */}
       <div className="mt-8 space-y-3">
-        <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
-          Apply Filters
-        </button>
-        <button className="w-full bg-white text-gray-700 border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
+        <button
+          onClick={onClearFilters}
+          className="w-full bg-white text-gray-700 border border-gray-300 py-2 px-4 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
           Clear Filters
         </button>
       </div>

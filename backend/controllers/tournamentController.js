@@ -26,6 +26,11 @@ const getTournaments = asyncHandler(async (req, res) => {
     ];
   }
 
+  // Date filtering (optional)
+  if (req.query.startDate) {
+    filter.startDate = { $gte: new Date(req.query.startDate) };
+  }
+
   // Sorting
   const sortBy = {};
   if (req.query.sortField && req.query.sortOrder) {
@@ -68,12 +73,25 @@ const createTournament = asyncHandler(async (req, res) => {
   // }
 
   // Basic required field check - the model also enforces this
-  const { title, sport, location, dateRange } = req.body;
-  if (!title || !sport || !location || !dateRange) {
-    return res.status(400).json({ success: false, message: 'Please include all required fields: title, sport, location, dateRange' });
+  // Basic required field check - the model also enforces this
+  const { title, sport, location, startDate, endDate } = req.body;
+  if (!title || !sport || !location || !startDate || !endDate) {
+    return res.status(400).json({ success: false, message: 'Please include all required fields: title, sport, location, startDate, endDate' });
   }
 
-  const tournament = await Tournament.create(req.body);
+  // Derive dateRange string if not provided
+  let dateRange = req.body.dateRange;
+  if (!dateRange) {
+    const start = new Date(startDate).toLocaleDateString();
+    const end = new Date(endDate).toLocaleDateString();
+    dateRange = `${start} - ${end}`;
+  }
+
+  const tournament = await Tournament.create({
+    ...req.body,
+    dateRange,
+    organizer: req.user ? req.user.id : null // Link to creator if authenticated
+  });
   res.status(201).json({ success: true, data: tournament });
 });
 
@@ -87,9 +105,18 @@ const updateTournament = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: 'Tournament not found' });
   }
 
-  const { title, sport, location, dateRange, status, image, description } = req.body;
-  if (!title || !sport || !location || !dateRange) { // Re-check required fields on update too
-    return res.status(400).json({ success: false, message: 'Please include all required fields for update: title, sport, location, dateRange.' });
+  const { title, sport, location, startDate, endDate } = req.body;
+
+  // Refine validation to check for specific required fields if they are being updated
+  // For a PUT (replace), you'd want them all. For PATCH (partial), maybe not.
+  // Assuming full update or essential fields check for now if provided.
+
+  let updateData = { ...req.body };
+
+  if (startDate && endDate && !req.body.dateRange) {
+    const start = new Date(startDate).toLocaleDateString();
+    const end = new Date(endDate).toLocaleDateString();
+    updateData.dateRange = `${start} - ${end}`;
   }
 
   tournament = await Tournament.findByIdAndUpdate(req.params.id, req.body, {
@@ -115,10 +142,102 @@ const deleteTournament = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: 'Tournament removed' });
 });
 
+const { sendTournamentRegistrationEmail } = require('../utils/mailer');
+
+// @desc    Register for a tournament
+// @route   POST /api/tournaments/:id/register
+// @access  Private
+const registerForTournament = asyncHandler(async (req, res) => {
+  const tournament = await Tournament.findById(req.params.id);
+
+  if (!tournament) {
+    return res.status(404).json({ success: false, message: 'Tournament not found' });
+  }
+
+  // Check if tournament is open
+  if (tournament.status !== 'Open' && tournament.status !== 'Upcoming') {
+    return res.status(400).json({ success: false, message: `Tournament is ${tournament.status} and not accepting registrations` });
+  }
+
+  // Check if already registered
+  const alreadyRegistered = tournament.registrations.find(
+    (r) => r.user.toString() === req.user.id
+  );
+
+  if (alreadyRegistered) {
+    return res.status(400).json({ success: false, message: 'You are already registered for this tournament' });
+  }
+
+  // Check capacity
+  if (tournament.registeredTeams >= tournament.maxTeams) {
+    return res.status(400).json({ success: false, message: 'Tournament is full' });
+  }
+
+  const { teamName, phoneNumber, email, age, gender } = req.body;
+
+  if (!phoneNumber || !email || !age || !gender) {
+    return res.status(400).json({ success: false, message: 'Please provide all required fields' });
+  }
+
+  const registration = {
+    user: req.user.id,
+    teamName: teamName || req.user.username,
+    phoneNumber,
+    email,
+    age,
+    gender,
+    status: 'Pending',
+    registrationDate: Date.now()
+  };
+
+  tournament.registrations.push(registration);
+  tournament.registeredTeams = tournament.registrations.length;
+
+  await tournament.save();
+
+  // Send confirmation email
+  try {
+    const userEmail = email || req.user.email;
+    await sendTournamentRegistrationEmail(userEmail, req.user.username, tournament);
+  } catch (emailErr) {
+    console.error("Failed to send registration email:", emailErr);
+    // Continue execution, don't fail the request
+  }
+
+  res.status(200).json({ success: true, message: 'Registration successful', data: tournament });
+});
+
+// @desc    Get user's registered tournaments
+// @route   GET /api/tournaments/my-registrations
+// @access  Private
+const getUserRegistrations = asyncHandler(async (req, res) => {
+  const tournaments = await Tournament.find({ 'registrations.user': req.user.id });
+
+  // Return tournaments with user's specific registration status
+  const formattedTournaments = tournaments.map(t => {
+    const registration = t.registrations.find(r => r.user.toString() === req.user.id);
+    return {
+      _id: t._id,
+      title: t.title,
+      sport: t.sport,
+      location: t.location,
+      dateRange: t.dateRange,
+      status: t.status,
+      registrationStatus: registration ? registration.status : 'Unknown',
+      registrationDate: registration ? registration.registrationDate : null,
+      teamName: registration ? registration.teamName : ''
+    };
+  });
+
+  res.status(200).json({ success: true, count: formattedTournaments.length, data: formattedTournaments });
+});
+
 module.exports = {
   getTournaments,
   getTournament,
   createTournament,
   updateTournament,
   deleteTournament,
+  registerForTournament,
+  getUserRegistrations
 };
