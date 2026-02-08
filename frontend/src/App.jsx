@@ -185,7 +185,7 @@ function AppContent() {
 
   return (
     <>
-      {showNavbar && <Navbar />}
+      {/* {showNavbar && <Navbar />} */}
       <main>
         <ScrollToTop />
         <Routes>
