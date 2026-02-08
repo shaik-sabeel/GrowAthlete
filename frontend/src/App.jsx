@@ -89,7 +89,7 @@ function AppContent() {
   return (
     <>
       {showNavbar && <Navbar />}
-      <main className="flex-grow"> {/* Added flex-grow to main to push footer down */}
+      <main className="flex-grow" style={{ paddingTop: showNavbar ? '5rem' : '0' }}> {/* Added padding to account for fixed navbar */}
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />

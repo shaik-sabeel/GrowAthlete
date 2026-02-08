@@ -30,7 +30,7 @@
 //     const [user, setUser] = useState({});
 //     const { id } = useParams(); // Get userId from URL if present
 
-    
+
 //       useEffect(() => {
 //         const fetchData = async () => {
 //           // try {
@@ -176,23 +176,23 @@
 //           res = await api.get("/auth/profile");
 //         }
 //         setUser(res.data.user);
-        
+
 //         // Generate AI blurb based on user data
 //         generateAIBlurb(res.data.user);
-        
+
 //         // Generate performance DNA based on user data
 //         generatePerformanceDNA(res.data.user);
-        
+
 //         // Mock activity streak (in real app, this would come from backend)
 //         setActivityStreak(Math.floor(Math.random() * 10) + 1);
-        
+
 //         // Mock next event (in real app, this would come from events API)
 //         setNextEvent({
 //           name: "Regional Championship",
 //           date: "2024-02-15",
 //           location: "Sports Complex"
 //         });
-        
+
 //       } catch (err) {
 //         console.error("Error fetching profile:", err);
 //         setError("Could not load profile. Please try again later.");
@@ -208,7 +208,7 @@
 //     const level = userData.level || "intermediate";
 //     const position = getPositionForSport(sport);
 //     const traits = getTraitsForLevel(level);
-    
+
 //     setAiBlurb(`${position} known for ${traits.join(" & ")}.`);
 //   };
 
@@ -241,10 +241,10 @@
 //     const sport = userData.sport || "athlete";
 //     const level = userData.level || "intermediate";
 //     const age = parseInt(userData.age) || 25;
-    
+
 //     // Base performance DNA based on sport and level
 //     const baseDNA = getBaseDNAForSport(sport, level, age);
-    
+
 //     // Add some randomness to make it more realistic
 //     const dna = {
 //       speed: Math.max(20, Math.min(100, baseDNA.speed + (Math.random() - 0.5) * 20)),
@@ -253,7 +253,7 @@
 //       strength: Math.max(20, Math.min(100, baseDNA.strength + (Math.random() - 0.5) * 20)),
 //       skill: Math.max(20, Math.min(100, baseDNA.skill + (Math.random() - 0.5) * 20))
 //     };
-    
+
 //     setPerformanceDNA(dna);
 //   };
 
@@ -263,9 +263,9 @@
 //       intermediate: 0.8,
 //       advanced: 0.95
 //     };
-    
+
 //     const multiplier = levelMultiplier[level] || 0.8;
-    
+
 //     const sportDNA = {
 //       football: { speed: 85, endurance: 80, agility: 90, strength: 70, skill: 85 },
 //       basketball: { speed: 80, endurance: 75, agility: 95, strength: 85, skill: 90 },
@@ -278,13 +278,13 @@
 //       hockey: { speed: 80, endurance: 85, agility: 85, strength: 75, skill: 85 },
 //       other: { speed: 70, endurance: 70, agility: 70, strength: 70, skill: 70 }
 //     };
-    
+
 //     const base = sportDNA[sport] || sportDNA.other;
-    
+
 //     // Age adjustment (peak performance around 25-30)
 //     const ageAdjustment = age < 25 ? 1 + (25 - age) * 0.02 : 
 //                          age > 30 ? 1 - (age - 30) * 0.01 : 1;
-    
+
 //     return {
 //       speed: Math.round(base.speed * multiplier * ageAdjustment),
 //       endurance: Math.round(base.endurance * multiplier * ageAdjustment),
@@ -400,7 +400,7 @@
 //           <div className={`kinetic-gradient ${activityStreak > 5 ? 'active-streak' : ''}`}>
 //             <div className="gradient-overlay"></div>
 //           </div>
-          
+
 //           <div className="kinetic-content">
 //             {/* Profile Picture with Animated Border */}
 //             <div className="profile-picture-container-kinetic">
@@ -476,7 +476,7 @@
 //                 <div className="qr-icon">📱</div>
 //                 <span>Smart Card</span>
 //               </button>
-              
+
 //               {showQR && (
 //                 <div className="qr-modal">
 //                   <div className="qr-content">
@@ -931,7 +931,7 @@ const mockProfile = {
   achievements: [
     { date: "2024 Season", title: "NBA Rookie of the Year" },
     { date: "2023 Season", title: "Led team to State Championship title" },
-    { date: "Feb 2023", title: "Career high 42 points vs rivals" }, 
+    { date: "Feb 2023", title: "Career high 42 points vs rivals" },
     { date: "Jan 2023", title: "Named All-State First Team" }
   ]
 };
@@ -954,7 +954,7 @@ export default function MyProfile() {
   const [isActivityOpen, setIsActivityOpen] = useState(false);
   const [editableProfile, setEditableProfile] = useState(profile.user);
   const [editableAthletic, setEditableAthletic] = useState(profile.athleticDetails);
-  const [editableAchievement, setEditableAchievement] = useState({ date: "", title: "" ,description:""});
+  const [editableAchievement, setEditableAchievement] = useState({ date: "", title: "", description: "" });
   const [editingIndex, setEditingIndex] = useState(null);
 
 
@@ -1124,7 +1124,7 @@ export default function MyProfile() {
         <div
           className="see-all-under"
           onClick={() => setIsActivityOpen(true)}
-          >
+        >
           Show all activity →
         </div>
       </section>
@@ -1209,323 +1209,323 @@ export default function MyProfile() {
         </div>
       </section>
       {isModalOpen && (
-  <div className="modal-overlay">
-    <div className="modal">
+        <div className="modal-overlay">
+          <div className="modal">
 
-      {/* HEADER */}
-      <div className="modal-header">
-        <h3>
-          {editMode === "profile" && "Edit Profile"}
-          {editMode === "athletic" && "Edit Athletic Details"}
-          {editMode === "achievement-add" && "Add Achievement"}
-          {editMode === "achievement-manage" && "Manage Achievements"}
-          {editMode === "achievement-edit" && "Edit Achievement"}
-        </h3>
-
-        <button
-          className="close-btn"
-          onClick={() => setIsModalOpen(false)}
-        >
-          ✕
-        </button>
-      </div>
-
-      {/* BODY */}
-      <div className="modal-body">
-
-        {/*PROFILE*/}
-        {editMode === "profile" && (
-          <>
-            <label>Name</label>
-            <input
-              value={editableProfile.name}
-              onChange={(e) =>
-                setEditableProfile({ ...editableProfile, name: e.target.value })
-              }
-            />
-
-            <label>Sport</label>
-            <input
-              value={editableProfile.sport}
-              onChange={(e) =>
-                setEditableProfile({ ...editableProfile, sport: e.target.value })
-              }
-            />
-
-            <label>Location</label>
-            <input
-              value={editableProfile.location}
-              onChange={(e) =>
-                setEditableProfile({
-                  ...editableProfile,
-                  location: e.target.value
-                })
-              }
-            />
-
-            <label>Bio</label>
-            <textarea
-              value={editableProfile.bio}
-              onChange={(e) =>
-                setEditableProfile({ ...editableProfile, bio: e.target.value })
-              }
-            />
-          </>
-        )}
-
-        {/*ATHLETIC DETAILS*/}
-        {editMode === "athletic" && (
-          <>
-            <label>Primary Sport</label>
-            <input
-              value={editableAthletic.primarySport}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  primarySport: e.target.value
-                })
-              }
-            />
-
-            <label>Position</label>
-            <input
-              value={editableAthletic.position}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  position: e.target.value
-                })
-              }
-            />
-
-            <label>Height</label>
-            <input
-              value={editableAthletic.height}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  height: e.target.value
-                })
-              }
-            />
-
-            <label>Weight</label>
-            <input
-              value={editableAthletic.weight}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  weight: e.target.value
-                })
-              }
-            />
-
-            <label>Team</label>
-            <input
-              value={editableAthletic.team}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  team: e.target.value
-                })
-              }
-            />
-            <label>Extra Notes</label>
-            <textarea
-              value={editableAthletic.extraNotes}
-              onChange={(e) =>
-                setEditableAthletic({
-                  ...editableAthletic,
-                  extraNotes: e.target.value
-                })
-              }
-            />
-          </>
-        )}
-
-        
-  {editMode === "achievement-add" && (
-    <>
-      <label>Date / Season</label>
-      <input
-        value={editableAchievement.date}
-        onChange={(e) =>
-          setEditableAchievement({
-            ...editableAchievement,
-            date: e.target.value
-          })
-        }
-      />
-
-      <label>Title</label>
-      <input
-        value={editableAchievement.title}
-        onChange={(e) =>
-          setEditableAchievement({
-            ...editableAchievement,
-            title: e.target.value
-          })
-        }
-      />
-    </>
-  )}
-
-  {/*ACHIEVEMENT : MANAGE*/}
-  {editMode === "achievement-manage" && (
-  <div className="achievement-manage-list">
-    {profile.achievements.map((ach, index) => (
-      <div className="achievement-manage-item" key={index}>
-
-        {/*VIEW MODE*/}
-        {editingIndex !== index ? (
-          <>
-            <div className="achievement-manage-info">
-              <h4>{ach.title}</h4>
-              <span>{ach.date}</span>
-            </div>
-
-            <div className="achievement-manage-actions">
-              <button
-                className="btn-edit"
-                onClick={() => {
-                  setEditableAchievement({ ...ach });
-                  setEditingIndex(index); // 🔥 inline edit
-                }}
-              >
-                Edit
-              </button>
+            {/* HEADER */}
+            <div className="modal-header">
+              <h3>
+                {editMode === "profile" && "Edit Profile"}
+                {editMode === "athletic" && "Edit Athletic Details"}
+                {editMode === "achievement-add" && "Add Achievement"}
+                {editMode === "achievement-manage" && "Manage Achievements"}
+                {editMode === "achievement-edit" && "Edit Achievement"}
+              </h3>
 
               <button
-                className="btn-delete"
-                onClick={() =>
-                  setProfile({
-                    ...profile,
-                    achievements: profile.achievements.filter(
-                      (_, i) => i !== index
-                    )
-                  })
-                }
+                className="close-btn"
+                onClick={() => setIsModalOpen(false)}
               >
-                Delete
+                ✕
               </button>
             </div>
-          </>
-        ) : (
-          /*EDIT MODE*/
-          <div className="achievement-inline-edit">
-            <input
-              placeholder="Date / Season"
-              value={editableAchievement.date}
-              onChange={(e) =>
-                setEditableAchievement({
-                  ...editableAchievement,
-                  date: e.target.value
-                })
-              }
-            />
 
-            <input
-              placeholder="Title"
-              value={editableAchievement.title}
-              onChange={(e) =>
-                setEditableAchievement({
-                  ...editableAchievement,
-                  title: e.target.value
-                })
-              }
-            />
+            {/* BODY */}
+            <div className="modal-body">
 
-            <div className="achievement-inline-actions">
-              <button
-                className="btn-save"
-                onClick={() => {
-                  const updated = [...profile.achievements];
-                  updated[index] = editableAchievement;
-                  setProfile({ ...profile, achievements: updated });
-                  setEditingIndex(null); // ✅ exit edit mode
-                }}
-              >
-                Save
-              </button>
+              {/*PROFILE*/}
+              {editMode === "profile" && (
+                <>
+                  <label>Name</label>
+                  <input
+                    value={editableProfile.name}
+                    onChange={(e) =>
+                      setEditableProfile({ ...editableProfile, name: e.target.value })
+                    }
+                  />
 
-              <button
-                className="btn-cancel"
-                onClick={() => setEditingIndex(null)}
-              >
-                Cancel
-              </button>
+                  <label>Sport</label>
+                  <input
+                    value={editableProfile.sport}
+                    onChange={(e) =>
+                      setEditableProfile({ ...editableProfile, sport: e.target.value })
+                    }
+                  />
+
+                  <label>Location</label>
+                  <input
+                    value={editableProfile.location}
+                    onChange={(e) =>
+                      setEditableProfile({
+                        ...editableProfile,
+                        location: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Bio</label>
+                  <textarea
+                    value={editableProfile.bio}
+                    onChange={(e) =>
+                      setEditableProfile({ ...editableProfile, bio: e.target.value })
+                    }
+                  />
+                </>
+              )}
+
+              {/*ATHLETIC DETAILS*/}
+              {editMode === "athletic" && (
+                <>
+                  <label>Primary Sport</label>
+                  <input
+                    value={editableAthletic.primarySport}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        primarySport: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Position</label>
+                  <input
+                    value={editableAthletic.position}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        position: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Height</label>
+                  <input
+                    value={editableAthletic.height}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        height: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Weight</label>
+                  <input
+                    value={editableAthletic.weight}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        weight: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Team</label>
+                  <input
+                    value={editableAthletic.team}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        team: e.target.value
+                      })
+                    }
+                  />
+                  <label>Extra Notes</label>
+                  <textarea
+                    value={editableAthletic.extraNotes}
+                    onChange={(e) =>
+                      setEditableAthletic({
+                        ...editableAthletic,
+                        extraNotes: e.target.value
+                      })
+                    }
+                  />
+                </>
+              )}
+
+
+              {editMode === "achievement-add" && (
+                <>
+                  <label>Date / Season</label>
+                  <input
+                    value={editableAchievement.date}
+                    onChange={(e) =>
+                      setEditableAchievement({
+                        ...editableAchievement,
+                        date: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Title</label>
+                  <input
+                    value={editableAchievement.title}
+                    onChange={(e) =>
+                      setEditableAchievement({
+                        ...editableAchievement,
+                        title: e.target.value
+                      })
+                    }
+                  />
+                </>
+              )}
+
+              {/*ACHIEVEMENT : MANAGE*/}
+              {editMode === "achievement-manage" && (
+                <div className="achievement-manage-list">
+                  {profile.achievements.map((ach, index) => (
+                    <div className="achievement-manage-item" key={index}>
+
+                      {/*VIEW MODE*/}
+                      {editingIndex !== index ? (
+                        <>
+                          <div className="achievement-manage-info">
+                            <h4>{ach.title}</h4>
+                            <span>{ach.date}</span>
+                          </div>
+
+                          <div className="achievement-manage-actions">
+                            <button
+                              className="btn-edit"
+                              onClick={() => {
+                                setEditableAchievement({ ...ach });
+                                setEditingIndex(index); // 🔥 inline edit
+                              }}
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                              className="btn-delete"
+                              onClick={() =>
+                                setProfile({
+                                  ...profile,
+                                  achievements: profile.achievements.filter(
+                                    (_, i) => i !== index
+                                  )
+                                })
+                              }
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        /*EDIT MODE*/
+                        <div className="achievement-inline-edit">
+                          <input
+                            placeholder="Date / Season"
+                            value={editableAchievement.date}
+                            onChange={(e) =>
+                              setEditableAchievement({
+                                ...editableAchievement,
+                                date: e.target.value
+                              })
+                            }
+                          />
+
+                          <input
+                            placeholder="Title"
+                            value={editableAchievement.title}
+                            onChange={(e) =>
+                              setEditableAchievement({
+                                ...editableAchievement,
+                                title: e.target.value
+                              })
+                            }
+                          />
+
+                          <div className="achievement-inline-actions">
+                            <button
+                              className="btn-save"
+                              onClick={() => {
+                                const updated = [...profile.achievements];
+                                updated[index] = editableAchievement;
+                                setProfile({ ...profile, achievements: updated });
+                                setEditingIndex(null); // ✅ exit edit mode
+                              }}
+                            >
+                              Save
+                            </button>
+
+                            <button
+                              className="btn-cancel"
+                              onClick={() => setEditingIndex(null)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {editMode === "achievement-edit" && (
+                <>
+                  <label>Date / Season</label>
+                  <input
+                    value={editableAchievement.date}
+                    onChange={(e) =>
+                      setEditableAchievement({
+                        ...editableAchievement,
+                        date: e.target.value
+                      })
+                    }
+                  />
+
+                  <label>Title</label>
+                  <input
+                    value={editableAchievement.title}
+                    onChange={(e) =>
+                      setEditableAchievement({
+                        ...editableAchievement,
+                        title: e.target.value
+                      })
+                    }
+                  />
+                </>
+              )}
+
             </div>
+
+            {/* FOOTER */}
+            {editMode !== "achievement-manage" && (
+              <div className="modal-footer">
+                <button type="button" onClick={() => setIsModalOpen(false)}>
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (editMode === "achievement-add") {
+                      setProfile({
+                        ...profile,
+                        achievements: [
+                          ...profile.achievements,
+                          editableAchievement
+                        ]
+                      });
+                    }
+
+                    if (editMode === "achievement-edit") {
+                      const updated = [...profile.achievements];
+                      updated[editingIndex] = editableAchievement;
+                      setProfile({ ...profile, achievements: updated });
+                    }
+
+                    setIsModalOpen(false);
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            )}
+
           </div>
-        )}
-      </div>
-    ))}
-  </div>
-)}
-  {editMode === "achievement-edit" && (
-    <>
-      <label>Date / Season</label>
-      <input
-        value={editableAchievement.date}
-        onChange={(e) =>
-          setEditableAchievement({
-            ...editableAchievement,
-            date: e.target.value
-          })
-        }
-      />
-
-      <label>Title</label>
-      <input
-        value={editableAchievement.title}
-        onChange={(e) =>
-          setEditableAchievement({
-            ...editableAchievement,
-            title: e.target.value
-          })
-        }
-      />
-    </>
-  )}
-
-</div>
-
-      {/* FOOTER */}
-{editMode !== "achievement-manage" && (
-  <div className="modal-footer">
-    <button type="button" onClick={() => setIsModalOpen(false)}>
-      Cancel
-    </button>
-
-    <button
-      type="button"
-      onClick={() => {
-        if (editMode === "achievement-add") {
-          setProfile({
-            ...profile,
-            achievements: [
-              ...profile.achievements,
-              editableAchievement
-            ]
-          });
-        }
-
-        if (editMode === "achievement-edit") {
-          const updated = [...profile.achievements];
-          updated[editingIndex] = editableAchievement;
-          setProfile({ ...profile, achievements: updated });
-        }
-
-        setIsModalOpen(false);
-      }}
-    >
-      Save
-    </button>
-  </div>
-)}
-        
-    </div>
-  </div>
-)}
+        </div>
+      )}
     </div>
   );
 }

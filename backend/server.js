@@ -77,20 +77,12 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
   credentials: true,
-<<<<<<< HEAD
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
-=======
->>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
   optionsSuccessStatus: 204,
 };
 
 // Apply CORS early
 app.use(cors(corsOptions));
-<<<<<<< HEAD
-=======
 // Explicitly respond to preflight (use regex to avoid path-to-regexp '*' issue)
->>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
 app.options(/.*/, cors(corsOptions));
 
 // Security middleware
@@ -215,4 +207,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 }).on('error', (err) => {
   console.error('Server failed to start:', err.message);
-}); 
+});

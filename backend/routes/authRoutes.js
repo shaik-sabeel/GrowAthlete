@@ -120,7 +120,7 @@ router.post("/login", async (req, res) => {
     // enforce admin 2FA if required
     req.user = user;
     // Run middleware; if it sends a 401 response, stop processing to avoid hanging
-    enforceAdmin2FA()(req, res, () => {});
+    enforceAdmin2FA()(req, res, () => { });
     const t3 = Date.now();
     if (res.headersSent) {
       console.log(`Login timing: query=${t1 - t0}ms, bcrypt=${t2 - t1}ms, twoFA=${t3 - t2}ms`);
@@ -130,13 +130,7 @@ router.post("/login", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-<<<<<<< HEAD
-        secure: true, // change to true in production with HTTPS
-
-=======
         secure: process.env.NODE_ENV === 'production', // only secure in production/HTTPS
-        
->>>>>>> 9510f0b43109953ca3e3441cf7c40ca821f9c171
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })

@@ -83,7 +83,7 @@ const CreateTournamentPage = () => {
                                 required
                                 value={formData.title}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                 placeholder="e.g. Summer City League 2024"
                             />
                         </div>
@@ -96,7 +96,7 @@ const CreateTournamentPage = () => {
                                 required
                                 value={formData.sport}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             >
                                 <option value="">Select Sport</option>
                                 <option value="Football">Football</option>
@@ -122,7 +122,7 @@ const CreateTournamentPage = () => {
                                 required
                                 value={formData.location}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                 placeholder="City, Stadium/Venue"
                             />
                         </div>
@@ -138,7 +138,7 @@ const CreateTournamentPage = () => {
                                 required
                                 value={formData.startDate}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             />
                         </div>
                         <div>
@@ -151,7 +151,7 @@ const CreateTournamentPage = () => {
                                 required
                                 value={formData.endDate}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             />
                         </div>
 
@@ -166,7 +166,7 @@ const CreateTournamentPage = () => {
                                 min="0"
                                 value={formData.entryFee}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             />
                         </div>
                         <div>
@@ -178,7 +178,7 @@ const CreateTournamentPage = () => {
                                 name="prizePool"
                                 value={formData.prizePool}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                 placeholder="e.g. $1000 + Trophies"
                             />
                         </div>
@@ -194,7 +194,7 @@ const CreateTournamentPage = () => {
                                 min="2"
                                 value={formData.maxTeams}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             />
                         </div>
 
@@ -205,7 +205,7 @@ const CreateTournamentPage = () => {
                                 name="status"
                                 value={formData.status}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                             >
                                 <option value="Upcoming">Upcoming</option>
                                 <option value="Open">Open for Registration</option>
@@ -222,7 +222,7 @@ const CreateTournamentPage = () => {
                                 name="image"
                                 value={formData.image}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                 placeholder="https://example.com/image.jpg"
                             />
                             <p className="text-xs text-gray-500 mt-1">Leave blank to use a default placeholder.</p>
@@ -238,7 +238,7 @@ const CreateTournamentPage = () => {
                                 rows="4"
                                 value={formData.description}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
                                 placeholder="Describe the tournament details, format, etc."
                             ></textarea>
                         </div>

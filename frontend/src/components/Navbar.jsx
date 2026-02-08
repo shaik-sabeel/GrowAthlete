@@ -22,6 +22,7 @@ import gaLogo from '../assets/galogo.png';
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'Dashboard', path: '/athlete/dashboard' },
+  { name: 'Tournaments', path: '/tournaments' },
   { name: 'About', path: '/about' },
   { name: 'Athletes', path: '/athletes' },
   { name: 'News', path: '/news' }, // Sports News from SportsPulse
