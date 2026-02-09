@@ -16,7 +16,11 @@ export default {
         tertiary: '#3B82F6',
         success: '#10B981',
         warning: '#F59E0B',
-        'text-dark': '#FFFFFF',
+        'brand-orange': '#F97316', // Orange-500
+        'brand-orange-600': '#EA580C', // Darker orange
+        'brand-navy': '#0F172A',
+        'text-dark': '#FFFFFF', // Keeping global default, but overridden in Home via CSS variables if using vars
+        'text-main': '#1F2937', // New class for dark text
         'text-medium': '#D1D5DB',
         'text-light': '#9CA3AF',
         'background-main': '#0F172A',
