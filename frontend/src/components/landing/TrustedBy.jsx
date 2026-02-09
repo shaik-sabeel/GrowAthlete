@@ -1,7 +1,5 @@
 import React from 'react';
-import Marquee from "react-fast-marquee"; // Assuming we might want to use this, or just CSS marquee.
-// If react-fast-marquee is not installed, we can use a simple CSS animation or flex layout.
-// For now, I'll use a standard flex layout as per the static design, or a simple CSS scroller if needed.
+import Marquee from "react-fast-marquee";
 
 const TrustedBy = () => {
     // Placeholder logos (text for now as per plan, or use simple standard icons/text)
@@ -23,13 +21,15 @@ const TrustedBy = () => {
                     Trusted by Top Organizations and Brands
                 </h4>
 
-                <div className="flex flex-wrap justify-center items-center gap-6 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
-                    {organizations.map((org, index) => (
-                        <h3 key={index} className="text-lg md:text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors cursor-default">
-                            {org}
-                        </h3>
-                    ))}
-                </div>
+                <Marquee pauseOnHover={true} speed={50} gradient={false}>
+                    <div className="flex items-center gap-16 pr-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
+                        {organizations.map((org, index) => (
+                            <h3 key={index} className="text-lg md:text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors cursor-default whitespace-nowrap">
+                                {org}
+                            </h3>
+                        ))}
+                    </div>
+                </Marquee>
             </div>
         </section>
     );

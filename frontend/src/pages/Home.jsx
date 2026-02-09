@@ -30,7 +30,7 @@ const Home = () => {
       <section className="py-12 md:py-20 bg-brand-orange text-white text-center">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Ready to start your journey?</h2>
-          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90 max-w-2xl mx-auto text-black bg-orange-100 rounded-2xl p-4">
             Join thousands of athletes who are taking their career to the next level with GrowAthlete.
           </p>
           <Link to="/register">

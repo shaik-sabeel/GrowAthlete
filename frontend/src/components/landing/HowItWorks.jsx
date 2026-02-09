@@ -11,7 +11,7 @@ const StepCard = ({ number, icon, title, description }) => {
             whileHover={{ y: -5 }}
             className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative z-10"
         >
-            <div className="absolute -top-4 bg-brand-orange text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-4 border-white">
+            <div className="absolute -top-4 bg-orange-500 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-4 border-orange-500" style={{ color: "black" }} >
                 {number}
             </div>
 

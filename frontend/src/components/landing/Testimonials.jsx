@@ -16,7 +16,7 @@ const TestimonialCard = ({ quote, author, role, sport, location }) => {
             </div>
 
             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-brand-orange flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-black font-bold text-sm">
                     {author.charAt(0)}{author.split(' ')[1]?.charAt(0)}
                 </div>
                 <div>
