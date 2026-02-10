@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const { enforceRegistrationRules, enforceAdmin2FA } = require('../middlewares/auth');
-const sendWelcomeEmail = require("../utils/mailer");
+const { sendWelcomeEmail } = require("../utils/mailer");
 const passwordValidator = require("../utils/passwordValidator");
 
 const router = express.Router();
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
 
     // Validate password strength
     const passwordValidation = passwordValidator.validatePassword(password);
-    
+
     if (!passwordValidation.isValid) {
       return res.status(400).json({
         success: false,
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
     const lowerPassword = password.toLowerCase();
     const lowerUsername = username.toLowerCase();
     const lowerEmail = email.toLowerCase();
-    
+
     if (lowerPassword.includes(lowerUsername) || lowerPassword.includes(lowerEmail.split('@')[0])) {
       return res.status(400).json({
         success: false,
@@ -54,7 +54,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12); // Increased salt rounds for better security
     const newUser = new User({ username, email, password: hashedPassword, role });
     await newUser.save();
-    
+
     // Send welcome email
     try {
       await sendWelcomeEmail(newUser.email, newUser.username);
@@ -76,7 +76,7 @@ router.post("/register", async (req, res) => {
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .json({ 
+      .json({
         success: true,
         message: "User registered successfully",
         user: { id: newUser._id, username: newUser.username, role: newUser.role },
@@ -120,7 +120,7 @@ router.post("/login", async (req, res) => {
     // enforce admin 2FA if required
     req.user = user;
     // Run middleware; if it sends a 401 response, stop processing to avoid hanging
-    enforceAdmin2FA()(req, res, () => {});
+    enforceAdmin2FA()(req, res, () => { });
     const t3 = Date.now();
     if (res.headersSent) {
       console.log(`Login timing: query=${t1 - t0}ms, bcrypt=${t2 - t1}ms, twoFA=${t3 - t2}ms`);
@@ -131,11 +131,10 @@ router.post("/login", async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // only secure in production/HTTPS
-        
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       })
-      .json({ 
+      .json({
         message: "Login successful",
         user: { id: user._id, username: user.username, role: user.role },
         token: token
@@ -150,7 +149,7 @@ router.post("/login", async (req, res) => {
 // Check password strength (for real-time validation)
 router.post("/check-password-strength", (req, res) => {
   const { password, username, email } = req.body;
-  
+
   if (!password) {
     return res.status(400).json({
       success: false,
@@ -159,7 +158,7 @@ router.post("/check-password-strength", (req, res) => {
   }
 
   const passwordValidation = passwordValidator.validatePassword(password);
-  
+
   // Check if password contains username or email
   let additionalErrors = [];
   if (username) {
@@ -169,7 +168,7 @@ router.post("/check-password-strength", (req, res) => {
       additionalErrors.push("Password cannot contain your username");
     }
   }
-  
+
   if (email) {
     const lowerPassword = password.toLowerCase();
     const lowerEmail = email.toLowerCase();
@@ -197,16 +196,16 @@ router.post("/logout", (req, res) => {
 router.post("/update", verifyToken, async (req, res) => {
   try {
     const {
-      profilePicture, 
-      username, 
-      age, 
-      gender, 
-      location, 
-      sport, 
-      level, 
-      bio, 
-      achievements, 
-      email, 
+      profilePicture,
+      username,
+      age,
+      gender,
+      location,
+      sport,
+      level,
+      bio,
+      achievements,
+      email,
       phone
     } = req.body;
 
@@ -218,7 +217,7 @@ router.post("/update", verifyToken, async (req, res) => {
 
     // Prepare update data
     const updateData = {};
-    
+
     // Only update fields that are provided and not empty
     if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
     if (username !== undefined && username.trim()) updateData.username = username.trim();
@@ -230,7 +229,7 @@ router.post("/update", verifyToken, async (req, res) => {
     if (bio !== undefined) updateData.bio = bio;
     if (achievements !== undefined) updateData.achievements = achievements;
     if (phone !== undefined) updateData.phone = phone;
-    
+
     // Handle email update separately (check for duplicates)
     if (email !== undefined && email !== user.email) {
       const existingUser = await User.findOne({ email: email });
@@ -252,32 +251,32 @@ router.post("/update", verifyToken, async (req, res) => {
     }
 
     console.log("Updated User:", updatedUser);
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
-      message: "Profile updated successfully", 
-      user: updatedUser 
+      message: "Profile updated successfully",
+      user: updatedUser
     });
   } catch (err) {
     console.error("Error updating profile:", err);
-    
+
     // Handle validation errors
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: "Validation error", 
-        errors: Object.values(err.errors).map(e => e.message) 
+        message: "Validation error",
+        errors: Object.values(err.errors).map(e => e.message)
       });
     }
-    
+
     // Handle duplicate key errors
     if (err.code === 11000) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: "Email already exists" 
+        message: "Email already exists"
       });
     }
-    
-    res.status(500).json({ 
+
+    res.status(500).json({
       success: false,
       message: "Server error",
       error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
@@ -297,7 +296,7 @@ router.get("/all-users", verifyToken, async (req, res) => {
   }
 });
 
-router.get("/profile", verifyToken, async(req, res) => {
+router.get("/profile", verifyToken, async (req, res) => {
   // res.json({ user: req.user });
   const user = await User.findById(req.user.id, '-password')
   if (!user) return res.status(404).json("User not found");

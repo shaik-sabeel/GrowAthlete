@@ -39,7 +39,7 @@ const transporter = nodemailer.createTransport({
 
 const sendWelcomeEmail = async (toEmail, name) => {
   try {
-    await transporter.sendMail({
+    const mailOptions = {
       from: `"GrowAthlete" <${process.env.EMAIL_USER}>`,
       to: toEmail,
       subject: "🎉Welcome to GrowAthlete!",
@@ -136,11 +136,107 @@ const sendWelcomeEmail = async (toEmail, name) => {
   </table>
 </body>
 </html>`,
-    });
+    };
+    await transporter.sendMail(mailOptions);
     console.log("✅ Welcome email sent to", toEmail);
   } catch (error) {
-    console.error("❌ Failed to send email:", error);
+    console.error("❌ Failed to send welcome email:", error);
   }
 };
 
-module.exports = sendWelcomeEmail;
+const sendTournamentRegistrationEmail = async (toEmail, name, tournament) => {
+  try {
+    const mailOptions = {
+      from: `"GrowAthlete Event Team" <${process.env.EMAIL_USER}>`,
+      to: toEmail,
+      subject: `Registration Confirmed: ${tournament.title}`,
+      html: `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tournament Registration Confirmed</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Arial, Helvetica, sans-serif;color:#333;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:680px;margin:24px auto;border-collapse:collapse;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(20,30,50,0.08);">
+          {/* Header */}
+          <tr>
+            <td style="padding:28px 28px 18px;background:linear-gradient(90deg,#4f46e5 0%,#7c3aed 100%);color:#fff;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="left" style="vertical-align:middle;">
+                    <h2 style="margin:0;font-size:20px;font-weight:bold;color:#ffffff;">Registration Confirmed! 🏆</h2>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          {/* Body */}
+          <tr>
+            <td style="padding:32px 28px;">
+              <h1 style="margin:0 0 16px;font-size:24px;color:#1e293b;">Hello ${name},</h1>
+              <p style="margin:0 0 24px;color:#475569;font-size:16px;line-height:1.6;">
+                You have successfully registered for <strong>${tournament.title}</strong>! We are excited to see you compete.
+              </p>
+              
+              <div style="background-color:#f8fafc;border-radius:8px;padding:20px;border:1px solid #e2e8f0;margin-bottom:24px;">
+                <h3 style="margin:0 0 16px;font-size:18px;color:#334155;border-bottom:1px solid #e2e8f0;padding-bottom:12px;">Tournament Details</h3>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding-bottom:12px;color:#64748b;font-size:14px;width:100px;">Sport:</td>
+                    <td style="padding-bottom:12px;color:#1e293b;font-size:15px;font-weight:600;">${tournament.sport}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:12px;color:#64748b;font-size:14px;">Location:</td>
+                    <td style="padding-bottom:12px;color:#1e293b;font-size:15px;font-weight:600;">${tournament.location}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:12px;color:#64748b;font-size:14px;">Date:</td>
+                    <td style="padding-bottom:12px;color:#1e293b;font-size:15px;font-weight:600;">${tournament.dateRange}</td>
+                  </tr>
+                  <tr>
+                    <td style="color:#64748b;font-size:14px;">Fee:</td>
+                    <td style="color:#1e293b;font-size:15px;font-weight:600;">$${tournament.entryFee}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6;">
+                <strong>Next Steps:</strong> Check your dashboard for any updates or schedule changes. Make sure to arrive at the venue at least 30 minutes before your scheduled start time.
+              </p>
+              
+              <div style="text-align:center;">
+                <a href="${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard" style="display:inline-block;padding:12px 24px;background-color:#4f46e5;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">Go to Dashboard</a>
+              </div>
+            </td>
+          </tr>
+          
+          {/* Footer */}
+          <tr>
+            <td style="padding:24px;background-color:#f1f5f9;text-align:center;border-top:1px solid #e2e8f0;">
+              <p style="margin:0;color:#94a3b8;font-size:13px;">
+                GrowAthlete Inc.<br>
+                Empowering athletes everywhere.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("✅ Tournament registration email sent to", toEmail);
+  } catch (error) {
+    console.error("❌ Failed to send tournament email:", error);
+  }
+};
+
+module.exports = { sendWelcomeEmail, sendTournamentRegistrationEmail };
