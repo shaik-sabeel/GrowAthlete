@@ -144,6 +144,71 @@ const deleteTournament = asyncHandler(async (req, res) => {
 
 const { sendTournamentRegistrationEmail } = require('../utils/mailer');
 
+// @desc    Get teams for a tournament
+// @route   GET /api/tournaments/:id/teams
+// @access  Private
+const getTournamentTeams = asyncHandler(async (req, res) => {
+  const tournament = await Tournament.findById(req.params.id).populate('registrations.user', 'name email');
+
+  if (!tournament) {
+    return res.status(404).json({ success: false, message: 'Tournament not found' });
+  }
+
+  // Filter registrations that are actual teams (teamSize > 1) or essentially all registrations if needed
+  // The user wants to "Search existing teams", so we return all registrations that have slots
+  const teams = tournament.registrations.map(reg => ({
+    _id: reg._id,
+    teamName: reg.teamName,
+    teamSize: reg.teamSize,
+    currentMembers: reg.members.length,
+    slotsAvailable: reg.teamSize - reg.members.length,
+    organizer: reg.user.name || 'Unknown' // Assuming populated
+  }));
+
+  res.status(200).json({ success: true, count: teams.length, data: teams });
+});
+
+// @desc    Join an existing team in a tournament
+// @route   POST /api/tournaments/:id/join
+// @access  Private
+const joinTournamentTeam = asyncHandler(async (req, res) => {
+  const { teamId } = req.body; // teamId is the registration subdocument ID
+  const tournament = await Tournament.findById(req.params.id);
+
+  if (!tournament) {
+    return res.status(404).json({ success: false, message: 'Tournament not found' });
+  }
+
+  // Find the registration (team)
+  const team = tournament.registrations.id(teamId);
+
+  if (!team) {
+    return res.status(404).json({ success: false, message: 'Team not found' });
+  }
+
+  // Check if user is already in this team or tournament
+  // (Simple check: is user in ANY registration's members or is the main user of any registration)
+  const isAlreadyRegistered = tournament.registrations.some(r =>
+    r.user.toString() === req.user.id || r.members.includes(req.user.id)
+  );
+
+  if (isAlreadyRegistered) {
+    return res.status(400).json({ success: false, message: 'You are already registered/joined in this tournament' });
+  }
+
+  // Check capacity
+  if (team.members.length >= team.teamSize) {
+    return res.status(400).json({ success: false, message: 'Team is full' });
+  }
+
+  // Add user to members
+  team.members.push(req.user.id);
+
+  await tournament.save();
+
+  res.status(200).json({ success: true, message: 'Successfully joined the team', data: team });
+});
+
 // @desc    Register for a tournament
 // @route   POST /api/tournaments/:id/register
 // @access  Private
@@ -173,9 +238,12 @@ const registerForTournament = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Tournament is full' });
   }
 
-  const { teamName, phoneNumber, email, age, gender } = req.body;
+  console.log("DEBUG: Register Body:", req.body); // Debug log
+
+  const { teamName, phoneNumber, email, age, gender, teamSize } = req.body;
 
   if (!phoneNumber || !email || !age || !gender) {
+    console.log("DEBUG: Missing fields check failed");
     return res.status(400).json({ success: false, message: 'Please provide all required fields' });
   }
 
@@ -187,7 +255,9 @@ const registerForTournament = asyncHandler(async (req, res) => {
     age,
     gender,
     status: 'Pending',
-    registrationDate: Date.now()
+    registrationDate: Date.now(),
+    teamSize: teamSize || 1, // Default to 1 if not provided
+    members: [req.user.id] // Add creator as first member
   };
 
   tournament.registrations.push(registration);
@@ -239,5 +309,7 @@ module.exports = {
   updateTournament,
   deleteTournament,
   registerForTournament,
-  getUserRegistrations
+  getUserRegistrations,
+  getTournamentTeams,
+  joinTournamentTeam
 };

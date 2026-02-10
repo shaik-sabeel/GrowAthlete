@@ -8,6 +8,8 @@ const {
   deleteTournament,
   registerForTournament,
   getUserRegistrations,
+  getTournamentTeams,
+  joinTournamentTeam
 } = require('../controllers/tournamentController');
 const { verifyToken, isAdmin } = require('../middlewares/authMiddleware'); // Import your existing auth middleware
 
@@ -32,5 +34,12 @@ router.route('/:id')
 // Register route
 router.route('/:id/register')
   .post(verifyToken, registerForTournament);
+
+// Team routes
+router.route('/:id/teams')
+  .get(verifyToken, getTournamentTeams);
+
+router.route('/:id/join')
+  .post(verifyToken, joinTournamentTeam);
 
 module.exports = router;

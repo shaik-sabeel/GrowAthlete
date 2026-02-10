@@ -33,6 +33,7 @@ const getSportIcon = (sport) => {
 
 const TournamentCard = ({ tournament }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('create'); // 'create' or 'join'
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -106,16 +107,43 @@ const TournamentCard = ({ tournament }) => {
             <span>Fee: ${tournament.entryFee}</span>
           </div>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            disabled={tournament.status === 'Closed' || tournament.registeredTeams >= tournament.maxTeams}
-            className={`w-full py-2 rounded-md transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${tournament.status === 'Closed' || tournament.registeredTeams >= tournament.maxTeams
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-indigo-600 text-white hover:bg-indigo-700'
-              }`}>
-            {tournament.status === 'Closed' ? 'Registration Closed' :
-              tournament.registeredTeams >= tournament.maxTeams ? 'Full' : 'Register Now'}
-          </button>
+          {/* Only show buttons if tournament is open/upcoming and not full */
+            /* Actually, logic: 
+               - If Closed -> Show Closed
+               - If Full -> Show Full
+               - Else -> Show Register & Join buttons (if applicable)
+            */
+          }
+          {tournament.status === 'Closed' ? (
+            <button disabled className="w-full py-2 rounded-md bg-gray-300 text-gray-500 cursor-not-allowed text-sm font-medium">
+              Registration Closed
+            </button>
+          ) : tournament.registeredTeams >= tournament.maxTeams ? (
+            <button disabled className="w-full py-2 rounded-md bg-gray-300 text-gray-500 cursor-not-allowed text-sm font-medium">
+              Tournament Full
+            </button>
+          ) : (
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  setModalMode('create');
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Register Now
+              </button>
+              <button
+                onClick={() => {
+                  setModalMode('join');
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-2 rounded-md bg-white border border-indigo-600 text-indigo-600 hover:bg-indigo-50 transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Join Team
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -124,7 +152,9 @@ const TournamentCard = ({ tournament }) => {
         onClose={() => setIsModalOpen(false)}
         onRegister={handleRegister}
         tournamentTitle={tournament.title}
+        tournamentId={tournament._id} // Pass ID for searching teams
         loading={loading}
+        initialMode={modalMode}
       />
     </>
   );

@@ -101,6 +101,14 @@ const tournamentSchema = mongoose.Schema(
         enum: ['Pending', 'Approved', 'Rejected'],
         default: 'Pending'
       },
+      teamSize: {
+        type: Number,
+        default: 1
+      },
+      members: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }],
       registrationDate: {
         type: Date,
         default: Date.now
