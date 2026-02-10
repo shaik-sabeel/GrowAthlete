@@ -19,7 +19,7 @@ const upload = multer({
     const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|avi|mov|pdf|doc|docx/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
+
     if (mimetype && extname) {
       return cb(null, true);
     } else {
@@ -35,7 +35,7 @@ router.get('/public', async (req, res) => {
   try {
     const { page = 1, limit = 10, sort = 'newest' } = req.query;
     const skip = (page - 1) * limit;
-    
+
     let sortOption = {};
     switch (sort) {
       case 'newest':
@@ -54,23 +54,28 @@ router.get('/public', async (req, res) => {
         sortOption = { createdAt: -1 };
     }
 
-    const posts = await CommunityPost.find({ 
+    const posts = await CommunityPost.find({
       status: 'approved',
-      isFlagged: false 
+      isFlagged: false
     })
-    .populate('author', 'username profilePicture')
-    .populate('comments.author', 'username profilePicture')
-    .sort(sortOption)
-    .skip(skip)
-    .limit(parseInt(limit));
+      .populate('author', 'username profilePicture')
+      .populate('comments.author', 'username profilePicture')
+      .sort(sortOption)
+      // .skip(skip) // Pagination skipped for now to filter correctly in memory, or use aggregation
+      // If we skip in DB, we might get nulls, and filtering them reduces page size.
+      // For now, let's just filter. If the user has many deleted users, this might yield fewer results per page.
+      .skip(skip)
+      .limit(parseInt(limit));
 
-    const total = await CommunityPost.countDocuments({ 
+    const validPosts = posts.filter(post => post.author); // Filter out null authors
+
+    const total = await CommunityPost.countDocuments({
       status: 'approved',
-      isFlagged: false 
+      isFlagged: false
     });
 
     res.json({
-      posts,
+      posts: validPosts,
       currentPage: parseInt(page),
       totalPages: Math.ceil(total / limit),
       totalPosts: total
@@ -120,7 +125,7 @@ router.post('/', verifyToken, upload.array('media', 5), enforceContentModeration
       for (const file of req.files) {
         try {
           let mediaResult;
-          
+
           // Try cloud storage first if configured
           if (isCloudinaryConfigured()) {
             try {
@@ -133,10 +138,10 @@ router.post('/', verifyToken, upload.array('media', 5), enforceContentModeration
             // Use local storage if cloud not configured
             mediaResult = fallbackToLocal(file, 'uploads/community/');
           }
-          
+
           const mediaType = file.mimetype.startsWith('image/') ? 'image' :
-                           file.mimetype.startsWith('video/') ? 'video' : 'document';
-          
+            file.mimetype.startsWith('video/') ? 'video' : 'document';
+
           media.push({
             url: mediaResult.url,
             publicId: mediaResult.publicId,
@@ -236,7 +241,7 @@ router.delete('/:id', verifyToken, async (req, res) => {
     // Delete media files from cloud storage if they exist
     if (post.media && post.media.length > 0) {
       const { deleteFromCloudinary } = require('../utils/cloudStorage');
-      
+
       for (const mediaItem of post.media) {
         if (mediaItem.publicId) {
           try {
@@ -335,7 +340,7 @@ router.post('/:id/react', verifyToken, async (req, res) => {
     const { id } = req.params;
     const { type } = req.body;
     const userId = req.user.id;
-    const ALLOWED = ['👍','❤️','😂','👏','🙌'];
+    const ALLOWED = ['👍', '❤️', '😂', '👏', '🙌'];
     if (!ALLOWED.includes(type)) {
       return res.status(400).json({ message: 'Invalid reaction type' });
     }
@@ -362,7 +367,7 @@ router.delete('/:id/react', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    const ALLOWED = ['👍','❤️','😂','👏','🙌'];
+    const ALLOWED = ['👍', '❤️', '😂', '👏', '🙌'];
     const post = await CommunityPost.findById(id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
     const before = (post.reactions || []).length;
@@ -542,10 +547,10 @@ router.get('/user/:userId', async (req, res) => {
       status: 'approved',
       isFlagged: false
     })
-    .populate('author', 'username profilePicture')
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(parseInt(limit));
+      .populate('author', 'username profilePicture')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
 
     const total = await CommunityPost.countDocuments({
       author: userId,
@@ -575,10 +580,10 @@ router.get('/my-posts', verifyToken, async (req, res) => {
     const posts = await CommunityPost.find({
       author: userId
     })
-    .populate('author', 'username profilePicture')
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(parseInt(limit));
+      .populate('author', 'username profilePicture')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
 
     const total = await CommunityPost.countDocuments({
       author: userId
