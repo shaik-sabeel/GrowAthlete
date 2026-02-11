@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -106,7 +107,7 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
 // Handle missing static files gracefully
 app.use("/uploads", (req, res, next) => {
   console.warn(`Missing static file: ${req.path}`);
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'File not found',
     message: 'The requested file does not exist',
     path: req.path
@@ -124,8 +125,8 @@ app.use((req, res, next) => {
 
 // Simple test route (before DB connection)
 app.get("/test", (req, res) => {
-  res.json({ 
-    message: "Backend is working!", 
+  res.json({
+    message: "Backend is working!",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
     origin: req.headers.origin
