@@ -9,7 +9,9 @@ const {
   registerForTournament,
   getUserRegistrations,
   getTournamentTeams,
-  joinTournamentTeam
+  joinTournamentTeam,
+  getAllRegistrations,
+  updateRegistrationStatus
 } = require('../controllers/tournamentController');
 const { verifyToken, isAdmin } = require('../middlewares/authMiddleware'); // Import your existing auth middleware
 
@@ -41,5 +43,12 @@ router.route('/:id/teams')
 
 router.route('/:id/join')
   .post(verifyToken, joinTournamentTeam);
+
+// Admin-only registration management
+router.route('/registrations/all')
+  .get(verifyToken, isAdmin, getAllRegistrations);
+
+router.route('/:tournamentId/registrations/:registrationId/status')
+  .patch(verifyToken, isAdmin, updateRegistrationStatus);
 
 module.exports = router;

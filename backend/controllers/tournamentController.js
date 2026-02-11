@@ -328,6 +328,77 @@ const getUserRegistrations = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, count: formattedTournaments.length, data: formattedTournaments });
 });
 
+// @desc    Get all registrations (Admin only)
+// @route   GET /api/tournaments/registrations/all
+// @access  Private (Admin)
+const getAllRegistrations = asyncHandler(async (req, res) => {
+  const tournaments = await Tournament.find({})
+    .populate('registrations.user', 'username email name')
+    .populate('registrations.members', 'username email name');
+
+  // Flatten registrations from all tournaments
+  const allRegistrations = [];
+  tournaments.forEach(t => {
+    t.registrations.forEach(r => {
+      allRegistrations.push({
+        _id: r._id,
+        tournamentId: t._id,
+        tournamentTitle: t.title,
+        teamName: r.teamName,
+        user: r.user,
+        email: r.email,
+        phoneNumber: r.phoneNumber,
+        age: r.age,
+        gender: r.gender,
+        status: r.status,
+        registrationDate: r.registrationDate,
+        teamSize: r.teamSize,
+        members: r.members
+      });
+    });
+  });
+
+  // Sort by date (descending)
+  allRegistrations.sort((a, b) => b.registrationDate - a.registrationDate);
+
+  res.status(200).json({ success: true, count: allRegistrations.length, data: allRegistrations });
+});
+
+// @desc    Update registration status (Admin only)
+// @route   PATCH /api/tournaments/:tournamentId/registrations/:registrationId/status
+// @access  Private (Admin)
+const updateRegistrationStatus = asyncHandler(async (req, res) => {
+  const { tournamentId, registrationId } = req.params;
+  const { status } = req.body;
+
+  if (!['Approved', 'Rejected', 'Pending'].includes(status)) {
+    return res.status(400).json({ success: false, message: 'Invalid status' });
+  }
+
+  const tournament = await Tournament.findById(tournamentId);
+
+  if (!tournament) {
+    return res.status(404).json({ success: false, message: 'Tournament not found' });
+  }
+
+  const registration = tournament.registrations.id(registrationId);
+
+  if (!registration) {
+    return res.status(404).json({ success: false, message: 'Registration not found' });
+  }
+
+  registration.status = status;
+
+  // We don't bother updating registeredTeams count here unless we want it to mean ONLY approved teams.
+  // Currently tournamentController.js line 267 sets registeredTeams = registrations.length (all registrations).
+  // If we change it to only approved teams, we should update it here too.
+  // But let's stay consistent with how it's currently used.
+
+  await tournament.save();
+
+  res.status(200).json({ success: true, message: `Registration ${status}`, data: registration });
+});
+
 module.exports = {
   getTournaments,
   getTournament,
@@ -337,5 +408,7 @@ module.exports = {
   registerForTournament,
   getUserRegistrations,
   getTournamentTeams,
-  joinTournamentTeam
+  joinTournamentTeam,
+  getAllRegistrations,
+  updateRegistrationStatus
 };
