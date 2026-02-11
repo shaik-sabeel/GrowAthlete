@@ -885,8 +885,10 @@
 
 // export default MyProfile;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "../pages_css/MyProfile.css";
+import api from "../utils/api";
 
 const mockProfile = {
   user: {
@@ -936,10 +938,35 @@ const mockProfile = {
   ]
 };
 
+/*HELPERS*/
+const parseAchievements = (data) => {
+  if (!data) return [];
+  if (Array.isArray(data)) return data;
+  if (typeof data === 'string') {
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [{ date: "Achievement", title: data }];
+    } catch (e) {
+      // If not JSON, treat as a single string entry or split by newlines
+      return data.split('\n').filter(line => line.trim()).map(line => ({
+        date: "Achievement",
+        title: line.trim()
+      }));
+    }
+  }
+  return [];
+};
+
 /*COMPONENT*/
 
+
 export default function MyProfile() {
-  const [profile, setProfile] = useState(mockProfile);
+  const { id } = useParams();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isOwnProfile, setIsOwnProfile] = useState(false);
+
   const [editHeader, setEditHeader] = useState(false);
   const [editDetails, setEditDetails] = useState(false);
   const [showMoreDetails, setShowMoreDetails] = useState(false);
@@ -952,13 +979,118 @@ export default function MyProfile() {
 
   const [isEditAthleticOpen, setIsEditAthleticOpen] = useState(false);
   const [isActivityOpen, setIsActivityOpen] = useState(false);
-  const [editableProfile, setEditableProfile] = useState(profile.user);
-  const [editableAthletic, setEditableAthletic] = useState(profile.athleticDetails);
+  const [editableProfile, setEditableProfile] = useState({});
+  const [editableAthletic, setEditableAthletic] = useState({});
   const [editableAchievement, setEditableAchievement] = useState({ date: "", title: "", description: "" });
   const [editingIndex, setEditingIndex] = useState(null);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        // Determine if we are viewing "My Profile" or a specific athlete by ID
+        const endpoint = id ? `/profile/${id}` : "/profile/my-profile";
+        const res = await api.get(endpoint);
+        const { user, posts } = res.data;
+
+        // Check if the viewed profile belongs to the logged-in user
+        const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+        setIsOwnProfile(!id || id === loggedInUser._id || id === loggedInUser.id);
+
+        // Map backend user to the structure expected by the UI
+        const mappedUser = {
+          name: user.username,
+          sport: user.sport || "Athlete",
+          location: user.location || "N/A",
+          availability: user.availability || "Open to opportunities",
+          avatar: user.profilePicture || "https://via.placeholder.com/150",
+          bio: user.bio || "No bio provided."
+        };
+
+        const mappedAthletic = {
+          primarySport: user.sport || "N/A",
+          position: user.position || "N/A",
+          height: user.height || "N/A",
+          weight: user.weight || "N/A",
+          team: user.team || "N/A",
+          extraNotes: user.extraNotes || "No extra notes."
+        };
+
+        // Map posts to UI structure
+        const mappedPosts = posts.map(post => ({
+          id: post._id,
+          title: post.content.substring(0, 50) + (post.content.length > 50 ? "..." : ""),
+          caption: post.content,
+          image: (post.media && post.media.length > 0) ? post.media[0].url : "https://via.placeholder.com/420x240",
+          likes: post.likes ? post.likes.length : 0,
+          reposts: 0 // Mocking reposts as it's not in the model yet
+        }));
+
+        setProfile({
+          user: mappedUser,
+          athleticDetails: mappedAthletic,
+          posts: mappedPosts,
+          achievements: parseAchievements(user.achievements)
+        });
+
+        setEditableProfile(mappedUser);
+        setEditableAthletic(mappedAthletic);
+
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        setError("Failed to load profile data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [id]);
 
   /*HANDLERS*/
+
+  const handleSave = async (data) => {
+    try {
+      setLoading(true);
+      const res = await api.put("/profile/update", data);
+      if (res.data.success) {
+        // Refresh local state with backend response
+        const { user } = res.data;
+
+        const mappedUser = {
+          name: user.username,
+          sport: user.sport || "Athlete",
+          location: user.location || "N/A",
+          availability: user.availability || "Open to opportunities",
+          avatar: user.profilePicture || "https://via.placeholder.com/150",
+          bio: user.bio || "No bio provided."
+        };
+
+        const mappedAthletic = {
+          primarySport: user.sport || "N/A",
+          position: user.position || "N/A",
+          height: user.height || "N/A",
+          weight: user.weight || "N/A",
+          team: user.team || "N/A",
+          extraNotes: user.extraNotes || "No extra notes."
+        };
+
+        setProfile(prev => ({
+          ...prev,
+          user: mappedUser,
+          athleticDetails: mappedAthletic,
+          achievements: parseAchievements(user.achievements)
+        }));
+
+        setIsModalOpen(false);
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLike = (id) => {
     setProfile({
@@ -969,19 +1101,9 @@ export default function MyProfile() {
     });
   };
 
-  const handleAddAchievement = () => {
-    if (!newAchievement.date || !newAchievement.title) return;
-
-    setProfile({
-      ...profile,
-      achievements: [...profile.achievements, newAchievement]
-    });
-
-    setNewAchievement({ date: "", title: "" });
-    setShowAddAchievement(false);
-  };
-
-  /*RENDER*/
+  if (loading) return <div className="loading-container"><p>Loading profile...</p></div>;
+  if (error) return <div className="error-container"><p>{error}</p></div>;
+  if (!profile) return null;
 
   return (
     <div className="profile-page">
@@ -1012,16 +1134,18 @@ export default function MyProfile() {
             </p>
           </div>
 
-          <button
-            className="icon-btn"
-            onClick={() => {
-              setEditMode("profile");
-              setEditableProfile(profile.user);
-              setIsModalOpen(true);
-            }}
-          >
-            ✎
-          </button>
+          {isOwnProfile && (
+            <button
+              className="icon-btn"
+              onClick={() => {
+                setEditMode("profile");
+                setEditableProfile(profile.user);
+                setIsModalOpen(true);
+              }}
+            >
+              ✎
+            </button>
+          )}
 
         </div>
 
@@ -1045,16 +1169,18 @@ export default function MyProfile() {
       <section className="card">
         <div className="card-header">
           <h3>Athletic Details</h3>
-          <button
-            className="icon-btn"
-            onClick={() => {
-              setEditMode("athletic");
-              setEditableAthletic(profile.athleticDetails);
-              setIsModalOpen(true);
-            }}
-          >
-            ✎
-          </button>
+          {isOwnProfile && (
+            <button
+              className="icon-btn"
+              onClick={() => {
+                setEditMode("athletic");
+                setEditableAthletic(profile.athleticDetails);
+                setIsModalOpen(true);
+              }}
+            >
+              ✎
+            </button>
+          )}
 
 
         </div>
@@ -1085,7 +1211,7 @@ export default function MyProfile() {
           {showMoreDetails && (
             <div className="full">
               <label>Extra Notes</label>
-              <p>Additional athletic information…</p>
+              <p>{profile.athleticDetails.extraNotes}</p>
             </div>
           )}
         </div>
@@ -1175,28 +1301,30 @@ export default function MyProfile() {
         <div className="card-header">
           <h3>Achievements</h3>
 
-          <div className="icon-actions">
-            <button
-              className="icon-btn"
-              onClick={() => {
-                setEditableAchievement({ date: "", title: "", description: "" });
-                setEditMode("achievement-add");
-                setIsModalOpen(true);
-              }}
-            >
-              +
-            </button>
+          {isOwnProfile && (
+            <div className="icon-actions">
+              <button
+                className="icon-btn"
+                onClick={() => {
+                  setEditableAchievement({ date: "", title: "", description: "" });
+                  setEditMode("achievement-add");
+                  setIsModalOpen(true);
+                }}
+              >
+                +
+              </button>
 
-            <button
-              className="icon-btn"
-              onClick={() => {
-                setEditMode("achievement-manage");
-                setIsModalOpen(true);
-              }}
-            >
-              ✎
-            </button>
-          </div>
+              <button
+                className="icon-btn"
+                onClick={() => {
+                  setEditMode("achievement-manage");
+                  setIsModalOpen(true);
+                }}
+              >
+                ✎
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="achievements-list">
@@ -1270,6 +1398,13 @@ export default function MyProfile() {
                       setEditableProfile({ ...editableProfile, bio: e.target.value })
                     }
                   />
+                  <label>Availability</label>
+                  <input
+                    value={editableProfile.availability}
+                    onChange={(e) =>
+                      setEditableProfile({ ...editableProfile, availability: e.target.value })
+                    }
+                  />
                 </>
               )}
 
@@ -1330,6 +1465,7 @@ export default function MyProfile() {
                       })
                     }
                   />
+
                   <label>Extra Notes</label>
                   <textarea
                     value={editableAthletic.extraNotes}
@@ -1397,14 +1533,10 @@ export default function MyProfile() {
 
                             <button
                               className="btn-delete"
-                              onClick={() =>
-                                setProfile({
-                                  ...profile,
-                                  achievements: profile.achievements.filter(
-                                    (_, i) => i !== index
-                                  )
-                                })
-                              }
+                              onClick={() => {
+                                const newAchievements = profile.achievements.filter((_, i) => i !== index);
+                                handleSave({ achievements: newAchievements });
+                              }}
                             >
                               Delete
                             </button>
@@ -1441,8 +1573,8 @@ export default function MyProfile() {
                               onClick={() => {
                                 const updated = [...profile.achievements];
                                 updated[index] = editableAchievement;
-                                setProfile({ ...profile, achievements: updated });
-                                setEditingIndex(null); // ✅ exit edit mode
+                                handleSave({ achievements: updated });
+                                setEditingIndex(null);
                               }}
                             >
                               Save
@@ -1499,23 +1631,32 @@ export default function MyProfile() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (editMode === "achievement-add") {
-                      setProfile({
-                        ...profile,
-                        achievements: [
-                          ...profile.achievements,
-                          editableAchievement
-                        ]
+                    if (editMode === "profile") {
+                      handleSave({
+                        username: editableProfile.name,
+                        sport: editableProfile.sport,
+                        location: editableProfile.location,
+                        bio: editableProfile.bio,
+                        availability: editableProfile.availability
                       });
-                    }
-
-                    if (editMode === "achievement-edit") {
+                    } else if (editMode === "athletic") {
+                      handleSave({
+                        sport: editableAthletic.primarySport,
+                        position: editableAthletic.position,
+                        height: editableAthletic.height,
+                        weight: editableAthletic.weight,
+                        team: editableAthletic.team,
+                        extraNotes: editableAthletic.extraNotes
+                      });
+                    } else if (editMode === "achievement-add") {
+                      handleSave({
+                        achievements: [...profile.achievements, editableAchievement]
+                      });
+                    } else if (editMode === "achievement-edit") {
                       const updated = [...profile.achievements];
                       updated[editingIndex] = editableAchievement;
-                      setProfile({ ...profile, achievements: updated });
+                      handleSave({ achievements: updated });
                     }
-
-                    setIsModalOpen(false);
                   }}
                 >
                   Save
