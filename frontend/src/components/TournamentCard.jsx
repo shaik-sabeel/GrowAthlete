@@ -80,7 +80,7 @@ const TournamentCard = ({ tournament }) => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
         <img src={tournament.image} alt={tournament.title} className="w-full h-40 object-cover" />
         <div className="p-4 flex flex-col flex-1">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 leading-tight" >
+          <h3 className="text-lg font-semibold text-black mb-2 leading-tight" style={{ color: 'black' }}>
             {tournament.title}
           </h3>
           <div className="flex items-center text-gray-600 text-sm mb-1">

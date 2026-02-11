@@ -108,7 +108,7 @@ const MapSection = ({ tournaments = [] }) => {
 
   return (
     <div className="bg-white p-4 shadow-md rounded-lg mb-8 z-0 relative">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Tournament Locations</h2>
+      <h2 className="text-xl font-semibold mb-4 text-black" style={{ color: 'black' }}>Tournament Locations</h2>
       <div className="relative w-full overflow-hidden rounded-md h-96 z-0">
         <MapContainer
           center={defaultCenter}

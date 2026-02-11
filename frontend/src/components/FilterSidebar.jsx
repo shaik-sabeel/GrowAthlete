@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 const FilterSidebar = ({ filters, onFilterChange, onClearFilters }) => {
   return (
     <aside className="w-full lg:w-72 bg-white p-6 shadow-md rounded-lg flex-shrink-0">
-      <h2 className="text-xl font-semibold mb-6 text-gray-800">Filter Tournaments</h2>
+      <h2 className="text-xl font-semibold mb-6 text-black" style={{ color: 'black' }}>Filter Tournaments</h2>
 
       <div className="space-y-6">
         {/* Search Tournaments */}
