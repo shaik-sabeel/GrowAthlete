@@ -36,6 +36,7 @@ import CommunityPage from './pages/CommunityPage';
 import CreateBlog from './pages/CreateBlogPost.jsx';
 import Sponsorship from './pages/SponsorShip.jsx';
 import SportsPage from './pages/SportsPage.jsx';
+import FeedPage from './pages/FeedPage.jsx';
 import Profile from './pages/Profile';
 import SportsBlogPage from './pages/SportsBlogPage.jsx';
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx';
@@ -57,6 +58,8 @@ import 'swiper/css/scrollbar';
 
 function AppContent() {
   const location = useLocation();
+
+  // Track page views in Google Analytics 4 on route changes
   usePageTracking();
 
   // Admin-only GA: load GA script and track only on admin routes or when user is admin
@@ -110,13 +113,18 @@ function AppContent() {
           <Route path="/sports-blog" element={<SportsBlogPage />} />
           <Route path="/sports-blog/:slug" element={<SingleBlogPostPage />} />
           <Route path="/sponsorships" element={<Sponsorship />} />
-          <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />
-          <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />
-          <Route path="/saved-articles" element={<ErrorBoundary><SavedArticlesPage /></ErrorBoundary>} />
+
+          <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
+          <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
+          <Route path="/saved-articles" element={<ErrorBoundary><SavedArticlesPage /></ErrorBoundary>} />         {/* <--- SAVED ARTICLES PAGE */}
+
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/splash" element={<Splash nextPath="/" />} />
           <Route path="/resume-template" element={<ResumeTemplate />} />
+          <Route path="/feed" element={<FeedPage />} />
+
+
 
           {/* --- PROTECTED ROUTES --- */}
           <Route

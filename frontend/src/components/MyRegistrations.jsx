@@ -57,6 +57,26 @@ const MyRegistrations = () => {
                                 <Calendar className="h-4 w-4 mr-2 text-gray-600" />
                                 {tournament.dateRange}
                             </div>
+                            {/* Display Organizer if available */}
+                            {tournament.organizer && (
+                                <div className="text-sm text-gray-700 mt-1">
+                                    <span className="font-semibold">Organizer:</span> {tournament.organizer.name}
+                                </div>
+                            )}
+
+                            {/* Display Members */}
+                            {tournament.members && tournament.members.length > 0 && (
+                                <div className="text-sm text-gray-700 mt-2">
+                                    <span className="font-semibold">Team Members ({tournament.members.length}):</span>
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                        {tournament.members.map((member, index) => (
+                                            <span key={member._id || index} className="bg-gray-100 px-2 py-0.5 rounded text-xs">
+                                                {member.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
