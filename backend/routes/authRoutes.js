@@ -299,6 +299,8 @@ router.get("/all-users", verifyToken, async (req, res) => {
 router.get("/profile", verifyToken, async (req, res) => {
   // res.json({ user: req.user });
   const user = await User.findById(req.user.id, '-password')
+    .populate('followers', 'username profilePicture bio')
+    .populate('following', 'username profilePicture bio');
   if (!user) return res.status(404).json("User not found");
   res.status(200).json({ user });
 });
@@ -316,5 +318,61 @@ router.get("/profile/:id", verifyToken, async (req, res) => {
   }
 });
 
+
+
+// Follow a user
+router.post("/follow/:id", verifyToken, async (req, res) => {
+  try {
+    if (req.user.id === req.params.id) {
+      return res.status(400).json({ message: "You cannot follow yourself" });
+    }
+
+    const start = Date.now();
+    const currentUser = await User.findById(req.user.id);
+    const targetUser = await User.findById(req.params.id);
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!currentUser.following.includes(req.params.id)) {
+      await currentUser.updateOne({ $push: { following: req.params.id } });
+      await targetUser.updateOne({ $push: { followers: req.user.id } });
+      res.status(200).json({ message: "User followed successfully" });
+    } else {
+      res.status(400).json({ message: "You already follow this user" });
+    }
+  } catch (err) {
+    console.error("Error following user:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Unfollow a user
+router.post("/unfollow/:id", verifyToken, async (req, res) => {
+  try {
+    if (req.user.id === req.params.id) {
+      return res.status(400).json({ message: "You cannot unfollow yourself" });
+    }
+
+    const currentUser = await User.findById(req.user.id);
+    const targetUser = await User.findById(req.params.id);
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (currentUser.following.includes(req.params.id)) {
+      await currentUser.updateOne({ $pull: { following: req.params.id } });
+      await targetUser.updateOne({ $pull: { followers: req.user.id } });
+      res.status(200).json({ message: "User unfollowed successfully" });
+    } else {
+      res.status(400).json({ message: "You do not follow this user" });
+    }
+  } catch (err) {
+    console.error("Error unfollowing user:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;

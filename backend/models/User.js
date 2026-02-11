@@ -70,6 +70,7 @@ const userSchema = new mongoose.Schema({
   },
   bio: String,
   achievements: String,
+<<<<<<< HEAD
   availability: {
     type: String,
     default: "Open to tryouts"
@@ -99,6 +100,39 @@ const userSchema = new mongoose.Schema({
     skill: { type: Number, default: 50 }
   }
 
+=======
+  // availability: {
+  //   type: String,
+  //   default: "Open to tryouts"
+  // },
+  // locationType: {
+  //   type: String,
+  //   default: "Remote/On-site"
+  // },
+  // nextEvent: {
+  //   type: String,
+  //   default: ""
+  // },
+  // aiBlurb: {
+  //   type: String,
+  //   default: ""
+  // },
+  // performanceDNA: {
+  //   speed: { type: Number, default: 50 },
+  //   endurance: { type: Number, default: 50 },
+  //   agility: { type: Number, default: 50 },
+  //   strength: { type: Number, default: 50 },
+  //   skill: { type: Number, default: 50 }
+  // }
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
+>>>>>>> 141d091cb0511d3153847bbe45a530d727ac858f
 });
 
 module.exports = mongoose.model("User", userSchema);

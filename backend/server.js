@@ -191,7 +191,12 @@ safeMount("/api/events", eventRoutes);
 safeMount("/api/blog", blogRoutes);
 safeMount("/api/community", communityPostRoutes);
 safeMount("/api/tournaments", tournamentRoutes);
+<<<<<<< HEAD
 safeMount("/api/profile", profileRoutes);
+=======
+const chatRoomRoutes = require("./routes/chatRoomRoutes");
+safeMount("/api/chatrooms", chatRoomRoutes);
+>>>>>>> 141d091cb0511d3153847bbe45a530d727ac858f
 
 // Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
