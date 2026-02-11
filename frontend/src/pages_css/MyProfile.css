@@ -1,5 +1,7 @@
 body {
-  color : #111827;
+  color: #111827;
+  background-color: #f0f2f5;
+  /* Slightly darker background */
 }
 
 .profile-page {
@@ -10,21 +12,39 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
-  background: #f7f9fc;
+  background: #f0f2f5;
+  /* Visible background */
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   color: #1f2937;
+  min-height: 100vh;
 }
 
+.error-container,
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
 
+.error-container {
+  color: #dc2626;
+}
 
 .card {
   background: #ffffff;
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 24px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e1e4e8;
+  /* Slightly darker border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* Add shadow for depth */
 }
-
 
 .profile-header .profile-top {
   display: flex;
@@ -37,6 +57,10 @@ body {
   height: 88px;
   border-radius: 50%;
   object-fit: cover;
+  border: 3px solid #ffffff;
+  /* White border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Shadow for avatar */
 }
 
 .profile-info h2 {
@@ -97,8 +121,8 @@ body {
 }
 
 .icon-actions {
-  display: inline-flex;   
-  gap: 8px;               
+  display: inline-flex;
+  gap: 8px;
   align-items: center;
 }
 
@@ -380,6 +404,7 @@ button {
   font-size: 25px;
   font-weight: 700;
 }
+
 .card {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -388,12 +413,14 @@ button {
   transform: translateY(-3px);
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
 }
+
 .icon-btn:hover {
   background: #e0e7ff;
   border-color: #2563eb;
   color: #1e3a8a;
   transform: scale(1.05);
 }
+
 .post-card {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -402,6 +429,7 @@ button {
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
+
 .post-actions button {
   padding: 6px 12px;
   border-radius: 6px;
@@ -412,6 +440,7 @@ button {
   background: #eff6ff;
   color: #2563eb;
 }
+
 .achievements-list {
   display: grid;
   gap: 14px;
@@ -422,11 +451,9 @@ button {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: linear-gradient(
-    135deg,
-    #f8fafc,
-    #eef2ff
-  );
+  background: linear-gradient(135deg,
+      #f8fafc,
+      #eef2ff);
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -436,6 +463,7 @@ button {
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(30, 64, 175, 0.12);
 }
+
 .achievement-title {
   font-size: 16px;
   font-weight: 700;
@@ -448,6 +476,7 @@ button {
   color: #475569;
   margin-top: 4px;
 }
+
 input:hover,
 textarea:hover {
   border-color: #2563eb;
@@ -617,8 +646,9 @@ textarea:focus {
 }
 
 .activity-card {
-padding-top: 18px;
+  padding-top: 18px;
 }
+
 .see-all-under {
   margin-top: 14px;
   padding-top: 12px;
@@ -698,9 +728,11 @@ padding-top: 18px;
   border-radius: 10px;
   object-fit: cover;
 }
+
 .post-content {
-flex: 1; /* 🔥 FILL remaining width */
-width: 95%;
+  flex: 1;
+  /* 🔥 FILL remaining width */
+  width: 95%;
 }
 
 .post-actions {
@@ -780,6 +812,7 @@ width: 95%;
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
+
 .athletic-section {
   overflow: hidden;
 }
@@ -796,6 +829,7 @@ width: 95%;
 .achievement-actions button {
   pointer-events: auto;
 }
+
 .modal-body * {
   position: relative;
 }
@@ -927,6 +961,7 @@ width: 95%;
 .btn-cancel:hover {
   background: #e2e8f0;
 }
+
 /*ATHLETIC DETAILS MODAL*/
 
 /* Layout */

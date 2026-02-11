@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import { FaUserEdit, FaUpload, FaSave, FaBan, FaLink, FaImage, FaPhone, FaMedal, FaInstagram, FaTwitter, FaFacebookF, FaLinkedin, FaYoutube, FaGlobe, FaTools } from 'react-icons/fa'; // Consolidated imports
 
 // Let's create ProfileEdit.css for tailored styling.
-import '../pages_css/ProfileEdit.css'; 
+import '../pages_css/ProfileEdit.css';
 
 const ProfileEdit = () => {
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ const ProfileEdit = () => {
         achievements: '',
         phone: '',
         // For profilePicture: store URL as string initially, file handled separately
-        profilePictureUrl: '', 
+        profilePictureUrl: '',
         // Social links (ensure they are all strings)
         socialLinks: {
             instagram: '',
@@ -38,7 +38,22 @@ const ProfileEdit = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
-    const defaultAvatar = "https://res.cloudinary.com/dvlyrgrsd/image/upload/v1718957805/default-avatar.png"; // Your default avatar URL
+    const defaultAvatar = "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611734.jpg";
+
+    const avatarOptions = [
+        "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611734.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-person-with-pink-hair_23-2149436186.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-person_23-2149436192.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-person-with-glasses_23-2149436185.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-business-man-with-glasses_23-2149436194.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-teenager-with-funny-face-glasses_23-2149436185.jpg",
+        "https://img.freepik.com/free-psd/3d-illustration-bald-person-with-glasses_23-2149436184.jpg",
+        "https://api.dicebear.com/7.x/adventurer/svg?seed=Felix",
+        "https://api.dicebear.com/7.x/adventurer/svg?seed=Aneka",
+        "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
+        "https://api.dicebear.com/7.x/bottts/svg?seed=Pepper",
+    ];
 
     // Fetch existing user data on component mount
     useEffect(() => {
@@ -109,7 +124,7 @@ const ProfileEdit = () => {
             setImagePreview(URL.createObjectURL(file)); // Show local preview for file
         } else {
             // If file selection is cancelled, revert to current URL or default
-            setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); 
+            setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar);
         }
     };
 
@@ -120,19 +135,7 @@ const ProfileEdit = () => {
         setMessage('');
 
         try {
-            // 1. Upload new profile picture if a file is selected
-            if (profileImageFile) {
-                const formDataFile = new FormData();
-                formDataFile.append('profilePicture', profileImageFile);
-                const picRes = await api.post('/auth/profile/picture', formDataFile);
-                setMessage(prev => (prev ? prev + '. ' : '') + picRes.data.message);
-                // Update the profilePictureUrl in formData state
-                setFormData(prev => ({ 
-                    ...prev, 
-                    profilePictureUrl: picRes.data.user.profilePicture // Path from server, e.g., /uploads/profiles/file.png
-                }));
-                setProfileImageFile(null); // Clear file input state after successful upload
-            }
+            // 1. (Removed file upload logic as we are using avatars now)
 
             // 2. Prepare other profile fields for update (sends non-file data)
             const profileDataToUpdate = {
@@ -150,11 +153,11 @@ const ProfileEdit = () => {
                 // OR if it's been successfully uploaded and we now have the server path (updated in formData.profilePictureUrl)
                 profilePicture: formData.profilePictureUrl.startsWith('http') || formData.profilePictureUrl.startsWith('/uploads') ? formData.profilePictureUrl : undefined
             };
-            
+
             const res = await api.post('/auth/update', profileDataToUpdate); // This route updates the non-file fields
             setMessage(prev => (prev ? prev + '. ' : '') + res.data.message);
             // After successful save, navigate to view page after a small delay
-            setTimeout(() => navigate('/profile'), 1500); 
+            setTimeout(() => navigate('/profile'), 1500);
 
         } catch (err) {
             console.error('Error updating profile:', err);
@@ -199,51 +202,40 @@ const ProfileEdit = () => {
                     {message && <p className="success-message">{message}</p>}
                     {error && <p className="error-message">{error}</p>}
 
-                    {/* Profile Picture Section */}
+                    {/* Profile Picture Section - Avatar Selection */}
                     <div className="form-section">
-                        <h2 className="section-title flex items-center"><FaImage className="mr-2 text-purple-500" /> Profile Picture</h2>
-                        <div className="flex flex-col items-center gap-4">
-                            <img 
-                                src={imagePreview || defaultAvatar} 
-                                alt="Profile Preview" 
-                                className="w-36 h-36 rounded-full object-cover border-4 border-indigo-300 shadow-md"
-                            />
-                            <label className="profile-upload-btn">
-                                <FaUpload className="mr-2" /> Upload New Photo
-                                <input 
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={handleImageFileChange} 
-                                    className="hidden" 
-                                />
-                            </label>
-                            {/* If a new file is selected, but not yet uploaded, offer to revert */}
-                            {profileImageFile && (
-                                <button 
-                                    type="button" 
-                                    onClick={() => { setProfileImageFile(null); setImagePreview(formData.profilePictureUrl && formData.profilePictureUrl.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${formData.profilePictureUrl}` : formData.profilePictureUrl || defaultAvatar); }}
-                                    className="text-red-500 hover:text-red-700 text-sm mt-1"
-                                >
-                                    Cancel local upload
-                                </button>
-                            )}
-                            {/* Input for image URL */}
-                            <input
-                                type="url"
-                                name="profilePictureUrl"
-                                value={!profileImageFile ? formData.profilePictureUrl : ''} // Only show if no file selected
-                                onChange={handleChange}
-                                disabled={!!profileImageFile} // Disable if file is selected
-                                placeholder={profileImageFile ? 'Clear file upload to use URL' : "Or paste an image URL"}
-                                className="text-input text-center"
-                            />
-                            {!profileImageFile && formData.profilePictureUrl && !formData.profilePictureUrl.startsWith('/uploads') && (
-                                <span className="text-sm text-gray-500 italic mt-1">Using external URL for profile picture.</span>
-                            )}
-                            {profileImageFile && (
-                                <span className="text-sm text-gray-500 italic mt-1">New photo selected: {profileImageFile.name}</span>
-                            )}
+                        <h2 className="section-title flex items-center"><FaImage className="mr-2 text-purple-500" /> Choose Avatar</h2>
+                        <div className="flex flex-col items-center gap-6">
 
+                            {/* Current Avatar Preview */}
+                            <div className="flex flex-col items-center">
+                                <span className="text-gray-600 mb-2 font-medium">Selected Avatar</span>
+                                <img
+                                    src={formData.profilePictureUrl || defaultAvatar}
+                                    alt="Profile Preview"
+                                    className="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg"
+                                />
+                            </div>
+
+                            {/* Avatar Grid */}
+                            <div className="w-full">
+                                <p className="text-sm text-gray-500 mb-3 text-center">Select an avatar from the list below:</p>
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 justify-items-center">
+                                    {avatarOptions.map((avatar, index) => (
+                                        <div
+                                            key={index}
+                                            onClick={() => setFormData(prev => ({ ...prev, profilePictureUrl: avatar }))}
+                                            className={`cursor-pointer transition-all transform hover:scale-110 p-1 rounded-full ${formData.profilePictureUrl === avatar ? 'ring-4 ring-indigo-500 bg-indigo-50 scale-110' : 'hover:ring-2 hover:ring-indigo-300'}`}
+                                        >
+                                            <img
+                                                src={avatar}
+                                                alt={`Avatar ${index + 1}`}
+                                                className="w-16 h-16 rounded-full object-cover bg-gray-100"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -357,16 +349,16 @@ const ProfileEdit = () => {
 
                     {/* Form Action Buttons */}
                     <div className="form-actions-bottom">
-                        <button 
-                            type="button" 
-                            onClick={() => navigate('/profile')} 
+                        <button
+                            type="button"
+                            onClick={() => navigate('/profile')}
                             className="cancel-btn flex items-center"
                         >
                             <FaBan className="mr-2" /> Cancel
                         </button>
-                        <button 
-                            type="submit" 
-                            disabled={submitting} 
+                        <button
+                            type="submit"
+                            disabled={submitting}
                             className="submit-btn flex items-center"
                         >
                             {submitting ? (

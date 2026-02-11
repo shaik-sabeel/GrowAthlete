@@ -38,6 +38,7 @@ import Sponsorship from './pages/SponsorShip.jsx';
 import SportsPage from './pages/SportsPage.jsx';
 import FeedPage from './pages/FeedPage.jsx';
 import Profile from './pages/Profile';
+import ProfileEdit from './pages/ProfileEdit'; // Import ProfileEdit
 import SportsBlogPage from './pages/SportsBlogPage.jsx';
 import SingleBlogPostPage from './pages/SingleBlogPostPage.jsx';
 import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';
@@ -132,6 +133,14 @@ function AppContent() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <MyProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <ProfileEdit />
               </ProtectedRoute>
             }
           />

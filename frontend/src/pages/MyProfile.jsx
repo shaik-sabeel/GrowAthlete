@@ -886,7 +886,7 @@
 // export default MyProfile;
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../pages_css/MyProfile.css";
 import api from "../utils/api";
 
@@ -962,6 +962,7 @@ const parseAchievements = (data) => {
 
 export default function MyProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -1103,7 +1104,12 @@ export default function MyProfile() {
 
   if (loading) return <div className="loading-container"><p>Loading profile...</p></div>;
   if (error) return <div className="error-container"><p>{error}</p></div>;
-  if (!profile) return null;
+  if (!profile) return (
+    <div className="error-container">
+      <p>No profile data available.</p>
+      <p className="text-sm text-gray-500">Debug: Loading={String(loading)}, Error={String(error)}</p>
+    </div>
+  );
 
   return (
     <div className="profile-page">
@@ -1138,9 +1144,7 @@ export default function MyProfile() {
             <button
               className="icon-btn"
               onClick={() => {
-                setEditMode("profile");
-                setEditableProfile(profile.user);
-                setIsModalOpen(true);
+                navigate('/profile/edit');
               }}
             >
               ✎
@@ -1173,9 +1177,7 @@ export default function MyProfile() {
             <button
               className="icon-btn"
               onClick={() => {
-                setEditMode("athletic");
-                setEditableAthletic(profile.athleticDetails);
-                setIsModalOpen(true);
+                navigate('/profile/edit');
               }}
             >
               ✎
