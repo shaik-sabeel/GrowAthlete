@@ -148,7 +148,9 @@ const { sendTournamentRegistrationEmail } = require('../utils/mailer');
 // @route   GET /api/tournaments/:id/teams
 // @access  Private
 const getTournamentTeams = asyncHandler(async (req, res) => {
-  const tournament = await Tournament.findById(req.params.id).populate('registrations.user', 'name email');
+  const tournament = await Tournament.findById(req.params.id)
+    .populate('registrations.user', 'name email')
+    .populate('registrations.members', 'name email');
 
   if (!tournament) {
     return res.status(404).json({ success: false, message: 'Tournament not found' });
@@ -162,7 +164,8 @@ const getTournamentTeams = asyncHandler(async (req, res) => {
     teamSize: reg.teamSize,
     currentMembers: reg.members.length,
     slotsAvailable: reg.teamSize - reg.members.length,
-    organizer: reg.user.name || 'Unknown' // Assuming populated
+    organizer: reg.user ? reg.user.name : 'Unknown',
+    members: reg.members.map(m => ({ name: m.name, email: m.email })) // Return simple member info
   }));
 
   res.status(200).json({ success: true, count: teams.length, data: teams });
@@ -281,11 +284,23 @@ const registerForTournament = asyncHandler(async (req, res) => {
 // @route   GET /api/tournaments/my-registrations
 // @access  Private
 const getUserRegistrations = asyncHandler(async (req, res) => {
-  const tournaments = await Tournament.find({ 'registrations.user': req.user.id });
+  const tournaments = await Tournament.find({
+    $or: [
+      { 'registrations.user': req.user.id },
+      { 'registrations.members': req.user.id }
+    ]
+  })
+    .populate('registrations.user', 'name email username')
+    .populate('registrations.members', 'name email username');
 
   // Return tournaments with user's specific registration status
   const formattedTournaments = tournaments.map(t => {
-    const registration = t.registrations.find(r => r.user.toString() === req.user.id);
+    // Find the registration where the user is either the owner or a member
+    const registration = t.registrations.find(r =>
+      r.user._id.toString() === req.user.id ||
+      r.members.some(m => m._id.toString() === req.user.id)
+    );
+
     return {
       _id: t._id,
       title: t.title,
@@ -295,7 +310,18 @@ const getUserRegistrations = asyncHandler(async (req, res) => {
       status: t.status,
       registrationStatus: registration ? registration.status : 'Unknown',
       registrationDate: registration ? registration.registrationDate : null,
-      teamName: registration ? registration.teamName : ''
+      teamName: registration ? registration.teamName : '',
+      // Add member details
+      members: registration ? registration.members.map(m => ({
+        _id: m._id,
+        name: m.name || m.username,
+        email: m.email
+      })) : [],
+      // Add organizer details
+      organizer: registration && registration.user ? {
+        _id: registration.user._id,
+        name: registration.user.name || registration.user.username
+      } : null
     };
   });
 
