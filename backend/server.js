@@ -30,6 +30,8 @@ const communityPostRoutes = require("./routes/communityPostRoutes");
 console.log("DEBUG: communityPostRoutes loaded");
 const tournamentRoutes = require("./routes/tournamentRoutes");
 console.log("DEBUG: tournamentRoutes loaded");
+const profileRoutes = require("./routes/profileRoutes");
+console.log("DEBUG: profileRoutes loaded");
 const PlatformSettings = require("./models/PlatformSettings");
 console.log("DEBUG: PlatformSettings loaded");
 const maintenanceMiddleware = require('./middlewares/maintenance');
@@ -189,6 +191,7 @@ safeMount("/api/events", eventRoutes);
 safeMount("/api/blog", blogRoutes);
 safeMount("/api/community", communityPostRoutes);
 safeMount("/api/tournaments", tournamentRoutes);
+safeMount("/api/profile", profileRoutes);
 
 // Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
