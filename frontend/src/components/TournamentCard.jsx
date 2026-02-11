@@ -31,7 +31,7 @@ const getSportIcon = (sport) => {
 };
 
 
-const TournamentCard = ({ tournament }) => {
+const TournamentCard = ({ tournament, isRegistered }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create'); // 'create' or 'join'
   const [loading, setLoading] = useState(false);
@@ -117,6 +117,10 @@ const TournamentCard = ({ tournament }) => {
           {tournament.status === 'Closed' ? (
             <button disabled className="w-full py-2 rounded-md bg-gray-300 text-gray-500 cursor-not-allowed text-sm font-medium">
               Registration Closed
+            </button>
+          ) : isRegistered ? (
+            <button disabled className="w-full py-2 rounded-md bg-green-100 text-green-700 cursor-not-allowed text-sm font-medium border border-green-200">
+              Registered / Joined
             </button>
           ) : tournament.registeredTeams >= tournament.maxTeams ? (
             <button disabled className="w-full py-2 rounded-md bg-gray-300 text-gray-500 cursor-not-allowed text-sm font-medium">
