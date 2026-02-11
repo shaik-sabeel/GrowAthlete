@@ -227,13 +227,13 @@ const registerForTournament = asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, message: `Tournament is ${tournament.status} and not accepting registrations` });
   }
 
-  // Check if already registered
+  // Check if already registered (as creator OR member)
   const alreadyRegistered = tournament.registrations.find(
-    (r) => r.user.toString() === req.user.id
+    (r) => r.user.toString() === req.user.id || r.members.includes(req.user.id)
   );
 
   if (alreadyRegistered) {
-    return res.status(400).json({ success: false, message: 'You are already registered for this tournament' });
+    return res.status(400).json({ success: false, message: 'You are already registered/joined in a team for this tournament' });
   }
 
   // Check capacity

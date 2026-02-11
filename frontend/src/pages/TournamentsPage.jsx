@@ -21,6 +21,8 @@ const TournamentsPage = () => {
     sortBy: 'Date (Upcoming)'
   });
 
+  const [registeredTournamentIds, setRegisteredTournamentIds] = useState(new Set());
+
   useEffect(() => {
     const fetchTournaments = async () => {
       try {
@@ -40,7 +42,27 @@ const TournamentsPage = () => {
       }
     };
 
+    const fetchMyRegistrations = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const { data } = await axios.get(`${baseUrl}/api/tournaments/my-registrations`, config);
+        if (data.success) {
+          const ids = new Set(data.data.map(t => t._id));
+          setRegisteredTournamentIds(ids);
+        }
+      } catch (error) {
+        console.error("Error fetching my registrations:", error);
+      }
+    };
+
     fetchTournaments();
+    fetchMyRegistrations();
   }, []);
 
   const handleFilterChange = (e) => {
@@ -117,7 +139,11 @@ const TournamentsPage = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
               {filteredTournaments.map((tournament) => (
-                <TournamentCard key={tournament._id} tournament={tournament} />
+                <TournamentCard
+                  key={tournament._id}
+                  tournament={tournament}
+                  isRegistered={registeredTournamentIds.has(tournament._id)}
+                />
               ))}
             </div>
           )}
