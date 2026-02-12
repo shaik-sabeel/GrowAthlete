@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx (Your global header component)
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { useNavigate, Link, NavLink } from 'react-router-dom';
+import { useNavigate, Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNotification } from '../context/NotificationContext';
 
@@ -67,6 +67,7 @@ const mobileMenuVariants = {
 const Navbar = () => {
 
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to track route changes
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [data, setData] = useState(null);
   const { showSuccess, showError } = useNotification();
@@ -106,7 +107,7 @@ const Navbar = () => {
       }
     };
     fetchData();
-  }, []); // run once on mount
+  }, [location]); // Re-run effect when location changes (e.g. after login/logout redirect)
 
 
   //   useEffect(() => {

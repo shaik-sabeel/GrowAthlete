@@ -6,15 +6,10 @@ const SportsResume = require("../models/SportsResume");
 
 const router = express.Router();
 
-// Configure multer for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // make sure this folder exists
-  },
-  filename: (req, file, cb) => {
-    cb(null, "resume" + path.extname(file.originalname));
-  },
-});
+const { uploadToCloudinary, isCloudinaryConfigured, fallbackToLocal } = require('../utils/cloudStorage');
+
+// Configure multer for image uploads (memory storage)
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // POST route: create a new sports resume
@@ -22,48 +17,59 @@ router.post("/", upload.single("profileImage"), async (req, res) => {
   try {
     const {
       fullName,
-    dateOfBirth, // Renamed from dob for clarity consistent with V2
-    gender,
-    nationality,
-    email,
-    phone,
-    address, // Added from V2
-    
-    // Athletic Details
-    primarySport, // Renamed from sport for clarity consistent with V2
-    position,
-    height,
-    weight,
-    dominantHand, // Renamed from dominantSide for clarity consistent with V2
-    currentTeam,
-    
-    // Education (Added from V2)
-    education,
-    
-    // Career Stats
-    careerStats,
-    
-    // Achievements
-    achievements,
-    
-    // Tournament History (Added from V2)
-    tournaments,
-    
-    // Skills and Attributes
-    skills,
-    
-    // Certifications (Added from V2)
-    certifications,
-    
-    // Professional References (Added from V2)
-    references,
-    
-    // Video Links (Added from V2)
-    videoLinks,
-    
-    // Social Media Profiles (Added from V2)
-    socialMedia,
+      dateOfBirth, // Renamed from dob for clarity consistent with V2
+      gender,
+      nationality,
+      email,
+      phone,
+      address, // Added from V2
+
+      // Athletic Details
+      primarySport, // Renamed from sport for clarity consistent with V2
+      position,
+      height,
+      weight,
+      dominantHand, // Renamed from dominantSide for clarity consistent with V2
+      currentTeam,
+
+      // Education (Added from V2)
+      education,
+
+      // Career Stats
+      careerStats,
+
+      // Achievements
+      achievements,
+
+      // Tournament History (Added from V2)
+      tournaments,
+
+      // Skills and Attributes
+      skills,
+
+      // Certifications (Added from V2)
+      certifications,
+
+      // Professional References (Added from V2)
+      references,
+
+      // Video Links (Added from V2)
+      videoLinks,
+
+      // Social Media Profiles (Added from V2)
+      socialMedia,
     } = req.body;
+
+    let profileImageUrl = null;
+    if (req.file) {
+      if (isCloudinaryConfigured()) {
+        const result = await uploadToCloudinary(req.file, 'growathlete/resumes');
+        profileImageUrl = result.url;
+      } else {
+        const localResult = fallbackToLocal(req.file, 'uploads/');
+        profileImageUrl = localResult.url;
+      }
+    }
 
     const newResume = new SportsResume({
       fullName,
@@ -88,8 +94,10 @@ router.post("/", upload.single("profileImage"), async (req, res) => {
       skills: skills ? skills.split(",").map((s) => s.trim()) : [],
       socialMedia: socialMedia ? socialMedia.split(",").map((s) => s.trim()) : [],
       achievements: achievements ? achievements.split(",").map((a) => a.trim()) : [],
-      profileImage: req.file ? req.file.filename : null,
+      profileImage: profileImageUrl,
     });
+
+    console.log("Creating Details with Image URL:", profileImageUrl); // VERIFICATION LOG
 
     await newResume.save();
 

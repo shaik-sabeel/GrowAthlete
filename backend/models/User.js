@@ -98,33 +98,7 @@ const userSchema = new mongoose.Schema({
     strength: { type: Number, default: 50 },
     skill: { type: Number, default: 50 }
   },
-<<<<<<< HEAD
-=======
 
-  // availability: {
-  //   type: String,
-  //   default: "Open to tryouts"
-  // },
-  // locationType: {
-  //   type: String,
-  //   default: "Remote/On-site"
-  // },
-  // nextEvent: {
-  //   type: String,
-  //   default: ""
-  // },
-  // aiBlurb: {
-  //   type: String,
-  //   default: ""
-  // },
-  // performanceDNA: {
-  //   speed: { type: Number, default: 50 },
-  //   endurance: { type: Number, default: 50 },
-  //   agility: { type: Number, default: 50 },
-  //   strength: { type: Number, default: 50 },
-  //   skill: { type: Number, default: 50 }
-  // }
->>>>>>> 02b7dc314af6cb4c3b1ce2e5c66f63c269a5c545
   followers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

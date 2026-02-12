@@ -16,37 +16,22 @@ const BlogPost = require("../models/BlogPost");
 const PlatformSettings = require("../models/PlatformSettings");
 const { enforceUploadConstraints } = require('../middlewares/upload');
 
-// Configure multer storage for event images
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/events"); // folder to save event images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique filename
-  }
-});
-
+// Configure multer for memory storage (Cloudinary)
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Configure multer storage for ad images
-const adsStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/ads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const uploadAds = multer({ 
-  storage: adsStorage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+// Configure multer for ad images (memory storage)
+const uploadAds = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp'];
     if (allowed.includes(file.mimetype)) return cb(null, true);
     cb(new Error('Only JPEG, PNG, WEBP images are allowed'));
   }
 });
+
+const { uploadToCloudinary, isCloudinaryConfigured, fallbackToLocal } = require('../utils/cloudStorage');
 
 // ===== EXISTING USER MANAGEMENT ROUTES =====
 
@@ -65,7 +50,7 @@ router.get("/users", verifyToken, isAdmin, async (req, res) => {
 
     // Build query object
     const query = {};
-    
+
     // Role filter
     if (role && role !== "all") {
       query.role = role;
@@ -79,7 +64,7 @@ router.get("/users", verifyToken, isAdmin, async (req, res) => {
     } else if (status === "suspended") {
       query.isSuspended = true;
     }
-    
+
     // Search filter (search in username, email, sport, location)
     if (search) {
       query.$or = [
@@ -205,7 +190,7 @@ router.get("/users/export-file", verifyToken, isAdmin, async (req, res) => {
 
     // Default: CSV
     const header = [
-      'User ID','Name','Email','Role','Status','Join date','Last login','Verified'
+      'User ID', 'Name', 'Email', 'Role', 'Status', 'Join date', 'Last login', 'Verified'
     ];
     const csvRows = rows.map(r => [
       r.userId,
@@ -232,7 +217,7 @@ router.get("/users/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id).select("-password");
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -294,9 +279,9 @@ router.patch("/users/:id/verify", verifyToken, isAdmin, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ 
-      message: `User ${isVerified ? 'verified' : 'unverified'} successfully`, 
-      user 
+    res.json({
+      message: `User ${isVerified ? 'verified' : 'unverified'} successfully`,
+      user
     });
   } catch (error) {
     console.error("Error updating user verification:", error);
@@ -316,7 +301,7 @@ router.patch("/users/:id/suspend", verifyToken, isAdmin, async (req, res) => {
     }
 
     const updateData = { isSuspended };
-    
+
     if (isSuspended) {
       updateData.suspendedReason = suspendedReason || "Violation of platform rules";
       updateData.suspendedUntil = suspendedUntil || new Date(Date.now() + 24 * 60 * 60 * 1000); // Default 24 hours
@@ -335,9 +320,9 @@ router.patch("/users/:id/suspend", verifyToken, isAdmin, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ 
-      message: `User ${isSuspended ? 'suspended' : 'unsuspended'} successfully`, 
-      user 
+    res.json({
+      message: `User ${isSuspended ? 'suspended' : 'unsuspended'} successfully`,
+      user
     });
   } catch (error) {
     console.error("Error updating user suspension:", error);
@@ -385,7 +370,7 @@ router.patch("/users/:id/profile", verifyToken, isAdmin, async (req, res) => {
 router.get("/sports-categories", verifyToken, isAdmin, async (req, res) => {
   try {
     const { status = "all", featured } = req.query;
-    
+
     let query = {};
     if (status !== "all") query.status = status;
     if (featured !== undefined) query.featured = featured === "true";
@@ -431,7 +416,7 @@ router.post("/sports-categories", verifyToken, isAdmin, async (req, res) => {
     });
 
     await newCategory.save();
-    
+
     res.status(201).json({
       message: "Sports category created successfully",
       category: newCategory
@@ -473,12 +458,12 @@ router.patch("/sports-categories/:id", verifyToken, isAdmin, async (req, res) =>
 router.delete("/sports-categories/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Check if category has events
     const eventCount = await Event.countDocuments({ sport: id });
     if (eventCount > 0) {
-      return res.status(400).json({ 
-        message: "Cannot delete category with existing events. Archive it instead." 
+      return res.status(400).json({
+        message: "Cannot delete category with existing events. Archive it instead."
       });
     }
 
@@ -522,7 +507,7 @@ router.post("/events", upload.single("image"), enforceUploadConstraints(), verif
 
     // Combine date and time with proper timezone handling
     const eventDateTime = new Date(`${date}T${time}`);
-    
+
     // Log for debugging
     console.log('Creating event with date:', eventDateTime, 'from input:', `${date}T${time}`);
 
@@ -534,9 +519,9 @@ router.post("/events", upload.single("image"), enforceUploadConstraints(), verif
     // Helper function to properly parse array fields
     const parseArrayField = (field, fieldName) => {
       if (!field) return [];
-      
+
       if (Array.isArray(field)) return field;
-      
+
       if (typeof field === 'string') {
         try {
           const parsed = JSON.parse(field);
@@ -548,7 +533,7 @@ router.post("/events", upload.single("image"), enforceUploadConstraints(), verif
           return field.split(',').map(item => item.trim()).filter(item => item && item !== "[]");
         }
       }
-      
+
       return [];
     };
 
@@ -557,6 +542,17 @@ router.post("/events", upload.single("image"), enforceUploadConstraints(), verif
     parsedRequirements = parseArrayField(requirements, 'requirements');
 
     console.log('Parsed arrays:', { parsedTags, parsedHighlights, parsedRequirements });
+
+    let imageUrl = null;
+    if (req.file) {
+      if (isCloudinaryConfigured()) {
+        const result = await uploadToCloudinary(req.file, 'growathlete/events');
+        imageUrl = result.url;
+      } else {
+        const localResult = fallbackToLocal(req.file, 'uploads/events/');
+        imageUrl = localResult.url;
+      }
+    }
 
     const newEvent = new Event({
       title,
@@ -577,11 +573,13 @@ router.post("/events", upload.single("image"), enforceUploadConstraints(), verif
       highlights: parsedHighlights,
       requirements: parsedRequirements,
       status: isOpen === 'true' || isOpen === true ? "published" : "draft", // Fix boolean parsing
-      image: req.file ? `/uploads/events/${req.file.filename}` : null
+      image: imageUrl
     });
 
+    console.log("Creating Admin Event with Image URL:", imageUrl); // VERIFICATION LOG
+
     await newEvent.save();
-    
+
     res.status(201).json({
       message: "Event created successfully",
       event: newEvent
@@ -608,12 +606,12 @@ router.get("/events", verifyToken, isAdmin, async (req, res) => {
     } = req.query;
 
     const query = {};
-    
+
     // Handle both empty strings and "all" as no filter
     if (status && status !== "all" && status !== "") query.status = status;
     if (sport && sport !== "all" && sport !== "") query.sport = sport;
     if (category && category !== "all" && category !== "") query.category = category;
-    
+
     // Filter out past events unless explicitly requested
     if (showPastEvents !== "true") {
       query.date = { $gte: new Date() };
@@ -621,7 +619,7 @@ router.get("/events", verifyToken, isAdmin, async (req, res) => {
     } else {
       console.log('Showing all events including past events');
     }
-    
+
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: "i" } },
@@ -752,7 +750,7 @@ router.patch("/events/:id", verifyToken, isAdmin, async (req, res) => {
 router.delete("/events/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const event = await Event.findByIdAndDelete(id);
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
@@ -769,9 +767,9 @@ router.delete("/events/:id", verifyToken, isAdmin, async (req, res) => {
 router.post("/events/update-statuses", verifyToken, isAdmin, async (req, res) => {
   try {
     const updatedCount = await updateEventStatuses();
-    res.json({ 
+    res.json({
       message: `Updated ${updatedCount} events to completed status`,
-      updatedCount 
+      updatedCount
     });
   } catch (error) {
     console.error("Error updating event statuses:", error);
@@ -798,10 +796,10 @@ router.get("/events/:id/analytics", verifyToken, isAdmin, async (req, res) => {
     const noShowCount = event.registrations.filter(reg => reg.status === "no-show").length;
     const pendingCount = event.registrations.filter(reg => reg.status === "registered").length;
 
-    const registrationRate = event.maxParticipants ? 
+    const registrationRate = event.maxParticipants ?
       Math.round((totalRegistrations / event.maxParticipants) * 100) : 0;
-    
-    const attendanceRate = totalRegistrations > 0 ? 
+
+    const attendanceRate = totalRegistrations > 0 ?
       Math.round((attendedCount / totalRegistrations) * 100) : 0;
 
     // Registration trends (last 7 days)
@@ -1048,11 +1046,11 @@ router.patch("/platform-settings", verifyToken, isAdmin, async (req, res) => {
     try {
       if (Array.isArray(global.__platformSettingsWaiters)) {
         for (const resolve of global.__platformSettingsWaiters) {
-          try { resolve(settings); } catch {}
+          try { resolve(settings); } catch { }
         }
         global.__platformSettingsWaiters = [];
       }
-    } catch {}
+    } catch { }
 
     res.json({ message: "Platform settings updated", settings });
   } catch (error) {
@@ -1130,7 +1128,7 @@ router.get("/platform-settings/subscribe", async (req, res) => {
 router.post("/users/bulk-verify", verifyToken, isAdmin, async (req, res) => {
   try {
     const { userIds } = req.body;
-    
+
     if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ message: "Invalid user IDs" });
     }
@@ -1140,7 +1138,7 @@ router.post("/users/bulk-verify", verifyToken, isAdmin, async (req, res) => {
       { isVerified: true }
     );
 
-    res.json({ 
+    res.json({
       message: `${result.modifiedCount} users verified successfully`,
       modifiedCount: result.modifiedCount
     });
@@ -1154,7 +1152,7 @@ router.post("/users/bulk-verify", verifyToken, isAdmin, async (req, res) => {
 router.post("/users/bulk-role", verifyToken, isAdmin, async (req, res) => {
   try {
     const { userIds, role } = req.body;
-    
+
     if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ message: "Invalid user IDs" });
     }
@@ -1169,7 +1167,7 @@ router.post("/users/bulk-role", verifyToken, isAdmin, async (req, res) => {
       { role }
     );
 
-    res.json({ 
+    res.json({
       message: `${result.modifiedCount} users role changed to ${role} successfully`,
       modifiedCount: result.modifiedCount
     });
@@ -1183,7 +1181,7 @@ router.post("/users/bulk-role", verifyToken, isAdmin, async (req, res) => {
 router.post("/users/bulk-suspend", verifyToken, isAdmin, async (req, res) => {
   try {
     const { userIds, isSuspended, suspendedReason } = req.body;
-    
+
     if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ message: "Invalid user IDs" });
     }
@@ -1199,7 +1197,7 @@ router.post("/users/bulk-suspend", verifyToken, isAdmin, async (req, res) => {
       updateData
     );
 
-    res.json({ 
+    res.json({
       message: `${result.modifiedCount} users ${isSuspended ? 'suspended' : 'unsuspended'} successfully`,
       modifiedCount: result.modifiedCount
     });
@@ -1217,7 +1215,7 @@ router.get("/updates/check", verifyToken, isAdmin, async (req, res) => {
     // This is a simple implementation - in production you'd use WebSockets or Server-Sent Events
     // For now, we'll just return a mock response
     const hasUpdates = Math.random() > 0.8; // 20% chance of updates
-    
+
     if (hasUpdates) {
       res.json({
         hasUpdates: true,
@@ -1243,8 +1241,7 @@ router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUplo
   try {
     console.log("Ad upload request received:", {
       file: req.file ? {
-        filename: req.file.filename,
-        originalname: req.file.originalname,
+        filename: req.file.originalname, // memoryStorage doesn't have filename property like diskStorage
         mimetype: req.file.mimetype,
         size: req.file.size
       } : null,
@@ -1259,12 +1256,21 @@ router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUplo
 
     const { title = "", linkUrl = "", active = true, sortOrder = 0 } = req.body;
 
+    let imageUrl = null;
+    if (isCloudinaryConfigured()) {
+      const result = await uploadToCloudinary(req.file, 'growathlete/ads');
+      imageUrl = result.url;
+    } else {
+      const localResult = fallbackToLocal(req.file, 'uploads/ads/');
+      imageUrl = localResult.url;
+    }
+
     console.log("Creating ad with data:", {
       title,
       linkUrl,
       active: active === "false" ? false : true,
       sortOrder: Number(sortOrder) || 0,
-      image: `/uploads/ads/${req.file.filename}`,
+      image: imageUrl,
       createdBy: req.user.id
     });
 
@@ -1273,7 +1279,7 @@ router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUplo
       linkUrl,
       active: active === "false" ? false : true,
       sortOrder: Number(sortOrder) || 0,
-      image: `/uploads/ads/${req.file.filename}`,
+      image: imageUrl,
       createdBy: req.user.id
     });
 
@@ -1290,18 +1296,18 @@ router.post("/ads", verifyToken, isAdmin, uploadAds.single("image"), enforceUplo
 router.get("/ads", verifyToken, isAdmin, async (req, res) => {
   try {
     const ads = await AdBanner.find({}).sort({ sortOrder: 1, createdAt: -1 });
-    
+
     // Filter out ads with missing files
     const validAds = [];
     const fs = require('fs');
     const path = require('path');
-    
+
     for (const ad of ads) {
       const imagePath = ad.image;
       if (imagePath && imagePath.startsWith('/uploads/ads/')) {
         const filename = path.basename(imagePath);
         const fullPath = path.join(__dirname, '..', 'uploads', 'ads', filename);
-        
+
         if (fs.existsSync(fullPath)) {
           validAds.push(ad);
         } else {
@@ -1313,7 +1319,7 @@ router.get("/ads", verifyToken, isAdmin, async (req, res) => {
         validAds.push(ad);
       }
     }
-    
+
     res.json(validAds);
   } catch (error) {
     console.error("Error fetching ads:", error);
@@ -1360,7 +1366,7 @@ router.delete("/ads/:id", verifyToken, isAdmin, async (req, res) => {
 router.post("/trending-topics", verifyToken, isAdmin, async (req, res) => {
   try {
     const { topic, posts = 0, sortOrder = 0 } = req.body;
-    
+
     if (!topic || !topic.trim()) {
       return res.status(400).json({ message: "Topic is required" });
     }
@@ -1395,25 +1401,25 @@ router.patch("/trending-topics/:id", verifyToken, isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const update = req.body;
-    
+
     if (update.topic && typeof update.topic === 'string') {
       update.topic = update.topic.trim();
       if (!update.topic) {
         return res.status(400).json({ message: "Topic cannot be empty" });
       }
     }
-    
+
     if (typeof update.posts !== 'undefined') {
       update.posts = Number(update.posts) || 0;
     }
-    
+
     if (typeof update.sortOrder !== 'undefined') {
       update.sortOrder = Number(update.sortOrder) || 0;
     }
 
     const topic = await TrendingTopic.findByIdAndUpdate(id, update, { new: true });
     if (!topic) return res.status(404).json({ message: "Trending topic not found" });
-    
+
     res.json({ message: "Trending topic updated", topic });
   } catch (error) {
     console.error("Error updating trending topic:", error);
@@ -1451,7 +1457,7 @@ router.get("/public/trending-topics", async (req, res) => {
 router.post("/community-guidelines", verifyToken, isAdmin, async (req, res) => {
   try {
     const { title, content, category, sortOrder = 0 } = req.body;
-    
+
     if (!title || !content || !title.trim() || !content.trim()) {
       return res.status(400).json({ message: "Title and content are required" });
     }
@@ -1487,14 +1493,14 @@ router.patch("/community-guidelines/:id", verifyToken, isAdmin, async (req, res)
   try {
     const { id } = req.params;
     const update = req.body;
-    
+
     if (update.title && typeof update.title === 'string') {
       update.title = update.title.trim();
       if (!update.title) {
         return res.status(400).json({ message: "Title cannot be empty" });
       }
     }
-    
+
     if (update.content && typeof update.content === 'string') {
       update.content = update.content.trim();
       if (!update.content) {
@@ -1506,7 +1512,7 @@ router.patch("/community-guidelines/:id", verifyToken, isAdmin, async (req, res)
 
     const guideline = await CommunityGuideline.findByIdAndUpdate(id, update, { new: true });
     if (!guideline) return res.status(404).json({ message: "Community guideline not found" });
-    
+
     res.json({ message: "Community guideline updated", guideline });
   } catch (error) {
     console.error("Error updating community guideline:", error);
@@ -1544,7 +1550,7 @@ router.get("/public/community-guidelines", async (req, res) => {
 router.post("/platform-announcements", verifyToken, isAdmin, async (req, res) => {
   try {
     const { title, message, audience, priority, startDate, endDate, isSticky } = req.body;
-    
+
     if (!title || !message || !title.trim() || !message.trim()) {
       return res.status(400).json({ message: "Title and message are required" });
     }
@@ -1583,14 +1589,14 @@ router.patch("/platform-announcements/:id", verifyToken, isAdmin, async (req, re
   try {
     const { id } = req.params;
     const update = req.body;
-    
+
     if (update.title && typeof update.title === 'string') {
       update.title = update.title.trim();
       if (!update.title) {
         return res.status(400).json({ message: "Title cannot be empty" });
       }
     }
-    
+
     if (update.message && typeof update.message === 'string') {
       update.message = update.message.trim();
       if (!update.message) {
@@ -1603,7 +1609,7 @@ router.patch("/platform-announcements/:id", verifyToken, isAdmin, async (req, re
 
     const announcement = await PlatformAnnouncement.findByIdAndUpdate(id, update, { new: true });
     if (!announcement) return res.status(404).json({ message: "Platform announcement not found" });
-    
+
     res.json({ message: "Platform announcement updated", announcement });
   } catch (error) {
     console.error("Error updating platform announcement:", error);
@@ -1629,18 +1635,18 @@ router.get("/public/platform-announcements", async (req, res) => {
   try {
     const { audience = 'all' } = req.query;
     const currentDate = new Date();
-    
-    let query = { 
+
+    let query = {
       isActive: true,
       startDate: { $lte: currentDate }
     };
-    
+
     // Add end date filter if specified
     query.$or = [
       { endDate: null },
       { endDate: { $gte: currentDate } }
     ];
-    
+
     // Filter by audience
     if (audience !== 'all') {
       query.$or = [
@@ -1652,7 +1658,7 @@ router.get("/public/platform-announcements", async (req, res) => {
     const announcements = await PlatformAnnouncement.find(query)
       .sort({ isSticky: -1, priority: -1, createdAt: -1 })
       .limit(10); // Limit to prevent overwhelming users
-    
+
     res.json(announcements);
   } catch (error) {
     console.error("Error fetching public platform announcements:", error);
@@ -1664,18 +1670,18 @@ router.get("/public/platform-announcements", async (req, res) => {
 router.get("/public/ads", async (req, res) => {
   try {
     const ads = await AdBanner.find({ active: true }).sort({ sortOrder: 1, createdAt: -1 });
-    
+
     // Filter out ads with missing files
     const validAds = [];
     const fs = require('fs');
     const path = require('path');
-    
+
     for (const ad of ads) {
       const imagePath = ad.image;
       if (imagePath && imagePath.startsWith('/uploads/ads/')) {
         const filename = path.basename(imagePath);
         const fullPath = path.join(__dirname, '..', 'uploads', 'ads', filename);
-        
+
         if (fs.existsSync(fullPath)) {
           validAds.push(ad);
         } else {
@@ -1685,7 +1691,7 @@ router.get("/public/ads", async (req, res) => {
         validAds.push(ad);
       }
     }
-    
+
     res.json(validAds);
   } catch (error) {
     console.error("Error fetching public ads:", error);

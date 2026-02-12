@@ -1,14 +1,24 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import Button from '../Button';
+
+// Import images for carousel
+import image1 from '../../assets/images/image_1.jpg';
+import image2 from '../../assets/images/image_2.jpg';
+import image3 from '../../assets/images/image_3.jpg';
+import image4 from '../../assets/images/image_4.jpg';
 
 // Placeholder image for hero (can be replaced with actual asset later)
 // Using a random sports image from unsplash for now or a placeholder color block
 const Hero = () => {
     const heroContentRef = useRef(null);
     const heroImageRef = useRef(null);
+
+    // Carousel Images
+    const images = [image1, image2, image3, image4];
+
 
     useEffect(() => {
         const tl = gsap.timeline();
@@ -75,31 +85,43 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Right Image */}
-                <div ref={heroImageRef} className="relative order-1 lg:order-2 mb-8 lg:mb-0">
-                    <div className="relative z-10 mx-auto max-w-md lg:max-w-full">
-                        <div className="bg-gradient-to-tr from-gray-900 to-gray-800 rounded-2xl md:rounded-3xl p-2 shadow-2xl overflow-hidden transform rotate-2 hover:rotate-0 transition-all duration-500">
-                            <img
-                                src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop"
-                                alt="Athletes in action"
-                                className="rounded-xl md:rounded-2xl w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
-                            />
+                {/* Right Image - 3D Rotating Carousel */}
+                <div ref={heroImageRef} className="relative order-1 lg:order-2 mb-8 lg:mb-0 flex justify-center">
+                    <div className="carousel-scene">
+                        <div className="carousel-container">
+                            {images.map((img, index) => {
+                                // Calculate rotation for 4 items: 0, 90, 180, 270
+                                const rotate = index * 90;
+                                // TranslateZ should be roughly width / 2 + spacing. 
+                                // Width ~300. tan(45) = 1. radius ~ 150. Let's make it larger for spacing.
+                                return (
+                                    <div
+                                        key={index}
+                                        className="carousel-cell"
+                                        style={{ transform: `rotateY(${rotate}deg) translateZ(250px)` }}
+                                    >
+                                        <img src={img} alt={`Carousel ${index + 1}`} />
+                                    </div>
+                                );
+                            })}
                         </div>
+                    </div>
 
-                        {/* Floating Badge */}
+                    {/* Floating Badge (Kept outside the spinner to stay visible) */}
+                    <div className="absolute -bottom-10 -left-4 md:-bottom-2 md:-left-10 z-20">
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 1, duration: 0.5 }}
-                            className="absolute -bottom-6 -left-4 md:bottom-8 md:left-8 bg-white p-3 md:p-4 rounded-xl shadow-xl flex items-center gap-3 md:gap-4 max-w-[200px] md:max-w-xs z-20 border border-gray-100"
+                            className="bg-white p-3 md:p-4 rounded-xl shadow-xl flex items-center gap-3 md:gap-4 max-w-[200px] md:max-w-xs border border-gray-100"
                         >
-                            <div className="bg-orange-100 p-2 md:p-3 rounded-full text-brand-orange text-xl md:text-2xl">
+                            {/* <div className="bg-orange-100 p-2 md:p-3 rounded-full text-brand-orange text-xl md:text-2xl">
                                 🏆
-                            </div>
-                            <div>
+                            </div>*/}
+                            {/* <div>
                                 <h4 className="font-bold text-gray-900 text-sm md:text-base">Get Scouted</h4>
                                 <p className="text-xs text-gray-500 leading-tight">By top coaches & academies</p>
-                            </div>
+                            </div>*/}
                         </motion.div>
                     </div>
                 </div>

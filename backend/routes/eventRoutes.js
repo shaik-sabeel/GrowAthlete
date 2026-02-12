@@ -1,34 +1,43 @@
 // routes/eventRoutes.js
 const express = require("express");
 const multer = require("multer");
-const path = require ("path");
+const path = require("path");
 const Event = require("../models/Event");
 const AdBanner = require("../models/AdBanner");
 const { enforceUploadConstraints } = require('../middlewares/upload');
 
 const router = express.Router();
 
-// Configure multer storage (no change)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/events"); // folder to save event images
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique filename
-  }
-});
-
+// Configure multer for memory storage (for Cloudinary)
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
+const { uploadToCloudinary, isCloudinaryConfigured } = require('../utils/cloudStorage');
 
-// Create Event - UPDATED TO INCLUDE REQUIRED FIELDS (sport, category, organizer, organizerName, organizerEmail, endDate)
+// Create Event - UPDATED TO INCLUDE REQUIRED FIELDS
 router.post("/create", upload.single("image"), enforceUploadConstraints(), async (req, res) => {
   try {
     // Extract more fields based on your Event model schema
     const { title, description, date, endDate, location, sport, category, organizer, organizerName, organizerEmail } = req.body;
 
-    // Basic validation (you should add more robust validation in a real app)
+    // Basic validation
     if (!title || !description || !date || !location || !sport || !category || !organizerName || !organizerEmail) {
       return res.status(400).json({ error: "Missing required event fields" });
+    }
+
+    let imageUrl = null;
+    if (req.file) {
+      if (isCloudinaryConfigured()) {
+        const result = await uploadToCloudinary(req.file, 'growathlete/events');
+        imageUrl = result.url;
+      } else {
+        // Fallback logic if needed, or error. 
+        // Since we switched to memoryStorage, 'req.file.filename' doesn't exist.
+        // We would need the fallbackToLocal utility if we want to support local without Cloudinary keys.
+        // For now, assuming Cloudinary is the goal. 
+        const { fallbackToLocal } = require('../utils/cloudStorage');
+        const localResult = fallbackToLocal(req.file, 'uploads/events/');
+        imageUrl = localResult.url;
+      }
     }
 
     const newEvent = new Event({
@@ -42,9 +51,11 @@ router.post("/create", upload.single("image"), enforceUploadConstraints(), async
       organizer: organizer || new mongoose.Types.ObjectId(), // Placeholder: In a real app, get from auth'd user
       organizerName, // Required in schema
       organizerEmail, // Required in schema
-      image: req.file ? `/uploads/events/${req.file.filename}` : null,
+      image: imageUrl,
       status: "approved" // Default to approved for immediate display in calendar/list
     });
+
+    console.log("Creating Event with Image URL:", imageUrl); // VERIFICATION LOG
 
     await newEvent.save();
     res.status(201).json({ message: "Event created successfully", event: newEvent });
@@ -52,7 +63,7 @@ router.post("/create", upload.single("image"), enforceUploadConstraints(), async
     console.error("Error creating event:", error);
     // More specific error handling if it's a validation error
     if (error.name === 'ValidationError') {
-        return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
     res.status(500).json({ error: "Server error" });
   }
