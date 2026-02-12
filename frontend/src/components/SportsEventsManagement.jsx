@@ -833,26 +833,7 @@ const SportsEventsManagement = () => {
           ) : (
             <>
               {activeTab === 'categories' && renderCategoriesTable()}
-              {activeTab === 'events' && (
-                <>
-                  <div className="flex space-x-4 mb-6">
-                    <div className="flex-1 relative">
-                      <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input type="text" placeholder="Search events..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 pr-4 py-2 w-full border rounded-md" />
-                    </div>
-                    <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="px-4 py-2 border rounded-md">
-                      <option value="all">All Status</option>
-                      <option value="pending">Pending</option>
-                      <option value="approved">Approved</option>
-                    </select>
-                    <div className="flex items-center space-x-2">
-                      <input type="checkbox" checked={showPastEvents} onChange={(e) => setShowPastEvents(e.target.checked)} className="rounded border-gray-300" />
-                      <span className="text-sm text-gray-500">Show Past Events</span>
-                    </div>
-                  </div>
-                  {renderEventsTable()}
-                </>
-              )}
+              {activeTab === 'events' && renderEventsTable()}
               {activeTab === 'tournaments' && renderTournamentsTable()}
               {activeTab === 'analytics' && renderAnalytics()}
 
@@ -978,8 +959,14 @@ const SportsEventsManagement = () => {
               <button onClick={() => setEventAnalytics(null)} className="text-gray-400 hover:text-gray-600"><FaTimes /></button>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 p-4 rounded-lg"><div>Total Registrations</div><div className="text-2xl font-bold">{eventAnalytics.totalRegistrations}</div></div>
-              <div className="bg-gray-50 p-4 rounded-lg"><div>Views</div><div className="text-2xl font-bold">{eventAnalytics.views}</div></div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div>Total Registrations</div>
+                <div className="text-2xl font-bold">{eventAnalytics.totalRegistrations}</div>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div>Views</div>
+                <div className="text-2xl font-bold">{eventAnalytics.views}</div>
+              </div>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
@@ -996,10 +983,10 @@ const SportsEventsManagement = () => {
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <div className="text-sm font-medium text-gray-500 mb-2">Status Breakdown</div>
                   <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>Attended: {eventAnalytics.statusBreakdown.attended}</div>
-                    <div>Cancelled: {eventAnalytics.statusBreakdown.cancelled}</div>
-                    <div>No Show: {eventAnalytics.statusBreakdown.noShow}</div>
-                    <div>Pending: {eventAnalytics.statusBreakdown.pending}</div>
+                    <div>Attended: {eventAnalytics.statusBreakdown?.attended || 0}</div>
+                    <div>Cancelled: {eventAnalytics.statusBreakdown?.cancelled || 0}</div>
+                    <div>No Show: {eventAnalytics.statusBreakdown?.noShow || 0}</div>
+                    <div>Pending: {eventAnalytics.statusBreakdown?.pending || 0}</div>
                   </div>
                 </div>
 
@@ -1029,409 +1016,410 @@ const SportsEventsManagement = () => {
 
             </div>
           </div>
+        </div>
       )}
 
-          {showCreateEventModal && (
-            <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-              <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-medium text-gray-900">Create New Event</h3>
-                  <button onClick={() => setShowCreateEventModal(false)} className="text-gray-400 hover:text-gray-600"><FaTimes /></button>
+      {showCreateEventModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-medium text-gray-900">Create New Event</h3>
+              <button onClick={() => setShowCreateEventModal(false)} className="text-gray-400 hover:text-gray-600"><FaTimes /></button>
+            </div>
+
+            <form onSubmit={handleCreateEvent} className="space-y-6">
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Event Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={createEventForm.title}
+                  onChange={(e) => setCreateEventForm({ ...createEventForm, title: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Enter event name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
+                <input
+                  type="text"
+                  maxLength={200}
+                  value={createEventForm.shortDescription}
+                  onChange={(e) => setCreateEventForm({ ...createEventForm, shortDescription: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Brief description (max 200 chars)"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Event Description *</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={createEventForm.description}
+                  onChange={(e) => setCreateEventForm({ ...createEventForm, description: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Detailed description of the event"
+                />
+              </div>
+
+              {/* Date, Time & Location */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
+                  <input
+                    type="date"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                    value={createEventForm.date}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, date: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  />
                 </div>
 
-                <form onSubmit={handleCreateEvent} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Time *</label>
+                  <input
+                    type="time"
+                    required
+                    value={createEventForm.time}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, time: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={createEventForm.title}
-                      onChange={(e) => setCreateEventForm({ ...createEventForm, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Enter event name"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
-                    <input
-                      type="text"
-                      maxLength={200}
-                      value={createEventForm.shortDescription}
-                      onChange={(e) => setCreateEventForm({ ...createEventForm, shortDescription: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Brief description (max 200 chars)"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Description *</label>
-                    <textarea
-                      required
-                      rows={4}
-                      value={createEventForm.description}
-                      onChange={(e) => setCreateEventForm({ ...createEventForm, description: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Detailed description of the event"
-                    />
-                  </div>
-
-                  {/* Date, Time & Location */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Date *</label>
-                      <input
-                        type="date"
-                        required
-                        min={new Date().toISOString().split('T')[0]}
-                        value={createEventForm.date}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, date: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Time *</label>
-                      <input
-                        type="time"
-                        required
-                        value={createEventForm.time}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, time: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
-                      <input
-                        type="text"
-                        required
-                        value={createEventForm.location}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, location: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Event location"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Sport & Category */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Sport *</label>
-                      <select
-                        required
-                        value={createEventForm.sport}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, sport: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      >
-                        <option value="cricket">Cricket</option>
-                        <option value="badminton">Badminton</option>
-                        <option value="football">Football</option>
-                        <option value="basketball">Basketball</option>
-                        <option value="tennis">Tennis</option>
-                        <option value="swimming">Swimming</option>
-                        <option value="volleyball">Volleyball</option>
-                        <option value="athletics">Athletics</option>
-                        <option value="hockey">Hockey</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
-                      <select
-                        required
-                        value={createEventForm.category}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, category: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      >
-                        <option value="webinar">Webinar</option>
-                        <option value="showcase">Showcase</option>
-                        <option value="tournament">Tournament</option>
-                        <option value="training">Training</option>
-                        <option value="workshop">Workshop</option>
-                        <option value="competition">Competition</option>
-                        <option value="exhibition">Exhibition</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Event Image */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Image *</label>
-                    <div className="flex items-center space-x-4">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                      {imagePreview && (
-                        <div className="w-20 h-20 rounded-lg overflow-hidden border">
-                          <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                        </div>
-                      )}
-                    </div>
-                    <p className="mt-1 text-sm text-gray-500">Select an image from your computer</p>
-                  </div>
-
-                  {/* Organizer Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Event Owner Name *</label>
-                      <input
-                        type="text"
-                        required
-                        value={createEventForm.organizerName}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, organizerName: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Organizer name"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-                      <input
-                        type="email"
-                        required
-                        value={createEventForm.organizerEmail}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, organizerEmail: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="organizer@email.com"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                      <input
-                        type="tel"
-                        value={createEventForm.organizerPhone}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, organizerPhone: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Phone number"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Event Settings */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Max Participants</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={createEventForm.maxParticipants}
-                        onChange={(e) => setCreateEventForm({ ...createEventForm, maxParticipants: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Leave empty for unlimited"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
-                      <div className="flex">
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={createEventForm.price}
-                          onChange={(e) => setCreateEventForm({ ...createEventForm, price: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                          placeholder="0.00"
-                        />
-                        <select
-                          value={createEventForm.currency}
-                          onChange={(e) => setCreateEventForm({ ...createEventForm, currency: e.target.value })}
-                          className="ml-2 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        >
-                          <option value="USD">USD</option>
-                          <option value="EUR">EUR</option>
-                          <option value="GBP">GBP</option>
-                          <option value="INR">INR</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center mt-6">
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={createEventForm.isOpen}
-                          onChange={(e) => setCreateEventForm({ ...createEventForm, isOpen: e.target.checked })}
-                          className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <span className="ml-2 text-sm text-gray-700">Event is Open/Published</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Tags, Highlights & Requirements */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-                      <div className="space-y-2">
-                        <div className="flex">
-                          <input
-                            type="text"
-                            placeholder="Add a tag"
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                addArrayItem('tags', e.target.value);
-                                e.target.value = '';
-                              }
-                            }}
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              const input = e.target.previousElementSibling;
-                              addArrayItem('tags', input.value);
-                              input.value = '';
-                            }}
-                            className="px-3 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700"
-                          >
-                            Add
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {createEventForm.tags.map((tag, index) => (
-                            <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-indigo-100 text-indigo-800">
-                              {tag}
-                              <button
-                                type="button"
-                                onClick={() => removeArrayItem('tags', index)}
-                                className="ml-1 text-indigo-600 hover:text-indigo-800"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Highlights</label>
-                      <div className="space-y-2">
-                        <div className="flex">
-                          <input
-                            type="text"
-                            placeholder="Add a highlight"
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                addArrayItem('highlights', e.target.value);
-                                e.target.value = '';
-                              }
-                            }}
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              const input = e.target.previousElementSibling;
-                              addArrayItem('highlights', input.value);
-                              input.value = '';
-                            }}
-                            className="px-3 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700"
-                          >
-                            Add
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {createEventForm.highlights.map((highlight, index) => (
-                            <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                              {highlight}
-                              <button
-                                type="button"
-                                onClick={() => removeArrayItem('highlights', index)}
-                                className="ml-1 text-green-600 hover:text-green-800"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Requirements</label>
-                      <div className="space-y-2">
-                        <div className="flex">
-                          <input
-                            type="text"
-                            placeholder="Add a requirement"
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                addArrayItem('requirements', e.target.value);
-                                e.target.value = '';
-                              }
-                            }}
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              const input = e.target.previousElementSibling;
-                              addArrayItem('requirements', input.value);
-                              input.value = '';
-                            }}
-                            className="px-3 py-2 bg-yellow-600 text-white rounded-r-md hover:bg-yellow-700"
-                          >
-                            Add
-                          </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {createEventForm.requirements.map((requirement, index) => (
-                            <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
-                              {requirement}
-                              <button
-                                type="button"
-                                onClick={() => removeArrayItem('requirements', index)}
-                                className="ml-1 text-yellow-600 hover:text-yellow-800"
-                              >
-                                ×
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Form Actions */}
-                  <div className="flex justify-end space-x-3 pt-6 border-t">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowCreateEventModal(false);
-                        resetCreateEventForm();
-                      }}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="px-6 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                    >
-                      {loading ? 'Creating...' : 'Create Event'}
-                    </button>
-                  </div>
-
-                </form>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                  <input
+                    type="text"
+                    required
+                    value={createEventForm.location}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, location: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Event location"
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      );
-  };
 
-      export default SportsEventsManagement;
+              {/* Sport & Category */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Sport *</label>
+                  <select
+                    required
+                    value={createEventForm.sport}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, sport: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                    <option value="cricket">Cricket</option>
+                    <option value="badminton">Badminton</option>
+                    <option value="football">Football</option>
+                    <option value="basketball">Basketball</option>
+                    <option value="tennis">Tennis</option>
+                    <option value="swimming">Swimming</option>
+                    <option value="volleyball">Volleyball</option>
+                    <option value="athletics">Athletics</option>
+                    <option value="hockey">Hockey</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                  <select
+                    required
+                    value={createEventForm.category}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, category: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                    <option value="webinar">Webinar</option>
+                    <option value="showcase">Showcase</option>
+                    <option value="tournament">Tournament</option>
+                    <option value="training">Training</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="competition">Competition</option>
+                    <option value="exhibition">Exhibition</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Event Image */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Event Image *</label>
+                <div className="flex items-center space-x-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                  {imagePreview && (
+                    <div className="w-20 h-20 rounded-lg overflow-hidden border">
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+                <p className="mt-1 text-sm text-gray-500">Select an image from your computer</p>
+              </div>
+
+              {/* Organizer Information */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Event Owner Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={createEventForm.organizerName}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerName: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Organizer name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={createEventForm.organizerEmail}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerEmail: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="organizer@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <input
+                    type="tel"
+                    value={createEventForm.organizerPhone}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerPhone: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Phone number"
+                  />
+                </div>
+              </div>
+
+              {/* Event Settings */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Max Participants</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={createEventForm.maxParticipants}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, maxParticipants: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Leave empty for unlimited"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                  <div className="flex">
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={createEventForm.price}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, price: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="0.00"
+                    />
+                    <select
+                      value={createEventForm.currency}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, currency: e.target.value })}
+                      className="ml-2 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                    >
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                      <option value="INR">INR</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center mt-6">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={createEventForm.isOpen}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, isOpen: e.target.checked })}
+                      className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span className="ml-2 text-sm text-gray-700">Event is Open/Published</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Tags, Highlights & Requirements */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <div className="space-y-2">
+                    <div className="flex">
+                      <input
+                        type="text"
+                        placeholder="Add a tag"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addArrayItem('tags', e.target.value);
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const input = e.target.previousElementSibling;
+                          addArrayItem('tags', input.value);
+                          input.value = '';
+                        }}
+                        className="px-3 py-2 bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {createEventForm.tags.map((tag, index) => (
+                        <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-indigo-100 text-indigo-800">
+                          {tag}
+                          <button
+                            type="button"
+                            onClick={() => removeArrayItem('tags', index)}
+                            className="ml-1 text-indigo-600 hover:text-indigo-800"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Highlights</label>
+                  <div className="space-y-2">
+                    <div className="flex">
+                      <input
+                        type="text"
+                        placeholder="Add a highlight"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addArrayItem('highlights', e.target.value);
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const input = e.target.previousElementSibling;
+                          addArrayItem('highlights', input.value);
+                          input.value = '';
+                        }}
+                        className="px-3 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {createEventForm.highlights.map((highlight, index) => (
+                        <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                          {highlight}
+                          <button
+                            type="button"
+                            onClick={() => removeArrayItem('highlights', index)}
+                            className="ml-1 text-green-600 hover:text-green-800"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Requirements</label>
+                  <div className="space-y-2">
+                    <div className="flex">
+                      <input
+                        type="text"
+                        placeholder="Add a requirement"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addArrayItem('requirements', e.target.value);
+                            e.target.value = '';
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const input = e.target.previousElementSibling;
+                          addArrayItem('requirements', input.value);
+                          input.value = '';
+                        }}
+                        className="px-3 py-2 bg-yellow-600 text-white rounded-r-md hover:bg-yellow-700"
+                      >
+                        Add
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {createEventForm.requirements.map((requirement, index) => (
+                        <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
+                          {requirement}
+                          <button
+                            type="button"
+                            onClick={() => removeArrayItem('requirements', index)}
+                            className="ml-1 text-yellow-600 hover:text-yellow-800"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Actions */}
+              <div className="flex justify-end space-x-3 pt-6 border-t">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowCreateEventModal(false);
+                    resetCreateEventForm();
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                >
+                  {loading ? 'Creating...' : 'Create Event'}
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SportsEventsManagement;
