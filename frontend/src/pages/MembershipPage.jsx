@@ -1,4 +1,3 @@
-// // src/pages/MembershipPage.jsx
 import React from 'react';
 import MembershipCard from '../components/MemberShipCard'; // Adjust path if components are in a different sub-folder
 import Navbar from '../components/Navbar';
@@ -8,49 +7,53 @@ import '../pages_css/variables.css'
 const MembershipPage = () => {
   const membershipLevels = [
     {
-      level: 'Free',
-      price: '$0',
+      level: 'Free Tier',
+      price: '₹0',
       description: 'Access to basic features and public content.',
       features: [
-        'View public sports profiles',
-        'Read community blog posts',
-        'Receive newsletter',
-        'Basic support',
-        'Read Events'
+        'Athlete Profiles',
+        'Networking',
+        'Sessions',
+        'Tournaments',
+        // 'Content' (Excluded based on image checks being implied by existing original logic or just list all?)
+        // Original logic was just list of strings. I will list all features but maybe note inclusions? 
+        // Original MembershipCard component just prints the list. 
+        // I will list the included features.
+        'Content'
       ],
-      buttonText: 'Get Started - Free',
+      buttonText: 'Get Started',
       color: 'primary', // Light green for free tier
       borderColor: 'border-green-500',
       textColor: 'text-green-800'
     },
     {
-      level: 'Standard',
-      price: '$1',
+      level: 'Premium Gold',
+      price: '₹99',
       description: 'Unlock enhanced features for serious athletes.',
       features: [
-        'All Free features',
-        'Create your sports profile',
-        'Connect with other athletes',
-        'Upload images & videos',
-        'Priority support'
+        '100+ Profiles',
+        'Jobs in Sports',
+        'Open to All Sessions',
+        'Open to All Sessions'
       ],
-      buttonText: 'Choose Standard',
+      buttonText: 'Go Premium Gold',
       color: 'primary', // Light blue for standard tier
       borderColor: 'border-blue-500',
       textColor: 'text-yellow-200'
     },
     {
-      level: 'Premium',
-      price: '$2',
+      level: 'Academy Pro',
+      price: '₹999',
       description: 'The ultimate package for networking and opportunities.',
       features: [
-        'All Standard features',
-        'Access premium job board',
-        'Get featured on homepage',
-        'Early access to new features',
-        'Dedicated account manager'
+        '1,000+ Network Access',
+        'Creation 8 pvt Sports',
+        'Brand Endorsements',
+        'Priority Tournament reg',
+        'Sponsorship Tools',
+        'Attendance add-on option'
       ],
-      buttonText: 'Go Premium',
+      buttonText: 'Go Academy Pro',
       color: 'primary', // Light purple for premium tier
       borderColor: 'border-purple-500',
       textColor: 'text-purple-800'
@@ -58,12 +61,12 @@ const MembershipPage = () => {
   ];
 
   return (
-    
+
 
     <div className="min-h-screen bg-[#0F172A] flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
-        <Navbar />
+      <Navbar />
       <div className="text-center mb-12 py-20">
-        <h1 className="text-5xl font-extrabold leading-tight mb-4" style={{color : "#049c9e"}}>
+        <h1 className="text-5xl font-extrabold leading-tight mb-4" style={{ color: "#049c9e" }}>
           Choose Your Membership
         </h1>
         <p className="text-xl text-white max-w-2xl mx-auto">
@@ -91,94 +94,3 @@ const MembershipPage = () => {
 };
 
 export default MembershipPage;
-
-
-
-// src/pages/MembershipPage.jsx
-// import React from 'react';
-// import MembershipCard from '../components/MembershipCard';
-// import Navbar from '../components/Navbar';
-// import '../pages_css/HomePage.css'; // Import HomePage styles for consistency
-
-// const MembershipPage = () => {
-//   const membershipLevels = [
-//     {
-//       level: 'Free',
-//       price: '$0',
-//       description: 'Access to basic features and public content.',
-//       features: [
-//         'View public sports profiles',
-//         'Read community blog posts',
-//         'Receive newsletter',
-//         'Basic support'
-//       ],
-//       buttonText: 'Get Started - Free',
-//       color: 'bg-green-100',
-//       borderColor: 'border-green-500',
-//       textColor: 'text-green-800'
-//     },
-//     {
-//       level: 'Standard',
-//       price: '$3',
-//       description: 'Unlock enhanced features for serious athletes.',
-//       features: [
-//         'All Free features',
-//         'Create your sports profile',
-//         'Connect with other athletes',
-//         'Upload images & videos',
-//         'Priority support'
-//       ],
-//       buttonText: 'Choose Standard',
-//       color: 'bg-blue-100',
-//       borderColor: 'border-blue-500',
-//       textColor: 'text-blue-800'
-//     },
-//     {
-//       level: 'Premium',
-//       price: '$5',
-//       description: 'The ultimate package for professional networking and opportunities.',
-//       features: [
-//         'All Standard features',
-//         'Access premium job board',
-//         'Get featured on homepage',
-//         'Early access to new features',
-//         'Dedicated account manager'
-//       ],
-//       buttonText: 'Go Premium',
-//       color: 'bg-purple-100',
-//       borderColor: 'border-purple-500',
-//       textColor: 'text-purple-800'
-//     },
-//   ];
-
-//   return (
-//     <div>
-//       <Navbar />
-//       <section className="hp-platform-features-section">
-//         <div className="section-header-common">
-//           <h1 className="section-heading">Choose Your Membership</h1>
-//           <p className="section-description">
-//             Unlock exclusive features and enhance your sports journey with our flexible membership options.
-//           </p>
-//         </div>
-//         <div className="hp-platform-features-grid" style={{marginBottom: "5rem"}}>
-//           {membershipLevels.map((level, index) => (
-//             <MembershipCard
-//               key={index}
-//               level={level.level}
-//               price={level.price}
-//               description={level.description}
-//               features={level.features}
-//               buttonText={level.buttonText}
-//               bgColor={level.color}
-//               borderColor={level.borderColor}
-//               textColor={level.textColor}
-//             />
-//           ))}
-//         </div>
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default MembershipPage;
