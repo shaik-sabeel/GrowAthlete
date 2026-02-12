@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SubscriptionCard = ({ level, price, description, features, buttonText, bgColor, borderColor, textColor }) => {
+const MembershipCard = ({ level, price, description, features, buttonText, bgColor, borderColor, textColor }) => {
   return (
     <div className={`
       ${bgColor} 
