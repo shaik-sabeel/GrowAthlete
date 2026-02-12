@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { 
-  FaPlus, 
-  FaEdit, 
-  FaTrash, 
-  FaEye, 
-  FaCheck, 
-  FaTimes, 
-  FaChartBar, 
-  FaUsers, 
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaCheck,
+  FaTimes,
+  FaChartBar,
+  FaUsers,
   FaCalendar,
   FaTrophy,
   FaSearch,
@@ -152,7 +152,7 @@ const SportsEventsManagement = () => {
       } else {
         await api.post('/admin/sports-categories', categoryForm);
       }
-      
+
       setShowCategoryModal(false);
       setEditingCategory(null);
       setCategoryForm({
@@ -191,7 +191,7 @@ const SportsEventsManagement = () => {
 
   const deleteCategory = async (categoryId) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
-    
+
     try {
       await api.delete(`/admin/sports-categories/${categoryId}`);
       fetchCategories();
@@ -258,7 +258,7 @@ const SportsEventsManagement = () => {
 
   const handleCreateEvent = async (e) => {
     e.preventDefault();
-    
+
     // Validate required fields
     if (!selectedImage) {
       alert('Please select an event image');
@@ -272,10 +272,10 @@ const SportsEventsManagement = () => {
       alert('Event date and time must be in the future');
       return;
     }
-    
+
     try {
       setLoading(true);
-      
+
       const formData = new FormData();
       Object.keys(createEventForm).forEach(key => {
         if (key === 'tags' || key === 'highlights' || key === 'requirements') {
@@ -284,7 +284,7 @@ const SportsEventsManagement = () => {
           formData.append(key, createEventForm[key]);
         }
       });
-      
+
       formData.append('image', selectedImage);
 
       await api.post('/admin/events', formData, {
@@ -296,10 +296,10 @@ const SportsEventsManagement = () => {
       // Reset form and close modal
       resetCreateEventForm();
       setShowCreateEventModal(false);
-      
+
       // Refresh events list
       fetchEvents();
-      
+
       alert('Event created successfully!');
     } catch (error) {
       console.error('Failed to create event:', error);
@@ -349,7 +349,7 @@ const SportsEventsManagement = () => {
 
   const deleteEvent = async (eventId) => {
     if (!window.confirm('Are you sure you want to delete this event?')) return;
-    
+
     try {
       await api.delete(`/admin/events/${eventId}`);
       fetchEvents();
@@ -451,11 +451,10 @@ const SportsEventsManagement = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    category.status === 'active' ? 'bg-green-100 text-green-800' :
-                    category.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${category.status === 'active' ? 'bg-green-100 text-green-800' :
+                      category.status === 'inactive' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                    }`}>
                     {category.status}
                   </span>
                 </td>
@@ -532,9 +531,9 @@ const SportsEventsManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
-                      <img 
-                        className="h-10 w-10 rounded-lg object-cover" 
-                        src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`} 
+                      <img
+                        className="h-10 w-10 rounded-lg object-cover"
+                        src={event.image && event.image.startsWith('http') ? event.image : `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`}
                         alt={event.title}
                         onError={(e) => {
                           console.error('Failed to load event image:', `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`);
@@ -557,34 +556,33 @@ const SportsEventsManagement = () => {
                   <div className="text-sm text-gray-500">{event.category}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    event.status === 'approved' ? 'bg-green-100 text-green-800' :
-                    event.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    event.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                    event.status === 'published' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${event.status === 'approved' ? 'bg-green-100 text-green-800' :
+                      event.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                        event.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                          event.status === 'published' ? 'bg-blue-100 text-blue-800' :
+                            'bg-gray-100 text-gray-800'
+                    }`}>
                     {event.status}
                   </span>
                 </td>
-                                 <td className="px-6 py-4 whitespace-nowrap">
-                   <div className="text-sm text-gray-900">
-                     {new Date(event.date).toLocaleDateString()}
-                   </div>
-                   <div className="text-sm text-gray-500">{event.location}</div>
-                   {(() => {
-                     const eventDate = new Date(event.date);
-                     const now = new Date();
-                     const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-                     const MS_PER_DAY = 24 * 60 * 60 * 1000;
-                     const daysDiff = Math.round((startOfDay(eventDate).getTime() - startOfDay(now).getTime()) / MS_PER_DAY);
-                     if (daysDiff < 0) return null; // Past event
-                     if (daysDiff === 0) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Today!</span>;
-                     if (daysDiff === 1) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Tomorrow</span>;
-                     if (daysDiff <= 7) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">In {daysDiff} days</span>;
-                     return null;
-                   })()}
-                 </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">
+                    {new Date(event.date).toLocaleDateString()}
+                  </div>
+                  <div className="text-sm text-gray-500">{event.location}</div>
+                  {(() => {
+                    const eventDate = new Date(event.date);
+                    const now = new Date();
+                    const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+                    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+                    const daysDiff = Math.round((startOfDay(eventDate).getTime() - startOfDay(now).getTime()) / MS_PER_DAY);
+                    if (daysDiff < 0) return null; // Past event
+                    if (daysDiff === 0) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Today!</span>;
+                    if (daysDiff === 1) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">Tomorrow</span>;
+                    if (daysDiff <= 7) return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">In {daysDiff} days</span>;
+                    return null;
+                  })()}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
                     <button
@@ -719,8 +717,8 @@ const SportsEventsManagement = () => {
                   <span className="text-sm font-medium text-gray-700">{sport._id}</span>
                   <div className="flex items-center">
                     <div className="w-32 bg-gray-200 rounded-full h-2 mr-3">
-                      <div 
-                        className="bg-indigo-600 h-2 rounded-full" 
+                      <div
+                        className="bg-indigo-600 h-2 rounded-full"
                         style={{ width: `${(sport.count / overviewStats.totalEvents) * 100}%` }}
                       ></div>
                     </div>
@@ -740,8 +738,8 @@ const SportsEventsManagement = () => {
                   <span className="text-sm font-medium text-gray-700">{category._id}</span>
                   <div className="flex items-center">
                     <div className="w-32 bg-gray-200 rounded-full h-2 mr-3">
-                      <div 
-                        className="bg-green-600 h-2 rounded-full" 
+                      <div
+                        className="bg-green-600 h-2 rounded-full"
                         style={{ width: `${(category.count / overviewStats.totalEvents) * 100}%` }}
                       ></div>
                     </div>
@@ -777,24 +775,24 @@ const SportsEventsManagement = () => {
                 Add Category
               </button>
             )}
-                         {activeTab === 'events' && (
-               <div className="flex space-x-3">
-                 <button
-                   onClick={() => setShowCreateEventModal(true)}
-                   className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                 >
-                   <FaPlus className="mr-2 h-4 w-4" />
-                   Create Event
-                 </button>
-                 <button
-                   onClick={handleUpdateEventStatuses}
-                   className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                 >
-                   <FaCog className="mr-2 h-4 w-4" />
-                   Update Statuses
-                 </button>
-               </div>
-             )}
+            {activeTab === 'events' && (
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowCreateEventModal(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  <FaPlus className="mr-2 h-4 w-4" />
+                  Create Event
+                </button>
+                <button
+                  onClick={handleUpdateEventStatuses}
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  <FaCog className="mr-2 h-4 w-4" />
+                  Update Statuses
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -811,11 +809,10 @@ const SportsEventsManagement = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                  activeTab === tab.id
+                className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${activeTab === tab.id
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.icon}
                 <span>{tab.label}</span>
@@ -878,7 +875,7 @@ const SportsEventsManagement = () => {
                 <option value="workshop">Workshop</option>
                 <option value="other">Other</option>
               </select>
-              
+
               {/* Show Past Events Toggle */}
               <div className="flex items-center space-x-2">
                 <label className="flex items-center">
@@ -964,7 +961,7 @@ const SportsEventsManagement = () => {
                 <FaTimes />
               </button>
             </div>
-            
+
             <form onSubmit={handleCategorySubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -973,7 +970,7 @@ const SportsEventsManagement = () => {
                     type="text"
                     required
                     value={categoryForm.name}
-                    onChange={(e) => setCategoryForm({...categoryForm, name: e.target.value})}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -982,42 +979,42 @@ const SportsEventsManagement = () => {
                   <input
                     type="text"
                     value={categoryForm.icon}
-                    onChange={(e) => setCategoryForm({...categoryForm, icon: e.target.value})}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     placeholder="🏃"
                   />
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Short Description</label>
                 <input
                   type="text"
                   maxLength={100}
                   value={categoryForm.shortDescription}
-                  onChange={(e) => setCategoryForm({...categoryForm, shortDescription: e.target.value})}
+                  onChange={(e) => setCategoryForm({ ...categoryForm, shortDescription: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   required
                   rows={3}
                   value={categoryForm.description}
-                  onChange={(e) => setCategoryForm({...categoryForm, description: e.target.value})}
+                  onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Sort Order</label>
                   <input
                     type="number"
                     value={categoryForm.sortOrder}
-                    onChange={(e) => setCategoryForm({...categoryForm, sortOrder: parseInt(e.target.value)})}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, sortOrder: parseInt(e.target.value) })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -1025,13 +1022,13 @@ const SportsEventsManagement = () => {
                   <input
                     type="checkbox"
                     checked={categoryForm.featured}
-                    onChange={(e) => setCategoryForm({...categoryForm, featured: e.target.checked})}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, featured: e.target.checked })}
                     className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   <label className="ml-2 text-sm text-gray-700">Featured Category</label>
                 </div>
               </div>
-              
+
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   type="button"
@@ -1071,7 +1068,7 @@ const SportsEventsManagement = () => {
                 <FaTimes />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -1083,7 +1080,7 @@ const SportsEventsManagement = () => {
                   <div className="text-2xl font-bold text-gray-900">{eventAnalytics.registrationRate}%</div>
                 </div>
               </div>
-              
+
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="text-sm font-medium text-gray-500 mb-2">Status Breakdown</div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
@@ -1093,7 +1090,7 @@ const SportsEventsManagement = () => {
                   <div>Pending: {eventAnalytics.statusBreakdown.pending}</div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <div className="text-sm font-medium text-gray-500">Views</div>
@@ -1105,7 +1102,7 @@ const SportsEventsManagement = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => {
@@ -1137,7 +1134,7 @@ const SportsEventsManagement = () => {
                 <FaTimes />
               </button>
             </div>
-            
+
             <form onSubmit={handleCreateEvent} className="space-y-6">
               {/* Basic Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1147,19 +1144,19 @@ const SportsEventsManagement = () => {
                     type="text"
                     required
                     value={createEventForm.title}
-                    onChange={(e) => setCreateEventForm({...createEventForm, title: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, title: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Enter event name"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
                   <input
                     type="text"
                     maxLength={200}
                     value={createEventForm.shortDescription}
-                    onChange={(e) => setCreateEventForm({...createEventForm, shortDescription: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, shortDescription: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Brief description (max 200 chars)"
                   />
@@ -1172,7 +1169,7 @@ const SportsEventsManagement = () => {
                   required
                   rows={4}
                   value={createEventForm.description}
-                  onChange={(e) => setCreateEventForm({...createEventForm, description: e.target.value})}
+                  onChange={(e) => setCreateEventForm({ ...createEventForm, description: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Detailed description of the event"
                 />
@@ -1187,29 +1184,29 @@ const SportsEventsManagement = () => {
                     required
                     min={new Date().toISOString().split('T')[0]}
                     value={createEventForm.date}
-                    onChange={(e) => setCreateEventForm({...createEventForm, date: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, date: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Time *</label>
                   <input
                     type="time"
                     required
                     value={createEventForm.time}
-                    onChange={(e) => setCreateEventForm({...createEventForm, time: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, time: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
                   <input
                     type="text"
                     required
                     value={createEventForm.location}
-                    onChange={(e) => setCreateEventForm({...createEventForm, location: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, location: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Event location"
                   />
@@ -1223,7 +1220,7 @@ const SportsEventsManagement = () => {
                   <select
                     required
                     value={createEventForm.sport}
-                    onChange={(e) => setCreateEventForm({...createEventForm, sport: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, sport: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   >
                     <option value="cricket">Cricket</option>
@@ -1238,13 +1235,13 @@ const SportsEventsManagement = () => {
                     <option value="other">Other</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                   <select
                     required
                     value={createEventForm.category}
-                    onChange={(e) => setCreateEventForm({...createEventForm, category: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, category: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                   >
                     <option value="webinar">Webinar</option>
@@ -1286,30 +1283,30 @@ const SportsEventsManagement = () => {
                     type="text"
                     required
                     value={createEventForm.organizerName}
-                    onChange={(e) => setCreateEventForm({...createEventForm, organizerName: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerName: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Organizer name"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
                   <input
                     type="email"
                     required
                     value={createEventForm.organizerEmail}
-                    onChange={(e) => setCreateEventForm({...createEventForm, organizerEmail: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerEmail: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="organizer@email.com"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                   <input
                     type="tel"
                     value={createEventForm.organizerPhone}
-                    onChange={(e) => setCreateEventForm({...createEventForm, organizerPhone: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, organizerPhone: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Phone number"
                   />
@@ -1324,12 +1321,12 @@ const SportsEventsManagement = () => {
                     type="number"
                     min="1"
                     value={createEventForm.maxParticipants}
-                    onChange={(e) => setCreateEventForm({...createEventForm, maxParticipants: e.target.value})}
+                    onChange={(e) => setCreateEventForm({ ...createEventForm, maxParticipants: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Leave empty for unlimited"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Price</label>
                   <div className="flex">
@@ -1338,13 +1335,13 @@ const SportsEventsManagement = () => {
                       min="0"
                       step="0.01"
                       value={createEventForm.price}
-                      onChange={(e) => setCreateEventForm({...createEventForm, price: e.target.value})}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, price: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                       placeholder="0.00"
                     />
                     <select
                       value={createEventForm.currency}
-                      onChange={(e) => setCreateEventForm({...createEventForm, currency: e.target.value})}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, currency: e.target.value })}
                       className="ml-2 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
                     >
                       <option value="USD">USD</option>
@@ -1354,13 +1351,13 @@ const SportsEventsManagement = () => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center mt-6">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createEventForm.isOpen}
-                      onChange={(e) => setCreateEventForm({...createEventForm, isOpen: e.target.checked})}
+                      onChange={(e) => setCreateEventForm({ ...createEventForm, isOpen: e.target.checked })}
                       className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Event is Open/Published</span>

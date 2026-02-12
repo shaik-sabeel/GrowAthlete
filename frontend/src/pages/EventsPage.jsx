@@ -15,7 +15,7 @@ const EventCard = ({ event }) => {
     const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
     const daysDiff = Math.round((startOfDay(eventDate).getTime() - startOfDay(now).getTime()) / MS_PER_DAY);
-    
+
     const getTimeStatus = () => {
         if (daysDiff < 0) return null;
         if (daysDiff === 0) return { text: "Today!", color: "text-red-600 bg-red-100" };
@@ -34,7 +34,7 @@ const EventCard = ({ event }) => {
     return (
         <div className="bg-[#30405a] rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl">
             <img
-                src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`}
+                src={event.image && event.image.startsWith('http') ? event.image : `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`}
                 alt={event.title}
                 className="w-full h-48 sm:h-56 object-cover"
             />
@@ -62,7 +62,7 @@ const EventCard = ({ event }) => {
                     <Link
                         to={`/events/${event._id}`}
                         className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                        style={{color:'white'}}
+                        style={{ color: 'white' }}
                     >
                         View Details
                     </Link>
@@ -112,7 +112,7 @@ const EventsPage = () => {
             <Navbar />
             <div className="bg-[#0F172A] min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="container mx-auto">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-white mb-8 md:mb-10 lg:mb-12" style={{color:'white'}}>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-white mb-8 md:mb-10 lg:mb-12" style={{ color: 'white' }}>
                         Upcoming Events
                     </h1>
 
@@ -142,7 +142,7 @@ const EventsPage = () => {
                         viewMode === 'list' ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                                 {events.map(event => (
-                                    <EventCard  key={event._id} event={event} />
+                                    <EventCard key={event._id} event={event} />
                                 ))}
                             </div>
                         ) : (

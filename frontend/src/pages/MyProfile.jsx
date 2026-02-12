@@ -1111,7 +1111,7 @@ export default function MyProfile() {
       {/*PROFILE HEADER  */}
       <section className="card profile-header">
         <div className="profile-top">
-          <img className="avatar" src={profile.user.avatar} alt="profile" />
+          <img className="avatar" src={profile.user.avatar && profile.user.avatar.startsWith('/uploads') ? `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${profile.user.avatar}` : profile.user.avatar} alt="profile" />
 
           <div className="profile-info">
             {editHeader ? (
