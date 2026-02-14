@@ -312,7 +312,8 @@ h2.section-heading::after {
 
 /* 3D Carousel Styles */
 .carousel-scene {
-  perspective: 1000px;
+  perspective: 2500px;
+  /* Increased from 1000px to flatten the view and reduce distortion */
   width: 300px;
   /* Adjust based on image width */
   height: 400px;

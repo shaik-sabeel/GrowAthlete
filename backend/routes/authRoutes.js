@@ -117,6 +117,37 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    // Streak Logic
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize to midnight
+
+    let newStreak = user.streak || 0;
+
+    if (user.lastLoginDate) {
+      const lastLogin = new Date(user.lastLoginDate);
+      lastLogin.setHours(0, 0, 0, 0);
+
+      const diffTime = Math.abs(today - lastLogin);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        // Consecutive day login
+        newStreak += 1;
+      } else if (diffDays > 1) {
+        // Missed a day or more
+        newStreak = 1;
+      }
+      // If diffDays === 0 (same day), keep streak same
+    } else {
+      // First ever login (or Since feature added)
+      newStreak = 1;
+    }
+
+    // Update user stats
+    user.streak = newStreak;
+    user.lastLoginDate = new Date(); // Save exact time for potential future precision
+    await user.save();
+
     // enforce admin 2FA if required
     req.user = user;
     // Run middleware; if it sends a 401 response, stop processing to avoid hanging
@@ -222,10 +253,11 @@ router.post("/update", verifyToken, async (req, res) => {
     if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
     if (username !== undefined && username.trim()) updateData.username = username.trim();
     if (age !== undefined) updateData.age = age;
-    if (gender !== undefined) updateData.gender = gender;
+    // For enums, ensure we don't send empty strings which fail validation
+    if (gender !== undefined && gender !== "") updateData.gender = gender;
     if (location !== undefined) updateData.location = location;
-    if (sport !== undefined) updateData.sport = sport;
-    if (level !== undefined) updateData.level = level;
+    if (sport !== undefined && sport !== "") updateData.sport = sport;
+    if (level !== undefined && level !== "") updateData.level = level;
     if (bio !== undefined) updateData.bio = bio;
     if (achievements !== undefined) updateData.achievements = achievements;
     if (phone !== undefined) updateData.phone = phone;

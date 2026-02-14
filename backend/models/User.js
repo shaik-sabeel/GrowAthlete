@@ -99,6 +99,15 @@ const userSchema = new mongoose.Schema({
     skill: { type: Number, default: 50 }
   },
 
+  streak: {
+    type: Number,
+    default: 0
+  },
+  lastLoginDate: {
+    type: Date,
+    default: null
+  },
+
   followers: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

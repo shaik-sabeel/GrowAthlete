@@ -125,7 +125,7 @@ const TournamentsPage = () => {
 
         {/* Overlay Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
-          <h1 className="text-6xl md:text-8xl font-extrabold text-white tracking-tight mb-2 uppercase drop-shadow-2xl font-bebas transform translate-y-0 transition-transform duration-500">
+          <h1 className="text-6xl md:text-8xl font-extrabold text-white tracking-tight mb-2 uppercase drop-shadow-2xl font-bebas transform translate-y-0 transition-transform duration-500" style={{ color: 'white' }}>
             TOURNAMENTS
           </h1>
           <div className="h-1 w-24 bg-orange-500 mb-6 rounded-full"></div>

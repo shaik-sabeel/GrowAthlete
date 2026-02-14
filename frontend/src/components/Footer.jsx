@@ -126,13 +126,13 @@ const Footer = () => {
         <div className="footer-column">
           <h4>Contact Us</h4>
           <div className="footer-contact-info">
-            <p><FaEnvelope /> growathlete.info@gmail.com</p>
+            <p><FaEnvelope /> growathlete8@gmail.com</p>
             <p><FaPhone /> +91 8500767368</p>
           </div>
           <h4>Follow Us</h4>
           <div className="footer-social-icons">
-            <a href="#" className="social-icon"><FaTwitter /></a>
-            <a href="#" className="social-icon"><FaFacebook /></a>
+            <a href="https://x.com/Grow_Athlete" className="social-icon"><FaTwitter /></a>
+            <a href="https://www.facebook.com/profile.php?id=61587589187974" className="social-icon"><FaFacebook /></a>
             <a href="https://www.instagram.com/growathlete/" className="social-icon"><FaInstagram /></a>
             <a href="https://www.linkedin.com/company/growathlete/posts/?feedView=all" className="social-icon"><FaLinkedin /></a>
           </div>

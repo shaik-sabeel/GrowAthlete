@@ -46,6 +46,11 @@ router.get('/:id', verifyToken, async (req, res) => {
     try {
         const targetUserId = req.params.id;
 
+        // Validate that the ID is a valid ObjectId
+        if (!targetUserId.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
         // Fetch user details
         const user = await User.findById(targetUserId).select('-password');
         if (!user) {

@@ -92,15 +92,21 @@ const Hero = () => {
                             {images.map((img, index) => {
                                 // Calculate rotation for 4 items: 0, 90, 180, 270
                                 const rotate = index * 90;
-                                // TranslateZ should be roughly width / 2 + spacing. 
                                 // Width ~300. tan(45) = 1. radius ~ 150. Let's make it larger for spacing.
                                 return (
                                     <div
                                         key={index}
                                         className="carousel-cell"
-                                        style={{ transform: `rotateY(${rotate}deg) translateZ(250px)` }}
+                                        style={{
+                                            transform: `rotateY(${rotate}deg) translateZ(250px)`,
+                                            backgroundColor: 'white' // Ensure background is white for contain
+                                        }}
                                     >
-                                        <img src={img} alt={`Carousel ${index + 1}`} />
+                                        <img
+                                            src={img}
+                                            alt={`Carousel ${index + 1}`}
+                                            className="w-[280px] h-[380px] object-contain bg-white rounded-2xl shadow-2xl border-4 border-white select-none pointer-events-none"
+                                        />
                                     </div>
                                 );
                             })}
