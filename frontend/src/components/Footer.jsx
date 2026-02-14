@@ -105,7 +105,7 @@ const Footer = () => {
   return (
     <footer className={`footer${isAdminPage ? ' footer--admin' : ''}`}>
       <div className="footer-container">
-        
+
         <div className="footer-column">
           <h4>GrowAthlete</h4>
           <p>
@@ -133,22 +133,29 @@ const Footer = () => {
           <div className="footer-social-icons">
             <a href="#" className="social-icon"><FaTwitter /></a>
             <a href="#" className="social-icon"><FaFacebook /></a>
-            <a href="#" className="social-icon"><FaInstagram /></a>
-            <a href="#" className="social-icon"><FaLinkedin /></a>
+            <a href="https://www.instagram.com/growathlete/" className="social-icon"><FaInstagram /></a>
+            <a href="https://www.linkedin.com/company/growathlete/posts/?feedView=all" className="social-icon"><FaLinkedin /></a>
           </div>
         </div>
 
         <div className="footer-column">
           <h4>Sports</h4>
-          <ul className="footer-links">
+          <ul className="footer-links" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gridTemplateRows: 'repeat(5, min-content)', gridAutoFlow: 'column', gap: '0 20px' }}>
             <li><a href="/sports/football">Football</a></li>
             <li><a href="/sports/cricket">Cricket</a></li>
             <li><a href="/sports/basketball">Basketball</a></li>
+            <li><a href="/sports/hockey">Hockey</a></li>
+            <li><a href="/sports/kabaddi">Kabaddi</a></li>
+            <li><a href="/sports/kho-kho">Kho-Kho</a></li>
+            <li><a href="/sports/volleyball">Volleyball</a></li>
+            <li><a href="/sports/badminton">Badminton</a></li>
+            <li><a href="/sports/rugby">Rugby</a></li>
+            <li><a href="/sports/tennis">Tennis</a></li>
           </ul>
         </div>
 
       </div>
-      
+
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} GrowAthlete India. All rights reserved.</p>
         <div className="footer-bottom-links">

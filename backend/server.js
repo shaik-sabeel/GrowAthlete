@@ -1,22 +1,44 @@
+console.log("--- DEBUG: Starting server.js ---");
 const express = require("express");
+console.log("DEBUG: express loaded");
 const cors = require("cors");
+console.log("DEBUG: cors loaded");
 const cookieParser = require("cookie-parser");
+console.log("DEBUG: cookieParser loaded");
 const mongoose = require("mongoose");
+console.log("DEBUG: mongoose loaded");
 const helmet = require("helmet");
+console.log("DEBUG: helmet loaded");
 const rateLimit = require("express-rate-limit");
+console.log("DEBUG: rateLimit loaded");
 const authRoutes = require("./routes/authRoutes");
+console.log("DEBUG: authRoutes loaded");
 const contactRoutes = require("./routes/contactRoute");
+console.log("DEBUG: contactRoutes loaded");
 const path = require("path");
 const sportsResumeRoutes = require("./routes/sportsResume");
+console.log("DEBUG: sportsResume loaded");
 const adminRoutes = require("./routes/adminRoutes");
+console.log("DEBUG: adminRoutes loaded");
 const contentModerationRoutes = require("./routes/contentModeration");
+console.log("DEBUG: contentModerationRoutes loaded");
 const eventRoutes = require("./routes/eventRoutes");
+console.log("DEBUG: eventRoutes loaded");
 const blogRoutes = require("./routes/blogRoutes");
+console.log("DEBUG: blogRoutes loaded");
 const communityPostRoutes = require("./routes/communityPostRoutes");
+console.log("DEBUG: communityPostRoutes loaded");
+const tournamentRoutes = require("./routes/tournamentRoutes");
+console.log("DEBUG: tournamentRoutes loaded");
+const profileRoutes = require("./routes/profileRoutes");
+console.log("DEBUG: profileRoutes loaded");
 const PlatformSettings = require("./models/PlatformSettings");
+console.log("DEBUG: PlatformSettings loaded");
 const maintenanceMiddleware = require('./middlewares/maintenance');
+console.log("DEBUG: maintenanceMiddleware loaded");
 
 const app = express();
+console.log("--- DEBUG: Express initialized ---");
 
 // Reduce header exposure
 app.disable('x-powered-by');
@@ -106,7 +128,7 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads"), {
 // Handle missing static files gracefully
 app.use("/uploads", (req, res, next) => {
   console.warn(`Missing static file: ${req.path}`);
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'File not found',
     message: 'The requested file does not exist',
     path: req.path
@@ -124,8 +146,8 @@ app.use((req, res, next) => {
 
 // Simple test route (before DB connection)
 app.get("/test", (req, res) => {
-  res.json({ 
-    message: "Backend is working!", 
+  res.json({
+    message: "Backend is working!",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
     origin: req.headers.origin
@@ -143,6 +165,7 @@ app.get("/cors-test", (req, res) => {
 });
 
 // connect to DB
+console.log("--- DEBUG: Require db.js ---");
 require("./db");
 
 // Helper to safely mount routers and log failures
@@ -167,6 +190,10 @@ safeMount("/api/moderation", contentModerationRoutes);
 safeMount("/api/events", eventRoutes);
 safeMount("/api/blog", blogRoutes);
 safeMount("/api/community", communityPostRoutes);
+safeMount("/api/tournaments", tournamentRoutes);
+safeMount("/api/profile", profileRoutes);
+const chatRoomRoutes = require("./routes/chatRoomRoutes");
+safeMount("/api/chatrooms", chatRoomRoutes);
 
 // Error handling middleware (generic message only)
 app.use((err, req, res, next) => {
@@ -185,4 +212,4 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 }).on('error', (err) => {
   console.error('Server failed to start:', err.message);
-}); 
+});

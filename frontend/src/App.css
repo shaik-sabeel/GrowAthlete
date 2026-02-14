@@ -1,4 +1,43 @@
 /* src/App.css */
+/* sabeel */
+
+/* Home Page Specific Overrides (Light Theme + Orange) */
+.home-page-container {
+  /* Override global dark theme variables */
+  --primary-color: #F97316;
+  /* Brand Orange */
+  --secondary-color: #0F172A;
+  /* Navy Blue */
+  --tertiary-color: #FBBF24;
+  /* Amber/Yellow override */
+
+  /* Text Colors - Inverting for Light Theme */
+  --text-dark: #1F2937;
+  /* Dark text for headings (was white) */
+  --text-medium: #4B5563;
+  /* Gray text */
+  --text-light: #9CA3AF;
+
+  /* Gradients - Updating to Orange theme */
+  --gradient-1: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+  --gradient-2: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+  /* Navy Gradient */
+
+  /* Reset Background */
+  --background-main: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #1F2937;
+}
+
+/* Force headings inside Home to be dark */
+.home-page-container h1,
+.home-page-container h2,
+.home-page-container h3,
+.home-page-container h4,
+.home-page-container h5,
+.home-page-container h6 {
+  color: var(--text-dark) !important;
+}
 
 /* General Layout & Base styles, common across pages */
 
@@ -15,7 +54,8 @@
   --color-blog-card-text: #555;
   --color-blog-card-title: #333;
   --color-blog-card-date: #888;
-  --color-blog-button-bg: #f5f5f5; /* Light button background */
+  --color-blog-button-bg: #f5f5f5;
+  /* Light button background */
   --color-blog-button-text: #333;
 }
 
@@ -24,15 +64,18 @@ body.dark-theme {
   /* ... existing variables ... */
 
   /* New Blog Specific Colors (Dark Theme) */
-  --color-blog-card-background: #3c5673; /* A medium dark background for cards */
+  --color-blog-card-background: #3c5673;
+  /* A medium dark background for cards */
   --color-blog-card-border: #4d688c;
   --color-blog-card-shadow: rgba(0, 0, 0, 0.4);
   --color-blog-card-text: #c0c0c0;
   --color-blog-card-title: #f8f9fa;
   --color-blog-card-date: #999;
-  --color-blog-button-bg: #555; /* Dark button background */
+  --color-blog-button-bg: #555;
+  /* Dark button background */
   --color-blog-button-text: #fff;
 }
+
 #root {
   display: flex;
   flex-direction: column;
@@ -45,8 +88,10 @@ body.dark-theme {
 }
 
 main {
-  flex: 1; /* Ensures footer sticks to the bottom */
-  overflow: hidden; /* Prevent horizontal scroll from animations or absolute positioned elements */
+  flex: 1;
+  /* Ensures footer sticks to the bottom */
+  overflow: hidden;
+  /* Prevent horizontal scroll from animations or absolute positioned elements */
 }
 
 /* Global Container for content centering */
@@ -66,13 +111,16 @@ section {
 body::-webkit-scrollbar {
   width: 10px;
 }
+
 body::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
 body::-webkit-scrollbar-thumb {
   background: var(--primary-color);
   border-radius: 5px;
 }
+
 body::-webkit-scrollbar-thumb:hover {
   background: var(--secondary-color);
 }
@@ -90,7 +138,12 @@ a:hover {
 }
 
 /* --- HEADINGS COMMON STYLES --- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family-sans);
   color: var(--text-dark);
 }
@@ -102,7 +155,8 @@ h2.section-heading {
   position: relative;
   padding-bottom: 15px;
   margin-bottom: 50px;
-  background: var(--gradient-1); /* Uses your defined gradient */
+  background: var(--gradient-1);
+  /* Uses your defined gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
@@ -116,7 +170,8 @@ h2.section-heading::after {
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: var(--gradient-2); /* Uses your defined gradient */
+  background: var(--gradient-2);
+  /* Uses your defined gradient */
   border-radius: 2px;
 }
 
@@ -124,7 +179,8 @@ h2.section-heading::after {
 .section-description {
   text-align: center;
   max-width: 700px;
-  margin: -30px auto 50px auto; /* Adjusts positioning relative to heading */
+  margin: -30px auto 50px auto;
+  /* Adjusts positioning relative to heading */
   font-size: 1.1em;
   color: #666;
 }
@@ -133,6 +189,7 @@ h2.section-heading::after {
   h2.section-heading {
     font-size: 2em;
   }
+
   .section-description {
     font-size: 0.9em;
   }
@@ -145,13 +202,17 @@ h2.section-heading::after {
   font-size: 1.05em;
   font-weight: 600;
   cursor: pointer;
-  text-decoration: none; /* For link buttons */
-  display: inline-flex; /* For content centering */
+  text-decoration: none;
+  /* For link buttons */
+  display: inline-flex;
+  /* For content centering */
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  min-width: 150px; /* Consistent minimum width */
-  user-select: none; /* Prevent text selection on button text */
+  min-width: 150px;
+  /* Consistent minimum width */
+  user-select: none;
+  /* Prevent text selection on button text */
 }
 
 /* Primary Button variant */
@@ -200,13 +261,15 @@ h2.section-heading::after {
   color: var(--primary-color);
   border: none;
   padding: 0;
-  min-width: unset; /* Remove min-width for true link-like buttons */
+  min-width: unset;
+  /* Remove min-width for true link-like buttons */
 }
 
 .btn-link:hover {
   text-decoration: underline;
   color: var(--secondary-color);
-  transform: none; /* Override hover transform if applies from general rules */
+  transform: none;
+  /* Override hover transform if applies from general rules */
   box-shadow: none;
 }
 
@@ -226,14 +289,15 @@ h2.section-heading::after {
 .btn-header-signin:hover {
   opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* General style for content inside buttons that has icons/text */
 .btn span {
   display: flex;
   align-items: center;
-  gap: 8px; /* Space between text and icon if present */
+  gap: 8px;
+  /* Space between text and icon if present */
 }
 
 /* Responsive adjustments for buttons */
@@ -241,6 +305,61 @@ h2.section-heading::after {
   .btn {
     padding: 10px 20px;
     font-size: 1em;
-    width: 100%; /* Make buttons full width on small screens by default */
+    width: 100%;
+    /* Make buttons full width on small screens by default */
   }
+}
+
+/* 3D Carousel Styles */
+.carousel-scene {
+  perspective: 1000px;
+  width: 300px;
+  /* Adjust based on image width */
+  height: 400px;
+  /* Adjust based on image height */
+  position: relative;
+  margin: 0 auto;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: rotateCarousel 12s infinite linear;
+}
+
+.carousel-cell {
+  position: absolute;
+  width: 280px;
+  height: 380px;
+  left: 10px;
+  top: 10px;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  /* The transforms are applied inline in JS for dynamic positioning */
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.carousel-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes rotateCarousel {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Pause on hover */
+.carousel-scene:hover .carousel-container {
+  animation-play-state: paused;
 }

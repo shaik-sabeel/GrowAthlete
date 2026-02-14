@@ -72,14 +72,14 @@ const EventDetailPage = () => {
             <div className="bg-[#25334a] min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="container mx-auto max-w-4xl bg-[#30405a] rounded-xl shadow-md overflow-hidden">
                     {event.image && (
-                        <img src={`${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`} alt={event.title} className="w-100 h-100 mx-auto
+                        <img src={event.image.startsWith('http') ? event.image : `${import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com'}${event.image}`} alt={event.title} className="w-100 h-100 mx-auto
                          object-cover" />
                     )}
                     <div className="p-6 sm:p-8">
                         <div className="flex items-center justify-between mb-4">
-                            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray" style={{color :"gray"}}>{event.title}</h1>
-                            <Link 
-                                to="/events" 
+                            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray" style={{ color: "gray" }}>{event.title}</h1>
+                            <Link
+                                to="/events"
                                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-black  bg-black hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
                                 &larr; Back to Events

@@ -27,7 +27,12 @@
     "gsap": "^3.12.5",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
     "lucide-react": "^0.563.0",
+=======
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.562.0",
+>>>>>>> c6343092599e885718b603d893d5ecbaa7a16a58
     "moment": "^2.30.1",
     "mongoose": "^8.17.0",
     "qrcode.react": "^4.2.0",
@@ -35,8 +40,10 @@
     "react-big-calendar": "^1.19.4",
     "react-countup": "^6.5.3",
     "react-dom": "^19.1.0",
+    "react-fast-marquee": "^1.6.5",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.10.1",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^6.30.1",
     "swiper": "^11.1.1"
   },

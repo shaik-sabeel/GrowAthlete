@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx (Your global header component)
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
-import { useNavigate,Link, NavLink } from 'react-router-dom';
+import { useNavigate, Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNotification } from '../context/NotificationContext';
 
@@ -21,24 +21,30 @@ import gaLogo from '../assets/galogo.png';
 
 const navLinks = [
   { name: 'Home', path: '/' },
+  { name: 'Dashboard', path: '/athlete/dashboard' },
+  { name: 'Tournaments', path: '/tournaments' },
   { name: 'About', path: '/about' },
   { name: 'Athletes', path: '/athletes' },
   { name: 'News', path: '/news' }, // Sports News from SportsPulse
   // { name: 'Live Scores', path: '/live-scores' }, // Separated Live Scores
-  { name: 'My Profile', path: '/profile' },
-  { name: 'Sports Resume', path: '/sports-resume' },
-  { name: 'Community', path: '/community' },
-  {name : 'Blogs', path: '/sports-blog'},
-  { name: 'Membership', path: '/membership' },
 
-  { name: 'More', subLinks: [
-    { name: 'Events', path: '/events' },
-    { name: 'Saved Articles', path: '/saved-articles' },
-    { name: 'Sponsorships', path: '/sponsorships' },
-    // { name: 'Resources', path: '/resources' },
-    { name: 'Contact Us', path: '/contact' }
-   
-  ]},
+  { name: 'Feed', path: '/feed' },
+  // { name: 'Blogs', path: '/sports-blog' },
+
+
+  {
+    name: 'More', subLinks: [
+      { name: 'Events', path: '/events' },
+      { name: 'Saved Articles', path: '/saved-articles' },
+      // { name: 'Sponsorships', path: '/sponsorships' },
+      // { name: 'Resources', path: '/resources' },
+      { name: 'My Profile', path: '/profile' },
+      { name: 'Sports Resume', path: '/sports-resume' },
+      { name: 'Subscription', path: '/membership' },
+      { name: 'Contact Us', path: '/contact' }
+
+    ]
+  },
 ];
 
 const mobileMenuVariants = {
@@ -62,10 +68,11 @@ const mobileMenuVariants = {
 
 const Navbar = () => {
 
-const navigate = useNavigate();
-const [isAuthenticated, setIsAuthenticated] = useState(false);
-const [data, setData] = useState(null);
-const { showSuccess, showError } = useNotification();
+  const navigate = useNavigate();
+  const location = useLocation(); // Hook to track route changes
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [data, setData] = useState(null);
+  const { showSuccess, showError } = useNotification();
 
   // useEffect(() => {
   //   // Whenever isAuthenticated changes, notify parent
@@ -87,37 +94,37 @@ const { showSuccess, showError } = useNotification();
   // }, [isAuthenticated]);
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;  // 🚀 Don't call API if no token
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;  // 🚀 Don't call API if no token
 
-      const res = await api.get("/auth/profile");
-      setData(res.data.user);
-      setIsAuthenticated(true);
-    } catch (err) {
-      setIsAuthenticated(false);
-      setData(null);
-      console.error("Error fetching profile data:", err);
-    }
-  };
-  fetchData();
-}, []); // run once on mount
+        const res = await api.get("/auth/profile");
+        setData(res.data.user);
+        setIsAuthenticated(true);
+      } catch (err) {
+        setIsAuthenticated(false);
+        setData(null);
+        console.error("Error fetching profile data:", err);
+      }
+    };
+    fetchData();
+  }, [location]); // Re-run effect when location changes (e.g. after login/logout redirect)
 
 
-//   useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       const res = await api.get("/auth/profile");
-//       setData(res.data.user);
-//       setIsAuthenticated(true);
-//     } catch (err) {
-//       setIsAuthenticated(false);
-//       setData(null);
-//     }
-//   };
-//   fetchData();
-// }, []);
+  //   useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await api.get("/auth/profile");
+  //       setData(res.data.user);
+  //       setIsAuthenticated(true);
+  //     } catch (err) {
+  //       setIsAuthenticated(false);
+  //       setData(null);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const handleLogout = async () => {
     try {
@@ -177,7 +184,7 @@ const { showSuccess, showError } = useNotification();
               link.subLinks ? (
                 <div className="dropdown" key={index}>
                   <a href="#" className="dropdown-toggle" onClick={(e) => e.preventDefault()}>
-                    {link.name} <span style={{fontSize: '0.6em'}}>&#9660;</span>
+                    {link.name} <span style={{ fontSize: '0.6em' }}>&#9660;</span>
                   </a>
                   <div className="dropdown-menu">
                     {link.subLinks.map((subLink) => (
@@ -194,9 +201,9 @@ const { showSuccess, showError } = useNotification();
               )
             ))}
             <div className="navbar-auth mobile-only">
-                {/* Use the common Button component with specific variant */}
-                {/* <Button variant="header-signin" link="/login">Sign In</Button> */}
-                {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
+              {/* Use the common Button component with specific variant */}
+              {/* <Button variant="header-signin" link="/login">Sign In</Button> */}
+              {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>) : (<Button variant="header-signin" link="/login">Sign In</Button>)}
             </div>
           </motion.div>
         )}
@@ -205,32 +212,32 @@ const { showSuccess, showError } = useNotification();
       {/* Desktop Navigation Links */}
       <div className="navbar-links desktop-nav">
         {navLinks.map((link, index) => (
-              link.subLinks ? (
-                <div className="dropdown" key={index}>
-                  <a href="#" className="dropdown-toggle" onClick={(e) => e.preventDefault()}>
-                    {link.name} <span style={{fontSize: '0.6em'}}>&#9660;</span>
-                  </a>
-                  <div className="dropdown-menu">
-                    {link.subLinks.map((subLink) => (
-                      <NavLink key={subLink.name} to={subLink.path}>
-                        {subLink.name}
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <NavLink key={link.name} to={link.path}>
-                  {link.name}
-                </NavLink>
-              )
-            ))}
+          link.subLinks ? (
+            <div className="dropdown" key={index}>
+              <a href="#" className="dropdown-toggle" onClick={(e) => e.preventDefault()}>
+                {link.name} <span style={{ fontSize: '0.6em' }}>&#9660;</span>
+              </a>
+              <div className="dropdown-menu">
+                {link.subLinks.map((subLink) => (
+                  <NavLink key={subLink.name} to={subLink.path}>
+                    {subLink.name}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <NavLink key={link.name} to={link.path}>
+              {link.name}
+            </NavLink>
+          )
+        ))}
       </div>
-            {/* <ThemeChange /> */}
+      {/* <ThemeChange /> */}
 
       {/* Desktop Auth Button */}
       <div className="navbar-auth desktop-only">
         {/* Use the common Button component with specific variant */}
-        {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>):(<Button variant="header-signin" link="/login">Sign In</Button>)}
+        {isAuthenticated ? (<Button onClick={handleLogout} variant="header-signin">Log out</Button>) : (<Button variant="header-signin" link="/login">Sign In</Button>)}
 
       </div>
     </nav>

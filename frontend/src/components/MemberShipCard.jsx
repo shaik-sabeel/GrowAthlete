@@ -1,4 +1,3 @@
-// src/components/MembershipCard.jsx
 import React from 'react';
 
 const MembershipCard = ({ level, price, description, features, buttonText, bgColor, borderColor, textColor }) => {
@@ -51,7 +50,7 @@ const MembershipCard = ({ level, price, description, features, buttonText, bgCol
       </ul>
 
       <button
-        className= {`
+        className={`
           ${textColor === 'text-green-800' ? 'bg-green-600 hover:bg-green-700' : ''}
           ${textColor === 'text-blue-800' ? 'bg-blue-600 hover:bg-blue-700' : ''}
           ${textColor === 'text-purple-800' ? 'bg-purple-600 hover:bg-purple-700' : ''}
