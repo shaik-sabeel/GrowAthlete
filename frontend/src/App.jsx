@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Login from "./pages/Login";
 // import AdminDashboard from "./pages/AdminDashboard";
@@ -90,8 +89,6 @@
 // export default App;
 
 
-=======
->>>>>>> c6343092599e885718b603d893d5ecbaa7a16a58
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
@@ -130,9 +127,7 @@ import CommunityPage from './pages/CommunityPage';
 import CreateBlog from './pages/CreateBlogPost.jsx';
 import Sponsorship from './pages/SponsorShip.jsx';
 import SportsPage from './pages/SportsPage.jsx';
-<<<<<<< HEAD
 import ChatRooms from './pages/ChatRooms.jsx';
-=======
 import FeedPage from './pages/FeedPage.jsx';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit'; // Import ProfileEdit
@@ -142,7 +137,6 @@ import NewsPage_SportsPulse from './pages/NewsPage_SportsPulse.jsx';
 import LiveScoresPage from './pages/LiveScoresPage.jsx';
 import SavedArticlesPage from './pages/SavedArticlesPage.jsx';
 import CreateTournamentPage from './pages/CreateTournamentPage'; // Import the new page
->>>>>>> c6343092599e885718b603d893d5ecbaa7a16a58
 
 // --- GLOBAL STYLES ---
 import './App.css';
@@ -216,7 +210,6 @@ function AppContent() {
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
           <Route path="/saved-articles" element={<ErrorBoundary><SavedArticlesPage /></ErrorBoundary>} />         {/* <--- SAVED ARTICLES PAGE */}
-<<<<<<< HEAD
 
 
           <Route path="/membership" element={<MembershipPage />} />
@@ -230,7 +223,6 @@ function AppContent() {
           {/* --- PROTECTED ROUTES --- */}
 
 
-=======
 
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
@@ -241,7 +233,6 @@ function AppContent() {
 
 
           {/* --- PROTECTED ROUTES --- */}
->>>>>>> c6343092599e885718b603d893d5ecbaa7a16a58
           <Route
             path="/profile"
             element={
@@ -250,9 +241,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-<<<<<<< HEAD
 
-=======
           <Route
             path="/profile/edit"
             element={
@@ -261,7 +250,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
->>>>>>> c6343092599e885718b603d893d5ecbaa7a16a58
           <Route
             path="/event/create"
             element={
