@@ -4,13 +4,16 @@
 
 :root {
   /* Using imports in App.css for var(--primary-color) etc. */
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* Fallback for Roboto */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Fallback for Roboto */
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #242424; /* Adjusted from rgba(255, 255, 255, 0.87) for clarity against light background */
-  background-color: #ffffff; /* Explicitly white for body background */
+  color: #242424;
+  /* Adjusted from rgba(255, 255, 255, 0.87) for clarity against light background */
+  background-color: #ffffff;
+  /* Explicitly white for body background */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,11 +24,13 @@
 /* Only body properties, removed root-level properties here because they are moved to :root{} in App.css for better organization */
 body {
   margin: 0;
-  /* display: flex; */ /* Removed from body to allow for full-width content layouts */
-  /* place-items: center; */ /* Removed from body */
+  /* display: flex; */
+  /* Removed from body to allow for full-width content layouts */
+  /* place-items: center; */
+  /* Removed from body */
   min-width: 320px;
   min-height: 100vh;
-  
+
   /* background-color and color also removed to be controlled by :root and component styles */
 }
 
@@ -33,9 +38,11 @@ body {
    they should be managed by App.css global headings or individual components
    Let's keep them here as bare minimum overrides */
 h1 {
-  font-size: 3.2em; /* Keep for general h1, specific ones overridden by App.css headings */
+  font-size: 3.2em;
+  /* Keep for general h1, specific ones overridden by App.css headings */
   line-height: 1.1;
-  color: #333; /* Default dark text color */
+  color: #333;
+  /* Default dark text color */
 }
 
 button {
@@ -46,13 +53,16 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  color: #ffffff; /* Default button text color */
+  color: #ffffff;
+  /* Default button text color */
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -63,10 +73,12 @@ button:focus-visible {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 /* If using custom Navbar logo, delete the animation rules */
 
 /* Other specific vite template remnants that can be removed if not used */
@@ -86,32 +98,83 @@ with varying opacities and subtle transforms for a glitch effect.
 */
 
 @keyframes text-flicker {
-  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
+
+  0%,
+  10%,
+  12%,
+  18%,
+  20%,
+  30%,
+  32%,
+  38%,
+  40%,
+  42%,
+  48%,
+  50%,
+  52%,
+  58%,
+  60%,
+  62%,
+  68%,
+  70%,
+  72%,
+  78%,
+  80%,
+  82%,
+  88%,
+  90%,
+  92%,
+  98%,
+  100% {
     opacity: 1;
     transform: none;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
   }
 
-  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
-    opacity: 0.8; /* Slight dim */
-    transform: translateY(1px) translateX(-0.5px); /* Minor jitter */
+  5%,
+  15%,
+  25%,
+  35%,
+  45%,
+  55%,
+  65%,
+  75%,
+  85%,
+  95% {
+    opacity: 0.8;
+    /* Slight dim */
+    transform: translateY(1px) translateX(-0.5px);
+    /* Minor jitter */
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   }
 
-  11%, 31%, 51%, 71%, 91% {
-    opacity: 0; /* Complete momentary disappearance */
-    transform: translateY(2px) translateX(1px) scale(0.99); /* More pronounced jitter */
+  11%,
+  31%,
+  51%,
+  71%,
+  91% {
+    opacity: 0;
+    /* Complete momentary disappearance */
+    transform: translateY(2px) translateX(1px) scale(0.99);
+    /* More pronounced jitter */
     text-shadow: none;
   }
-  21%, 41%, 61%, 81% {
-    opacity: 0.2; /* Short partial fade out */
+
+  21%,
+  41%,
+  61%,
+  81% {
+    opacity: 0.2;
+    /* Short partial fade out */
     transform: translateY(-1px) translateX(0.5px);
   }
 }
 
 .animate-text-flicker {
-  animation: text-flicker 4s infinite alternate ease-in-out; /* Longer, smoother base */
-  will-change: opacity, transform, text-shadow; /* Optimize browser rendering */
+  animation: text-flicker 4s infinite alternate ease-in-out;
+  /* Longer, smoother base */
+  will-change: opacity, transform, text-shadow;
+  /* Optimize browser rendering */
 }
 
 
@@ -120,24 +183,68 @@ with varying opacities and subtle transforms for a glitch effect.
 
 /* Existing flicker keyframes (ensure these are present from previous step) */
 @keyframes text-flicker {
-  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
+
+  0%,
+  10%,
+  12%,
+  18%,
+  20%,
+  30%,
+  32%,
+  38%,
+  40%,
+  42%,
+  48%,
+  50%,
+  52%,
+  58%,
+  60%,
+  62%,
+  68%,
+  70%,
+  72%,
+  78%,
+  80%,
+  82%,
+  88%,
+  90%,
+  92%,
+  98%,
+  100% {
     opacity: 1;
     transform: none;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
   }
 
-  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+  5%,
+  15%,
+  25%,
+  35%,
+  45%,
+  55%,
+  65%,
+  75%,
+  85%,
+  95% {
     opacity: 0.8;
     transform: translateY(1px) translateX(-0.5px);
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
   }
 
-  11%, 31%, 51%, 71%, 91% {
+  11%,
+  31%,
+  51%,
+  71%,
+  91% {
     opacity: 0;
     transform: translateY(2px) translateX(1px) scale(0.99);
     text-shadow: none;
   }
-  21%, 41%, 61%, 81% {
+
+  21%,
+  41%,
+  61%,
+  81% {
     opacity: 0.2;
     transform: translateY(-1px) translateX(0.5px);
   }
@@ -151,14 +258,24 @@ with varying opacities and subtle transforms for a glitch effect.
 
 /* New keyframes for the @effectualdesign fade-in */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 0.8; } /* Matching the text's default opacity */
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.8;
+  }
+
+  /* Matching the text's default opacity */
 }
 
 .animate-fade-in {
-  opacity: 0; /* Start invisible */
-  animation: fadeIn 1s forwards ease-out; /* forwards keeps it visible after animation */
+  opacity: 0;
+  /* Start invisible */
+  animation: fadeIn 1s forwards ease-out;
+  /* forwards keeps it visible after animation */
 }
+
 /* src/index.css (add to your global CSS) */
 
 /* ... (Your existing global animations and styles, like animate-text-flicker and animate-fade-in) ... */
@@ -166,12 +283,15 @@ with varying opacities and subtle transforms for a glitch effect.
 /* General overrides for react-big-calendar */
 .react-big-calendar-custom {
   @apply text-gray-800;
-  font-family: 'Inter', sans-serif; /* Use your preferred font */
+  font-family: 'Inter', sans-serif;
+  /* Use your preferred font */
 }
 
 .rbc-calendar {
-  @apply border-none shadow-none; /* Remove default border and shadow */
-  display: flex; /* Make it a flex container to push toolbar to top */
+  @apply border-none shadow-none;
+  /* Remove default border and shadow */
+  display: flex;
+  /* Make it a flex container to push toolbar to top */
   flex-direction: column;
 }
 
@@ -218,24 +338,29 @@ with varying opacities and subtle transforms for a glitch effect.
 
 /* Specific styling for the current month's day number in the header of cells */
 .rbc-date-cell span {
-    @apply block mt-0.5 mr-0.5; /* Slight adjustment */
+  @apply block mt-0.5 mr-0.5;
+  /* Slight adjustment */
 }
 
 
 .rbc-off-range-bg {
-  @apply bg-gray-100; /* Grey out days not in the current month */
+  @apply bg-gray-100;
+  /* Grey out days not in the current month */
 }
 
 .rbc-current-time-indicator {
-  @apply bg-red-500; /* Red line for current time */
+  @apply bg-red-500;
+  /* Red line for current time */
 }
 
 .rbc-today {
-  @apply bg-blue-100; /* Highlight today's date */
+  @apply bg-blue-100;
+  /* Highlight today's date */
 }
 
 .rbc-row-content {
-  @apply p-1; /* Add some padding to cell content */
+  @apply p-1;
+  /* Add some padding to cell content */
 }
 
 /* Event Popup (when clicking on an event) */
@@ -244,27 +369,46 @@ with varying opacities and subtle transforms for a glitch effect.
 }
 
 /* Calendar borders and cells */
-.rbc-time-view, .rbc-month-view {
+.rbc-time-view,
+.rbc-month-view {
   @apply border border-gray-200;
 }
 
 .rbc-header,
-.rbc-row-bg > div + div, /* Vertical lines for columns */
-.rbc-day-bg + .rbc-day-bg {
-  border-left: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+.rbc-row-bg>div+div,
+/* Vertical lines for columns */
+.rbc-day-bg+.rbc-day-bg {
+  border-left: 1px solid #e5e7eb;
+  /* Tailwind border-gray-200 */
 }
 
-.rbc-day-bg, .rbc-month-row, .rbc-agenda-table {
-  border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+.rbc-day-bg,
+.rbc-month-row,
+.rbc-agenda-table {
+  border-bottom: 1px solid #e5e7eb;
+  /* Tailwind border-gray-200 */
 }
 
 /* Day slot numbers */
-.rbc-day-bg + .rbc-day-bg {
-    border-left: 1px solid #e5e7eb;
+.rbc-day-bg+.rbc-day-bg {
+  border-left: 1px solid #e5e7eb;
 }
 
 /* Remove default focus outline */
 .rbc-calendar *:focus {
   outline: none;
   box-shadow: none;
+}
+
+/* Dropdown animation for ChatRooms */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

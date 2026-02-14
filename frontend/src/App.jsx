@@ -23,7 +23,7 @@
 //           }
 //         /> */}
 
-        
+
 
 //         <Route
 //           path="/athlete/dashboard"
@@ -129,6 +129,7 @@ import CommunityPage from './pages/CommunityPage';
 import CreateBlog from './pages/CreateBlogPost.jsx';
 import Sponsorship from './pages/SponsorShip.jsx';
 import SportsPage from './pages/SportsPage.jsx';
+import ChatRooms from './pages/ChatRooms.jsx';
 
 // Swiper styles (global for carousels)
 import 'swiper/css';
@@ -145,7 +146,7 @@ import SavedArticlesPage from './pages/SavedArticlesPage.jsx';        // <--- SA
 // Wrapper component to handle conditional navbar rendering
 function AppContent() {
   const location = useLocation();
-  
+
   // Track page views in Google Analytics 4 on route changes
   usePageTracking();
 
@@ -194,7 +195,7 @@ function AppContent() {
           {/* <Route path="/athletes" element={<AthletesPage />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/update" element={<Profile/>} />
+          <Route path="/update" element={<Profile />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/sports-resume" element={<SportsResume />} />
@@ -209,19 +210,20 @@ function AppContent() {
           <Route path="/news" element={<ErrorBoundary><NewsPage_SportsPulse /></ErrorBoundary>} />                   {/* <--- NEWS PAGE (full) */}
           <Route path="/live-scores" element={<ErrorBoundary><LiveScoresPage /></ErrorBoundary>} />               {/* <--- LIVE SCORES PAGE (full) */}
           <Route path="/saved-articles" element={<ErrorBoundary><SavedArticlesPage /></ErrorBoundary>} />         {/* <--- SAVED ARTICLES PAGE */}
-            
+
 
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/chat" element={<ChatRooms />} />
 
           <Route path="/splash" element={<Splash nextPath="/" />} />
-<Route path="/resume-template" element={<ResumeTemplate />} />   
+          <Route path="/resume-template" element={<ResumeTemplate />} />
 
 
           {/* --- PROTECTED ROUTES --- */}
 
 
-        <Route
+          <Route
             path="/profile"
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
@@ -230,7 +232,7 @@ function AppContent() {
             }
           />
 
-           <Route
+          <Route
             path="/event/create"
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
@@ -243,7 +245,7 @@ function AppContent() {
             element={
               <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
                 <MyProfile />
-               </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
 
@@ -294,9 +296,9 @@ function AppContent() {
           {/* Fallback for undefined routes */}
           <Route path="*" element={
             <div style={{ padding: '80px 20px', minHeight: '80vh', textAlign: 'center', paddingTop: '150px' }}>
-                <h1>404 - Page Not Found</h1>
-                <p>Oops! The page you're looking for doesn't exist.</p>
-                <Link to="/" className="btn btn-primary" style={{marginTop: '20px'}}>Go to Homepage</Link>
+              <h1>404 - Page Not Found</h1>
+              <p>Oops! The page you're looking for doesn't exist.</p>
+              <Link to="/" className="btn btn-primary" style={{ marginTop: '20px' }}>Go to Homepage</Link>
             </div>
           } />
 
