@@ -5,7 +5,9 @@
 /* General container for the entire page */
 .profile-form-container {
     background: var(--background-main);
-    padding: 3rem 1rem; /* Added more vertical padding */
+    /* Light background */
+    padding: 3rem 1rem;
+    /* Added more vertical padding */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,11 +21,16 @@
 /* The main form element */
 .profile-form {
     background-color: var(--background-light);
-    backdrop-filter: blur(10px); /* Frosted glass effect */
+    /* White background */
+    backdrop-filter: blur(10px);
+    /* Frosted glass effect */
     padding: 3rem;
-    border-radius: var(--border-radius-card); /* Softer, more modern border radius */
+    border-radius: var(--border-radius-card);
+    /* Softer, more modern border radius */
     box-shadow: var(--box-shadow-card);
+    /* Softer shadow */
     border: 1px solid var(--border-color);
+    /* Light border */
     max-width: 900px;
     width: 100%;
 }
@@ -48,12 +55,16 @@
 
 .section-title {
     font-family: var(--font-secondary);
-    font-size: 1.5rem; /* Larger title font */
-    font-weight: var(--font-weight-bold); /* Bolder font */
-    color: var(--text-dark); /* Dark blue-gray for contrast */
+    font-size: 1.5rem;
+    /* Larger title font */
+    font-weight: var(--font-weight-bold);
+    /* Bolder font */
+    color: var(--text-dark);
+    /* Dark blue-gray for contrast */
     margin-bottom: 2rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid var(--border-color); /* A subtle but clear separator */
+    border-bottom: 2px solid var(--border-color);
+    /* A subtle but clear separator */
     position: relative;
 }
 
@@ -89,7 +100,8 @@
     margin-bottom: 0.75rem;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #34495e; /* Softer dark color */
+    color: #34495e;
+    /* Softer dark color */
 }
 
 /* Styling for all input, select, and textarea fields */
@@ -99,7 +111,8 @@
     width: 100%;
     padding: 0.85rem 1rem;
     border: 1px solid #dcdfe6;
-    border-radius: 8px; /* Slightly more rounded corners */
+    border-radius: 8px;
+    /* Slightly more rounded corners */
     font-size: 1rem;
     font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
@@ -135,11 +148,13 @@
 }
 
 .photo-placeholder {
-    width: 80px; /* Larger placeholder */
+    width: 80px;
+    /* Larger placeholder */
     height: 80px;
     border-radius: 50%;
     background-color: #e9ecef;
-    border: 2px dashed #bdc3c7; /* Dashed border for visual interest */
+    border: 2px dashed #bdc3c7;
+    /* Dashed border for visual interest */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,12 +171,12 @@
     font-weight: 600;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.07);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.07);
 }
 
 .change-btn {

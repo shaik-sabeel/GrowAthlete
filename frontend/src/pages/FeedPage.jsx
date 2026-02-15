@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import backendApi from "../utils/backendApi";
 import { getCurrentUserId } from "../utils/auth";
 import moment from "moment";
@@ -243,20 +244,26 @@ const FeedPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-      <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-24 md:pb-6">
+    <div className="min-h-screen bg-gray-900 text-white font-sans relative overflow-x-hidden">
+      {/* Background Gradients */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-600/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[100px]"></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-24 md:pb-6 relative z-10">
 
         <aside
-          className={`col-span-12 lg:col-span-4 space-y-6 ${activeTab === "feed" ? "hidden lg:block" : "block"}`}
+          className={`col-span-12 lg:col-span-4 space-y-6 ${activeTab === "feed" ? "hidden lg:block" : "block"} lg:sticky lg:top-24 h-fit`}
         >
 
           {/* Modal for User List */}
           {showUserListModal && (
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowUserListModal(false)}>
-              <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                <div className="p-4 border-b border-slate-100 bg-white sticky top-0 z-10">
+              <div className="bg-gray-800 rounded-2xl w-full max-w-md max-h-[80vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                <div className="p-4 border-b border-gray-700 bg-gray-800 sticky top-0 z-10">
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-lg font-bold text-slate-900">{userListTitle}</h3>
+                    <h3 className="text-lg font-bold text-white">{userListTitle}</h3>
                     <button
                       onClick={() => setShowUserListModal(false)}
                       className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
@@ -267,7 +274,7 @@ const FeedPage = () => {
                   <input
                     type="text"
                     placeholder={`Search ${userListTitle.toLowerCase()}...`}
-                    className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                    className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                     value={userListSearch}
                     onChange={(e) => setUserListSearch(e.target.value)}
                   />
@@ -280,7 +287,7 @@ const FeedPage = () => {
                     userListUsers
                       .filter(u => u.username.toLowerCase().includes(userListSearch.toLowerCase()))
                       .map(user => (
-                        <div key={user._id} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-xl transition-colors">
+                        <div key={user._id} className="flex items-center gap-3 p-2 hover:bg-gray-700 rounded-xl transition-colors">
                           <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0">
                             {user.profilePicture ? (
                               <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
@@ -291,8 +298,8 @@ const FeedPage = () => {
                             )}
                           </div>
                           <div className="flex-grow min-w-0">
-                            <strong className="block text-slate-900 font-semibold truncate">{user.username}</strong>
-                            {user.bio && <p className="text-xs text-slate-500 truncate">{user.bio}</p>}
+                            <strong className="block text-white font-semibold truncate">{user.username}</strong>
+                            {user.bio && <p className="text-xs text-gray-400 truncate">{user.bio}</p>}
                           </div>
                           {user._id !== currentUserId && (
                             <button
@@ -317,43 +324,43 @@ const FeedPage = () => {
             </div>
           )}
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+          <div className="bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-700">
             <div className="flex justify-around mb-6">
               <div className="text-center cursor-pointer hover:opacity-80 transition-opacity" onClick={() => openUserList("Followers", currentUserProfile?.followers)}>
-                <h3 className="text-xl font-bold text-black" style={{ color: "black" }}>{currentUserProfile?.followers?.length || 0}</h3>
-                <span className="text-sm text-slate-500 font-medium">Followers</span>
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">{currentUserProfile?.followers?.length || 0}</h3>
+                <span className="text-sm text-gray-400 font-medium">Followers</span>
               </div>
               <div className="text-center cursor-pointer hover:opacity-80 transition-opacity" onClick={() => openUserList("Following", currentUserProfile?.following)}>
-                <h3 className="text-xl font-bold text-black" style={{ color: "black" }}>{currentUserProfile?.following?.length || 0}</h3>
-                <span className="text-sm text-slate-500 font-medium">Following</span>
+                <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">{currentUserProfile?.following?.length || 0}</h3>
+                <span className="text-sm text-gray-400 font-medium">Following</span>
               </div>
             </div>
 
             <button
               onClick={() => openUserList("Followers", currentUserProfile?.followers)}
-              className="w-full mb-3 py-2 px-4 bg-transparent border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium"
+              className="w-full mb-3 py-2 px-4 bg-transparent border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors text-sm font-medium"
             >
               View followers
             </button>
             <button
               onClick={() => openUserList("Following", currentUserProfile?.following)}
-              className="w-full py-2 px-4 bg-transparent border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium"
+              className="w-full py-2 px-4 bg-transparent border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors text-sm font-medium"
             >
               View following
             </button>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+          <div className="bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-sm p-6 border border-gray-700">
             <div className="flex justify-between items-center mb-4">
-              <h4 className="text-lg font-bold text-black" style={{ color: "black" }}>Live Chat Rooms</h4>
-              <span className="text-sm text-primary font-medium cursor-pointer hover:underline" onClick={() => alert("Create Room Feature Coming Soon via Modal!")}>Create room</span>
+              <h4 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">Live Chat Rooms</h4>
+              <span className="text-sm text-orange-500 font-medium cursor-pointer hover:underline" onClick={() => alert("Create Room Feature Coming Soon via Modal!")}>Create room</span>
             </div>
 
             <div className="relative mb-4">
               <input
                 type="text"
                 placeholder="Search rooms..."
-                className="w-full pl-4 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                className="w-full pl-4 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                 value={roomSearch}
                 onChange={(e) => setRoomSearch(e.target.value)}
               />
@@ -366,10 +373,10 @@ const FeedPage = () => {
                 <p className="text-center text-slate-500 py-4 text-sm">No rooms found</p>
               ) : (
                 filteredRooms.map(room => (
-                  <div className="flex justify-between items-center p-3 hover:bg-slate-50 rounded-lg transition-colors group" key={room._id}>
+                  <div className="flex justify-between items-center p-3 hover:bg-gray-700 rounded-lg transition-colors group" key={room._id}>
                     <div>
-                      <strong className="block text-slate-800 text-sm mb-0.5">{room.name}</strong>
-                      <p className="text-xs text-slate-500">
+                      <strong className="block text-gray-200 text-sm mb-0.5">{room.name}</strong>
+                      <p className="text-xs text-gray-500">
                         {room.category} · {room.participants?.length || 0} participants
                       </p>
                     </div>
@@ -385,23 +392,39 @@ const FeedPage = () => {
             </div>
 
           </div>
+
+          {/* Sidebar Ad Widget */}
+          <div className="bg-gradient-to-br from-indigo-900 to-purple-900 rounded-2xl shadow-lg p-6 border border-indigo-700/50 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-10 -translate-y-10"></div>
+            <div className="relative z-10">
+              <span className="bg-white/20 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider mb-3 inline-block">Sponsored</span>
+              <h3 className="text-xl font-extrabold text-white mb-2 leading-tight">Unlock Your Full Potential 🚀</h3>
+              <p className="text-indigo-200 text-sm mb-4">Get personalized coaching, exclusive stats, and more with <span className="text-white font-bold">GrowAthlete Pro</span>.</p>
+              <Link to="/membership">
+                <button className="w-full py-2.5 bg-white text-indigo-900 font-bold rounded-xl hover:bg-indigo-50 transition-colors shadow-lg">
+                  Upgrade Now
+                </button>
+              </Link>
+            </div>
+          </div>
         </aside>
 
         <main
           className={`col-span-12 lg:col-span-8 space-y-6 ${activeTab === "chat" ? "hidden lg:block" : "block"}`}
         >
 
-          <div className="bg-white rounded-2xl shadow-sm p-5 border border-slate-100">
+          <div className="bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-lg shadow-orange-500/5 p-5 border border-gray-700 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-pink-500 opacity-80"></div>
 
-            <div className="flex gap-4 mb-4">
-              <div className="w-10 h-10 rounded-full bg-slate-200 flex-shrink-0"></div>
+            <div className="flex gap-4 mb-4 mt-2">
+              <div className="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0"></div>
 
               <div className="flex-grow">
                 <textarea
                   placeholder="Share your latest achievement or update..."
                   rows="3"
                   maxLength={500}
-                  className="w-full resize-none bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full resize-none bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                   value={postText}
                   onChange={(e) => setPostText(e.target.value)}
                 />
@@ -438,7 +461,7 @@ const FeedPage = () => {
 
               <div className="flex gap-3">
 
-                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition-colors text-sm text-slate-600 group">
+                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
                   <input
                     type="file"
                     accept="image/*"
@@ -455,7 +478,7 @@ const FeedPage = () => {
                   <span className="grayscale group-hover:grayscale-0 transition-all">🖼️</span> Image
                 </label>
 
-                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white hover:bg-slate-50 cursor-pointer transition-colors text-sm text-slate-600 group">
+                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
                   <input
                     type="file"
                     accept="video/*"
@@ -475,7 +498,7 @@ const FeedPage = () => {
               </div>
 
               <button
-                className={`px-5 py-2 bg-primary text-white text-sm font-semibold rounded-lg shadow-button transform hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
+                className={`px-6 py-2 bg-gradient-to-r from-orange-600 to-pink-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-orange-900/40 transform hover:-translate-y-0.5 hover:shadow-orange-700/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none`}
                 disabled={!isPostValid}
                 onClick={handleCreatePost}
               >
@@ -516,7 +539,7 @@ const FeedPage = () => {
                 <p className="text-slate-500">No posts yet. Be the first to share something!</p>
               </div>
             ) : (
-              posts.map(post => {
+              posts.map((post, index) => {
                 const isLiked = post.likes ? post.likes.some(id => (typeof id === 'string' ? id === currentUserId : id._id === currentUserId)) : false;
                 const likeCount = post.likes ? post.likes.length : 0;
                 const commentCount = post.comments ? post.comments.length : 0;
@@ -528,123 +551,151 @@ const FeedPage = () => {
                 const isFollowing = currentUserProfile?.following?.includes(authorId);
                 const isMe = authorId === currentUserId;
 
-                return (
-                  <div className="bg-white rounded-2xl shadow-sm p-6 border border-slate-100" key={post._id}>
 
-                    <div className="flex gap-4 items-start mb-4">
-                      <div className="w-11 h-11 rounded-full bg-slate-200 overflow-hidden">
-                        {post.author?.profilePicture && (
-                          <img src={post.author.profilePicture} alt={authorName} className="w-full h-full object-cover" />
-                        )}
-                      </div>
-                      <div className="flex-grow">
-                        <div className="flex items-center justify-between">
+
+                return (
+                  <div key={post._id}>
+                    {/* In-Feed Ad Insertion (e.g., after every 3rd post) */}
+                    {(index > 0 && index % 3 === 0) && (
+                      <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-0 mb-6 overflow-hidden hover:border-orange-500/30 transition-all group">
+                        <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 flex justify-between items-center border-b border-gray-700/50">
                           <div className="flex items-center gap-2">
-                            <strong className="text-slate-900 font-semibold">{authorName}</strong>
-                            {post.author?.isVerified && (
-                              <span className="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Verified</span>
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sponsored</span>
+                            <span className="text-xs text-gray-500">•</span>
+                            <span className="text-xs text-gray-300 font-medium">Nike</span>
+                          </div>
+                          <button className="text-blue-400 text-xs font-bold hover:text-blue-300">Shop Now ↗</button>
+                        </div>
+                        <div className="p-6 relative">
+                          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                          <h3 className="text-lg font-bold text-white mb-2 relative z-10">Just Do It.</h3>
+                          <p className="text-gray-400 text-sm mb-4 max-w-lg relative z-10">
+                            Discover the latest collection of performance gear designed to help you push your limits.
+                          </p>
+                          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden relative flex items-center justify-center border border-gray-700/50 group-hover:border-orange-500/20 transition-all">
+                            <span className="text-6xl animate-pulse grayscale opacity-20">👟</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-700 hover:border-gray-600 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
+
+                      <div className="flex gap-4 items-start mb-4">
+                        <div className="w-11 h-11 rounded-full bg-gray-700 overflow-hidden">
+                          {post.author?.profilePicture && (
+                            <img src={post.author.profilePicture} alt={authorName} className="w-full h-full object-cover" />
+                          )}
+                        </div>
+                        <div className="flex-grow">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <strong className="text-white font-semibold">{authorName}</strong>
+                              {post.author?.isVerified && (
+                                <span className="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Verified</span>
+                              )}
+                            </div>
+
+                            {!isMe && (
+                              <button
+                                onClick={() => handleFollow(authorId)}
+                                className={`text-xs font-semibold px-3 py-1 rounded-full transition-colors ${isFollowing
+                                  ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                  : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                  }`}
+                              >
+                                {isFollowing ? "Unfollow" : "Follow"}
+                              </button>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500 mt-0.5">{timeAgo}</p>
+                        </div>
+                      </div>
+
+                      {post.title && <h3 className="text-lg font-bold text-white mb-2">{post.title}</h3>}
+                      <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line mb-4">{post.content}</p>
+
+                      {mediaUrl && (
+                        <div className="w-full h-auto bg-slate-200 rounded-xl mb-4 overflow-hidden">
+                          {post.media[0].mediaType === 'video' ? (
+                            <video src={mediaUrl} controls className="w-full h-full object-cover" />
+                          ) : (
+                            <img src={mediaUrl} alt="Post content" className="w-full h-full object-cover" />
+                          )}
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-6 pt-4 border-t border-gray-700 mb-2">
+                        <button
+                          className={`flex items-center gap-2 text-sm font-medium transition-colors ${isLiked ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
+                          onClick={() => handleLike(post._id)}
+                        >
+                          <span>{isLiked ? "👍" : "👍"}</span>
+                          <span>{likeCount}</span>
+                        </button>
+
+                        <button
+                          className={`flex items-center gap-2 text-sm font-medium transition-colors ${activeCommentPost === post._id ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
+                          onClick={() =>
+                            setActiveCommentPost(
+                              activeCommentPost === post._id ? null : post._id
+                            )
+                          }
+                        >
+                          <span>💬</span>
+                          <span>{commentCount}</span>
+                        </button>
+
+                        <div className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                          <span>👁</span>
+                          <span>{post.views || 0}</span>
+                        </div>
+
+                        <button
+                          className="flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 ml-auto transition-colors"
+                          onClick={() => handleShare(post._id)}
+                        >
+                          <span>{copiedPostId === post._id ? "✓ Copied!" : "🔗 Share"}</span>
+                        </button>
+
+                      </div>
+
+                      {activeCommentPost === post._id && (
+                        <div className="mt-4 pt-4 border-t border-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
+
+                          <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
+                            {post.comments.length === 0 ? (
+                              <p className="text-center text-gray-500 text-sm py-2">No comments yet</p>
+                            ) : (
+                              post.comments.map((c, i) => (
+                                <div key={i} className="bg-gray-700/50 p-3 rounded-xl border border-gray-700">
+                                  <strong className="block text-white text-sm font-semibold mb-1">{c.author?.username || "Unknown"}</strong>
+                                  <span className="block text-gray-300 text-sm">{c.content}</span>
+                                </div>
+                              ))
                             )}
                           </div>
 
-                          {!isMe && (
+                          <div className="flex gap-2 items-end">
+                            <textarea
+                              placeholder="Write a comment..."
+                              className="flex-grow resize-none bg-gray-700 border border-gray-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                              value={commentText}
+                              onChange={(e) => setCommentText(e.target.value)}
+                              rows="1"
+                            />
                             <button
-                              onClick={() => handleFollow(authorId)}
-                              className={`text-xs font-semibold px-3 py-1 rounded-full transition-colors ${isFollowing
-                                ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                : "bg-blue-50 text-blue-600 hover:bg-blue-100"
-                                }`}
+                              className="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={() => handleAddComment(post._id)}
+                              disabled={!commentText.trim()}
                             >
-                              {isFollowing ? "Unfollow" : "Follow"}
+                              Send
                             </button>
-                          )}
+                          </div>
+
                         </div>
-                        <p className="text-xs text-slate-500 mt-0.5">{timeAgo}</p>
-                      </div>
+                      )}
                     </div>
-
-                    {post.title && <h3 className="text-lg font-bold text-slate-900 mb-2">{post.title}</h3>}
-                    <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line mb-4">{post.content}</p>
-
-                    {mediaUrl && (
-                      <div className="w-full h-auto bg-slate-200 rounded-xl mb-4 overflow-hidden">
-                        {post.media[0].mediaType === 'video' ? (
-                          <video src={mediaUrl} controls className="w-full h-full object-cover" />
-                        ) : (
-                          <img src={mediaUrl} alt="Post content" className="w-full h-full object-cover" />
-                        )}
-                      </div>
-                    )}
-
-                    <div className="flex items-center gap-6 pt-4 border-t border-slate-100 mb-2">
-                      <button
-                        className={`flex items-center gap-2 text-sm font-medium transition-colors ${isLiked ? "text-blue-600" : "text-slate-500 hover:text-slate-700"}`}
-                        onClick={() => handleLike(post._id)}
-                      >
-                        <span>{isLiked ? "👍" : "👍"}</span>
-                        <span>{likeCount}</span>
-                      </button>
-
-                      <button
-                        className={`flex items-center gap-2 text-sm font-medium transition-colors ${activeCommentPost === post._id ? "text-blue-600" : "text-slate-500 hover:text-slate-700"}`}
-                        onClick={() =>
-                          setActiveCommentPost(
-                            activeCommentPost === post._id ? null : post._id
-                          )
-                        }
-                      >
-                        <span>💬</span>
-                        <span>{commentCount}</span>
-                      </button>
-
-                      <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
-                        <span>👁</span>
-                        <span>{post.views || 0}</span>
-                      </div>
-
-                      <button
-                        className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 ml-auto transition-colors"
-                        onClick={() => handleShare(post._id)}
-                      >
-                        <span>{copiedPostId === post._id ? "✓ Copied!" : "🔗 Share"}</span>
-                      </button>
-
-                    </div>
-
-                    {activeCommentPost === post._id && (
-                      <div className="mt-4 pt-4 border-t border-slate-100 animate-in fade-in slide-in-from-top-2 duration-300">
-
-                        <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
-                          {post.comments.length === 0 ? (
-                            <p className="text-center text-slate-400 text-sm py-2">No comments yet</p>
-                          ) : (
-                            post.comments.map((c, i) => (
-                              <div key={i} className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                <strong className="block text-slate-900 text-sm font-semibold mb-1">{c.author?.username || "Unknown"}</strong>
-                                <span className="block text-slate-700 text-sm">{c.content}</span>
-                              </div>
-                            ))
-                          )}
-                        </div>
-
-                        <div className="flex gap-2 items-end">
-                          <textarea
-                            placeholder="Write a comment..."
-                            className="flex-grow resize-none bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                            value={commentText}
-                            onChange={(e) => setCommentText(e.target.value)}
-                            rows="1"
-                          />
-                          <button
-                            className="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => handleAddComment(post._id)}
-                            disabled={!commentText.trim()}
-                          >
-                            Send
-                          </button>
-                        </div>
-
-                      </div>
-                    )}
                   </div>
                 );
               })
@@ -652,11 +703,11 @@ const FeedPage = () => {
           </div>
 
         </main>
-      </div>
+      </div >
 
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-2 flex justify-around lg:hidden z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <nav className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-2 flex justify-around lg:hidden z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.2)]">
         <button
-          className={`flex-1 py-3 text-sm font-medium flex flex-col items-center gap-1 rounded-lg transition-colors ${activeTab === "feed" ? "text-primary bg-primary/5" : "text-slate-500 hover:text-slate-900"}`}
+          className={`flex-1 py-3 text-sm font-medium flex flex-col items-center gap-1 rounded-lg transition-colors ${activeTab === "feed" ? "text-orange-500 bg-orange-500/10" : "text-gray-400 hover:text-white"}`}
           onClick={() => setActiveTab("feed")}
         >
           <span className="text-lg">🏠</span>
@@ -664,7 +715,7 @@ const FeedPage = () => {
         </button>
 
         <button
-          className={`flex-1 py-3 text-sm font-medium flex flex-col items-center gap-1 rounded-lg transition-colors ${activeTab === "chat" ? "text-primary bg-primary/5" : "text-slate-500 hover:text-slate-900"}`}
+          className={`flex-1 py-3 text-sm font-medium flex flex-col items-center gap-1 rounded-lg transition-colors ${activeTab === "chat" ? "text-orange-500 bg-orange-500/10" : "text-gray-400 hover:text-white"}`}
           onClick={() => setActiveTab("chat")}
         >
           <span className="text-lg">💬</span>
@@ -672,7 +723,7 @@ const FeedPage = () => {
         </button>
       </nav>
 
-    </div>
+    </div >
   );
 };
 

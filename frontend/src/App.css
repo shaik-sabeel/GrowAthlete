@@ -1,43 +1,7 @@
 /* src/App.css */
 /* sabeel */
 
-/* Home Page Specific Overrides (Light Theme + Orange) */
-.home-page-container {
-  /* Override global dark theme variables */
-  --primary-color: #F97316;
-  /* Brand Orange */
-  --secondary-color: #0F172A;
-  /* Navy Blue */
-  --tertiary-color: #FBBF24;
-  /* Amber/Yellow override */
-
-  /* Text Colors - Inverting for Light Theme */
-  --text-dark: #1F2937;
-  /* Dark text for headings (was white) */
-  --text-medium: #4B5563;
-  /* Gray text */
-  --text-light: #9CA3AF;
-
-  /* Gradients - Updating to Orange theme */
-  --gradient-1: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
-  --gradient-2: linear-gradient(135deg, #0F172A 0%, #334155 100%);
-  /* Navy Gradient */
-
-  /* Reset Background */
-  --background-main: #FFFFFF;
-  background-color: #FFFFFF;
-  color: #1F2937;
-}
-
-/* Force headings inside Home to be dark */
-.home-page-container h1,
-.home-page-container h2,
-.home-page-container h3,
-.home-page-container h4,
-.home-page-container h5,
-.home-page-container h6 {
-  color: var(--text-dark) !important;
-}
+/* Home Page Specific Overrides removed for Dark Theme Refactor */
 
 /* General Layout & Base styles, common across pages */
 
@@ -158,6 +122,7 @@ h2.section-heading {
   background: var(--gradient-1);
   /* Uses your defined gradient */
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
 }

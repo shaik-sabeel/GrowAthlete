@@ -1,270 +1,8 @@
-
-// import React, { useState } from "react";
-// import axios from "axios";  // 👈 import axios
-// import BgImg from "../assets/contus_bg2.jpg";
-// import api from "../utils/api";
-// import '../pages_css/contact.css'
-// import Navbar from "../components/Navbar"; 
-
-// const ContactPage = () => {
-//   const [formData, setFormData] = useState({
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     message: "",
-//   });
-
-//   // Handle input change
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   // Handle form submit
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await api.post("/contact", formData);
-
-//       if (res.status === 200) {
-//         alert("Message sent successfully ✅");
-//         setFormData({
-//           firstName: "",
-//           lastName: "",
-//           email: "",
-//           message: "",
-//         });
-//       }
-//     } catch (error) {
-//       console.error("Error submitting form:", error);
-//       alert("Failed to send ❌");
-//     }
-//   };
-
-//   return (
-//     <>
-//     <Navbar />
-//     <div
-//       className="min-h-screen flex items-center justify-center p-6 bg-cover bg-center"
-//       style={{ backgroundImage: `url(${BgImg})` }}
-//     >
-//       <div className="relative z-10 p-10 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-10 max-w-6xl w-full bg-white/5 backdrop-blur-md border border-white/20 animate-fade-in-up ">
-//         {/* Left Section: Fill the form */}
-//         <div className="flex-1 p-6 text-gray-200">
-//           {/* <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left text-yellow-400">
-//             Fill the form
-//           </h2> */}
-
-//           <h2 className="text-3xl lg:text-4xl font-bold mb-8 animate-slide-in-left style" style={{color:"white"}}>
-//   Fill the form
-// </h2>
-
-
-//           {/* Floating label inputs */}
-//           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-//             <div className="relative">
-//               <input
-//                 type="text"
-//                 id="first-name"
-//                 name="first-name"
-//                 className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-//                 placeholder="John"
-//               />
-//               <label
-//                 htmlFor="first-name"
-//                 className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//               >
-//                 First Name
-//               </label>
-//             </div>
-//             <div className="relative">
-//               <input
-//                 type="text"
-//                 id="last-name"
-//                 name="last-name"
-//                 className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-//                 placeholder="Doe"
-//               />
-//               <label
-//                 htmlFor="last-name"
-//                 className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//               >
-//                 Last Name
-//               </label>
-//             </div>
-//           </div>
-
-//           <div className="relative mb-6">
-//             <input
-//               type="email"
-//               id="email"
-//               name="email"
-//               className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-//               placeholder="you@example.com"
-//             />
-//             <label
-//               htmlFor="email"
-//               className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//             >
-//               Email Address
-//             </label>
-//           </div>
-
-//           <div className="relative mb-8">
-//             <textarea
-//               id="message"
-//               name="message"
-//               rows="5"
-//               className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent resize-y"
-//               placeholder="Your message here..."
-//             ></textarea>
-//             <label
-//               htmlFor="message"
-//               className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//             >
-//               Message
-//             </label>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-300 transform hover:scale-105"
-//           >
-//             Submit
-//           </button>
-//         </div>
-
-//         {/* Right Section: Get in Touch */}
-//         <div className="flex-1 p-6 text-white flex flex-col justify-center animate-slide-in-right">
-//           <h2 className="text-4xl lg:text-5xl font-extrabold mb-4 text-purple-200" style={{color:"white"}}>
-//             Get in Touch.
-//           </h2>
-
-//           <div className="space-y-6">
-//             {[
-//               { icon: "✉️", title: "Email", value: "growathlete.info@gmail.com" },
-//             //   { icon: "🌐", title: "Website", value: "reallygreatsite.com" },
-//               { icon: "📞", title: "Phone", value: "+91 8500767368" },
-//               { icon: "📍", title: "Location", value: "Hyderabad, Telangana" },
-//             ].map((item, i) => (
-//               <div
-//                 key={i}
-//                 className="flex items-start gap-4 transform transition hover:scale-105"
-//               >
-//                 <span className="text-purple-400 text-3xl animate-bounce">
-//                   {item.icon}
-//                 </span>
-//                 <div>
-//                   <p className="font-semibold text-lg text-white">
-//                     {item.title}
-//                   </p>
-//                   {item.title === "Email" ? (
-//                     <a
-//                       href={`mailto:${item.value}`}
-//                       className="text-purple-300 hover:text-purple-100"
-//                     >
-//                       {item.value}
-//                     </a>
-//                   ) : item.title === "Website" ? (
-//                     <a
-//                       href={`http://${item.value}`}
-//                       target="_blank"
-//                       rel="noopener noreferrer"
-//                       className="text-purple-300 hover:text-purple-100"
-//                     >
-//                       {item.value}
-//                     </a>
-//                   ) : (
-//                     <p className="text-black px-6">{item.value}</p>
-//                   )}
-//                 </div>
-//               </div>
-//               <div className="relative">
-//                 <input
-//                   type="text"
-//                   id="last-name"
-//                   name="lastName"
-//                   value={formData.lastName}
-//                   onChange={handleChange}
-//                   className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-//                   placeholder="Doe"
-//                   required
-//                 />
-//                 <label
-//                   htmlFor="last-name"
-//                   className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//                 >
-//                   Last Name
-//                 </label>
-//               </div>
-//             </div>
-
-//             <div className="relative mb-6">
-//               <input
-//                 type="email"
-//                 id="email"
-//                 name="email"
-//                 value={formData.email}
-//                 onChange={handleChange}
-//                 className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-//                 placeholder="you@example.com"
-//                 required
-//               />
-//               <label
-//                 htmlFor="email"
-//                 className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//               >
-//                 Email Address
-//               </label>
-//             </div>
-
-//             <div className="relative mb-8">
-//               <textarea
-//                 id="message"
-//                 name="message"
-//                 rows="5"
-//                 value={formData.message}
-//                 onChange={handleChange}
-//                 className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent resize-y"
-//                 placeholder="Your message here..."
-//                 required
-//               ></textarea>
-//               <label
-//                 htmlFor="message"
-//                 className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-//               >
-//                 Message
-//               </label>
-//             </div>
-
-//             <button
-//               type="submit"
-//               className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-300 transform hover:scale-105"
-//             >
-//               Submit
-//             </button>
-//           </form>
-//         </div>
-
-//         {/* Right Section... (unchanged) */}
-//       </div>
-//     </div>
-//     </>
-//   );
-// };
-
-// export default ContactPage;
-
-
 import React, { useState } from "react";
-import axios from "axios";  // 👈 import axios
-import BgImg from "../assets/contus_bg.jpg";
+import axios from "axios";
 import api from "../utils/api";
-import '../pages_css/contact.css'
-import Navbar from "../components/Navbar"; 
+import '../pages_css/contact.css';
+import Navbar from "../components/Navbar";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -273,6 +11,8 @@ const ContactPage = () => {
     email: "",
     message: "",
   });
+
+  const [status, setStatus] = useState("idle"); // idle, submitting, success, error
 
   // Handle input change
   const handleChange = (e) => {
@@ -286,202 +26,201 @@ const ContactPage = () => {
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus("submitting");
     try {
       const res = await api.post("/contact", formData);
 
       if (res.status === 200) {
-        alert("Message sent successfully ✅");
+        setStatus("success");
         setFormData({
           firstName: "",
           lastName: "",
           email: "",
           message: "",
         });
+        setTimeout(() => setStatus("idle"), 3000);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to send ❌");
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
     }
   };
 
   return (
     <>
-    <Navbar />
-    <div
-      className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-cover bg-center"
-      style={{ backgroundImage: `url(${BgImg})` }}
-    >
-      <div className="relative z-10 p-6 sm:p-8 lg:p-10 rounded-2xl shadow-2xl flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10 max-w-6xl w-full bg-white/5 backdrop-blur-md border border-white/20 animate-fade-in-up">
-        {/* Left Section: Fill the form */}
-        <div className="flex-1 p-4 sm:p-6 text-gray-200">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 animate-slide-in-left" style={{color:"white"}}>
-            Fill the form
-          </h2>
+      <Navbar />
+      <div className="min-h-screen bg-gray-900 text-white font-sans relative overflow-hidden pt-20 pb-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
 
-          {/* 👇 added onSubmit here */}
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
-              <div className="relative">
-                <input
-                  type="text"
-                  id="first-name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-                  placeholder="John"
-                  required
-                />
-                <label
-                  htmlFor="first-name"
-                  className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-                >
-                  First Name
-                </label>
-              </div>
-              <div className="relative">
-                <input
-                  type="text"
-                  id="last-name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent"
-                  placeholder="Doe"
-                  required
-                />
-                <label
-                  htmlFor="last-name"
-                  className="absolute left-3 -top-2.5 text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base"
-                >
-                  Last Name
-                </label>
-              </div>
-            </div>
-
-            <div className="relative mb-6 sm:mb-8">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent text-sm sm:text-base"
-                placeholder="you@example.com"
-                required
-              />
-              <label
-                htmlFor="email"
-                className="absolute left-3 -top-2.5 text-xs sm:text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
-              >
-                Email Address
-              </label>
-            </div>
-
-            <div className="relative mb-6 sm:mb-8">
-              <textarea
-                id="message"
-                name="message"
-                rows="4"
-                value={formData.message}
-                onChange={handleChange}
-                className="peer block w-full px-4 py-3 bg-white/10 border border-purple-500 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 text-white placeholder-transparent resize-y text-sm sm:text-base"
-                placeholder="Your message here..."
-                required
-              ></textarea>
-              <label
-                htmlFor="message"
-                className="absolute left-3 -top-2.5 text-xs sm:text-sm text-purple-300 bg-black/50 px-1 rounded transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm sm:peer-placeholder-shown:text-base"
-              >
-                Message
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
-            >
-              Submit
-            </button>
-          </form>
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[100px]"></div>
         </div>
-         {/* Right Section: Get in Touch */}
-        <div className="flex-1 p-4 sm:p-6 text-white flex flex-col justify-center animate-slide-in-right">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-extrabold mb-4 sm:mb-6 text-yellow-400 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]" style={{color:"white"}}>
-            Get in Touch.
-          </h2>
-          <p className="text-purple-300 text-sm sm:text-base lg:text-lg mb-6 sm:mb-8">
-            Whether you have questions about our services, need support, or want to share your feedback, our dedicated
-            team is here to assist you every step of the way.
-          </p>
 
-          <div className="space-y-6">
-            {/* <div className="flex items-start gap-4">
-              <span className="text-purple-400 text-3xl">✉</span>
-              <div>
-                <p className="font-semibold text-lg text-purple-200">Email</p>
-                <a href="mailto:hello@reallygreatsite.com" className="text-purple-300 hover:text-purple-100 transition-colors">
-                  hello@reallygreatsite.com
-                </a>
-              </div>
-            </div> */}
-            {/* <div className="flex items-start gap-4">
-              <span className="text-purple-400 text-3xl">🌐</span>
-              <div>
-                <p className="font-semibold text-lg text-purple-200">Website</p>
-                <a href="http://reallygreatsite.com" target="_blank" rel="noopener noreferrer" className="text-purple-300 hover:text-purple-100 transition-colors">
-                  reallygreatsite.com
-                </a>
-              </div>
-            </div> */}
+        <div className="relative z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
 
-            <div className="space-y-4 sm:space-y-6">
-            {[
-              { icon: "✉️", title: "Email", value: "growathlete.info@gmail.com" },
-            //   { icon: "🌐", title: "Website", value: "reallygreatsite.com" },
-              { icon: "📞", title: "Phone", value: "+91 8500767368" },
-              { icon: "📍", title: "Location", value: "Hyderabad, Telangana" },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 sm:gap-4 transform transition hover:scale-105"
-              >
-                <span className="text-purple-400 text-2xl sm:text-3xl animate-bounce">
-                  {item.icon}
-                </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-base sm:text-lg text-white">
-                    {item.title}
-                  </p>
-                  {item.title === "Email" ? (
-                    <a
-                      href={`mailto:${item.value}`}
-                      className="text-purple-300 hover:text-purple-100 text-sm sm:text-base break-all"
-                    >
-                      {item.value}
-                    </a>
-                  ) : item.title === "Website" ? (
-                    <a
-                      href={`http://${item.value}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-300 hover:text-purple-100 text-sm sm:text-base break-all"
-                    >
-                      {item.value}
-                    </a>
-                  ) : (
-                    <p className="text-white text-sm sm:text-base">{item.value}</p>
-                  )}
+          {/* Left Section: Contact Info */}
+          <div className="space-y-8 lg:pt-10 animate-fade-in-left">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-6 drop-shadow-sm">
+                Let's Chat.
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed max-w-lg">
+                Whether you have questions about our services, need support, or just want to verify your profile, our team is here to help you grow.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {[
+                {
+                  icon: "✉️",
+                  title: "Email Us",
+                  content: "growathlete.info@gmail.com",
+                  link: "mailto:growathlete.info@gmail.com",
+                  color: "bg-orange-500/20 text-orange-400 border-orange-500/30"
+                },
+                {
+                  icon: "📞",
+                  title: "Call Us",
+                  content: "+91 8500767368",
+                  link: "tel:+918500767368",
+                  color: "bg-blue-500/20 text-blue-400 border-blue-500/30"
+                },
+                {
+                  icon: "📍",
+                  title: "Visit Us",
+                  content: "Hyderabad, Telangana",
+                  link: null,
+                  color: "bg-purple-500/20 text-purple-400 border-purple-500/30"
+                }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center gap-5 group p-4 rounded-2xl transition-colors hover:bg-gray-800/50">
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl border ${item.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1">{item.title}</h3>
+                    {item.link ? (
+                      <a href={item.link} className="text-gray-400 hover:text-purple-400 transition-colors font-medium">
+                        {item.content}
+                      </a>
+                    ) : (
+                      <p className="text-gray-400 font-medium">{item.content}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Social Proof / Trust Badge (Optional) */}
+            <div className="pt-8 border-t border-gray-800">
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className={`w-10 h-10 rounded-full border-2 border-gray-900 bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-500`}>
+                      User
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-gray-400"><span className="text-white font-bold">500+</span> athletes joined this week.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Section: Form */}
+          <div className="bg-gray-800/40 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 sm:p-10 shadow-2xl animate-fade-in-up md:mt-0 mt-8 relative group">
+            {/* Glow effect borders */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+            <h3 className="text-2xl font-bold text-white mb-8">Send us a message</h3>
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="firstName" className="text-sm font-medium text-gray-400 ml-1">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="w-full bg-gray-900/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all shadow-inner"
+                    placeholder="John"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="lastName" className="text-sm font-medium text-gray-400 ml-1">Last Name</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full bg-gray-900/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all shadow-inner"
+                    placeholder="Doe"
+                    required
+                  />
                 </div>
               </div>
-            ))}
+
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-400 ml-1">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full bg-gray-900/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all shadow-inner"
+                  placeholder="you@company.com"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm font-medium text-gray-400 ml-1">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full bg-gray-900/50 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all resize-y shadow-inner"
+                  placeholder="How can we help you?"
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                disabled={status === "submitting"}
+                className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transform transition-all duration-300 hover:-translate-y-1 
+                  ${status === "success"
+                    ? "bg-green-600 hover:bg-green-700 ring-2 ring-green-500/50"
+                    : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-purple-900/30"}
+                  ${status === "submitting" ? "opacity-75 cursor-wait" : ""}`}
+              >
+                {status === "submitting" ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </span>
+                ) : status === "success" ? (
+                  "Message Sent! ✅"
+                ) : (
+                  "Send Message 🚀"
+                )}
+              </button>
+            </form>
           </div>
-          </div>
+
         </div>
-        
-        {/* Right Section... (unchanged) */}
       </div>
-    </div>
     </>
   );
 };

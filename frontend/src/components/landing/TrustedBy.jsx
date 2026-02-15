@@ -6,25 +6,25 @@ const TrustedBy = () => {
     const organizations = [
         "Sports Authority of India",
         "BCCI",
-        "Hockey India",
+        "Laccrose federation",
         "Indian Football",
-        "AIFF",
+        "Athletics federation",
         "ISL",
-        "Pro Kabaddi",
-        "Khelo India"
+        "Hyderabad pickle ball association",
+        "Telangana throwfederation"
     ];
 
     return (
-        <section className="bg-gray-50 py-10 border-b border-gray-200">
+        <section className="bg-gray-800/50 py-10 border-b border-gray-800">
             <div className="container mx-auto px-4 text-center">
-                <h4 className="text-brand-orange font-bold tracking-widest uppercase text-sm mb-8">
+                <h4 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-8 opacity-80">
                     Trusted by Top Organizations and Brands
                 </h4>
 
                 <Marquee pauseOnHover={true} speed={50} gradient={false}>
-                    <div className="flex items-center gap-16 pr-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
+                    <div className="flex items-center gap-16 pr-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
                         {organizations.map((org, index) => (
-                            <h3 key={index} className="text-lg md:text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors cursor-default whitespace-nowrap">
+                            <h3 key={index} className="text-lg md:text-2xl font-bold text-gray-500 hover:text-gray-300 transition-colors cursor-default whitespace-nowrap">
                                 {org}
                             </h3>
                         ))}

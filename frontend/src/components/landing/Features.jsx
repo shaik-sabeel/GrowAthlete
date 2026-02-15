@@ -12,14 +12,14 @@ const FeatureCard = ({ icon, title, description, delay }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: delay }}
-            className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-card-hover border border-gray-100 transition-all duration-300 group"
+            className="bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700 hover:border-orange-500/30 hover:shadow-orange-900/20 transition-all duration-300 group"
         >
-            <div className="bg-gray-50 w-14 h-14 rounded-xl flex items-center justify-center text-2xl text-gray-600 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300 mb-6">
+            <div className="bg-gray-700 w-14 h-14 rounded-xl flex items-center justify-center text-2xl text-orange-400 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300 mb-6 shadow-inner">
                 {icon}
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
-            <div className="mt-4 text-brand-orange font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">{title}</h3>
+            <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
+            <div className="mt-4 text-orange-500 font-medium text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
                 Learn more <span>&rarr;</span>
             </div>
         </motion.div>
@@ -61,13 +61,17 @@ const Features = () => {
     ];
 
     return (
-        <section className="py-12 md:py-20 bg-white">
-            <div className="container mx-auto px-4">
+        <section className="py-12 md:py-20 bg-gray-900 relative">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-blue-600/5 blur-3xl rounded-full pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-orange-600/5 blur-3xl rounded-full pointer-events-none"></div>
+
+            <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        How GrowAthlete <span className="text-brand-orange">Elevates Your Career</span>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                        How GrowAthlete <span className="text-orange-500">Elevates Your Career</span>
                     </h2>
-                    <p className="text-gray-500 text-sm md:text-base">
+                    <p className="text-gray-400 text-sm md:text-base">
                         Everything you need to build your professional sports presence, connect with opportunities, and grow your athletic career.
                     </p>
                 </div>

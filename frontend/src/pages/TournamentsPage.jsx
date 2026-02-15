@@ -108,9 +108,9 @@ const TournamentsPage = () => {
   });
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-900 min-h-screen text-gray-100 font-sans">
       {/* Hero Section */}
-      <div className="relative w-full h-[90vh] min-h-[210px] mb-8 overflow-hidden group mt-4 md:mt-0">
+      <div className="relative w-full h-[90vh] min-h-[210px] mb-8 overflow-hidden group mt-4 md:mt-0 border-b border-gray-700">
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-100"
@@ -121,7 +121,7 @@ const TournamentsPage = () => {
         </div>
 
         {/* Gradient Overlay for Text Readability - lighter at top for image clarity, darker at bottom for text */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/40 via-gray-900/60 to-gray-900/90"></div>
 
         {/* Overlay Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
@@ -129,7 +129,7 @@ const TournamentsPage = () => {
             TOURNAMENTS
           </h1>
           <div className="h-1 w-24 bg-orange-500 mb-6 rounded-full"></div>
-          <p className="text-xl md:text-3xl text-white font-light max-w-3xl drop-shadow-lg tracking-wide">
+          <p className="text-xl md:text-3xl text-gray-200 font-light max-w-3xl drop-shadow-lg tracking-wide">
             Discover and compete in sports events across India
           </p>
         </div>
@@ -157,7 +157,7 @@ const TournamentsPage = () => {
             </div>
           )}
 
-          <div className="mb-8 rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white">
+          <div className="mb-8 rounded-xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
             <MapSection tournaments={filteredTournaments} />
           </div>
 
@@ -167,16 +167,16 @@ const TournamentsPage = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
             </div>
           ) : error ? (
-            <div className="text-center py-10 text-red-500 bg-red-50 rounded-lg border border-red-200">{error}</div>
+            <div className="text-center py-10 text-red-400 bg-red-900/20 rounded-lg border border-red-800">{error}</div>
           ) : tournaments.length === 0 ? (
-            <div className="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
-              <p className="text-gray-500 text-lg">No tournaments found matching your criteria.</p>
-              <button onClick={clearFilters} className="mt-4 text-orange-600 font-medium hover:underline">Clear all filters</button>
+            <div className="text-center py-20 bg-gray-800 rounded-xl shadow-sm border border-gray-700">
+              <p className="text-gray-400 text-lg">No tournaments found matching your criteria.</p>
+              <button onClick={clearFilters} className="mt-4 text-orange-500 font-medium hover:underline">Clear all filters</button>
             </div>
           ) : (
             <>
               <div className="flex justify-between items-end mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 border-l-4 border-orange-500 pl-3">
+                <h2 className="text-2xl font-bold text-white border-l-4 border-orange-500 pl-3">
                   Upcoming Events <span className="text-gray-400 font-normal text-lg ml-2">({filteredTournaments.length})</span>
                 </h2>
               </div>
