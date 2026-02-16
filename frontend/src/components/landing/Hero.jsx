@@ -59,16 +59,16 @@ const Hero = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row flex-wrap gap-4 pt-4 justify-center lg:justify-start">
-                        <Link to="/register" className="w-full sm:w-auto">
+                        <Link to="/Profile" className="w-full sm:w-auto">
                             <button className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-orange-700/30 transition-all duration-300 transform hover:-translate-y-1">
                                 Create Your Profile &rarr;
                             </button>
                         </Link>
-                        <Link to="/demo" className="w-full sm:w-auto">
+                        {/* <Link to="/demo" className="w-full sm:w-auto">
                             <button className="w-full sm:w-auto bg-gray-800 border border-gray-700 hover:border-orange-500 text-gray-300 hover:text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 hover:bg-gray-700">
                                 <span>&#9654;</span> Watch Demo
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
 
                     <div className="pt-8 flex items-center justify-center lg:justify-start gap-8 md:gap-12 border-t border-gray-800 lg:border-none mt-8 lg:mt-0">

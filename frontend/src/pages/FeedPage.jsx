@@ -277,19 +277,21 @@ const FeedPage = () => {
                       .filter(u => u.username.toLowerCase().includes(userListSearch.toLowerCase()))
                       .map(user => (
                         <div key={user._id} className="flex items-center gap-3 p-2 hover:bg-gray-700 rounded-xl transition-colors">
-                          <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0">
-                            {user.profilePicture ? (
-                              <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-xs">
-                                {user.username?.[0]?.toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-grow min-w-0">
-                            <strong className="block text-white font-semibold truncate">{user.username}</strong>
-                            {user.bio && <p className="text-xs text-gray-400 truncate">{user.bio}</p>}
-                          </div>
+                          <Link to={`/athletes/${user._id}`} className="flex items-center gap-3 flex-grow min-w-0 group">
+                            <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0 group-hover:ring-2 group-hover:ring-orange-500 transition-all">
+                              {user.profilePicture ? (
+                                <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-xs">
+                                  {user.username?.[0]?.toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-grow min-w-0">
+                              <strong className="block text-white font-semibold truncate group-hover:text-orange-400 transition-colors">{user.username}</strong>
+                              {user.bio && <p className="text-xs text-gray-400 truncate">{user.bio}</p>}
+                            </div>
+                          </Link>
                           {user._id !== currentUserId && (
                             <button
                               onClick={() => {

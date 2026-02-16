@@ -39,7 +39,7 @@ const Home = () => {
           <p className="text-lg md:text-xl mb-8 opacity-95 max-w-2xl mx-auto text-gray-300 bg-gray-800/50 backdrop-blur-md border border-gray-700 rounded-2xl p-6 font-medium shadow-xl">
             Join thousands of athletes who are taking their career to the next level with GrowAthlete.
           </p>
-          <Link to="/register">
+          <Link to="/Profile">
             <button className="bg-orange-600 text-white font-bold py-4 px-10 rounded-xl shadow-lg shadow-orange-900/20 hover:shadow-orange-700/40 hover:bg-orange-700 transition-all transform hover:-translate-y-1 text-base border border-orange-500/50">
               Get Started Now
             </button>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 import backendApi from '../../utils/backendApi';
 
 const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
@@ -12,6 +13,22 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
 
     useEffect(() => {
         fetchRooms();
+
+        // Setup socket for real-time online counts
+        const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const socket = io(socketUrl, { withCredentials: true });
+
+        socket.on('roomData', (data) => {
+            setRooms(prev => prev.map(r =>
+                String(r._id) === String(data.roomId)
+                    ? { ...r, onlineCount: data.onlineCount }
+                    : r
+            ));
+        });
+
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     const fetchRooms = async () => {
@@ -116,7 +133,7 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
                                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${activeRoomId === room._id ? 'bg-green-400' : 'bg-gray-500'}`}></span>
                                     <span className={`relative inline-flex rounded-full h-2 w-2 ${activeRoomId === room._id ? 'bg-green-500' : 'bg-gray-600'}`}></span>
                                 </span>
-                                <span className="text-[10px] text-gray-400 font-medium">{room.participants?.length || 0} online</span>
+                                <span className="text-[10px] text-gray-400 font-medium">{room.onlineCount !== undefined ? room.onlineCount : (room.participants?.length || 0)} online</span>
                             </div>
                         </button>
                     ))

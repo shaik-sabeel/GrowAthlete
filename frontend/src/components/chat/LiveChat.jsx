@@ -8,6 +8,7 @@ const LiveChat = ({ room, onBack }) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(true);
+    const [onlineCount, setOnlineCount] = useState(1);
     const socketRef = useRef();
     const messagesEndRef = useRef();
     const currentUserId = getCurrentUserId();
@@ -44,10 +45,22 @@ const LiveChat = ({ room, onBack }) => {
         // Join room
         socketRef.current.emit('joinRoom', { roomId: room._id, userId: currentUserId });
 
+        // Listen for room data (online count)
+        socketRef.current.on('roomData', (data) => {
+            console.log('Received roomData:', data);
+            if (String(data.roomId) === String(room._id)) {
+                setOnlineCount(data.onlineCount);
+            }
+        });
+
         // Listen for new messages
         socketRef.current.on('message', (message) => {
             setMessages(prev => [...prev, message]);
             setTimeout(scrollToBottom, 100);
+        });
+
+        socketRef.current.on('connect_error', (err) => {
+            console.error('Socket connection error:', err);
         });
 
         return () => {
@@ -89,7 +102,7 @@ const LiveChat = ({ room, onBack }) => {
                         <h3 className="font-bold text-white leading-tight flex items-center gap-2">
                             {room.name}
                         </h3>
-                        <p className="text-xs text-gray-400 font-medium">{room.category} · {room.participants?.length || 0} participants</p>
+                        <p className="text-xs text-gray-400 font-medium">{room.category} · {onlineCount} online</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 bg-gray-900/50 px-3 py-1 rounded-full border border-gray-700/50">
