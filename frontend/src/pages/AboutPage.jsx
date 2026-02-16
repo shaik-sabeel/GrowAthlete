@@ -1,154 +1,4 @@
-// import React from 'react';
-// import background from '../assets/background.mp4';
-// import cricket from '../assets/cricket.png';
-// import football from '../assets/football.png';
-// import basketball from '../assets/basketball.png';
-// import swimming from '../assets/swimming.png';
-
-
-// import '../pages_css/AboutPage.css'; // Correct path to the CSS file
-// import Footer from '../components/Footer'; // Import the new Footer
-// import Navbar from '../components/Navbar'; // Import the Navbar component
-
-// import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaEnvelope, FaPhone } from 'react-icons/fa';
-// import { GiBullseye, GiPodium, GiTeamIdea } from 'react-icons/gi';
-
-// const AboutPage = () => {
-//   // A small helper to handle potential local images in the future
-//   // For now, it uses web URLs. You can change this to use images from your 'assets' folder.
-//   // Example: const getImageUrl = (name) => `/src/assets/images/${name}`;
-
-//   const sports = [
-//     { name: 'Cricket', imgUrl: cricket },
-//     { name: 'Football', imgUrl: football},
-//     { name: 'Basketball', imgUrl: basketball},
-//     { name: 'Swimming', imgUrl: swimming },
-//   ];
-
-//   return (
-//     <>
-//     <Navbar/>
-//     <div className="about-container">
-//       {/* Header Navigation */}
-//       {/* <header className="about-header">
-//         <div className="logo">GrowAthlete <span>India</span></div>
-//         <nav className="about-nav">
-//           <a href="#">Home</a>
-//           <a href="#" className="active">About</a>
-//           <a href="#">Athletes</a>
-//           <a href="#">News</a>
-//           <a href="#">Community</a>
-//         </nav>
-//         <button className="sign-in-btn">Sign In</button>
-//       </header> */}
-//             {/* Replace with your desired video URL */}
-
-//       {/* Hero Section */}
-//       <section className="hero-section">
-//         <div className="hero-video-container">
-//           {/* <img src="" alt="" /> */}
-//           <video autoPlay loop muted playsInline className="hero-video">
-//             <source src={background} type="video/mp4" />
-
-//             Your browser does not support the video tag.
-//           </video>
-//           <div className="hero-overlay"></div>
-//         </div>
-//         <div className="hero-content">
-//           <h1>About Us</h1>
-//           {/* <p>Empowering the next generation of sports talent across India.</p> */}
-//           {/* <p>GrowAthlete is a sports community and athlete discovery platform designed to help athletes of all levels showcase their talent, connect with coaches, scouts, and sponsors, and access valuable growth opportunities. Athletes can create detailed profiles with their performance stats, achievements, and media, join sports-specific communities, explore training resources, and participate in events such as tryouts and tournaments. By bridging the gap between aspiring talent and professional opportunities, GrowAthlete empowers athletes to take control of their careers and build a strong personal brand in the sports world....</p> */}
-//         </div>
-//       </section>
-
-//       {/* Info Cards Section (Mission, Vision, Story) */}
-//       <section className="info-cards-section">
-//         <div className="info-card">
-//           <GiBullseye className="info-icon" />
-//           <h2>Our Mission</h2>
-//           <p>To nurture and elevate young sports talents in India by providing them with the visibility, resources, and support necessary to achieve their dreams.</p>
-//         </div>
-//         <div className="info-card">
-//           <GiPodium className="info-icon" />
-//           <h2>Our Vision</h2>
-//           <p>To establish India as a global powerhouse of sports by enabling grassroots development and fostering a culture of excellence in athletics.</p>
-//         </div>
-//         <div className="info-card">
-//           <GiTeamIdea className="info-icon" />
-//           <h2>Our Story</h2>
-//           <p>Born from a recognition of immense but often unnoticed talent, our founders created a platform to bridge the gap for emerging sports stars.</p>
-//         </div>
-//       </section>
-
-//       {/* Featured Sports Section */}
-//       <section className="featured-sports-section">
-//         <h2>Featured Sports Categories</h2>
-//         <div className="sports-gallery">
-//           {sports.map(sport => (
-//             <div
-//               key={sport.name}
-//               className="sport-card"
-//               style={{ backgroundImage: `url(${sport.imgUrl})` }}
-//             >
-//               <h3>{sport.name}</h3>
-//             </div>
-//           ))}
-//         </div>
-//       </section>
-
-//       {/* Core Values Section */}
-//        <section className="core-values-section">
-//          <h2>Our Core Values</h2>
-//          <div className="values-grid">
-//            <div className="value-item"><h3>Excellence</h3><p>We strive for excellence in everything we do, from our platform's functionality to the quality of opportunities we provide.</p></div>
-//            <div className="value-item"><h3>Inclusivity</h3><p>We are committed to making sports opportunities accessible to talented individuals from all backgrounds and regions.</p></div>
-//            <div className="value-item"><h3>Integrity</h3><p>We operate with honesty, transparency, and fairness in all our interactions and decisions.</p></div>
-//            <div className="value-item"><h3>Innovation</h3><p>We continuously innovate to provide the best tools and resources for our athletes and partners.</p></div>
-//          </div>
-//        </section>
-
-//       {/* <Footer /> */}
-          
-//       {/* Footer */}
-//       {/* <footer className="about-footer">
-//         <div className="footer-content">
-//             <div className="footer-col">
-//                 <h3>About GrowAthlete</h3>
-//                 <p>Empowering young sports talents across India by providing a platform for discovery, promotion, and development.</p>
-//             </div>
-//             <div className="footer-col">
-//                 <h3>Quick Links</h3>
-//                 <a href="#">Home</a>
-//                 <a href="#">About Us</a>
-//                 <a href="#">Contact</a>
-//                 <a href="#">Athletes</a>
-//             </div>
-//             <div className="footer-col">
-//                 <h3>Connect With Us</h3>
-//                 <p><FaEnvelope /> growathlete.info@email.com</p>
-//                 <p><FaPhone /> +91 8500767388</p>
-//                 <div className="social-icons">
-//                   <a href="#"><FaFacebookF /></a>
-//                   <a href="#"><FaTwitter /></a>
-//                   <a href="#"><FaInstagram /></a>
-//                   <a href="#"><FaYoutube /></a>
-//                 </div>
-//             </div>
-//         </div>
-//         <div className="footer-bottom">
-//             <p>© 2025 GrowAthlete India. All rights reserved.</p>
-//             <p>Designed with ♥ for young athletes across India</p>
-//         </div>
-//       </footer> */}
-//     </div>
-//     </>
-//   );
-  
-// };
-
-// export default AboutPage;
-
-import React from 'react';
+import React, { useState } from 'react';
 import background from '../assets/background.mp4';
 import cricket from '../assets/cricket.png';
 import football from '../assets/football.png';
@@ -160,219 +10,220 @@ import mourya from '../assets/MO.jpeg';
 import ikram from '../assets/IK.jpeg';
 import vamshi from '../assets/VA.jpeg';
 import hemanth from '../assets/HE.jpg';
-import { Link } from 'react-router-dom';
 import joshitha from '../assets/JO.jpg';
+import { Link } from 'react-router-dom';
 
-import '../pages_css/AboutPage.css'; // Correct path to the CSS file
-import Footer from '../components/Footer'; // Import the new Footer
-import Navbar from '../components/Navbar'; // Import the Navbar component
+// import '../pages_css/AboutPage.css'; // Removed custom CSS
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
-import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin, FaEnvelope, FaPhone, FaQuoteLeft } from 'react-icons/fa';
 import { GiBullseye, GiPodium, GiTeamIdea } from 'react-icons/gi';
 
 const AboutPage = () => {
-  // A small helper to handle potential local images in the future
-  // For now, it uses web URLs. You can change this to use images from your 'assets' folder.
-  // Example: const getImageUrl = (name) => `/src/assets/images/${name}`;
 
   const sports = [
     { name: 'Cricket', imgUrl: cricket },
-    { name: 'Football', imgUrl: football},
-    { name: 'Basketball', imgUrl: basketball},
+    { name: 'Football', imgUrl: football },
+    { name: 'Basketball', imgUrl: basketball },
     { name: 'Swimming', imgUrl: swimming },
   ];
 
+  const teamMembers = [
+    { name: 'Ande Hemanth', role: 'Founder & CEO', img: hemanth, link: 'https://www.linkedin.com/in/ande-hemanth-884020283/', color: 'from-orange-500 to-red-500' },
+    { name: 'Yalaga Joshitha', role: 'Co-Founder', img: joshitha, link: 'https://www.linkedin.com/in/yalaga-joshitha-612b62376/', color: 'from-purple-500 to-pink-500' },
+    { name: 'Mohammad Sabeel S A', role: 'Web Developer', img: sabeel, link: 'https://www.linkedin.com/in/shaik-sabeel/', color: 'from-blue-500 to-cyan-500' },
+    { name: 'Muhammed Ikram R', role: 'Web Developer', img: ikram, link: 'https://www.linkedin.com/in/muhammed-ikram-7b56202bb', color: 'from-green-500 to-teal-500' },
+    { name: 'Mohammad Faraz K', role: 'Front-End Developer', img: faraz, link: 'https://www.linkedin.com/in/faraz-shaik-a906192bb/', color: 'from-yellow-500 to-orange-500' },
+    { name: 'Mourya Ayyappa N', role: 'Web Developer', img: mourya, link: 'https://www.linkedin.com/in/mourya-ayyappa-485563330/', color: 'from-indigo-500 to-blue-500' },
+    { name: 'Vamshi', role: 'Web Developer', img: vamshi, link: 'https://www.linkedin.com/in/saivamshi-webdev/', color: 'from-pink-500 to-rose-500' },
+  ];
+
   return (
-    <>
-    <Navbar/>
-    <div className="about-container">
-      {/* Header Navigation */}
-      {/* <header className="about-header">
-        <div className="logo">GrowAthlete <span>India</span></div>
-        <nav className="about-nav">
-          <a href="#">Home</a>
-          <a href="#" className="active">About</a>
-          <a href="#">Athletes</a>
-          <a href="#">News</a>
-          <a href="#">Community</a>
-        </nav>
-        <button className="sign-in-btn">Sign In</button>
-      </header> */}
-            {/* Replace with your desired video URL */}
+    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
+      <Navbar />
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-video-container">
-          {/* <img src="" alt="" /> */}
-          <video autoPlay loop muted playsInline className="hero-video">
-            <source src={background} type="video/mp4" />
+      <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
 
-            Your browser does not support the video tag.
-          </video>
-          <div className="hero-overlay"></div>
-        </div>
-        <div className="hero-content">
-          <h1>About Us</h1>
-          {/* <p>Empowering the next generation of sports talent across India.</p> */}
-          {/* <p>GrowAthlete is a sports community and athlete discovery platform designed to help athletes of all levels showcase their talent, connect with coaches, scouts, and sponsors, and access valuable growth opportunities. Athletes can create detailed profiles with their performance stats, achievements, and media, join sports-specific communities, explore training resources, and participate in events such as tryouts and tournaments. By bridging the gap between aspiring talent and professional opportunities, GrowAthlete empowers athletes to take control of their careers and build a strong personal brand in the sports world....</p> */}
-        </div>
-      </section>
+        {/* HERO SECTION */}
+        <div className="relative bg-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl mb-12 border border-gray-700 h-[60vh] sm:h-[70vh]">
+          {/* Background Video */}
+          <div className="absolute inset-0">
+            <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-40">
+              <source src={background} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+          </div>
 
-      {/* Info Cards Section (Mission, Vision, Story) */}
-      <section className="info-cards-section">
-        <div className="info-card">
-          <GiBullseye className="info-icon" />
-          <h2>Our Mission</h2>
-          <p>To nurture and elevate young sports talents in India by providing them with the visibility, resources, and support necessary to achieve their dreams.</p>
+          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+            <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg">
+              About <span className="text-orange-500">Us</span>
+            </h1>
+            <p className="max-w-3xl text-lg sm:text-xl text-gray-300 leading-relaxed drop-shadow-md">
+              Empowering the next generation of sports talent across India. We bridge the gap between aspiring talent and professional opportunities.
+            </p>
+          </div>
         </div>
-        <div className="info-card">
-          <GiPodium className="info-icon" />
-          <h2>Our Vision</h2>
-          <p>To establish India as a global powerhouse of sports by enabling grassroots development and fostering a culture of excellence in athletics.</p>
-        </div>
-        <div className="info-card">
-          <GiTeamIdea className="info-icon" />
-          <h2>Our Story</h2>
-          <p>Born from a recognition of immense but often unnoticed talent, our founders created a platform to bridge the gap for emerging sports stars.</p>
-        </div>
-      </section>
 
-      {/* Featured Sports Section */}
-      <section className="featured-sports-section">
-        <h2>Featured Sports Categories</h2>
-        <div className="sports-gallery">
-          {sports.map(sport => (
-            <div
-              key={sport.name}
-              className="sport-card"
-              style={{ backgroundImage: `url(${sport.imgUrl})` }}
-            >
-              <h3>{sport.name}</h3>
+        {/* MISSION / VISION / STORY GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {/* Mission */}
+          <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl hover:shadow-2xl transition duration-300 group relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <GiBullseye className="text-9xl text-orange-500" />
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Core Values Section */}
-       <section className="core-values-section">
-         <h2>Our Core Values</h2>
-         <div className="values-grid">
-           <div className="value-item"><h3>Excellence</h3><p>We strive for excellence in everything we do, from our platform's functionality to the quality of opportunities we provide.</p></div>
-           <div className="value-item"><h3>Inclusivity</h3><p>We are committed to making sports opportunities accessible to talented individuals from all backgrounds and regions.</p></div>
-           <div className="value-item"><h3>Integrity</h3><p>We operate with honesty, transparency, and fairness in all our interactions and decisions.</p></div>
-           <div className="value-item"><h3>Innovation</h3><p>We continuously innovate to provide the best tools and resources for our athletes and partners.</p></div>
-         </div>
-       </section>
-
-
-      {/* Team Members Section */}
-      <section className="team-members-section">
-        <h2>Our Team</h2>
-        <div className="team-tree">
-          <div className="team-level founder">
-            <div className="member-card">
-              <img src={hemanth} alt="Founder" className="member-image" />
-              <div className="member-info">
-                <h3>Ande Hemanth</h3>
-                <p>Founder & CEO</p>
-                <Link to='https://www.linkedin.com/in/ande-hemanth-884020283/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
+            <div className="relative z-10">
+              <div className="w-16 h-16 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6">
+                <GiBullseye className="text-4xl text-orange-500" />
               </div>
+              <h2 className="text-2xl font-bold text-white mb-4">Our Mission</h2>
+              <p className="text-gray-400 leading-relaxed">
+                To nurture and elevate young sports talents in India by providing them with the visibility, resources, and support necessary to achieve their dreams.
+              </p>
             </div>
           </div>
-          <div className="team-level co-founder">
-            <div className="member-card">
-              <img src={joshitha} alt="Co-Founder" className="member-image" />
-              <div className="member-info">
-                <h3>Yalaga Joshitha</h3>
-                <p>Co-Founder</p>
-                <Link to='https://www.linkedin.com/in/yalaga-joshitha-612b62376/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
+
+          {/* Vision */}
+          <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl hover:shadow-2xl transition duration-300 group relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <GiPodium className="text-9xl text-blue-500" />
+            </div>
+            <div className="relative z-10">
+              <div className="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6">
+                <GiPodium className="text-4xl text-blue-500" />
               </div>
+              <h2 className="text-2xl font-bold text-white mb-4">Our Vision</h2>
+              <p className="text-gray-400 leading-relaxed">
+                To establish India as a global powerhouse of sports by enabling grassroots development and fostering a culture of excellence in athletics.
+              </p>
             </div>
           </div>
-          <div className="team-level developers">
-            <div className="member-card">
-              <img src={sabeel} alt="Developer 1" className="member-image" />
-              <div className="member-info">
-                <h3>Mohammad Sabeel S A</h3>
-                <p>Web Developer</p>
-                <Link to="https://www.linkedin.com/in/shaik-sabeel/" rel='noopener noreferrer' target='_blank'>View Profile</Link>
-              </div>
-            </div>
-            <div className="member-card">
-              <img src={ikram} alt="Developer 2" className="member-image" />
-              <div className="member-info">
-                <h3>Muhammed Ikram R</h3>
-                <p>Web Developer</p>
-                <Link to='https://www.linkedin.com/in/muhammed-ikram-7b56202bb' rel='noopener noreferrer' target='_blank'>View Profile</Link>
-              </div>
-            </div>
 
-            <div className="member-card">
-              <img src={faraz} alt="Developer 2" className="member-image" />
-              <div className="member-info">
-                <h3>Mohammad Faraz K</h3>
-                <p>Front-End Developer</p>
-                <Link to='https://www.linkedin.com/in/faraz-shaik-a906192bb/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
-              </div>
+          {/* Story */}
+          <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-xl hover:shadow-2xl transition duration-300 group relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <GiTeamIdea className="text-9xl text-purple-500" />
             </div>
-            <div className="member-card">
-              <img src={mourya} alt="Developer 3" className="member-image" />
-              <div className="member-info">
-                <h3>Mourya Ayyappa N</h3>
-                <p>Web Developer</p>
-                <Link to='https://www.linkedin.com/in/mourya-ayyappa-485563330/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
+            <div className="relative z-10">
+              <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
+                <GiTeamIdea className="text-4xl text-purple-500" />
               </div>
-            </div>
-
-            <div className="member-card">
-              <img src={vamshi} alt="Developer 2" className="member-image" />
-              <div className="member-info">
-                <h3>Vamshi</h3>
-                <p>Web Developer</p>
-                <Link to='https://www.linkedin.com/in/saivamshi-webdev/' rel='noopener noreferrer' target='_blank'>View Profile</Link>
-              </div>
+              <h2 className="text-2xl font-bold text-white mb-4">Our Story</h2>
+              <p className="text-gray-400 leading-relaxed">
+                Born from a recognition of immense but often unnoticed talent, our founders created a platform to bridge the gap for emerging sports stars.
+              </p>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* <Footer /> */}
-          
-      {/* Footer */}
-      {/* <footer className="about-footer">
-        <div className="footer-content">
-            <div className="footer-col">
-                <h3>About GrowAthlete</h3>
-                <p>Empowering young sports talents across India by providing a platform for discovery, promotion, and development.</p>
-            </div>
-            <div className="footer-col">
-                <h3>Quick Links</h3>
-                <a href="#">Home</a>
-                <a href="#">About Us</a>
-                <a href="#">Contact</a>
-                <a href="#">Athletes</a>
-            </div>
-            <div className="footer-col">
-                <h3>Connect With Us</h3>
-                <p><FaEnvelope /> growathlete.info@email.com</p>
-                <p><FaPhone /> +91 8500767388</p>
-                <div className="social-icons">
-                  <a href="#"><FaFacebookF /></a>
-                  <a href="#"><FaTwitter /></a>
-                  <a href="#"><FaInstagram /></a>
-                  <a href="#"><FaYoutube /></a>
+        {/* FEATURED SPORTS */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white mb-8 text-center flex items-center justify-center gap-3">
+            <span className="w-12 h-1 bg-orange-500 rounded-full"></span>
+            Featured Sports
+            <span className="w-12 h-1 bg-orange-500 rounded-full"></span>
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {sports.map((sport) => (
+              <div key={sport.name} className="group relative h-80 rounded-2xl overflow-hidden shadow-lg cursor-pointer">
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-500 z-10"></div>
+                <img
+                  src={sport.imgUrl}
+                  alt={sport.name}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent z-20">
+                  <h3 className="text-2xl font-bold text-white translate-y-2 group-hover:translate-y-0 transition duration-300">
+                    {sport.name}
+                  </h3>
+                  <div className="h-1 w-0 bg-orange-500 group-hover:w-full transition-all duration-300 mt-2"></div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CORE VALUES */}
+        <div className="bg-gray-800 rounded-3xl p-8 sm:p-12 border border-gray-700 shadow-2xl mb-16">
+          <h2 className="text-3xl font-bold text-white mb-10 text-center">Our Core Values</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { title: 'Excellence', desc: "We strive for excellence in functionalities and opportunities.", color: "text-yellow-400" },
+              { title: 'Inclusivity', desc: "Accessible sports opportunities for everyone.", color: "text-green-400" },
+              { title: 'Integrity', desc: "Honesty and transparency in all interactions.", color: "text-blue-400" },
+              { title: 'Innovation', desc: "Continuously innovating tools for athletes.", color: "text-pink-400" }
+            ].map((value, idx) => (
+              <div key={idx} className="bg-gray-900/50 p-6 rounded-xl border border-gray-700 hover:border-gray-600 transition duration-300">
+                <h3 className={`text-xl font-bold mb-3 ${value.color}`}>{value.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{value.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* TEAM SECTION - REIMAGINED */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-white mb-12 text-center">Meet The Team</h2>
+
+          {/* Tree/Hierarchical Visualization implied by grid layout and distinct styling for founders */}
+          <div className="flex flex-col items-center gap-12">
+
+            {/* Founders Level */}
+            <div className="flex flex-wrap justify-center gap-12">
+              {teamMembers.slice(0, 2).map((member) => (
+                <div key={member.name} className="flex flex-col items-center group">
+                  <div className="relative mb-4">
+                    <div className={`absolute inset-0 bg-gradient-to-tr ${member.color} rounded-full blur opacity-60 group-hover:opacity-100 transition duration-500`}></div>
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="relative w-40 h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
+                    />
+                    <div className="absolute -bottom-2 -right-2 bg-gray-900 rounded-full p-2 border border-gray-700 text-xl shadow-lg">
+                      👑
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                  <p className="text-orange-400 text-sm font-semibold uppercase tracking-wider mb-3">{member.role}</p>
+                  <a href={member.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition">
+                    <FaLinkedin size={20} />
+                  </a>
+                </div>
+              ))}
             </div>
+
+            {/* Connector Line (Visual only) */}
+            <div className="hidden md:block w-px h-12 bg-gray-700"></div>
+
+            {/* Developers Level */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+              {teamMembers.slice(2).map((member) => (
+                <div key={member.name} className="flex flex-col items-center group">
+                  <div className="relative mb-4">
+                    <div className={`absolute inset-0 bg-gradient-to-tr ${member.color} rounded-full blur opacity-40 group-hover:opacity-80 transition duration-500`}></div>
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="relative w-28 h-28 rounded-full object-cover border-4 border-gray-900 shadow-md group-hover:scale-105 transition duration-300"
+                    />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1 text-center">{member.name}</h3>
+                  <p className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-2">{member.role}</p>
+                  <a href={member.link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-400 transition">
+                    <FaLinkedin size={18} />
+                  </a>
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
-        <div className="footer-bottom">
-            <p>© 2025 GrowAthlete India. All rights reserved.</p>
-            <p>Designed with ♥ for young athletes across India</p>
-        </div>
-      </footer> */}
+
+      </div>
+
+      <Footer />
     </div>
-    </>
   );
-  
 };
 
 export default AboutPage;
