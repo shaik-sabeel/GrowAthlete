@@ -74,64 +74,70 @@ const LiveChat = ({ room, onBack }) => {
     if (!room) return null;
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-[600px] overflow-hidden">
-            <div className="p-4 border-b border-slate-100 bg-white flex items-center justify-between sticky top-0 z-10">
+        <div className="bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-lg border border-gray-700 flex flex-col h-[600px] overflow-hidden relative group">
+            {/* Subtle gradient accent at the top */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-pink-500 opacity-80 z-20"></div>
+
+            <div className="p-4 border-b border-gray-700 bg-gray-800/95 flex items-center justify-between sticky top-0 z-10 backdrop-blur-md">
                 <div className="flex items-center gap-3">
-                    <button onClick={onBack} className="lg:hidden text-slate-500 hover:text-slate-700">
+                    <button onClick={onBack} className="lg:hidden text-gray-400 hover:text-white transition-colors">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
                     <div>
-                        <h3 className="font-bold text-slate-900 leading-tight">{room.name}</h3>
-                        <p className="text-xs text-slate-500 font-medium">{room.category} · {room.participants?.length || 0} participants</p>
+                        <h3 className="font-bold text-white leading-tight flex items-center gap-2">
+                            {room.name}
+                        </h3>
+                        <p className="text-xs text-gray-400 font-medium">{room.category} · {room.participants?.length || 0} participants</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Live</span>
+                <div className="flex items-center gap-2 bg-gray-900/50 px-3 py-1 rounded-full border border-gray-700/50">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                    <span className="text-xs text-gray-300 font-semibold uppercase tracking-wider">Live</span>
                 </div>
             </div>
 
-            <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-slate-50/50">
+            <div className="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-900/50 custom-scrollbar">
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center h-full space-y-2 opacity-50">
-                        <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                        <span className="text-xs font-medium text-slate-500">Loading conversation...</span>
+                    <div className="flex flex-col items-center justify-center h-full space-y-3 opacity-70">
+                        <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Loading messages...</span>
                     </div>
                 ) : messages.length === 0 ? (
-                    <div className="text-center py-10">
-                        <div className="bg-blue-50 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span className="text-xl">👋</span>
+                    <div className="text-center py-20">
+                        <div className="bg-gray-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-700 shadow-inner">
+                            <span className="text-2xl animate-wave">👋</span>
                         </div>
-                        <p className="text-slate-500 text-sm font-medium">No messages yet. Be the first to say hi!</p>
+                        <p className="text-gray-400 text-sm font-medium">No messages here yet.</p>
+                        <p className="text-gray-500 text-xs mt-1">Start the conversation!</p>
                     </div>
                 ) : (
                     messages.map((msg, index) => {
                         const isMe = msg.sender?._id === currentUserId || msg.sender === currentUserId;
                         return (
-                            <div key={msg._id || index} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[80%] flex gap-2 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                            <div key={msg._id || index} className={`flex ${isMe ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
+                                <div className={`max-w-[85%] flex gap-3 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                                     {!isMe && (
-                                        <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden flex-shrink-0 mt-1">
+                                        <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden flex-shrink-0 mt-1 border border-gray-600 shadow-sm">
                                             {msg.sender?.profilePicture ? (
                                                 <img src={msg.sender.profilePicture} alt="" className="w-full h-full object-cover" />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-blue-100 text-blue-600 font-bold text-[10px]">
+                                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-800 text-gray-300 font-bold text-[10px]">
                                                     {msg.sender?.username?.[0]?.toUpperCase() || '?'}
                                                 </div>
                                             )}
                                         </div>
                                     )}
-                                    <div>
-                                        {!isMe && <span className="text-[10px] font-bold text-slate-500 ml-1 mb-1 block uppercase tracking-tight">{msg.sender?.username}</span>}
-                                        <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMe
-                                                ? 'bg-blue-600 text-white rounded-tr-none ml-auto'
-                                                : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
+                                    <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                                        {!isMe && <span className="text-[10px] font-bold text-gray-400 ml-1 mb-1 block uppercase tracking-wider">{msg.sender?.username}</span>}
+                                        <div className={`px-4 py-2.5 text-sm shadow-md ${isMe
+                                            ? 'bg-gradient-to-r from-orange-600 to-pink-600 text-white rounded-2xl rounded-tr-sm'
+                                            : 'bg-gray-800 text-gray-200 rounded-2xl rounded-tl-sm border border-gray-700'
                                             }`}>
                                             {msg.content}
                                         </div>
-                                        <span className={`text-[9px] text-slate-400 mt-1 block ${isMe ? 'text-right' : 'text-left'}`}>
+                                        <span className={`text-[9px] text-gray-500 mt-1 block font-medium ${isMe ? 'text-right' : 'text-left'}`}>
                                             {moment(msg.timestamp).format('h:mm A')}
                                         </span>
                                     </div>
@@ -143,22 +149,27 @@ const LiveChat = ({ room, onBack }) => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 bg-white border-t border-slate-100 sticky bottom-0">
-                <form onSubmit={handleSendMessage} className="flex gap-2">
-                    <input
-                        type="text"
-                        placeholder="Type your message..."
-                        className="flex-grow px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                    />
+            <div className="p-4 bg-gray-800/95 border-t border-gray-700 sticky bottom-0 backdrop-blur-md">
+                <form onSubmit={handleSendMessage} className="flex gap-3 items-center">
+                    <div className="relative flex-grow">
+                        <input
+                            type="text"
+                            placeholder="Type your message..."
+                            className="w-full pl-5 pr-12 py-3 bg-gray-900 border border-gray-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all placeholder-gray-500"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none text-xs">
+                            ↵
+                        </div>
+                    </div>
                     <button
                         type="submit"
                         disabled={!newMessage.trim()}
-                        className="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-button disabled:opacity-50"
+                        className="w-12 h-11 flex items-center justify-center bg-gradient-to-r from-orange-600 to-pink-600 text-white rounded-xl hover:shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:brightness-110 transition-all shadow-lg disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed transform active:scale-95"
                     >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        <svg className="w-5 h-5 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                     </button>
                 </form>

@@ -141,12 +141,7 @@ const FeedPage = () => {
   };
 
   const handleFollow = async (authorId) => {
-    console.log("handleFollow called for:", authorId);
-    console.log("currentUserId:", currentUserId);
-    console.log("currentUserProfile:", currentUserProfile);
-
     if (!authorId || authorId === currentUserId) {
-      console.log("Invalid follow request: self or no ID");
       return;
     }
 
@@ -164,13 +159,9 @@ const FeedPage = () => {
 
     try {
       if (isFollowing) {
-        console.log("Sending unfollow request...");
         await backendApi.post(`/auth/unfollow/${authorId}`);
-        console.log("Unfollow success");
       } else {
-        console.log("Sending follow request...");
         await backendApi.post(`/auth/follow/${authorId}`);
-        console.log("Follow success");
       }
     } catch (error) {
       console.error("Error toggling follow:", error);
