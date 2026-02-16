@@ -38,16 +38,25 @@ async function seedDefaultAdmin() {
   const adminEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@growathlete.local';
   const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin@123';
   const exists = await User.findOne({ email: adminEmail });
-  if (exists) return;
   const hashed = await bcrypt.hash(adminPassword, 10);
-  await User.create({
-    username: "Administrator",
-    email: adminEmail,
-    password: hashed,
-    role: "admin",
-    isVerified: true,
-  });
-  console.log(`👑 Default admin created/checked: ${adminEmail}`);
+
+  if (exists) {
+    // Force update password if user exists
+    exists.password = hashed;
+    exists.role = "admin"; // Ensure role is admin
+    await exists.save();
+    console.log(`👑 Default admin password updated: ${adminEmail}`);
+  } else {
+    // Create new if not exists
+    await User.create({
+      username: "Administrator",
+      email: adminEmail,
+      password: hashed,
+      role: "admin",
+      isVerified: true,
+    });
+    console.log(`👑 Default admin created: ${adminEmail}`);
+  }
 }
 //...
 
