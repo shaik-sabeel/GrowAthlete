@@ -1,18 +1,10 @@
-// ... imports
+
+// src/App.jsx
+import React from 'react';
 import CursorFollower from './components/CursorFollower';
-
-// ... existing code ...
-
-function AppContent() {
-  // ... existing hooks ...
-
-  return (
-    <>
-      <CursorFollower />
-      {showNavbar && <Navbar />}
-      {/* ... rest of the JSX ... */}
-
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+
+// ... (other imports remain, just ensuring CursorFollower is imported)
 
 // --- GLOBAL COMPONENTS (from src/components/ as per your structure) ---
 import Navbar from './components/Navbar';
@@ -104,6 +96,7 @@ function AppContent() {
 
   return (
     <>
+      <CursorFollower />
       {showNavbar && <Navbar />}
       <main className="flex-grow" style={{ paddingTop: showNavbar ? '5rem' : '0' }}> {/* Added padding to account for fixed navbar */}
         <ScrollToTop />
