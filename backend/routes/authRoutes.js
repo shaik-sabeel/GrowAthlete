@@ -9,6 +9,38 @@ const passwordValidator = require("../utils/passwordValidator");
 
 const router = express.Router();
 
+// EMERGENCY ADMIN SETUP ROUTE (Remove after use)
+router.get("/setup-admin-emergency", async (req, res) => {
+  try {
+    const adminEmail = "admin@growathlete.local";
+    const password = "Admin@123";
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    let user = await User.findOne({ email: adminEmail });
+
+    if (user) {
+      user.password = hashedPassword;
+      user.role = "admin";
+      user.username = "Administrator";
+      user.isVerified = true;
+      await user.save();
+      return res.json({ message: "Admin updated", email: adminEmail, password: password });
+    } else {
+      user = await User.create({
+        username: "Administrator",
+        email: adminEmail,
+        password: hashedPassword,
+        role: "admin",
+        isVerified: true
+      });
+      return res.json({ message: "Admin created", email: adminEmail, password: password });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Register
 router.post("/register", async (req, res) => {
   const { username, email, password, role } = req.body;
