@@ -1,23 +1,5 @@
 import { getFallbackAvatar } from "../utils/avatarUtils";
 
-// ... existing imports ...
-
-// In MyProfile component return:
-<img
-  src={(() => {
-    const pic = user.profilePicture;
-    if (!pic) return getFallbackAvatar(user.gender);
-    if (pic.startsWith('http')) return pic;
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-    return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
-  })()}
-  alt={user.username}
-  onError={(e) => {
-    e.target.onerror = null; // prevent infinite loop
-    e.target.src = getFallbackAvatar(user.gender);
-  }}
-  className="relative w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
-/>
 import api from "../utils/api";
 import Navbar from "../components/Navbar";
 import React, { useState, useEffect } from "react";
