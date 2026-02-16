@@ -76,8 +76,8 @@ const ContactPage = () => {
                 {
                   icon: "✉️",
                   title: "Email Us",
-                  content: "growathlete.info@gmail.com",
-                  link: "mailto:growathlete.info@gmail.com",
+                  content: "growathlete8@gmail.com",
+                  link: "mailto:growathlete8@gmail.com",
                   color: "bg-orange-500/20 text-orange-400 border-orange-500/30"
                 },
                 {
