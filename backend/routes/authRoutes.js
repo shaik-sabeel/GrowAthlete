@@ -97,8 +97,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).json("Email and password are required");
     }
 
-    // Step 1: fetch user by email
-    const user = await User.findOne({ email });
+    // Step 1: fetch user by email or username
+    const identifier = email; // Frontend sends 'email' field but it could be username
+    const user = await User.findOne({
+      $or: [
+        { email: identifier.toLowerCase() },
+        { username: identifier }
+      ]
+    });
     const t1 = Date.now();
     if (!user) return res.status(400).json("Invalid credentials");
 
