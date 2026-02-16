@@ -115,4 +115,23 @@ router.post('/:id/leave', verifyToken, async (req, res) => {
     }
 });
 
+const Message = require('../models/Message');
+
+// Get message history for a room
+router.get('/:id/messages', async (req, res) => {
+    try {
+        const roomId = req.params.id;
+        const messages = await Message.find({ room: roomId })
+            .populate('sender', 'username profilePicture')
+            .sort({ timestamp: 1 })
+            .limit(100); // Limit to last 100 messages for now
+
+        res.json(messages);
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).json({ message: 'Failed to fetch messages' });
+    }
+});
+
 module.exports = router;
+
