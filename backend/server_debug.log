@@ -1,0 +1,381 @@
+--- DEBUG: Starting server.js ---
+DEBUG: express loaded
+DEBUG: cors loaded
+DEBUG: cookieParser loaded
+DEBUG: mongoose loaded
+DEBUG: helmet loaded
+DEBUG: rateLimit loaded
+DEBUG: authRoutes loaded
+DEBUG: contactRoutes loaded
+⚠️ Cloudinary credentials not found. File uploads will use local storage fallback.
+DEBUG: sportsResume loaded
+DEBUG: adminRoutes loaded
+DEBUG: contentModerationRoutes loaded
+DEBUG: eventRoutes loaded
+DEBUG: blogRoutes loaded
+DEBUG: communityPostRoutes loaded
+DEBUG: tournamentRoutes loaded
+DEBUG: profileRoutes loaded
+DEBUG: PlatformSettings loaded
+DEBUG: maintenanceMiddleware loaded
+--- DEBUG: Express initialized ---
+--- DEBUG: Require db.js ---
+Mounted route at /api/auth
+Mounted route at /api/contact
+Mounted route at /api/sports-resume
+Mounted route at /api/admin
+Mounted route at /api/moderation
+Mounted route at /api/events
+Mounted route at /api/blog
+Mounted route at /api/community
+Mounted route at /api/tournaments
+Mounted route at /api/profile
+Mounted route at /api/v1/chat/rooms
+(node:19524) [MONGOOSE] Warning: Duplicate schema index on {"slug":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19524) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+(node:19524) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+Server running on port 5000
+✅ Connected to MongoDB
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+POST /api/auth/follow/697347776481ae30f29c0037 - Origin: http://localhost:5173
+POST /api/community/698acb99a3c93130681f4d58/like - Origin: http://localhost:5173
+DELETE /api/community/698acb99a3c93130681f4d58/like - Origin: http://localhost:5173
+POST /api/community/698acb99a3c93130681f4d58/like - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+POST /api/v1/chat/rooms - Origin: http://localhost:5173
+MongooseError: Connection operation buffering timed out after 10000ms
+    at NativeConnection._waitForConnect (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\connection.js:865:13)
+    at async NativeConnection.startSession (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\connection.js:688:3)
+    at async c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\routes\chatRoomRoutes.js:15:21
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+POST /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/chatrooms - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+POST /api/v1/chat/rooms - Origin: http://localhost:5173
+POST /api/v1/chat/rooms - Origin: http://localhost:5173
+Error creating chat room: Error: ChatRoom validation failed: purpose: Path `purpose` is required., visibility: `public` is not a valid enum value for path `visibility`., rules: Path `rules` is required.
+    at ValidationError.inspect (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\error\validation.js:52:26)
+    at formatValue (node:internal/util/inspect:814:19)
+    at inspect (node:internal/util/inspect:373:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2315:40)
+    at formatWithOptions (node:internal/util/inspect:2177:10)
+    at console.value (node:internal/console/constructor:338:14)
+    at console.warn (node:internal/console/constructor:379:61)
+    at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\routes\chatRoomRoutes.js:70:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errors: {
+    purpose: ValidatorError: Path `purpose` is required.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'required',
+      path: 'purpose',
+      value: undefined,
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    },
+    visibility: ValidatorError: `public` is not a valid enum value for path `visibility`.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'enum',
+      path: 'visibility',
+      value: 'public',
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    },
+    rules: ValidatorError: Path `rules` is required.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'required',
+      path: 'rules',
+      value: undefined,
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    }
+  },
+  _message: 'ChatRoom validation failed'
+}
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+POST /api/v1/chat/rooms - Origin: http://localhost:5173
+Error creating chat room: Error: ChatRoom validation failed: purpose: Path `purpose` is required., visibility: `public` is not a valid enum value for path `visibility`., rules: Path `rules` is required.
+    at ValidationError.inspect (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\error\validation.js:52:26)
+    at formatValue (node:internal/util/inspect:814:19)
+    at inspect (node:internal/util/inspect:373:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2315:40)
+    at formatWithOptions (node:internal/util/inspect:2177:10)
+    at console.value (node:internal/console/constructor:338:14)
+    at console.warn (node:internal/console/constructor:379:61)
+    at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\routes\chatRoomRoutes.js:70:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {
+  errors: {
+    purpose: ValidatorError: Path `purpose` is required.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'required',
+      path: 'purpose',
+      value: undefined,
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    },
+    visibility: ValidatorError: `public` is not a valid enum value for path `visibility`.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'enum',
+      path: 'visibility',
+      value: 'public',
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    },
+    rules: ValidatorError: Path `rules` is required.
+        at validate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1413:13)
+        at SchemaType.doValidate (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\schemaType.js:1397:7)
+        at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\document.js:3111:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:85:11) {
+      properties: [Object],
+      kind: 'required',
+      path: 'rules',
+      value: undefined,
+      reason: undefined,
+      [Symbol(mongoose#validatorError)]: true
+    }
+  },
+  _message: 'ChatRoom validation failed'
+}
+POST /api/auth/unfollow/697347776481ae30f29c0037 - Origin: http://localhost:5173
+POST /api/auth/follow/697347776481ae30f29c0037 - Origin: http://localhost:5173
+POST /api/auth/unfollow/697347776481ae30f29c0037 - Origin: http://localhost:5173
+POST /api/v1/chat/rooms/69903454b806749515965ddf/join - Origin: http://localhost:5173
+Error joining chat room: TypeError: Cannot destructure property 'agreed_to_rules' of 'req.body' as it is undefined.
+    at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\routes\chatRoomRoutes.js:129:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+POST /api/v1/chat/rooms/69903454b806749515965ddf/join - Origin: http://localhost:5173
+Error joining chat room: TypeError: Cannot destructure property 'agreed_to_rules' of 'req.body' as it is undefined.
+    at c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\routes\chatRoomRoutes.js:129:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+GET /api/community/public - Origin: http://localhost:5173
+GET /api/v1/chat/rooms - Origin: http://localhost:5173
+GET /api/auth/profile - Origin: http://localhost:5173
+Error fetching community posts: MongoServerSelectionError: Socket 'secureConnect' timed out after 30244ms (connectTimeoutMS: 30000)
+    at Topology.selectServer (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\sdam\topology.js:326:38)
+    at async tryOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:145:18)
+    at async executeOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:75:16)
+    at async FindCursor._initialize (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\find_cursor.js:61:26)
+    at async FindCursor.cursorInit (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:632:27)
+    at async FindCursor.fetchBatch (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:666:13)
+    at async FindCursor.next (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:342:17)
+    at async [Symbol.asyncIterator] (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:250:34)
+    at async FindCursor.toArray (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:422:26)
+    at async model.Query._find (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongoose\lib\query.js:2430:14) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-uo9ng2d-shard-00-00.nxt6jie.mongodb.net:27017' => [ServerDescription],
+      'ac-uo9ng2d-shard-00-01.nxt6jie.mongodb.net:27017' => [ServerDescription],
+      'ac-uo9ng2d-shard-00-02.nxt6jie.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-v4wk9q-shard-0',
+    maxElectionId: new ObjectId('7fffffff0000000000000026'),
+    maxSetVersion: 16,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: 30
+  },
+  code: undefined,
+  [cause]: MongoNetworkTimeoutError: Socket 'secureConnect' timed out after 30244ms (connectTimeoutMS: 30000)
+      at TLSSocket.<anonymous> (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cmap\connect.js:288:20)
+      at Object.onceWrapper (node:events:638:28)
+      at TLSSocket.emit (node:events:524:28)
+      at Socket._onTimeout (node:net:602:8)
+      at listOnTimeout (node:internal/timers:594:17)
+      at process.processTimers (node:internal/timers:529:7) {
+    errorLabelSet: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+    beforeHandshake: false,
+    [cause]: undefined
+  }
+}
+Error fetching chat rooms: MongoServerSelectionError: Socket 'secureConnect' timed out after 30244ms (connectTimeoutMS: 30000)
+    at Topology.selectServer (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\sdam\topology.js:326:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:555:9)
+    at process.processTimers (node:internal/timers:529:7)
+    at async tryOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:145:18)
+    at async executeOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:75:16)
+    at async FindCursor._initialize (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\find_cursor.js:61:26)
+    at async FindCursor.cursorInit (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:632:27)
+    at async FindCursor.fetchBatch (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:666:13)
+    at async FindCursor.next (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:342:17) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'ReplicaSetNoPrimary',
+    servers: Map(3) {
+      'ac-uo9ng2d-shard-00-00.nxt6jie.mongodb.net:27017' => [ServerDescription],
+      'ac-uo9ng2d-shard-00-01.nxt6jie.mongodb.net:27017' => [ServerDescription],
+      'ac-uo9ng2d-shard-00-02.nxt6jie.mongodb.net:27017' => [ServerDescription]
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: 'atlas-v4wk9q-shard-0',
+    maxElectionId: new ObjectId('7fffffff0000000000000026'),
+    maxSetVersion: 16,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: 30
+  },
+  code: undefined,
+  [cause]: MongoNetworkTimeoutError: Socket 'secureConnect' timed out after 30244ms (connectTimeoutMS: 30000)
+      at TLSSocket.<anonymous> (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cmap\connect.js:288:20)
+      at Object.onceWrapper (node:events:638:28)
+      at TLSSocket.emit (node:events:524:28)
+      at Socket._onTimeout (node:net:602:8)
+      at listOnTimeout (node:internal/timers:594:17)
+      at process.processTimers (node:internal/timers:529:7) {
+    errorLabelSet: Set(2) { 'ResetPool', 'InterruptInUseConnections' },
+    beforeHandshake: false,
+    [cause]: undefined
+  }
+}
+MongoServerSelectionError: Socket 'secureConnect' timed out after 30244ms (connectTimeoutMS: 30000)
+    at Topology.selectServer (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\sdam\topology.js:326:38)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processTimers (node:internal/timers:526:9)
+    at async tryOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:145:18)
+    at async executeOperation (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\operations\execute_operation.js:75:16)
+    at async FindCursor._initialize (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\find_cursor.js:61:26)
+    at async FindCursor.cursorInit (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:632:27)
+    at async FindCursor.fetchBatch (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:666:13)
+    at async FindCursor.next (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:342:17)
+    at async Collection.findOne (c:\Users\MYPC\OneDrive\Desktop\GA\GrowAthlete\backend\node_modules\mongodb\lib\collection.js:277:21)
