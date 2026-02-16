@@ -229,7 +229,9 @@ function App() {
   return (
     <NotificationProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AppContent />
+        <ErrorBoundary>
+          <AppContent />
+        </ErrorBoundary>
       </Router>
     </NotificationProvider>
   );
