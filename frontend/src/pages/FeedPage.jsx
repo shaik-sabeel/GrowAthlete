@@ -528,7 +528,8 @@ const FeedPage = () => {
                     const getMediaUrl = (url) => {
                       if (!url) return null;
                       if (url.startsWith('http')) return url;
-                      return `http://localhost:5000${url.startsWith('/') ? '' : '/'}${url}`;
+                      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+                      return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
                     };
                     const mediaUrl = post.media && post.media.length > 0 ? getMediaUrl(post.media[0].url) : null;
 

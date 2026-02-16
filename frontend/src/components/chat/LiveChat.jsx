@@ -20,7 +20,7 @@ const LiveChat = ({ room, onBack }) => {
         if (!room) return;
 
         // Initialize socket connection
-        const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const socketUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
         socketRef.current = io(socketUrl, {
             withCredentials: true
         });
@@ -126,8 +126,8 @@ const LiveChat = ({ room, onBack }) => {
                                     <div>
                                         {!isMe && <span className="text-[10px] font-bold text-slate-500 ml-1 mb-1 block uppercase tracking-tight">{msg.sender?.username}</span>}
                                         <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMe
-                                                ? 'bg-blue-600 text-white rounded-tr-none ml-auto'
-                                                : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
+                                            ? 'bg-blue-600 text-white rounded-tr-none ml-auto'
+                                            : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                                             }`}>
                                             {msg.content}
                                         </div>
