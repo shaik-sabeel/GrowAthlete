@@ -87,7 +87,10 @@ function AthleteProfile() {
           className="ap-athlete-image"
           src={data.image || '/default-avatar.png'}
           alt={data.name}
-          onError={(e) => { e.currentTarget.src = '/default-avatar.png'; }}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=random&color=fff&size=200`;
+          }}
         />
         <div className="ap-athlete-info">
           <h3>{data.name}</h3>

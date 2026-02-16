@@ -188,6 +188,10 @@ const AthletesPage = () => {
                         return pic || `https://ui-avatars.com/api/?name=${athlete.username}&background=random&color=fff&size=200`;
                       })()}
                       alt={athlete.username}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(athlete.username)}&background=random&color=fff&size=200`;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80"></div>

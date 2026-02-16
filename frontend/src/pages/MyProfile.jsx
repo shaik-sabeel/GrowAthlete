@@ -142,6 +142,10 @@ const MyProfile = () => {
                   return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
                 })()}
                 alt={user.username}
+                onError={(e) => {
+                  e.target.onerror = null; // prevent infinite loop
+                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random&color=fff&size=200`;
+                }}
                 className="relative w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
               />
               <div className="absolute bottom-0 right-0 bg-gray-900 rounded-full p-2 border border-gray-700">

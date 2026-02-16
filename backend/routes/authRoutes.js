@@ -51,17 +51,13 @@ router.post("/register", async (req, res) => {
     }
 
     // Hash password and create user
-    const hashedPassword = await bcrypt.hash(password, 12); // Increased salt rounds for better security
+    const hashedPassword = await bcrypt.hash(password, 10); // Standard salt rounds for balance of security and speed
     const newUser = new User({ username, email, password: hashedPassword, role });
     await newUser.save();
 
-    // Send welcome email
-    try {
-      await sendWelcomeEmail(newUser.email, newUser.username);
-    } catch (emailError) {
-      console.error("Welcome email failed:", emailError);
-      // Don't fail registration if email fails
-    }
+    // Send welcome email (Non-blocking)
+    sendWelcomeEmail(newUser.email, newUser.username)
+      .catch(emailError => console.error("Welcome email failed:", emailError));
 
     const token = jwt.sign(
       { id: newUser._id, username: newUser.username, role: newUser.role },
