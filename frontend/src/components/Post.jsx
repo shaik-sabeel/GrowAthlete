@@ -22,7 +22,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
   const [showAllComments, setShowAllComments] = useState(false);
   const [replyOpenMap, setReplyOpenMap] = useState({});
   const [replyContentMap, setReplyContentMap] = useState({});
-  const REACTIONS = ['👍','❤️','😂','👏','🙌'];
+  const REACTIONS = ['👍', '❤️', '😂', '👏', '🙌'];
   const [isPostExpanded, setIsPostExpanded] = useState(false);
   const [reactionCounts, setReactionCounts] = useState(() => {
     const counts = {};
@@ -42,7 +42,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
 
   const handleLike = async () => {
     if (isLiking) return;
-    
+
     setIsLiking(true);
     try {
       if (isLiked) {
@@ -50,15 +50,15 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
       } else {
         await api.post(`/community/${post._id}/like`);
       }
-      
+
       // Update the post locally for immediate UI feedback
       const updatedPost = {
         ...post,
-        likes: isLiked 
+        likes: isLiked
           ? (post.likes || []).filter(like => like._id !== currentUserId)
           : [...(post.likes || []), { _id: currentUserId }]
       };
-      
+
       if (onPostUpdated) {
         onPostUpdated(updatedPost);
       }
@@ -109,7 +109,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
         ...post,
         comments: [...post.comments, response.data.comment]
       };
-      
+
       if (onPostUpdated) {
         onPostUpdated(updatedPost);
       }
@@ -148,7 +148,7 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
         await api.delete(`/community/${post._id}`);
-        
+
         if (onPostDeleted) {
           onPostDeleted(post._id);
         }
@@ -265,259 +265,259 @@ const Post = ({ post, onPostUpdated, onPostDeleted, currentUserId }) => {
           </div>
         )}
         {/* User Info Section */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          {/* User Picture */}
-          <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
-            <img
-              src={post.author?.profilePicture || '/default-avatar.png'}
-              alt={post.author?.username || 'Unknown User'}
-              className="w-full h-full object-cover"
-            />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            {/* User Picture */}
+            <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
+              <img
+                src={post.author?.profilePicture || '/default-avatar.png'}
+                alt={post.author?.username || 'Unknown User'}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* User Name and Time */}
+            <div className="ml-3">
+              <p className="font-semibold text-gray-100 px-2">{post.author?.username || 'Unknown User'}</p>
+              <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
+            </div>
           </div>
-          {/* User Name and Time */}
-          <div className="ml-3">
-            <p className="font-semibold text-gray-100 px-2">{post.author?.username || 'Unknown User'}</p>
-            <p className="text-sm text-gray-500">{formatTimeAgo(post.createdAt)}</p>
+
+          {/* Post Actions Menu */}
+          <div className="relative flex items-center space-x-2">
+            {isAuthor && (
+              <>
+                <button
+                  onClick={() => setShowEditForm(!showEditForm)}
+                  className="p-2 text-gray-400 hover:text-blue-500 transition-colors duration-200"
+                  title="Edit post"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  onClick={handleDeletePost}
+                  className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
+                  title="Delete post"
+                >
+                  <FaTrash />
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => setShowFlagModal(true)}
+              className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
+              title="Flag post"
+            >
+              <FaFlag />
+            </button>
           </div>
         </div>
-        
-        {/* Post Actions Menu */}
-        <div className="relative flex items-center space-x-2">
-          {isAuthor && (
-            <>
+
+        {/* Edit Form */}
+        {showEditForm && (
+          <div className="mb-4 pl-12">
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg resize-none"
+              rows="3"
+              maxLength="2000"
+            />
+            <div className="flex space-x-2 mt-2">
               <button
-                onClick={() => setShowEditForm(!showEditForm)}
-                className="p-2 text-gray-400 hover:text-blue-500 transition-colors duration-200"
-                title="Edit post"
+                onClick={handleEditPost}
+                disabled={isEditing}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
               >
-                <FaEdit />
+                {isEditing ? 'Saving...' : 'Save'}
               </button>
               <button
-                onClick={handleDeletePost}
-                className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
-                title="Delete post"
+                onClick={() => {
+                  setShowEditForm(false);
+                  setEditContent(post.content || '');
+                }}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
               >
-                <FaTrash />
+                Cancel
               </button>
-            </>
-          )}
+            </div>
+          </div>
+        )}
+
+        {/* Post Content with Read more toggle */}
+        {!showEditForm && (
+          <p className="text-white-700 mb-4 pl-12">{post.content || 'No content available'}</p>
+        )}
+
+        {/* Media */}
+        {renderMedia(post.media)}
+
+        {/* Tags */}
+        {renderTags(post.tags)}
+
+        {/* Reactions and Comment Button (compact) */}
+        <div className="flex items-center justify-between text-gray-600 pb-2 mb-3 pl-12 pr-4">
+          <div className="flex items-center space-x-1">
+            {REACTIONS.map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => handleReact(r)}
+                className={`px-1.5 py-0.5 rounded hover:bg-gray-100 ${myReaction === r ? 'bg-gray-100' : ''}`}
+                style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+                title="React"
+              >
+                <span className="text-[18px] leading-none">{r}</span>
+                <span className="ml-1 text-[11px] text-gray-500 align-middle">{reactionCounts[r] || 0}</span>
+              </button>
+            ))}
+          </div>
           <button
-            onClick={() => setShowFlagModal(true)}
-            className="p-2 text-gray-400 hover:text-red-500 transition-colors duration-200"
-            title="Flag post"
+            onClick={() => setShowCommentInput(!showCommentInput)}
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
+            title="Comment"
+            aria-label="Comment"
           >
-            <FaFlag />
+            <FaComment className="text-[18px] text-gray-500" />
+            <span className="text-[14px] text-gray-500 font-medium">{post.comments?.length || 0}</span>
           </button>
         </div>
-      </div>
 
-      {/* Edit Form */}
-      {showEditForm && (
-        <div className="mb-4 pl-12">
-          <textarea
-            value={editContent}
-            onChange={(e) => setEditContent(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg resize-none"
-            rows="3"
-            maxLength="2000"
-          />
-          <div className="flex space-x-2 mt-2">
-            <button
-              onClick={handleEditPost}
-              disabled={isEditing}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
-            >
-              {isEditing ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              onClick={() => {
-                setShowEditForm(false);
-                setEditContent(post.content || '');
-              }}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-            >
-              Cancel
-            </button>
+        {/* Comment Input */}
+        {showCommentInput && (
+          <div className="mb-4 pl-12">
+            <form onSubmit={handleComment} className="flex flex-col sm:flex-row gap-3 sm:gap-2">
+              <input
+                type="text"
+                value={commentContent}
+                onChange={(e) => setCommentContent(e.target.value)}
+                placeholder="Write a comment..."
+                className="flex-1 p-3 sm:p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-base sm:text-sm"
+                maxLength="500"
+              />
+              <button
+                type="submit"
+                disabled={isSubmittingComment || !commentContent.trim()}
+                className="px-6 py-3 sm:px-4 sm:py-2 bg-[var(--ga-orange)] text-white rounded-lg hover:opacity-90 disabled:opacity-50 font-medium text-base sm:text-sm"
+              >
+                {isSubmittingComment ? 'Posting...' : 'Post'}
+              </button>
+            </form>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Post Content with Read more toggle */}
-      {!showEditForm && (
-        <p className="text-white-700 mb-4 pl-12">{post.content || 'No content available'}</p>
-      )}
-
-      {/* Media */}
-      {renderMedia(post.media)}
-
-      {/* Tags */}
-      {renderTags(post.tags)}
-
-      {/* Reactions and Comment Button (compact) */}
-      <div className="flex items-center justify-between text-gray-600 pb-2 mb-3 pl-12 pr-4">
-        <div className="flex items-center space-x-1">
-          {REACTIONS.map((r) => (
-            <button
-              key={r}
-              type="button"
-              onClick={() => handleReact(r)}
-              className={`px-1.5 py-0.5 rounded hover:bg-gray-100 ${myReaction === r ? 'bg-gray-100' : ''}`}
-              style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
-              title="React"
-            >
-              <span className="text-[18px] leading-none">{r}</span>
-              <span className="ml-1 text-[11px] text-gray-500 align-middle">{reactionCounts[r] || 0}</span>
-            </button>
-          ))}
-        </div>
-        <button 
-          onClick={() => setShowCommentInput(!showCommentInput)}
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-500 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-          style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
-          title="Comment"
-          aria-label="Comment"
-        >
-          <FaComment className="text-[18px] text-gray-500" />
-          <span className="text-[14px] text-gray-500 font-medium">{post.comments?.length || 0}</span>
-        </button>
-      </div>
-
-      {/* Comment Input */}
-      {showCommentInput && (
-        <div className="mb-4 pl-12">
-          <form onSubmit={handleComment} className="flex flex-col sm:flex-row gap-3 sm:gap-2">
-            <input
-              type="text"
-              value={commentContent}
-              onChange={(e) => setCommentContent(e.target.value)}
-              placeholder="Write a comment..."
-              className="flex-1 p-3 sm:p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-base sm:text-sm"
-              maxLength="500"
-            />
-            <button
-              type="submit"
-              disabled={isSubmittingComment || !commentContent.trim()}
-              className="px-6 py-3 sm:px-4 sm:py-2 bg-[var(--ga-orange)] text-white rounded-lg hover:opacity-90 disabled:opacity-50 font-medium text-base sm:text-sm"
-            >
-              {isSubmittingComment ? 'Posting...' : 'Post'}
-            </button>
-          </form>
-        </div>
-      )}
-
-      {/* Comments Section */}
-      {post.comments && post.comments.length > 0 && (
-        <div className="pl-12">
-          {(() => {
-            const sorted = [...post.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            const visible = showAllComments ? sorted : sorted.slice(0, 2);
-            return (
-              <>
-                {visible.map((comment) => (
-                  <div key={comment._id} className="mb-3 p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-gray-800 text-sm">
-                        {comment.author?.username || comment.author?.name || 'User'}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {formatTimeAgo(comment.createdAt)}
-                      </span>
-                    </div>
-                    <div className="text-gray-700 text-sm whitespace-pre-wrap mb-2">{comment.content}</div>
-                    {/* Replies */}
-                    {Array.isArray(comment.replies) && comment.replies.length > 0 && (
-                      <div className="ml-4 space-y-2">
-                        {comment.replies.map((rep) => (
-                          <div key={rep._id} className="p-2 bg-white rounded border">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium text-gray-700 text-xs">{rep.author?.username || rep.author?.name || 'User'}</span>
-                              <span className="text-[11px] text-gray-400">{formatTimeAgo(rep.createdAt)}</span>
-                            </div>
-                            <div className="text-gray-700 text-sm whitespace-pre-wrap">{rep.content}</div>
-                          </div>
-                        ))}
+        {/* Comments Section */}
+        {post.comments && post.comments.length > 0 && (
+          <div className="pl-12">
+            {(() => {
+              const sorted = [...post.comments].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+              const visible = showAllComments ? sorted : sorted.slice(0, 2);
+              return (
+                <>
+                  {visible.map((comment) => (
+                    <div key={comment._id} className="mb-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-semibold text-gray-800 text-sm">
+                          {comment.author?.username || comment.author?.name || 'User'}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatTimeAgo(comment.createdAt)}
+                        </span>
                       </div>
-                    )}
-                    {/* Quick reply */}
-                    <div className="mt-2">
-                      <button
-                        type="button"
-                        onClick={() => setReplyOpenMap(m => ({ ...m, [comment._id]: !m[comment._id] }))}
-                        className="text-xs text-blue-600 hover:underline"
-                      >
-                        {replyOpenMap[comment._id] ? 'Cancel reply' : 'Reply'}
-                      </button>
+                      <div className="text-gray-700 text-sm whitespace-pre-wrap mb-2">{comment.content}</div>
+                      {/* Replies */}
+                      {Array.isArray(comment.replies) && comment.replies.length > 0 && (
+                        <div className="ml-4 space-y-2">
+                          {comment.replies.map((rep) => (
+                            <div key={rep._id} className="p-2 bg-white rounded border">
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="font-medium text-gray-700 text-xs">{rep.author?.username || rep.author?.name || 'User'}</span>
+                                <span className="text-[11px] text-gray-400">{formatTimeAgo(rep.createdAt)}</span>
+                              </div>
+                              <div className="text-gray-700 text-sm whitespace-pre-wrap">{rep.content}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {/* Quick reply */}
+                      <div className="mt-2">
+                        <button
+                          type="button"
+                          onClick={() => setReplyOpenMap(m => ({ ...m, [comment._id]: !m[comment._id] }))}
+                          className="text-xs text-blue-600 hover:underline"
+                        >
+                          {replyOpenMap[comment._id] ? 'Cancel reply' : 'Reply'}
+                        </button>
+                      </div>
+                      {replyOpenMap[comment._id] && (
+                        <form
+                          className="mt-2 flex items-center space-x-2"
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                            const content = (replyContentMap[comment._id] || '').trim();
+                            if (!content) return;
+                            try {
+                              const resp = await api.post(`/community/${post._id}/comments/${comment._id}/replies`, { content });
+                              const newReply = resp.data?.reply || { _id: Math.random().toString(36).slice(2), content, author: { _id: currentUserId }, createdAt: new Date().toISOString() };
+                              const updatedPost = {
+                                ...post,
+                                comments: (post.comments || []).map(c => c._id === comment._id ? { ...c, replies: [...(c.replies || []), newReply] } : c)
+                              };
+                              if (onPostUpdated) onPostUpdated(updatedPost);
+                              setReplyContentMap(m => ({ ...m, [comment._id]: '' }));
+                              setReplyOpenMap(m => ({ ...m, [comment._id]: false }));
+                            } catch (err) {
+                              console.error('Error posting reply:', err);
+                            }
+                          }}
+                        >
+                          <input
+                            type="text"
+                            value={replyContentMap[comment._id] || ''}
+                            onChange={(e) => setReplyContentMap(m => ({ ...m, [comment._id]: e.target.value }))}
+                            placeholder="Write a reply..."
+                            className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                            maxLength="500"
+                          />
+                          <button type="submit" className="px-3 py-2 bg-[var(--ga-orange)] text-white rounded hover:opacity-90 text-sm">Reply</button>
+                        </form>
+                      )}
                     </div>
-                    {replyOpenMap[comment._id] && (
-                      <form
-                        className="mt-2 flex items-center space-x-2"
-                        onSubmit={async (e) => {
-                          e.preventDefault();
-                          const content = (replyContentMap[comment._id] || '').trim();
-                          if (!content) return;
-                          try {
-                            const resp = await api.post(`/community/${post._id}/comments/${comment._id}/replies`, { content });
-                            const newReply = resp.data?.reply || { _id: Math.random().toString(36).slice(2), content, author: { _id: currentUserId }, createdAt: new Date().toISOString() };
-                            const updatedPost = {
-                              ...post,
-                              comments: (post.comments || []).map(c => c._id === comment._id ? { ...c, replies: [...(c.replies || []), newReply] } : c)
-                            };
-                            if (onPostUpdated) onPostUpdated(updatedPost);
-                            setReplyContentMap(m => ({ ...m, [comment._id]: '' }));
-                            setReplyOpenMap(m => ({ ...m, [comment._id]: false }));
-                          } catch (err) {
-                            console.error('Error posting reply:', err);
-                          }
-                        }}
+                  ))}
+                  {post.comments && post.comments.length > 2 && (
+                    <div className="mt-1 flex justify-end">
+                      <span
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setShowAllComments((s) => !s)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowAllComments((s) => !s); } }}
+                        className="text-[13px] text-gray-500 pt-1 cursor-pointer select-none hover:text-gray-700 hover:underline"
+                        style={{ background: 'transparent', padding: 0, border: 'none', display: 'inline-block' }}
                       >
-                        <input
-                          type="text"
-                          value={replyContentMap[comment._id] || ''}
-                          onChange={(e) => setReplyContentMap(m => ({ ...m, [comment._id]: e.target.value }))}
-                          placeholder="Write a reply..."
-                          className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                          maxLength="500"
-                        />
-                        <button type="submit" className="px-3 py-2 bg-[var(--ga-orange)] text-white rounded hover:opacity-90 text-sm">Reply</button>
-                      </form>
-                    )}
-                  </div>
-                ))}
-                {post.comments && post.comments.length > 2 && (
-                  <div className="mt-1 flex justify-end">
-                    <span
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setShowAllComments((s) => !s)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setShowAllComments((s) => !s); } }}
-                      className="text-[13px] text-gray-500 pt-1 cursor-pointer select-none hover:text-gray-700 hover:underline"
-                      style={{ background: 'transparent', padding: 0, border: 'none', display: 'inline-block' }}
-                    >
-                      {showAllComments ? 'Show fewer comments' : 'Show more comments…'}
-                    </span>
-                  </div>
-                )}
-              </>
-            );
-          })()}
-        </div>
-      )}
-      
-             {/* Content Flag Modal */}
-       <ContentFlagModal
-         isOpen={showFlagModal}
-         onClose={() => setShowFlagModal(false)}
-         contentType="community"
-         contentId={post._id}
-         contentPreview={post.content || 'No content available'}
-         onSuccess={() => {
-           setIsFlaggedLocal(true);
-         }}
-       />
-       </div>
-     </div>
-   );
- };
+                        {showAllComments ? 'Show fewer comments' : 'Show more comments…'}
+                      </span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
+          </div>
+        )}
+
+        {/* Content Flag Modal */}
+        <ContentFlagModal
+          isOpen={showFlagModal}
+          onClose={() => setShowFlagModal(false)}
+          contentType="community"
+          contentId={post._id}
+          contentPreview={post.content || 'No content available'}
+          onSuccess={() => {
+            setIsFlaggedLocal(true);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default Post;

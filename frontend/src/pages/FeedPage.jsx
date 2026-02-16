@@ -592,11 +592,11 @@ const FeedPage = () => {
                           <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line mb-4">{post.content}</p>
 
                           {mediaUrl && (
-                            <div className="w-full h-auto bg-slate-200 rounded-xl mb-4 overflow-hidden">
+                            <div className="w-full h-auto bg-black rounded-xl mb-4 overflow-hidden flex justify-center">
                               {post.media[0].mediaType === 'video' ? (
-                                <video src={mediaUrl} controls className="w-full h-full object-cover" />
+                                <video src={mediaUrl} controls className="max-w-full max-h-[500px] object-contain" />
                               ) : (
-                                <img src={mediaUrl} alt="Post content" className="w-full h-full object-cover" />
+                                <img src={mediaUrl} alt="Post content" className="w-full h-auto max-h-[600px] object-cover" />
                               )}
                             </div>
                           )}
@@ -622,17 +622,7 @@ const FeedPage = () => {
                               <span>{commentCount}</span>
                             </button>
 
-                            <div className="flex items-center gap-2 text-sm font-medium text-gray-500">
-                              <span>👁</span>
-                              <span>{post.views || 0}</span>
-                            </div>
 
-                            <button
-                              className="flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 ml-auto transition-colors"
-                              onClick={() => handleShare(post._id)}
-                            >
-                              <span>{copiedPostId === post._id ? "✓ Copied!" : "🔗 Share"}</span>
-                            </button>
 
                           </div>
 
