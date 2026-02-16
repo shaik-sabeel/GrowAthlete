@@ -62,8 +62,8 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
     );
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full overflow-hidden">
-            <div className="p-4 border-b border-slate-100">
+        <div className="bg-gray rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full overflow-hidden">
+            <div className="p-4 border-b border-gray-100">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg font-bold text-slate-900">Live Chat</h3>
                     <button
@@ -77,7 +77,7 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
                     <input
                         type="text"
                         placeholder="Search rooms..."
-                        className="w-full pl-3 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        className="w-full pl-3 pr-3 py-2 bg-gray border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -100,7 +100,7 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
                                 }`}
                         >
                             <div className="flex justify-between items-start mb-0.5">
-                                <span className={`font-semibold text-sm ${activeRoomId === room._id ? 'text-blue-700' : 'text-slate-800'}`}>
+                                <span className={`font-semibold text-sm ${activeRoomId === room._id ? 'text-white-700' : 'text-slate-800'}`}>
                                     {room.name}
                                 </span>
                                 <span className="text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded font-medium uppercase">

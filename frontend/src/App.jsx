@@ -123,7 +123,14 @@ function AppContent() {
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/splash" element={<Splash nextPath="/" />} />
           <Route path="/resume-template" element={<ResumeTemplate />} />
-          <Route path="/feed" element={<FeedPage />} />
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRoute role="athlete" isAllowed={isAuthenticated()}>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
 
 
 

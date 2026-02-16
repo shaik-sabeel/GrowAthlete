@@ -87,8 +87,8 @@ const LiveChat = ({ room, onBack }) => {
     if (!room) return null;
 
     return (
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-[600px] overflow-hidden">
-            <div className="p-4 border-b border-slate-100 bg-white flex items-center justify-between sticky top-0 z-10">
+        <div className="bg-gray rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[600px] overflow-hidden">
+            <div className="p-4 border-b border-gray-100 bg-white flex items-center justify-between sticky top-0 z-10">
                 <div className="flex items-center gap-3">
                     <button onClick={onBack} className="lg:hidden text-slate-500 hover:text-slate-700">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

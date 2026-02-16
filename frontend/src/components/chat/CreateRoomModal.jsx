@@ -40,8 +40,8 @@ const CreateRoomModal = ({ onClose, onRoomCreated }) => {
 
     return (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={onClose}>
-            <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl" onClick={e => e.stopPropagation()}>
-                <div className="p-5 border-b border-slate-100 bg-white flex justify-between items-center">
+            <div className="bg-gray rounded-2xl w-full max-w-md overflow-hidden flex flex-col shadow-2xl" onClick={e => e.stopPropagation()}>
+                <div className="p-5 border-b border-slate-100 bg-gray flex justify-between items-center">
                     <h3 className="text-xl font-bold text-slate-900">Create New Room</h3>
                     <button
                         onClick={onClose}
