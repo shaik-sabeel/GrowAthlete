@@ -8,6 +8,7 @@ const LiveChat = ({ room, onBack }) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [loading, setLoading] = useState(true);
+    const [onlineCount, setOnlineCount] = useState(1);
     const socketRef = useRef();
     const messagesEndRef = useRef();
     const currentUserId = getCurrentUserId();
@@ -44,10 +45,22 @@ const LiveChat = ({ room, onBack }) => {
         // Join room
         socketRef.current.emit('joinRoom', { roomId: room._id, userId: currentUserId });
 
+        // Listen for room data (online count)
+        socketRef.current.on('roomData', (data) => {
+            console.log('Received roomData:', data);
+            if (String(data.roomId) === String(room._id)) {
+                setOnlineCount(data.onlineCount);
+            }
+        });
+
         // Listen for new messages
         socketRef.current.on('message', (message) => {
             setMessages(prev => [...prev, message]);
             setTimeout(scrollToBottom, 100);
+        });
+
+        socketRef.current.on('connect_error', (err) => {
+            console.error('Socket connection error:', err);
         });
 
         return () => {
@@ -84,7 +97,7 @@ const LiveChat = ({ room, onBack }) => {
                     </button>
                     <div>
                         <h3 className="font-bold text-slate-900 leading-tight">{room.name}</h3>
-                        <p className="text-xs text-slate-500 font-medium">{room.category} · {room.participants?.length || 0} participants</p>
+                        <p className="text-xs text-slate-500 font-medium">{room.category} · {onlineCount} online</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -126,8 +139,8 @@ const LiveChat = ({ room, onBack }) => {
                                     <div>
                                         {!isMe && <span className="text-[10px] font-bold text-slate-500 ml-1 mb-1 block uppercase tracking-tight">{msg.sender?.username}</span>}
                                         <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMe
-                                                ? 'bg-blue-600 text-white rounded-tr-none ml-auto'
-                                                : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
+                                            ? 'bg-blue-600 text-white rounded-tr-none ml-auto'
+                                            : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                                             }`}>
                                             {msg.content}
                                         </div>

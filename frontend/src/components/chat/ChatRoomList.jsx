@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 import backendApi from '../../utils/backendApi';
 
 const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
@@ -12,6 +13,22 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
 
     useEffect(() => {
         fetchRooms();
+
+        // Setup socket for real-time online counts
+        const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const socket = io(socketUrl, { withCredentials: true });
+
+        socket.on('roomData', (data) => {
+            setRooms(prev => prev.map(r =>
+                String(r._id) === String(data.roomId)
+                    ? { ...r, onlineCount: data.onlineCount }
+                    : r
+            ));
+        });
+
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
     const fetchRooms = async () => {
@@ -78,8 +95,8 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
                             key={room._id}
                             onClick={() => onSelectRoom(room)}
                             className={`w-full text-left p-3 rounded-xl transition-all ${activeRoomId === room._id
-                                    ? 'bg-blue-50 border border-blue-100'
-                                    : 'hover:bg-slate-50 border border-transparent'
+                                ? 'bg-blue-50 border border-blue-100'
+                                : 'hover:bg-slate-50 border border-transparent'
                                 }`}
                         >
                             <div className="flex justify-between items-start mb-0.5">
@@ -93,7 +110,9 @@ const ChatRoomList = ({ onSelectRoom, activeRoomId }) => {
                             <p className="text-xs text-slate-500 truncate">{room.description || 'No description'}</p>
                             <div className="flex items-center gap-1 mt-1.5">
                                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                                <span className="text-[10px] text-slate-400 font-medium">{room.participants?.length || 0} online</span>
+                                <span className="text-[10px] text-slate-400 font-medium">
+                                    {room.onlineCount !== undefined ? room.onlineCount : 0} online
+                                </span>
                             </div>
                         </button>
                     ))
