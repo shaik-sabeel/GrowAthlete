@@ -19,12 +19,19 @@ function AthleteProfile() {
       const res = await api.get(`/auth/profile/${id}`);
       const user = res?.data?.user || null;
       if (!user) return null;
+
+      let imageUrl = user.profileImageUrl || user.profilePicture || '';
+      if (imageUrl && !imageUrl.startsWith('http')) {
+        const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        imageUrl = `${baseUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+      }
+
       return {
         id: user._id,
         name: user.username || '',
         sport: user.sport || '',
         location: user.location || '',
-        image: user.profileImageUrl || user.profilePicture || '',
+        image: imageUrl,
         bio: user.bio || ''
       };
     };

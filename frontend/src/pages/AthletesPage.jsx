@@ -179,7 +179,14 @@ const AthletesPage = () => {
                   {/* Image Container */}
                   <div className="relative h-48 overflow-hidden bg-gray-700">
                     <img
-                      src={athlete.profilePicture || `https://ui-avatars.com/api/?name=${athlete.username}&background=random&color=fff&size=200`}
+                      src={(() => {
+                        const pic = athlete.profilePicture;
+                        if (pic && !pic.startsWith('http')) {
+                          const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+                          return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
+                        }
+                        return pic || `https://ui-avatars.com/api/?name=${athlete.username}&background=random&color=fff&size=200`;
+                      })()}
                       alt={athlete.username}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />

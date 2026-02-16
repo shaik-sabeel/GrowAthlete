@@ -134,7 +134,13 @@ const MyProfile = () => {
             <div className="relative group flex-shrink-0">
               <div className="absolute inset-0 bg-gradient-to-tr from-orange-500 to-purple-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
               <img
-                src={user.profilePicture || "https://via.placeholder.com/150"}
+                src={(() => {
+                  const pic = user.profilePicture;
+                  if (!pic) return "https://via.placeholder.com/150";
+                  if (pic.startsWith('http')) return pic;
+                  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+                  return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
+                })()}
                 alt={user.username}
                 className="relative w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
               />

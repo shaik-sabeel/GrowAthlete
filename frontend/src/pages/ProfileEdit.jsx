@@ -72,6 +72,14 @@ const ProfileEdit = () => {
                     website: user.socialLinks?.website || '',
                 };
 
+                // Helper to fix URL
+                const getFullImageUrl = (url) => {
+                    if (!url) return defaultAvatar;
+                    if (url.startsWith('http')) return url;
+                    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://growathlete-1.onrender.com';
+                    return `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+                };
+
                 setFormData({
                     username: user.username || '',
                     age: user.age || '',
@@ -82,7 +90,7 @@ const ProfileEdit = () => {
                     bio: user.bio || '',
                     achievements: user.achievements || '',
                     phone: user.phone || '',
-                    profilePictureUrl: user.profilePicture || defaultAvatar, // Set current URL
+                    profilePictureUrl: getFullImageUrl(user.profilePicture), // Fix: Properly format URL
                     socialLinks: initializedSocialLinks
                 });
                 // Set image preview from fetched URL (correcting local /uploads path)
