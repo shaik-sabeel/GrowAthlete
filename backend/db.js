@@ -35,8 +35,8 @@ mongoose
 
 
 async function seedDefaultAdmin() {
-  const adminEmail = process.env.DEFAULT_ADMIN_EMAIL;
-  const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD;
+  const adminEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@growathlete.local';
+  const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin@123';
   const exists = await User.findOne({ email: adminEmail });
   if (exists) return;
   const hashed = await bcrypt.hash(adminPassword, 10);
@@ -47,7 +47,7 @@ async function seedDefaultAdmin() {
     role: "admin",
     isVerified: true,
   });
-  console.log(`👑 Default admin created: ${adminEmail}`);
+  console.log(`👑 Default admin created/checked: ${adminEmail}`);
 }
 
 
