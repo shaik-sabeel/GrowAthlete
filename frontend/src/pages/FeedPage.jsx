@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import backendApi from "../utils/backendApi";
 import { getCurrentUserId } from "../utils/auth";
 import moment from "moment";
+import ChatRoomList from "../components/chat/ChatRoomList";
+import LiveChat from "../components/chat/LiveChat";
 
 const FeedPage = () => {
   const [media, setMedia] = useState(null);
@@ -20,6 +22,7 @@ const FeedPage = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const [loadingRooms, setLoadingRooms] = useState(true);
   const [currentUserProfile, setCurrentUserProfile] = useState(null); // To track following list
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const currentUserId = getCurrentUserId();
 
@@ -155,11 +158,6 @@ const FeedPage = () => {
     if (isFollowing) {
       updatedProfile.following = updatedProfile.following.filter(f => (typeof f === 'string' ? f : f._id) !== authorId);
     } else {
-      // We might need the full user object for the list, but for now ID is enough to track "isFollowing"
-      // If we want the list to update immediately with user details, we'd need to fetch them or pass them in.
-      // For optimisitic update, pushing ID is risky if the list expects objects. 
-      // Best approach: If adding, we assume we might lack details till refresh. 
-      // For simplicity, we just push the ID, but the list renderer handles missing details or mixed types.
       updatedProfile.following = [...(updatedProfile.following || []), authorId];
     }
     setCurrentUserProfile(updatedProfile);
@@ -305,8 +303,6 @@ const FeedPage = () => {
                             <button
                               onClick={() => {
                                 handleFollow(user._id);
-                                // Optimistically update the list status if needed, 
-                                // but for now we rely on the main feed update or simple toggle
                               }}
                               className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${currentUserProfile?.following?.some(f => (typeof f === 'string' ? f : f._id) === user._id)
                                 ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -350,47 +346,8 @@ const FeedPage = () => {
             </button>
           </div>
 
-          <div className="bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-sm p-6 border border-gray-700">
-            <div className="flex justify-between items-center mb-4">
-              <h4 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">Live Chat Rooms</h4>
-              <span className="text-sm text-orange-500 font-medium cursor-pointer hover:underline" onClick={() => alert("Create Room Feature Coming Soon via Modal!")}>Create room</span>
-            </div>
-
-            <div className="relative mb-4">
-              <input
-                type="text"
-                placeholder="Search rooms..."
-                className="w-full pl-4 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                value={roomSearch}
-                onChange={(e) => setRoomSearch(e.target.value)}
-              />
-            </div>
-
-            <div className="space-y-3">
-              {loadingRooms ? (
-                <p className="text-center text-slate-500 py-4 text-sm">Loading rooms...</p>
-              ) : filteredRooms.length === 0 ? (
-                <p className="text-center text-slate-500 py-4 text-sm">No rooms found</p>
-              ) : (
-                filteredRooms.map(room => (
-                  <div className="flex justify-between items-center p-3 hover:bg-gray-700 rounded-lg transition-colors group" key={room._id}>
-                    <div>
-                      <strong className="block text-gray-200 text-sm mb-0.5">{room.name}</strong>
-                      <p className="text-xs text-gray-500">
-                        {room.category} · {room.participants?.length || 0} participants
-                      </p>
-                    </div>
-                    <button
-                      className="px-3 py-1.5 bg-blue-50 text-blue-600 text-xs font-semibold rounded-md group-hover:bg-blue-600 group-hover:text-white transition-all"
-                      onClick={() => handleJoinRoom(room._id)}
-                    >
-                      Join
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-
+          <div className="hidden lg:block h-[500px] mt-6">
+            <ChatRoomList onSelectRoom={setSelectedRoom} activeRoomId={selectedRoom?._id} />
           </div>
 
           {/* Sidebar Ad Widget */}
@@ -410,303 +367,324 @@ const FeedPage = () => {
         </aside>
 
         <main
-          className={`col-span-12 lg:col-span-8 space-y-6 ${activeTab === "chat" ? "hidden lg:block" : "block"}`}
+          className={`col-span-12 lg:col-span-8 space-y-6`}
         >
-
-          <div className="bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-lg shadow-orange-500/5 p-5 border border-gray-700 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-pink-500 opacity-80"></div>
-
-            <div className="flex gap-4 mb-4 mt-2">
-              <div className="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0"></div>
-
-              <div className="flex-grow">
-                <textarea
-                  placeholder="Share your latest achievement or update..."
-                  rows="3"
-                  maxLength={500}
-                  className="w-full resize-none bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
-                  value={postText}
-                  onChange={(e) => setPostText(e.target.value)}
-                />
-              </div>
+          {activeTab === "chat" ? (
+            <div className="lg:hidden">
+              {selectedRoom ? (
+                <LiveChat room={selectedRoom} onBack={() => setSelectedRoom(null)} />
+              ) : (
+                <ChatRoomList onSelectRoom={setSelectedRoom} activeRoomId={selectedRoom?._id} />
+              )}
             </div>
+          ) : (
+            <>
+              <div className="hidden lg:block mb-6">
+                {selectedRoom && (
+                  <div className="animate-in fade-in slide-in-from-top-4 duration-500">
+                    <LiveChat room={selectedRoom} onBack={() => setSelectedRoom(null)} />
+                  </div>
+                )}
+              </div>
 
-            {media && (
-              <div className="mb-4 pl-14">
-                <div className="relative inline-block group">
-                  <div className="w-32 h-20 rounded-lg overflow-hidden border border-slate-200 bg-black cursor-pointer" onClick={() => setShowPreview(true)}>
-                    {mediaType === "image" ? (
-                      <img src={media} alt="preview" className="w-full h-full object-cover" />
-                    ) : (
-                      <video src={media} className="w-full h-full object-cover" />
+              {/* Create Post Widget (Dark Theme) */}
+              <div className="bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-lg shadow-orange-500/5 p-5 border border-gray-700 relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-pink-500 opacity-80"></div>
+
+                <div className="flex gap-4 mb-4 mt-2">
+                  <div className="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0">
+                    {/* Placeholder or User Avatar if available */}
+                    {currentUserProfile?.profilePicture && (
+                      <img src={currentUserProfile.profilePicture} alt="Me" className="w-full h-full object-cover rounded-full" />
                     )}
                   </div>
+
+                  <div className="flex-grow">
+                    <textarea
+                      placeholder="Share your latest achievement or update..."
+                      rows="3"
+                      maxLength={500}
+                      className="w-full resize-none bg-gray-900 border border-gray-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                      value={postText}
+                      onChange={(e) => setPostText(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {media && (
+                  <div className="mb-4 pl-14">
+                    <div className="relative inline-block group">
+                      <div className="w-32 h-20 rounded-lg overflow-hidden border border-gray-600 bg-black cursor-pointer" onClick={() => setShowPreview(true)}>
+                        {mediaType === "image" ? (
+                          <img src={media} alt="preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <video src={media} className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <button
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-gray-900/80 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-500 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          URL.revokeObjectURL(media);
+                          setMedia(null);
+                          setMediaFile(null);
+                          setMediaType(null);
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center pl-14 pt-2">
+                  <div className="flex gap-3">
+                    <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            setMedia(URL.createObjectURL(file));
+                            setMediaFile(file);
+                            setMediaType("image");
+                          }
+                        }}
+                      />
+                      <span className="grayscale group-hover:grayscale-0 transition-all">🖼️</span> Image
+                    </label>
+
+                    <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
+                      <input
+                        type="file"
+                        accept="video/*"
+                        hidden
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            setMedia(URL.createObjectURL(file));
+                            setMediaFile(file);
+                            setMediaType("video");
+                          }
+                        }}
+                      />
+                      <span className="grayscale group-hover:grayscale-0 transition-all">🎥</span> Video
+                    </label>
+                  </div>
+
                   <button
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-slate-900/80 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-500 transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      URL.revokeObjectURL(media);
-                      setMedia(null);
-                      setMediaFile(null);
-                      setMediaType(null);
-                    }}
+                    className={`px-6 py-2 bg-gradient-to-r from-orange-600 to-pink-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-orange-900/40 transform hover:-translate-y-0.5 hover:shadow-orange-700/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none`}
+                    disabled={!isPostValid}
+                    onClick={handleCreatePost}
                   >
-                    ✕
+                    Post
                   </button>
                 </div>
               </div>
-            )}
 
-            <div className="flex justify-between items-center pl-14 pt-2">
-
-              <div className="flex gap-3">
-
-                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        setMedia(URL.createObjectURL(file));
-                        setMediaFile(file);
-                        setMediaType("image");
-                      }
-                    }}
-                  />
-                  <span className="grayscale group-hover:grayscale-0 transition-all">🖼️</span> Image
-                </label>
-
-                <label className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-600 bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors text-sm text-gray-300 group">
-                  <input
-                    type="file"
-                    accept="video/*"
-                    hidden
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      if (file) {
-                        setMedia(URL.createObjectURL(file));
-                        setMediaFile(file);
-                        setMediaType("video");
-                      }
-                    }}
-                  />
-                  <span className="grayscale group-hover:grayscale-0 transition-all">🎥</span> Video
-                </label>
-
-              </div>
-
-              <button
-                className={`px-6 py-2 bg-gradient-to-r from-orange-600 to-pink-600 text-white text-sm font-bold rounded-xl shadow-lg shadow-orange-900/40 transform hover:-translate-y-0.5 hover:shadow-orange-700/60 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none`}
-                disabled={!isPostValid}
-                onClick={handleCreatePost}
-              >
-                Post
-              </button>
-            </div>
-          </div>
-
-          {showPreview && (
-            <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setShowPreview(false)}>
-              <div className="relative max-w-5xl max-h-[90vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-                <button
-                  className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
-                  onClick={() => setShowPreview(false)}
-                  aria-label="Close preview"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-                {mediaType === "image" ? (
-                  <img src={media} alt="full-preview" className="max-w-full max-h-[85vh] rounded-lg" />
-                ) : (
-                  <video src={media} controls autoPlay className="max-w-full max-h-[85vh] rounded-lg" />
-                )}
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-6">
-            {loadingPosts ? (
-              <div className="text-center py-10">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                <p className="text-slate-500 text-sm">Loading feed...</p>
-              </div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-10 bg-white rounded-2xl border border-slate-100">
-                <p className="text-slate-500">No posts yet. Be the first to share something!</p>
-              </div>
-            ) : (
-              posts.map((post, index) => {
-                const isLiked = post.likes ? post.likes.some(id => (typeof id === 'string' ? id === currentUserId : id._id === currentUserId)) : false;
-                const likeCount = post.likes ? post.likes.length : 0;
-                const commentCount = post.comments ? post.comments.length : 0;
-                const authorName = post.author?.username || "Unknown User";
-                const authorId = post.author?._id;
-                const timeAgo = moment(post.createdAt).fromNow();
-                const getMediaUrl = (url) => {
-                  if (!url) return null;
-                  if (url.startsWith('http')) return url;
-                  return `http://localhost:5000${url.startsWith('/') ? '' : '/'}${url}`;
-                };
-                const mediaUrl = post.media && post.media.length > 0 ? getMediaUrl(post.media[0].url) : null;
-
-                const isFollowing = currentUserProfile?.following?.includes(authorId);
-                const isMe = authorId === currentUserId;
-
-
-
-                return (
-                  <div key={post._id}>
-                    {/* In-Feed Ad Insertion (e.g., after every 3rd post) */}
-                    {(index > 0 && index % 3 === 0) && (
-                      <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-0 mb-6 overflow-hidden hover:border-orange-500/30 transition-all group">
-                        <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 flex justify-between items-center border-b border-gray-700/50">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sponsored</span>
-                            <span className="text-xs text-gray-500">•</span>
-                            <span className="text-xs text-gray-300 font-medium">Nike</span>
-                          </div>
-                          <button className="text-blue-400 text-xs font-bold hover:text-blue-300">Shop Now ↗</button>
-                        </div>
-                        <div className="p-6 relative">
-                          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-                          <h3 className="text-lg font-bold text-white mb-2 relative z-10">Just Do It.</h3>
-                          <p className="text-gray-400 text-sm mb-4 max-w-lg relative z-10">
-                            Discover the latest collection of performance gear designed to help you push your limits.
-                          </p>
-                          <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden relative flex items-center justify-center border border-gray-700/50 group-hover:border-orange-500/20 transition-all">
-                            <span className="text-6xl animate-pulse grayscale opacity-20">👟</span>
-                          </div>
-                        </div>
-                      </div>
+              {/* Preview Modal */}
+              {showPreview && (
+                <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setShowPreview(false)}>
+                  <div className="relative max-w-5xl max-h-[90vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
+                      onClick={() => setShowPreview(false)}
+                      aria-label="Close preview"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    {mediaType === "image" ? (
+                      <img src={media} alt="full-preview" className="max-w-full max-h-[85vh] rounded-lg" />
+                    ) : (
+                      <video src={media} controls autoPlay className="max-w-full max-h-[85vh] rounded-lg" />
                     )}
+                  </div>
+                </div>
+              )}
 
-                    <div className="bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-700 hover:border-gray-600 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
+              {/* Feed Loop (Dark Theme) */}
+              <div className="space-y-6">
+                {loadingPosts ? (
+                  <div className="text-center py-10">
+                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                    <p className="text-slate-500 text-sm">Loading feed...</p>
+                  </div>
+                ) : posts.length === 0 ? (
+                  <div className="text-center py-10 bg-gray-800 rounded-2xl border border-gray-700">
+                    <p className="text-gray-400">No posts yet. Be the first to share something!</p>
+                  </div>
+                ) : (
+                  posts.map((post, index) => {
+                    const isLiked = post.likes ? post.likes.some(id => (typeof id === 'string' ? id === currentUserId : id._id === currentUserId)) : false;
+                    const likeCount = post.likes ? post.likes.length : 0;
+                    const commentCount = post.comments ? post.comments.length : 0;
+                    const authorName = post.author?.username || "Unknown User";
+                    const authorId = post.author?._id;
+                    const timeAgo = moment(post.createdAt).fromNow();
+                    const getMediaUrl = (url) => {
+                      if (!url) return null;
+                      if (url.startsWith('http')) return url;
+                      return `http://localhost:5000${url.startsWith('/') ? '' : '/'}${url}`;
+                    };
+                    const mediaUrl = post.media && post.media.length > 0 ? getMediaUrl(post.media[0].url) : null;
 
-                      <div className="flex gap-4 items-start mb-4">
-                        <div className="w-11 h-11 rounded-full bg-gray-700 overflow-hidden">
-                          {post.author?.profilePicture && (
-                            <img src={post.author.profilePicture} alt={authorName} className="w-full h-full object-cover" />
-                          )}
-                        </div>
-                        <div className="flex-grow">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <strong className="text-white font-semibold">{authorName}</strong>
-                              {post.author?.isVerified && (
-                                <span className="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Verified</span>
+                    const isFollowing = currentUserProfile?.following?.includes(authorId);
+                    const isMe = authorId === currentUserId;
+
+                    return (
+                      <div key={post._id}>
+                        {/* In-Feed Ad Insertion (e.g., after every 3rd post) */}
+                        {(index > 0 && index % 3 === 0) && (
+                          <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-0 mb-6 overflow-hidden hover:border-orange-500/30 transition-all group">
+                            <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 flex justify-between items-center border-b border-gray-700/50">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Sponsored</span>
+                                <span className="text-xs text-gray-500">•</span>
+                                <span className="text-xs text-gray-300 font-medium">Nike</span>
+                              </div>
+                              <button className="text-blue-400 text-xs font-bold hover:text-blue-300">Shop Now ↗</button>
+                            </div>
+                            <div className="p-6 relative">
+                              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                              <h3 className="text-lg font-bold text-white mb-2 relative z-10">Just Do It.</h3>
+                              <p className="text-gray-400 text-sm mb-4 max-w-lg relative z-10">
+                                Discover the latest collection of performance gear designed to help you push your limits.
+                              </p>
+                              <div className="aspect-video bg-gray-900 rounded-xl overflow-hidden relative flex items-center justify-center border border-gray-700/50 group-hover:border-orange-500/20 transition-all">
+                                <span className="text-6xl animate-pulse grayscale opacity-20">👟</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-700 hover:border-gray-600 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
+
+                          <div className="flex gap-4 items-start mb-4">
+                            <div className="w-11 h-11 rounded-full bg-gray-700 overflow-hidden">
+                              {post.author?.profilePicture && (
+                                <img src={post.author.profilePicture} alt={authorName} className="w-full h-full object-cover" />
                               )}
                             </div>
+                            <div className="flex-grow">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                  <strong className="text-white font-semibold">{authorName}</strong>
+                                  {post.author?.isVerified && (
+                                    <span className="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Verified</span>
+                                  )}
+                                </div>
 
-                            {!isMe && (
-                              <button
-                                onClick={() => handleFollow(authorId)}
-                                className={`text-xs font-semibold px-3 py-1 rounded-full transition-colors ${isFollowing
-                                  ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                                  : "bg-blue-50 text-blue-600 hover:bg-blue-100"
-                                  }`}
-                              >
-                                {isFollowing ? "Unfollow" : "Follow"}
-                              </button>
-                            )}
+                                {!isMe && (
+                                  <button
+                                    onClick={() => handleFollow(authorId)}
+                                    className={`text-xs font-semibold px-3 py-1 rounded-full transition-colors ${isFollowing
+                                      ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                      : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                      }`}
+                                  >
+                                    {isFollowing ? "Unfollow" : "Follow"}
+                                  </button>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-500 mt-0.5">{timeAgo}</p>
+                            </div>
                           </div>
-                          <p className="text-xs text-slate-500 mt-0.5">{timeAgo}</p>
-                        </div>
-                      </div>
 
-                      {post.title && <h3 className="text-lg font-bold text-white mb-2">{post.title}</h3>}
-                      <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line mb-4">{post.content}</p>
+                          {post.title && <h3 className="text-lg font-bold text-white mb-2">{post.title}</h3>}
+                          <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-line mb-4">{post.content}</p>
 
-                      {mediaUrl && (
-                        <div className="w-full h-auto bg-slate-200 rounded-xl mb-4 overflow-hidden">
-                          {post.media[0].mediaType === 'video' ? (
-                            <video src={mediaUrl} controls className="w-full h-full object-cover" />
-                          ) : (
-                            <img src={mediaUrl} alt="Post content" className="w-full h-full object-cover" />
+                          {mediaUrl && (
+                            <div className="w-full h-auto bg-slate-200 rounded-xl mb-4 overflow-hidden">
+                              {post.media[0].mediaType === 'video' ? (
+                                <video src={mediaUrl} controls className="w-full h-full object-cover" />
+                              ) : (
+                                <img src={mediaUrl} alt="Post content" className="w-full h-full object-cover" />
+                              )}
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-6 pt-4 border-t border-gray-700 mb-2">
+                            <button
+                              className={`flex items-center gap-2 text-sm font-medium transition-colors ${isLiked ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
+                              onClick={() => handleLike(post._id)}
+                            >
+                              <span>{isLiked ? "👍" : "👍"}</span>
+                              <span>{likeCount}</span>
+                            </button>
+
+                            <button
+                              className={`flex items-center gap-2 text-sm font-medium transition-colors ${activeCommentPost === post._id ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
+                              onClick={() =>
+                                setActiveCommentPost(
+                                  activeCommentPost === post._id ? null : post._id
+                                )
+                              }
+                            >
+                              <span>💬</span>
+                              <span>{commentCount}</span>
+                            </button>
+
+                            <div className="flex items-center gap-2 text-sm font-medium text-gray-500">
+                              <span>👁</span>
+                              <span>{post.views || 0}</span>
+                            </div>
+
+                            <button
+                              className="flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 ml-auto transition-colors"
+                              onClick={() => handleShare(post._id)}
+                            >
+                              <span>{copiedPostId === post._id ? "✓ Copied!" : "🔗 Share"}</span>
+                            </button>
+
+                          </div>
+
+                          {activeCommentPost === post._id && (
+                            <div className="mt-4 pt-4 border-t border-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
+
+                              <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
+                                {post.comments.length === 0 ? (
+                                  <p className="text-center text-gray-500 text-sm py-2">No comments yet</p>
+                                ) : (
+                                  post.comments.map((c, i) => (
+                                    <div key={i} className="bg-gray-700/50 p-3 rounded-xl border border-gray-700">
+                                      <strong className="block text-white text-sm font-semibold mb-1">{c.author?.username || "Unknown"}</strong>
+                                      <span className="block text-gray-300 text-sm">{c.content}</span>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
+
+                              <div className="flex gap-2 items-end">
+                                <textarea
+                                  placeholder="Write a comment..."
+                                  className="flex-grow resize-none bg-gray-700 border border-gray-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                  value={commentText}
+                                  onChange={(e) => setCommentText(e.target.value)}
+                                  rows="1"
+                                />
+                                <button
+                                  className="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                  onClick={() => handleAddComment(post._id)}
+                                  disabled={!commentText.trim()}
+                                >
+                                  Send
+                                </button>
+                              </div>
+
+                            </div>
                           )}
                         </div>
-                      )}
-
-                      <div className="flex items-center gap-6 pt-4 border-t border-gray-700 mb-2">
-                        <button
-                          className={`flex items-center gap-2 text-sm font-medium transition-colors ${isLiked ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
-                          onClick={() => handleLike(post._id)}
-                        >
-                          <span>{isLiked ? "👍" : "👍"}</span>
-                          <span>{likeCount}</span>
-                        </button>
-
-                        <button
-                          className={`flex items-center gap-2 text-sm font-medium transition-colors ${activeCommentPost === post._id ? "text-blue-400" : "text-gray-400 hover:text-gray-200"}`}
-                          onClick={() =>
-                            setActiveCommentPost(
-                              activeCommentPost === post._id ? null : post._id
-                            )
-                          }
-                        >
-                          <span>💬</span>
-                          <span>{commentCount}</span>
-                        </button>
-
-                        <div className="flex items-center gap-2 text-sm font-medium text-gray-500">
-                          <span>👁</span>
-                          <span>{post.views || 0}</span>
-                        </div>
-
-                        <button
-                          className="flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 ml-auto transition-colors"
-                          onClick={() => handleShare(post._id)}
-                        >
-                          <span>{copiedPostId === post._id ? "✓ Copied!" : "🔗 Share"}</span>
-                        </button>
-
                       </div>
-
-                      {activeCommentPost === post._id && (
-                        <div className="mt-4 pt-4 border-t border-gray-700 animate-in fade-in slide-in-from-top-2 duration-300">
-
-                          <div className="space-y-3 mb-4 max-h-60 overflow-y-auto">
-                            {post.comments.length === 0 ? (
-                              <p className="text-center text-gray-500 text-sm py-2">No comments yet</p>
-                            ) : (
-                              post.comments.map((c, i) => (
-                                <div key={i} className="bg-gray-700/50 p-3 rounded-xl border border-gray-700">
-                                  <strong className="block text-white text-sm font-semibold mb-1">{c.author?.username || "Unknown"}</strong>
-                                  <span className="block text-gray-300 text-sm">{c.content}</span>
-                                </div>
-                              ))
-                            )}
-                          </div>
-
-                          <div className="flex gap-2 items-end">
-                            <textarea
-                              placeholder="Write a comment..."
-                              className="flex-grow resize-none bg-gray-700 border border-gray-600 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                              value={commentText}
-                              onChange={(e) => setCommentText(e.target.value)}
-                              rows="1"
-                            />
-                            <button
-                              className="bg-blue-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                              onClick={() => handleAddComment(post._id)}
-                              disabled={!commentText.trim()}
-                            >
-                              Send
-                            </button>
-                          </div>
-
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-
+                    );
+                  })
+                )}
+              </div>
+            </>
+          )}
         </main>
       </div >
 

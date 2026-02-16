@@ -1,5 +1,8 @@
 console.log("--- DEBUG: Starting server.js ---");
 const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+
 console.log("DEBUG: express loaded");
 const cors = require("cors");
 console.log("DEBUG: cors loaded");
@@ -38,7 +41,20 @@ const maintenanceMiddleware = require('./middlewares/maintenance');
 console.log("DEBUG: maintenanceMiddleware loaded");
 
 const app = express();
-console.log("--- DEBUG: Express initialized ---");
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "https://www.growathlete.tech", "https://growathlete.tech"],
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+// Initialize socket handling
+const setupChatSocket = require("./sockets/chatSocket");
+setupChatSocket(io);
+
+console.log("--- DEBUG: Express and Socket.io initialized ---");
 
 // Reduce header exposure
 app.disable('x-powered-by');
@@ -208,7 +224,7 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 }).on('error', (err) => {
   console.error('Server failed to start:', err.message);
