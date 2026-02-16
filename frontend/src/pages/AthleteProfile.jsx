@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../utils/api';
+import { getFallbackAvatar } from "../utils/avatarUtils";
 
 import '../pages_css/AthletesPage.css';
 
@@ -32,7 +33,8 @@ function AthleteProfile() {
         sport: user.sport || '',
         location: user.location || '',
         image: imageUrl,
-        bio: user.bio || ''
+        bio: user.bio || '',
+        gender: user.gender || ''
       };
     };
 
@@ -85,11 +87,11 @@ function AthleteProfile() {
       <div className="ap-athlete-card" style={{ maxWidth: 640, margin: '0 auto' }}>
         <img
           className="ap-athlete-image"
-          src={data.image || '/default-avatar.png'}
+          src={data.image || getFallbackAvatar(data.gender)}
           alt={data.name}
           onError={(e) => {
             e.target.onerror = null;
-            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=random&color=fff&size=200`;
+            e.target.src = getFallbackAvatar(data.gender);
           }}
         />
         <div className="ap-athlete-info">

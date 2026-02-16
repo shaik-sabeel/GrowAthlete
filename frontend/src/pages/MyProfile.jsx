@@ -1,6 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { getFallbackAvatar } from "../utils/avatarUtils";
+
+// ... existing imports ...
+
+// In MyProfile component return:
+<img
+  src={(() => {
+    const pic = user.profilePicture;
+    if (!pic) return getFallbackAvatar(user.gender);
+    if (pic.startsWith('http')) return pic;
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+    return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
+  })()}
+  alt={user.username}
+  onError={(e) => {
+    e.target.onerror = null; // prevent infinite loop
+    e.target.src = getFallbackAvatar(user.gender);
+  }}
+  className="relative w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
+/>
 import api from "../utils/api";
 import Navbar from "../components/Navbar";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 import { FaUserEdit, FaRunning, FaDumbbell, FaBolt, FaBrain, FaMedal, FaMapMarkerAlt, FaEnvelope, FaPhone, FaCalendarAlt, FaQrcode, FaTimes, FaSave, FaBan } from "react-icons/fa";
@@ -136,7 +156,7 @@ const MyProfile = () => {
               <img
                 src={(() => {
                   const pic = user.profilePicture;
-                  if (!pic) return "https://via.placeholder.com/150";
+                  if (!pic) return getFallbackAvatar(user.gender);
                   if (pic.startsWith('http')) return pic;
                   const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
                   return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
@@ -144,7 +164,7 @@ const MyProfile = () => {
                 alt={user.username}
                 onError={(e) => {
                   e.target.onerror = null; // prevent infinite loop
-                  e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.username)}&background=random&color=fff&size=200`;
+                  e.target.src = getFallbackAvatar(user.gender);
                 }}
                 className="relative w-28 h-28 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-gray-900 shadow-xl"
               />
@@ -193,13 +213,13 @@ const MyProfile = () => {
 
               {/* Quick Actions */}
               <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 w-full sm:w-auto">
-                <button
+                {/* <button
                   onClick={() => setShowQR(true)}
                   className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl transition-all shadow-lg hover:shadow-orange-500/20 border border-gray-600 group"
                 >
                   <FaQrcode className="text-orange-400 group-hover:scale-110 transition-transform" />
                   <span className="font-semibold">Smart Card</span>
-                </button>
+                </button> */}
 
                 {/* Only show Edit button if it's the user's own profile (or handle via permission logic) */}
                 <button

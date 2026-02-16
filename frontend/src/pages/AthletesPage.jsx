@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
+import { getFallbackAvatar } from "../utils/avatarUtils";
 // import Navbar from '../components/Navbar'; // Navbar is already in App.jsx layout
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -185,12 +186,12 @@ const AthletesPage = () => {
                           const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
                           return `${baseUrl}${pic.startsWith('/') ? '' : '/'}${pic}`;
                         }
-                        return pic || `https://ui-avatars.com/api/?name=${athlete.username}&background=random&color=fff&size=200`;
+                        return pic || getFallbackAvatar(athlete.gender);
                       })()}
                       alt={athlete.username}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(athlete.username)}&background=random&color=fff&size=200`;
+                        e.target.src = getFallbackAvatar(athlete.gender);
                       }}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
