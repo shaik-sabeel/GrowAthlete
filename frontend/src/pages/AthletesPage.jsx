@@ -140,7 +140,7 @@ const AthletesPage = () => {
             <div className="absolute inset-0 flex flex-col justify-center px-8 lg:px-12">
               <motion.h1
                 variants={heroVariants} initial="hidden" animate="visible"
-                className="text-3xl lg:text-5xl font-extrabold text-black bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 mb-2"
+                className="text-3xl lg:text-5xl font-extrabold text-black bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500 mb-2" style={{ color: "white" }}
               >
                 Featured Athletes
               </motion.h1>

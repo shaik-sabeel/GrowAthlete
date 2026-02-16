@@ -56,7 +56,7 @@ const AboutPage = () => {
           </div>
 
           <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-            <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg">
+            <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg" style={{ color: "white" }}  >
               About <span className="text-orange-500">Us</span>
             </h1>
             <p className="max-w-3xl text-lg sm:text-xl text-gray-300 leading-relaxed drop-shadow-md">

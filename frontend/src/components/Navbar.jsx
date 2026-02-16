@@ -159,7 +159,7 @@ const Navbar = () => {
       <div className="navbar-logo">
         <Link to="/" onClick={closeMobileMenu}>
           <img src={gaLogo} alt="GrowAthlete Logo" className="navbar-logo-icon" />
-          GrowAthlete India
+          GrowAthlete
         </Link>
       </div>
 
