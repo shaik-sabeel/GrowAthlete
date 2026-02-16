@@ -546,7 +546,12 @@ const FeedPage = () => {
                 const authorName = post.author?.username || "Unknown User";
                 const authorId = post.author?._id;
                 const timeAgo = moment(post.createdAt).fromNow();
-                const mediaUrl = post.media && post.media.length > 0 ? (post.media[0].url.startsWith('http') ? post.media[0].url : `http://localhost:5000/${post.media[0].url}`) : null;
+                const getMediaUrl = (url) => {
+                  if (!url) return null;
+                  if (url.startsWith('http')) return url;
+                  return `http://localhost:5000${url.startsWith('/') ? '' : '/'}${url}`;
+                };
+                const mediaUrl = post.media && post.media.length > 0 ? getMediaUrl(post.media[0].url) : null;
 
                 const isFollowing = currentUserProfile?.following?.includes(authorId);
                 const isMe = authorId === currentUserId;
