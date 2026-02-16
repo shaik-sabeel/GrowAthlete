@@ -49,5 +49,5 @@ async function seedDefaultAdmin() {
   });
   console.log(`👑 Default admin created/checked: ${adminEmail}`);
 }
-
+//...
 
