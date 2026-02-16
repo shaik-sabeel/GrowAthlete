@@ -308,7 +308,7 @@ const ResumeTemplate = () => {
       </div>
 
       {/* Resume Content */}
-      <div ref={resumeRef} className="bg-white text-black border p-4 sm:p-6 lg:p-8 leading-relaxed shadow-lg">
+      <div ref={resumeRef} className="bg-white text-black border p-4 sm:p-6 lg:p-8 leading-relaxed shadow-lg" style={{ color: 'black' }}  >
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-center sm:items-start border-b pb-4 mb-6 gap-4">
           {resume.profileImage && (

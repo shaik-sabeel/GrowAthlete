@@ -6,12 +6,12 @@ const TrustedBy = () => {
     const organizations = [
         "Sports Authority of India",
         "BCCI",
-        "Laccrose federation",
+        "Laccrose Federation",
         "Indian Football",
-        "Athletics federation",
+        "Athletics Federation",
         "ISL",
-        "Hyderabad pickle ball association",
-        "Telangana throwfederation"
+        "Hyderabad Pickle Ball Association",
+        "Telangana Throw Federation"
     ];
 
     return (

@@ -36,7 +36,7 @@ const AboutPage = () => {
     { name: 'Muhammed Ikram R', role: 'Web Developer', img: ikram, link: 'https://www.linkedin.com/in/muhammed-ikram-7b56202bb', color: 'from-green-500 to-teal-500' },
     { name: 'Mohammad Faraz K', role: 'Front-End Developer', img: faraz, link: 'https://www.linkedin.com/in/faraz-shaik-a906192bb/', color: 'from-yellow-500 to-orange-500' },
     { name: 'Mourya Ayyappa N', role: 'Web Developer', img: mourya, link: 'https://www.linkedin.com/in/mourya-ayyappa-485563330/', color: 'from-indigo-500 to-blue-500' },
-    { name: 'Vamshi', role: 'Web Developer', img: vamshi, link: 'https://www.linkedin.com/in/saivamshi-webdev/', color: 'from-pink-500 to-rose-500' },
+    //{ name: 'Vamshi', role: 'Web Developer', img: vamshi, link: 'https://www.linkedin.com/in/saivamshi-webdev/', color: 'from-pink-500 to-rose-500' },
   ];
 
   return (

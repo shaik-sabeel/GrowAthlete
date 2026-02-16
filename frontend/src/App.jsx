@@ -1,5 +1,17 @@
-// src/App.jsx
-import React from 'react';
+// ... imports
+import CursorFollower from './components/CursorFollower';
+
+// ... existing code ...
+
+function AppContent() {
+  // ... existing hooks ...
+
+  return (
+    <>
+      <CursorFollower />
+      {showNavbar && <Navbar />}
+      {/* ... rest of the JSX ... */}
+
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 // --- GLOBAL COMPONENTS (from src/components/ as per your structure) ---

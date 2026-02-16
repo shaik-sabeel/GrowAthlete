@@ -17,7 +17,7 @@ export default function SportsResume() {
     email: '',
     phone: '',
     address: '', // Added from V2
-    
+
     // Athletic Details
     primarySport: '', // Renamed from sport for clarity consistent with V2
     position: '',
@@ -25,35 +25,35 @@ export default function SportsResume() {
     weight: '',
     dominantHand: '', // Renamed from dominantSide for clarity consistent with V2
     currentTeam: '',
-    
+
     // Education (Added from V2)
     education: '',
-    
+
     // Career Stats
     careerStats: '',
-    
+
     // Achievements
     achievements: '',
-    
+
     // Tournament History (Added from V2)
     tournaments: '',
-    
+
     // Skills and Attributes
     skills: '',
-    
+
     // Certifications (Added from V2)
     certifications: '',
-    
+
     // Professional References (Added from V2)
     references: '',
-    
+
     // Video Links (Added from V2)
     videoLinks: '',
-    
+
     // Social Media Profiles (Added from V2)
     socialMedia: '',
   });
-  
+
   const [profileImage, setProfileImage] = useState(null); // Changed from 'photo' in V1 to 'profileImage' for consistency with V2 field name
   const [isSubmitting, setIsSubmitting] = useState(false); // State for handling form submission status
 
@@ -99,7 +99,7 @@ export default function SportsResume() {
       alert("Resume saved successfully!");
       console.log("Server response:", res.data);
       // Assuming "/resume-template" is the route to view the resume (like input_file_4.ts functionality)
-      navigate("/resume-template"); 
+      navigate("/resume-template");
     } catch (error) {
       console.error("Error saving resume:", error.response?.data || error.message);
       alert("Error saving resume: " + (error.response?.data?.message || "Please try again."));
@@ -111,7 +111,7 @@ export default function SportsResume() {
   return (
     <div className="bg-white-50 min-h-screen">
       <Navbar /> {/* Render the Navbar */}
-      
+
       {/* Hero Section with Background Image (from V2 UI) */}
       <div className="relative">
         <div className="absolute inset-0">
@@ -132,7 +132,7 @@ export default function SportsResume() {
           <div className="mt-10 flex justify-center">
             {/* Direct anchor link for scroll to form */}
             <a
-              href="#resume-form" 
+              href="#resume-form"
               className="get-started"
             >
               Get Started
@@ -145,7 +145,7 @@ export default function SportsResume() {
               View Example
             </Link> */}
           </div>
-          
+
           {/* Feature Cards (from V2 UI) */}
           <div className="mt-20 max-w-7xl mx-auto" >
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" >
@@ -166,7 +166,7 @@ export default function SportsResume() {
                   </p>
                 </div>
               </div>
-              
+
               {/* Feature 2 */}
               <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl" id="features">
                 <div className="p-6">
@@ -183,7 +183,7 @@ export default function SportsResume() {
                   </p>
                 </div>
               </div>
-              
+
               {/* Feature 3 */}
               <div className="bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-xl overflow-hidden transform transition-all hover:-translate-y-1 hover:shadow-2xl" id="features">
                 <div className="p-6">
@@ -204,11 +204,11 @@ export default function SportsResume() {
           </div>
         </div>
       </div>
-      
+
       {/* Main Form Section (from V2 UI structure with combined fields) */}
       <div id="resume-form" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-red shadow overflow-hidden sm:rounded-lg"id="resume-form">
+          <div className="bg-red shadow overflow-hidden sm:rounded-lg" id="resume-form">
             <div className="px-4 py-5 sm:p-6">
               <form onSubmit={handleSubmit} className="space-y-8" >
                 {/* Personal Information Section */}
@@ -290,7 +290,7 @@ export default function SportsResume() {
                     </div>
 
                     <div className="sm:col-span-3">
-                      <label htmlFor="gender" className="block text-sm font-medium text-gray-300">
+                      <label htmlFor="gender" className="block text-sm font-medium text-gray-300" style={{ color: 'white' }}>
                         Gender
                       </label>
                       <div className="mt-1">
@@ -300,7 +300,7 @@ export default function SportsResume() {
                           value={formData.gender}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border p-2 text-gray-100 border-gray-300 rounded-md" style={{color: 'black'}}
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border p-2 text-gray-100 border-gray-300 rounded-md" style={{ color: 'black' }}
                         >
                           <option value="">Select</option>
                           <option value="male">Male</option>
@@ -397,7 +397,7 @@ export default function SportsResume() {
                           value={formData.primarySport}
                           onChange={handleInputChange}
                           required
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md"style={{color: 'black'}}
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md" style={{ color: 'white' }}
                         >
                           <option value="">Select Sport</option>
                           <option value="cricket">Cricket</option>
@@ -475,7 +475,7 @@ export default function SportsResume() {
                           name="dominantHand"
                           value={formData.dominantHand}
                           onChange={handleInputChange}
-                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md" style={{color: 'black'}}
+                          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 p-2 text-gray-100 rounded-md" style={{ color: 'white' }}
                         >
                           <option value="">Select</option>
                           <option value="right">Right</option>
