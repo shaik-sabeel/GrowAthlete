@@ -257,7 +257,7 @@ const TournamentRegistrationModal = ({ isOpen, onClose, onRegister, tournamentTi
                                 <input
                                     type="text"
                                     placeholder="Search team name..."
-                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" style={{ color: "black" }}
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -272,9 +272,11 @@ const TournamentRegistrationModal = ({ isOpen, onClose, onRegister, tournamentTi
                                     filteredTeams.map(team => (
                                         <div key={team._id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:bg-gray-50 transition-colors">
                                             <div>
-                                                <h4 className="font-semibold text-gray-800">{team.teamName || "Unnamed Team"}</h4>
-                                                <p className="text-xs text-gray-500">
-                                                    Organizer: {team.organizer}
+                                                <h4 className="font-semibold text-gray-800" style={{ color: "black" }}>
+                                                    {team.teamName && team.teamName.trim() !== "" ? team.teamName : "Unnamed Team"}
+                                                </h4>
+                                                <p className="text-xs text-gray-500" style={{ color: "black" }}>
+                                                    Organizer: {team.organizer && team.organizer.trim() !== "" ? team.organizer : "Unknown Organizer"}
                                                 </p>
                                                 <p className="text-xs text-gray-500">
                                                     Members: {team.currentMembers}/{team.teamSize}

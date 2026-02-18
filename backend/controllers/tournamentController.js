@@ -149,8 +149,8 @@ const { sendTournamentRegistrationEmail } = require('../utils/mailer');
 // @access  Private
 const getTournamentTeams = asyncHandler(async (req, res) => {
   const tournament = await Tournament.findById(req.params.id)
-    .populate('registrations.user', 'name email')
-    .populate('registrations.members', 'name email');
+    .populate('registrations.user', 'name email username')
+    .populate('registrations.members', 'name email username');
 
   if (!tournament) {
     return res.status(404).json({ success: false, message: 'Tournament not found' });
@@ -164,8 +164,8 @@ const getTournamentTeams = asyncHandler(async (req, res) => {
     teamSize: reg.teamSize,
     currentMembers: reg.members.length,
     slotsAvailable: reg.teamSize - reg.members.length,
-    organizer: reg.user ? reg.user.name : 'Unknown',
-    members: reg.members.map(m => ({ name: m.name, email: m.email })) // Return simple member info
+    organizer: reg.user ? (reg.user.name || reg.user.username) : 'Unknown',
+    members: reg.members.map(m => ({ name: m.name || m.username, email: m.email })) // Return simple member info
   }));
 
   res.status(200).json({ success: true, count: teams.length, data: teams });
