@@ -134,7 +134,7 @@ const TournamentRegistrationModal = ({ isOpen, onClose, onRegister, tournamentTi
                     {mode === 'create' ? (
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
-                                <label htmlFor="teamName" className="block text-sm font-medium text-gray-700 mb-1">
+                                <label htmlFor="teamName" className="block text-sm font-medium text-gray-700 mb-1" style={{ color: "black" }}  >
                                     Team / Participant Name
                                 </label>
                                 <input
