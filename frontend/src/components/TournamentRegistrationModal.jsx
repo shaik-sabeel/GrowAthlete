@@ -127,7 +127,7 @@ const TournamentRegistrationModal = ({ isOpen, onClose, onRegister, tournamentTi
 
                 {/* Body */}
                 <div className="p-6 overflow-y-auto">
-                    <p className="text-gray-600 mb-6 text-sm">
+                    <p className="text-gray-600 mb-6 text-sm" style={{ color: "black" }}>
                         Tournament: <strong>{tournamentTitle}</strong>
                     </p>
 
