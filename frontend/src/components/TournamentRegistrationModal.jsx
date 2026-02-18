@@ -143,7 +143,7 @@ const TournamentRegistrationModal = ({ isOpen, onClose, onRegister, tournamentTi
                                     value={formData.teamName}
                                     onChange={handleChange}
                                     placeholder="Enter your name or team name"
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 " style={{ color: "black" }}
                                     required
                                 />
                             </div>
