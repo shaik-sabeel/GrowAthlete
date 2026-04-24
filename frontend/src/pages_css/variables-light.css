@@ -17,15 +17,15 @@
   --warning-color: #F59E0B;    /* Amber */
 
   /* TEXT COLORS - Light Theme */
-  --text-dark: #1F2937;        /* For headings and primary text */
-  --text-medium: #4B5563;      /* For body copy and secondary text */
+  --text-dark: #f1f5f9;        /* For headings and primary text */
+  --text-medium: #94a3b8;      /* For body copy and secondary text */
   --text-light: #6B7280;       /* For muted text and descriptions */
   --text-on-dark: #FFFFFF;     /* For text on dark or colored backgrounds */
 
   /* BACKGROUND & SURFACE COLORS - Light Theme */
   --background-main: #F9FAFB;  /* Very light gray for the main page background */
   --background-light: #FFFFFF;  /* For cards and surfaces */
-  --background-dark: #111827;   /* For dark mode or dark sections */
+  --background-dark: #f8fafc;   /* For dark mode or dark sections */
 
   /* BORDER COLORS - Light Theme */
   --border-color: #E5E7EB;     /* A light, non-distracting border color */
@@ -47,3 +47,4 @@
   /* TRANSITIONS */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+

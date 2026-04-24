@@ -1,270 +1,153 @@
+/* src/index.css — GrowAthlete Bright Sports-Tech Theme */
 @import "tailwindcss";
-/* src/index.css */
-/* Minimal initial project-wide styles for html, body, and basic type setup */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
 
 :root {
-  /* Using imports in App.css for var(--primary-color) etc. */
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* Fallback for Roboto */
-  line-height: 1.5;
+  font-family: 'Inter', 'Poppins', system-ui, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: #242424; /* Adjusted from rgba(255, 255, 255, 0.87) for clarity against light background */
-  background-color: #ffffff; /* Explicitly white for body background */
-
+  color-scheme: light;
+  color: #0F172A;
+  background-color: #F8FAFF;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Only body properties, removed root-level properties here because they are moved to :root{} in App.css for better organization */
 body {
   margin: 0;
-  /* display: flex; */ /* Removed from body to allow for full-width content layouts */
-  /* place-items: center; */ /* Removed from body */
   min-width: 320px;
   min-height: 100vh;
-  
-  /* background-color and color also removed to be controlled by :root and component styles */
+  background-color: #F8FAFF;
+  color: #0F172A;
 }
 
-/* These h1 and button styles were from Vite template and are conflicting,
-   they should be managed by App.css global headings or individual components
-   Let's keep them here as bare minimum overrides */
 h1 {
-  font-size: 3.2em; /* Keep for general h1, specific ones overridden by App.css headings */
+  font-size: 3.2em;
   line-height: 1.1;
-  color: #333; /* Default dark text color */
+  color: #0F172A;
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.6em 1.4em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #1a1a1a;
-  color: #ffffff; /* Default button text color */
+  background: linear-gradient(135deg, #FF6B00, #FF8C00);
+  color: #ffffff;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(255, 107, 0, 0.3);
 }
+
 button:hover {
-  border-color: #646cff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 107, 0, 0.4);
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 3px solid rgba(255, 107, 0, 0.4);
+  outline-offset: 2px;
 }
 
-/* This is the logo spin animation, from Vite template. Not used if using custom Navbar logo */
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-/* If using custom Navbar logo, delete the animation rules */
+/* Scrollbar */
+body::-webkit-scrollbar { width: 8px; }
+body::-webkit-scrollbar-track { background: #F8FAFF; }
+body::-webkit-scrollbar-thumb { background: linear-gradient(#FF6B00, #FF8C00); border-radius: 4px; }
+body::-webkit-scrollbar-thumb:hover { background: #e55d00; }
 
-/* Other specific vite template remnants that can be removed if not used */
-/* .logo { ... }
-.logo:hover { ... }
-.logo.react:hover { ... }
-@media (prefers-reduced-motion: no-preference) { ... }
-.card { ... }
-.read-the-docs { ... } */
+/* ====== GLOBAL ANIMATIONS ====== */
 
-/* src/index.css (or wherever you define your global styles) */
-
-/*
-Add this block to your CSS.
-It defines keyframes for a text flicker animation and applies it
-with varying opacities and subtle transforms for a glitch effect.
-*/
-
-@keyframes text-flicker {
-  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
-    opacity: 1;
-    transform: none;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
-  }
-
-  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
-    opacity: 0.8; /* Slight dim */
-    transform: translateY(1px) translateX(-0.5px); /* Minor jitter */
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-  }
-
-  11%, 31%, 51%, 71%, 91% {
-    opacity: 0; /* Complete momentary disappearance */
-    transform: translateY(2px) translateX(1px) scale(0.99); /* More pronounced jitter */
-    text-shadow: none;
-  }
-  21%, 41%, 61%, 81% {
-    opacity: 0.2; /* Short partial fade out */
-    transform: translateY(-1px) translateX(0.5px);
-  }
+/* Float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
 }
 
-.animate-text-flicker {
-  animation: text-flicker 4s infinite alternate ease-in-out; /* Longer, smoother base */
-  will-change: opacity, transform, text-shadow; /* Optimize browser rendering */
+/* Pulse glow */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); }
+  50% { box-shadow: 0 0 0 16px rgba(255, 107, 0, 0); }
 }
 
-
-
-/* src/index.css (or wherever you define your global styles) */
-
-/* Existing flicker keyframes (ensure these are present from previous step) */
-@keyframes text-flicker {
-  0%, 10%, 12%, 18%, 20%, 30%, 32%, 38%, 40%, 42%, 48%, 50%, 52%, 58%, 60%, 62%, 68%, 70%, 72%, 78%, 80%, 82%, 88%, 90%, 92%, 98%, 100% {
-    opacity: 1;
-    transform: none;
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.3);
-  }
-
-  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
-    opacity: 0.8;
-    transform: translateY(1px) translateX(-0.5px);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-  }
-
-  11%, 31%, 51%, 71%, 91% {
-    opacity: 0;
-    transform: translateY(2px) translateX(1px) scale(0.99);
-    text-shadow: none;
-  }
-  21%, 41%, 61%, 81% {
-    opacity: 0.2;
-    transform: translateY(-1px) translateX(0.5px);
-  }
+/* Shimmer */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to { background-position: 200% center; }
 }
 
-.animate-text-flicker {
-  animation: text-flicker 4s infinite alternate ease-in-out;
-  will-change: opacity, transform, text-shadow;
+/* Rotate slow */
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
+/* Slide up fade in */
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* New keyframes for the @effectualdesign fade-in */
+/* Scale in */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Gradient sweep */
+@keyframes gradientSweep {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Bounce in */
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Wave */
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.5); }
+}
+
+/* Fade in */
 @keyframes fadeIn {
   from { opacity: 0; }
-  to { opacity: 0.8; } /* Matching the text's default opacity */
+  to { opacity: 1; }
 }
 
-.animate-fade-in {
-  opacity: 0; /* Start invisible */
-  animation: fadeIn 1s forwards ease-out; /* forwards keeps it visible after animation */
-}
-/* src/index.css (add to your global CSS) */
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.animate-slide-up { animation: slideUpFade 0.7s ease-out forwards; }
+.animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
 
-/* ... (Your existing global animations and styles, like animate-text-flicker and animate-fade-in) ... */
-
-/* General overrides for react-big-calendar */
-.react-big-calendar-custom {
-  @apply text-gray-800;
-  font-family: 'Inter', sans-serif; /* Use your preferred font */
-}
-
-.rbc-calendar {
-  @apply border-none shadow-none; /* Remove default border and shadow */
-  display: flex; /* Make it a flex container to push toolbar to top */
-  flex-direction: column;
-}
-
-/* --- COMMENT OUT OR REMOVE THESE IF YOU ARE USING CustomToolbar COMPONENT --- */
-/*
-.rbc-toolbar {
-  // @apply bg-blue-600 text-white rounded-t-xl py-3 px-4 flex justify-between items-center border-b-2 border-blue-700;
-}
-.rbc-toolbar button {
-  // @apply text-white border-blue-700 hover:bg-blue-700 active:bg-blue-800 rounded px-3 py-1.5 transition-colors;
-}
-.rbc-btn-group button:not(:first-child):not(:last-child) {
-  // @apply border-x border-blue-700;
-}
-.rbc-active {
-  // background-color: #1d4ed8 !important; // Direct hex code with !important for default toolbar
-}
-.rbc-toolbar .rbc-toolbar-label {
-  // @apply text-2xl font-semibold;
-}
-*/
-/* --- END COMMENT OUT --- */
-
-
-/* Header for Days (Sun, Mon, Tue...) */
+/* Calendar overrides — bright mode */
 .rbc-header {
-  @apply bg-blue-50 text-blue-800 font-bold py-2 border-b border-gray-200 text-sm;
+  background: #FFF7F0;
+  color: #FF6B00;
+  font-weight: 700;
+  padding: 8px;
+  border-bottom: 2px solid #FFE0CC;
 }
-
-/* Event slot in day/week view */
-.rbc-row-segment .rbc-event {
-  @apply rounded-md text-white border-transparent px-2 py-1 flex items-center shadow-md text-sm leading-tight;
-}
-
-/* Default event content styles */
-.rbc-event-content {
-  @apply text-white text-sm font-medium;
-}
-
-/* Cells & Slots */
-.rbc-date-cell {
-  @apply text-right px-2 py-1;
-}
-
-/* Specific styling for the current month's day number in the header of cells */
-.rbc-date-cell span {
-    @apply block mt-0.5 mr-0.5; /* Slight adjustment */
-}
-
-
-.rbc-off-range-bg {
-  @apply bg-gray-100; /* Grey out days not in the current month */
-}
-
-.rbc-current-time-indicator {
-  @apply bg-red-500; /* Red line for current time */
-}
-
-.rbc-today {
-  @apply bg-blue-100; /* Highlight today's date */
-}
-
-.rbc-row-content {
-  @apply p-1; /* Add some padding to cell content */
-}
-
-/* Event Popup (when clicking on an event) */
-.rbc-popup {
-  @apply z-50 bg-white p-4 rounded-lg shadow-xl border border-gray-200 text-gray-800;
-}
-
-/* Calendar borders and cells */
-.rbc-time-view, .rbc-month-view {
-  @apply border border-gray-200;
-}
-
-.rbc-header,
-.rbc-row-bg > div + div, /* Vertical lines for columns */
-.rbc-day-bg + .rbc-day-bg {
-  border-left: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
-}
-
-.rbc-day-bg, .rbc-month-row, .rbc-agenda-table {
-  border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
-}
-
-/* Day slot numbers */
-.rbc-day-bg + .rbc-day-bg {
-    border-left: 1px solid #e5e7eb;
-}
-
-/* Remove default focus outline */
-.rbc-calendar *:focus {
-  outline: none;
-  box-shadow: none;
-}
+.rbc-event-content { color: #fff; font-size: 0.85rem; font-weight: 500; }
+.rbc-date-cell { text-align: right; padding: 4px 8px; color: #64748B; }
+.rbc-off-range-bg { background: #F8FAFF; }
+.rbc-current-time-indicator { background: #FF6B00; }
+.rbc-today { background: #FFF7F0; }
+.rbc-row-content { padding: 2px; }
+.rbc-popup { z-index: 50; background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); border: 1px solid #E2E8F0; color: #0F172A; }
+.rbc-time-view, .rbc-month-view { border: 1px solid #E2E8F0; }
+.rbc-header, .rbc-row-bg > div + div, .rbc-day-bg + .rbc-day-bg { border-left: 1px solid #E2E8F0; }
+.rbc-day-bg, .rbc-month-row, .rbc-agenda-table { border-bottom: 1px solid #E2E8F0; }
+.rbc-calendar *:focus { outline: none; box-shadow: none; }

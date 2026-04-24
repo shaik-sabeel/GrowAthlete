@@ -1,57 +1,63 @@
 /* --- src/pages_css/variables.css --- */
-/*
-  This file acts as the central design system for your application.
-  Define all your colors, fonts, shadows, and other reusable properties here.
-*/
+/* GrowAthlete Design System — Bright Sports-Tech Theme */
 
 :root {
   /* FONT FAMILY */
   --font-primary: 'Inter', sans-serif;
   --font-secondary: 'Poppins', sans-serif;
-  
+  --font-family-sans: 'Inter', 'Poppins', sans-serif;
+
   /* FONT WEIGHTS */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
-  
-  /* CORE COLORS - Dark Theme with Blue/Purple */
-  --primary-color: #8B5CF6;   /* Purple primary color */
-  --secondary-color: #049c9e;  /* Cyan secondary color */
-  --tertiary-color: #3B82F6;  /* Blue accent color */
-  --success-color: #10B981;    /* Green */
-  --warning-color: #F59E0B;    /* Amber */
 
-  /* TEXT COLORS - Dark Theme */
-  --text-dark: #FFFFFF;        /* White text for dark backgrounds */
-  --text-medium: #D1D5DB;      /* Light gray for secondary text */
-  --text-light: #9CA3AF;       /* Muted gray for descriptions */
-  --text-on-dark: #FFFFFF;     /* For text on dark or colored backgrounds */
+  /* CORE COLORS — Bright Sports-Tech */
+  --primary-color: #FF6B00;       /* Vibrant orange */
+  --secondary-color: #FF8C00;     /* Amber orange */
+  --tertiary-color: #1A56DB;      /* Electric blue accent */
+  --success-color: #10B981;       /* Green */
+  --warning-color: #F59E0B;       /* Amber */
 
-  /* BACKGROUND & SURFACE COLORS - Dark Theme */
-  --background-main: #0F172A;  /* Very dark blue/navy for main background */
-  --background-light: #1E293B; /* Dark gray/blue for cards and surfaces */
-  --background-dark: #020617;   /* Even darker for special sections */
+  /* TEXT COLORS */
+  --text-dark: #0F172A;           /* Near-black for headings */
+  --text-medium: #334155;         /* Dark slate for body */
+  --text-light: #64748B;          /* Mid-gray for secondary */
+  --text-on-dark: #FFFFFF;        /* White on colored backgrounds */
 
+  /* BACKGROUND & SURFACE COLORS */
+  --background-main: #F8FAFF;     /* Very light blue-white */
+  --background-light: #FFFFFF;    /* Pure white for cards */
+  --background-dark: #0F172A;     /* Used only for footer/special sections */
+  --background-card: #FFFFFF;     /* Card surfaces */
+  --background-alt: #EEF2FF;      /* Light lavender-blue alternate sections */
 
-  /* BORDER COLORS - Dark Theme */
-  --border-color: #334155;     /* Dark border color for dark theme */
+  /* BORDER COLORS */
+  --border-color: #E2E8F0;        /* Light gray border */
+  --border-accent: rgba(255, 107, 0, 0.3); /* Orange accent border */
 
-  /* GRADIENTS - Dark Theme Gradients */
-  --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  --gradient-2: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%); /* Purple to blue */
-  --gradient-3: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%); /* Cyan to blue */
+  /* GRADIENTS */
+  --gradient-1: linear-gradient(135deg, #FF6B00 0%, #FF8C00 100%);
+  --gradient-2: linear-gradient(135deg, #FF6B00 0%, #FF4500 100%);
+  --gradient-3: linear-gradient(135deg, #1A56DB 0%, #FF6B00 100%);
+  --gradient-hero: linear-gradient(135deg, #FFF7F0 0%, #FFF0E5 60%, #FFE8D0 100%);
+  --gradient-section: linear-gradient(180deg, #F8FAFF 0%, #EEF2FF 100%);
 
-  /* SHADOWS - Dark Theme Shadows */
-  --box-shadow-card: 0 4px 15px rgba(0, 0, 0, 0.25);
-  --box-shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
-  --box-shadow-button: 0 4px 10px rgba(139, 92, 246, 0.4);
+  /* SHADOWS */
+  --box-shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --box-shadow-card-hover: 0 12px 40px rgba(255, 107, 0, 0.18);
+  --box-shadow-button: 0 6px 20px rgba(255, 107, 0, 0.4);
+  --box-shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.08);
 
   /* BORDER RADIUS */
-  --border-radius-card: 16px;  /* For main cards and containers */
-  --border-radius-button: 8px; /* For buttons and smaller elements */
+  --border-radius-card: 16px;
+  --border-radius-button: 10px;
 
   /* TRANSITIONS */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ANIMATIONS */
+  --animation-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

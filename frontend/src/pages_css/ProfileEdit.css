@@ -53,7 +53,7 @@
 .section-title {
   font-size: 1.6rem; /* Smaller section titles, but clear */
   font-weight: 600;
-  color: #4b5563; /* Medium grey-blue */
+  color: #94a3b8; /* Medium grey-blue */
   margin-bottom: 1.5rem;
   display: flex; /* For icon alignment */
   align-items: center;
@@ -142,7 +142,7 @@
 
 .cancel-btn {
   background-color: #e2e8f0; /* Light grey */
-  color: #4b5563;
+  color: #94a3b8;
   border: 1px solid #cbd5e1;
 }
 

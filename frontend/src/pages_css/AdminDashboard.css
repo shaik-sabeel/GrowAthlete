@@ -10,7 +10,7 @@
 
   /* Text Colors */
   --text-main: #000000;   /* primary black text for high contrast */
-  --text-muted: #374151;  /* darker gray for secondary info */
+  --text-muted: #cbd5e1;  /* darker gray for secondary info */
   --text-black: #000000;  /* pure black, for headings/logos/special emphasis */
 
   /* Derived surface and border tokens for admin UI */
@@ -931,7 +931,7 @@
 
 .modal-close:hover {
   background: #f3f4f6;
-  color: #374151;
+  color: #cbd5e1;
 }
 
 .user-details {
@@ -952,7 +952,7 @@
 
 .detail-row label {
   font-weight: 600;
-  color: #374151;
+  color: #cbd5e1;
   min-width: 120px;
 }
 
@@ -1001,7 +1001,7 @@
 
 .btn-secondary {
   background: #f3f4f6;
-  color: #374151;
+  color: #cbd5e1;
   border: 2px solid #e5e7eb;
 }
 
@@ -2418,3 +2418,4 @@
     text-align: center;
   }
 }
+

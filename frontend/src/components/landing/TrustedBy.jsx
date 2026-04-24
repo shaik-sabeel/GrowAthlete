@@ -2,7 +2,6 @@ import React from 'react';
 import Marquee from "react-fast-marquee";
 
 const TrustedBy = () => {
-    // Placeholder logos (text for now as per plan, or use simple standard icons/text)
     const organizations = [
         "Sports Authority of India",
         "BCCI",
@@ -15,16 +14,19 @@ const TrustedBy = () => {
     ];
 
     return (
-        <section className="bg-gray-800/50 py-10 border-b border-gray-800">
+        <section className="bg-white py-12 border-b border-slate-100 relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10"></div>
+
             <div className="container mx-auto px-4 text-center">
-                <h4 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-8 opacity-80">
+                <h4 className="text-orange-500 font-bold tracking-widest uppercase text-xs mb-8 opacity-90">
                     Trusted by Top Organizations and Brands
                 </h4>
 
                 <Marquee pauseOnHover={true} speed={50} gradient={false}>
-                    <div className="flex items-center gap-16 pr-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-300 hover:opacity-100">
+                    <div className="flex items-center gap-16 pr-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
                         {organizations.map((org, index) => (
-                            <h3 key={index} className="text-lg md:text-2xl font-bold text-gray-500 hover:text-gray-300 transition-colors cursor-default whitespace-nowrap">
+                            <h3 key={index} className="text-xl md:text-2xl font-bold text-slate-400 hover:text-orange-500 transition-colors duration-300 cursor-default whitespace-nowrap">
                                 {org}
                             </h3>
                         ))}

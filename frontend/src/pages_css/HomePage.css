@@ -567,7 +567,7 @@ section {
     }
 }
 .hp-upcoming-event-card {
-    background-color: #19193f;
+    background-color: var(--background-card);
     border-radius: var(--border-radius-card);
     box-shadow: none; /* Remove default shadow for border-based one */
     overflow: hidden; transition: var(--transition-smooth);
