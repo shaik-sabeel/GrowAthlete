@@ -97,7 +97,7 @@ function AppContent() {
   return (
     <>
       <CursorFollower />
-      {/* {showNavbar && <Navbar />} */}
+      {showNavbar && <Navbar />}
       <main className="flex-grow" style={{ paddingTop: showNavbar ? '5rem' : '0' }}> {/* Added padding to account for fixed navbar */}
         <ScrollToTop />
         <Routes>

@@ -31,7 +31,7 @@ const AboutPage = () => {
 
   const teamMembers = [
     { name: 'Ande Hemanth', role: 'Founder & CEO', img: hemanth, link: 'https://www.linkedin.com/in/ande-hemanth-884020283/', color: 'from-orange-500 to-red-500' },
-    { name: 'Yalaga Joshitha', role: 'Co-Founder', img: joshitha, link: 'https://www.linkedin.com/in/yalaga-joshitha-612b62376/', color: 'from-purple-500 to-pink-500' },
+    
     { name: 'Mohammad Sabeel S A', role: 'Web Developer', img: sabeel, link: 'https://www.linkedin.com/in/shaik-sabeel/', color: 'from-blue-500 to-cyan-500' },
     { name: 'Muhammed Ikram R', role: 'Web Developer', img: ikram, link: 'https://www.linkedin.com/in/muhammed-ikram-7b56202bb', color: 'from-green-500 to-teal-500' },
     { name: 'Mohammad Faraz K', role: 'Front-End Developer', img: faraz, link: 'https://www.linkedin.com/in/faraz-shaik-a906192bb/', color: 'from-yellow-500 to-orange-500' },
