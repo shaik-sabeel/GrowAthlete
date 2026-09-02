@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 // ... (other imports remain, just ensuring CursorFollower is imported)
 
 // --- GLOBAL COMPONENTS (from src/components/ as per your structure) ---
-// import Navbar from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import Splash from "./components/Splash";
@@ -97,7 +97,7 @@ function AppContent() {
   return (
     <>
       <CursorFollower />
-      /* {showNavbar && <Navbar />} */
+      {showNavbar && <Navbar />}
       <main className="flex-grow" style={{ paddingTop: showNavbar ? '5rem' : '0' }}> {/* Added padding to account for fixed navbar */}
         <ScrollToTop />
         <Routes>
